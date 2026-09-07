@@ -9,6 +9,11 @@ import { BOQTable } from "@/components/budget/boq-table";
 import { ThreeWayMatchView } from "@/components/procurement/three-way-match";
 import { CommercialView } from "@/components/commercial/commercial-view";
 import { SiteDiaryView } from "@/components/site-ops/site-diary-view";
+import { MaterialsStockView } from "@/components/materials/materials-stock-view";
+import { LabourView } from "@/components/labour/labour-view";
+import { SubcontractorView } from "@/components/subcontractors/subcontractor-view";
+import { ReportsView } from "@/components/reports/reports-view";
+import { AuditLogView } from "@/components/admin/audit-log-view";
 import {
   Sparkles,
   ArrowUpRight,
@@ -218,17 +223,26 @@ export default function Home() {
                 </div>
               )}
 
-              {activeTab !== "Dashboard" &&
-                activeTab !== "Budget & BOQ" &&
-                activeTab !== "Procurement" &&
-                activeTab !== "Site Progress & Diary" && (
-                  <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 text-center">
-                    <h3 className="text-sm font-bold text-white">{activeTab} Module</h3>
-                    <p className="text-xs text-zinc-400 mt-1 max-w-sm mx-auto">
-                      Module scaffolded and ready for Phase 2/3 backend wiring. Select &quot;Budget &amp; BOQ&quot;, &quot;Procurement&quot;, or &quot;Site Progress &amp; Diary&quot; to test the live Phase 1 engine.
-                    </p>
-                  </div>
-                )}
+              {activeTab === "Materials & Stock" && <MaterialsStockView />}
+
+              {activeTab === "Labour & Muster" && <LabourView />}
+
+              {(activeTab === "Subcontractors" || activeTab === "Variations & Claims") && (
+                <SubcontractorView />
+              )}
+
+              {activeTab === "Reports Studio" && <ReportsView />}
+
+              {activeTab === "Admin & Roles" && <AuditLogView />}
+
+              {activeTab === "Settings" && (
+                <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 text-center">
+                  <h3 className="text-sm font-bold text-white">Project Settings & Configuration</h3>
+                  <p className="text-xs text-zinc-400 mt-1 max-w-sm mx-auto">
+                    Manage default currency (₦ NGN), timezone (Africa/Lagos), and notification channels.
+                  </p>
+                </div>
+              )}
             </>
           )}
         </main>

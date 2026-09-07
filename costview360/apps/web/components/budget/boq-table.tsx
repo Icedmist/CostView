@@ -13,6 +13,7 @@ import {
   AlertCircle,
   Download,
 } from "lucide-react";
+import { BOQImportModal } from "./boq-import-modal";
 
 export interface BOQRecord {
   id: string;
@@ -111,6 +112,7 @@ export function BOQTable() {
   // Modal states
   const [isRevisionModalOpen, setIsRevisionModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<BOQRecord | null>(null);
   const [revisionReason, setRevisionReason] = useState("");
   const [revisionDelta, setRevisionDelta] = useState<number>(0);
@@ -212,6 +214,13 @@ export function BOQTable() {
         </div>
 
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => setIsImportModalOpen(true)}
+            className="flex items-center gap-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors"
+          >
+            <Download className="w-3.5 h-3.5 text-emerald-400 rotate-180" />
+            <span>Import BOQ / CSV</span>
+          </button>
           <button
             onClick={() => setIsAddModalOpen(true)}
             className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm transition-colors"
@@ -477,6 +486,15 @@ export function BOQTable() {
           </div>
         </div>
       )}
+      {/* Import Modal */}
+      <BOQImportModal
+        isOpen={isImportModalOpen}
+        onClose={() => setIsImportModalOpen(false)}
+        onImportConfirmed={(importedItems) => {
+          setItems((prev) => [...importedItems, ...prev]);
+        }}
+      />
     </div>
   );
 }
+

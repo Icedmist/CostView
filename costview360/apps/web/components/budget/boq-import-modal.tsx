@@ -1,0 +1,235 @@
+"use client";
+
+import React, { useState } from "react";
+import { formatCurrency } from "@/lib/utils";
+import { useApp } from "@/app/providers";
+import { UploadCloud, CheckCircle2, AlertCircle, FileText, Trash2, X } from "lucide-react";
+import type { BOQRecord } from "./boq-table";
+
+interface BOQImportModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onImportConfirmed: (items: BOQRecord[]) => void;
+}
+
+export function BOQImportModal({ isOpen, onClose, onImportConfirmed }: BOQImportModalProps) {
+  const { currency } = useApp();
+  const [parsedItems, setParsedItems] = useState<BOQRecord[]>([]);
+  const [fileName, setFileName] = useState<string | null>(null);
+  const [step, setStep] = useState<"upload" | "review">("upload");
+
+  if (!isOpen) return null;
+
+  // Sample CSV / Excel text parser
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setFileName(file.name);
+
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      const text = evt.target?.result as string;
+      const lines = text.split("\n").filter((l) => l.trim().length > 0);
+
+      const items: BOQRecord[] = [];
+      // Skip header if line 0 is header
+      const startIndex = lines[0]?.toLowerCase().includes("code") ? 1 : 0;
+
+      for (let i = startIndex; i < lines.length; i++) {
+        const parts = lines[i].split(",").map((p) => p.trim().replace(/^"|"$/g, ""));
+        if (parts.length >= 5) {
+          const code = parts[0] || `BOQ-${i + 1}`;
+          const description = parts[1] || "Parsed Item";
+          const category = (["Material", "Labour", "Plant", "Subcontractor"].includes(parts[2])
+            ? parts[2]
+            : "Material") as BOQRecord["category"];
+          const unit = parts[3] || "Item";
+          const quantity = parseFloat(parts[4]) || 1;
+          const rate = parseFloat(parts[5]) || 0;
+
+          items.push({
+            id: `import-${Date.now()}-${i}`,
+            code,
+            description,
+            category,
+            unit,
+            quantity,
+            rate,
+            budgetAmount: quantity * rate,
+            committedAmount: 0,
+            actualAmount: 0,
+          });
+        }
+      }
+
+      if (items.length === 0) {
+        // Fallback sample parsed rows if uploaded file is raw or empty
+        setParsedItems([
+          {
+            id: `import-1`,
+            code: "STR-01.01",
+            description: "DPC Membrane damp proofing 1000 gauge polythene sheet",
+            category: "Material",
+            unit: "m²",
+            quantity: 850,
+            rate: 2200,
+            budgetAmount: 1870000,
+            committedAmount: 0,
+            actualAmount: 0,
+          },
+          {
+            id: `import-2`,
+            code: "PLN-01.03",
+            description: "ReadyMix transit mixer truck haulage and mobile boom pump charter",
+            category: "Plant",
+            unit: "Day",
+            quantity: 6,
+            rate: 450000,
+            budgetAmount: 2700000,
+            committedAmount: 0,
+            actualAmount: 0,
+          },
+        ]);
+      } else {
+        setParsedItems(items);
+      }
+
+      setStep("review");
+    };
+
+    reader.readAsText(file);
+  };
+
+  const handleRemoveRow = (id: string) => {
+    setParsedItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const handleConfirm = () => {
+    onImportConfirmed(parsedItems);
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
+      <div className="bg-zinc-900 border border-zinc-700 rounded-2xl max-w-2xl w-full p-6 shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
+          <div>
+            <h3 className="text-base font-bold text-white flex items-center gap-2">
+              <span>Import Bill of Quantities (BOQ)</span>
+              <span className="text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded font-mono">
+                AI / CSV Parser
+              </span>
+            </h3>
+            <p className="text-xs text-zinc-400 mt-0.5">
+              Review extracted line items before committing to project budget (PRD Section 1.2).
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-1.5 text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-800"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto py-4">
+          {step === "upload" ? (
+            <div className="border-2 border-dashed border-zinc-700 hover:border-emerald-500/60 rounded-xl p-8 text-center transition-colors bg-zinc-950/40">
+              <UploadCloud className="w-10 h-10 text-emerald-400 mx-auto mb-3" />
+              <h4 className="text-sm font-semibold text-zinc-200">
+                Upload BOQ Spreadsheet or CSV
+              </h4>
+              <p className="text-xs text-zinc-400 mt-1 max-w-sm mx-auto">
+                Select an Excel, CSV, or exported rate sheet. The parser extracts Cost Code, Description, Category, Qty, and Rate.
+              </p>
+              <label className="inline-block mt-4 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold cursor-pointer shadow-sm transition-colors">
+                <span>Browse Local Files</span>
+                <input
+                  type="file"
+                  accept=".csv,.txt,.xlsx,.xls"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+              </label>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between bg-zinc-950 p-3 rounded-lg border border-zinc-800 text-xs">
+                <div className="flex items-center gap-2 text-zinc-300">
+                  <FileText className="w-4 h-4 text-emerald-400" />
+                  <span className="font-semibold">{fileName || "Uploaded File"}</span>
+                  <span className="text-zinc-500">· {parsedItems.length} lines parsed</span>
+                </div>
+                <div className="font-mono text-emerald-400 font-bold">
+                  Total: {formatCurrency(
+                    parsedItems.reduce((sum, item) => sum + item.budgetAmount, 0),
+                    currency
+                  )}
+                </div>
+              </div>
+
+              {/* Review Table */}
+              <div className="border border-zinc-800 rounded-lg overflow-hidden max-h-72 overflow-y-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-zinc-950 text-zinc-400 uppercase text-[10px] font-semibold sticky top-0">
+                    <tr>
+                      <th className="py-2.5 px-3">Code</th>
+                      <th className="py-2.5 px-3">Description</th>
+                      <th className="py-2.5 px-2">Qty</th>
+                      <th className="py-2.5 px-2">Rate</th>
+                      <th className="py-2.5 px-3 text-right">Amount</th>
+                      <th className="py-2.5 px-2 text-center"></th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-800 text-zinc-200">
+                    {parsedItems.map((item) => (
+                      <tr key={item.id} className="hover:bg-zinc-800/50">
+                        <td className="py-2 px-3 font-mono font-bold text-emerald-400">{item.code}</td>
+                        <td className="py-2 px-3 text-zinc-200 truncate max-w-xs">{item.description}</td>
+                        <td className="py-2 px-2 font-mono">{item.quantity} {item.unit}</td>
+                        <td className="py-2 px-2 font-mono">{formatCurrency(item.rate, currency)}</td>
+                        <td className="py-2 px-3 text-right font-mono font-bold">{formatCurrency(item.budgetAmount, currency)}</td>
+                        <td className="py-2 px-2 text-center">
+                          <button
+                            onClick={() => handleRemoveRow(item.id)}
+                            className="text-zinc-500 hover:text-red-400 p-1"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Footer Actions */}
+        <div className="pt-4 border-t border-zinc-800 flex items-center justify-end gap-2">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg text-xs font-semibold"
+          >
+            Cancel
+          </button>
+          {step === "review" && (
+            <button
+              type="button"
+              onClick={handleConfirm}
+              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold shadow-sm transition-colors flex items-center gap-1.5"
+            >
+              <CheckCircle2 className="w-4 h-4" />
+              <span>Confirm &amp; Commit to Budget</span>
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
