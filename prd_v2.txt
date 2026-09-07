@@ -1,0 +1,273 @@
+​CostView 360 - Comprehensive Product​
+​Requirements Document (PRD)​
+​Version:​​2.0 (Expanded Architecture & Implementation​​Guide)​
+​Status:​​Approved for Development​
+
+​1. Executive Summary & Vision​
+​CostView 360 is a flagship construction cost intelligence platform designed to eliminate the fragmentation​
+​between physical site operations and commercial financial tracking. By unifying budget tracking,​
+​procurement, material inventory, labour productivity, and project progress into a single Command Center,​
+​CostView 360 provides executives, project managers, and quantity surveyors with real-time, actionable​
+​insights.​
+​This PRD details the 10X expansion of the platform's capabilities, breaking down the application into​
+​high-fidelity functional requirements, complex multi-stakeholder workflows, and a scalable, robust​
+​technical architecture leveraging modern web and cloud technologies.​
+
+​2. Target Personas & Access Matrices​
+​The platform serves multiple distinct user types, each with tailored interfaces and permission bounds.​
+​Persona​
+
+​Primary Objectives​
+
+​Key Modules Accessed​
+
+​Project Manager (PM)​
+
+​Oversee project timeline,​
+
+​Budget, Progress, Variations,​
+
+​approve variations, ensure​
+
+​Reports Studio​
+
+​budget compliance.​
+
+​Quantity Surveyor (QS)​
+
+​Manage BOQ, assess cost​
+
+​Commercial Mode, Budget,​
+
+​impact of variations, certify​
+
+​Subcontractors, Final Account​
+
+​subcontractor valuations.​
+
+​Procurement Officer​
+
+​Handle supplier enquiries, issue​
+
+​Procurement, Materials,​
+
+​POs, track deliveries, negotiate​
+
+​Supplier Performance​
+
+​Persona​
+
+​Primary Objectives​
+
+​Key Modules Accessed​
+
+​rates.​
+
+​Site Engineer / Storekeeper​
+
+​Log daily progress, manage​
+
+​Materials (GRN), Progress​
+
+​GRNs, track labour attendance,​
+
+​(Diary), Labour (Attendance)​
+
+​log snags.​
+
+​Executive / Developer​
+
+​Monitor project margin,​
+
+​Command Center, Reports,​
+
+​feasibility, financing, and​
+
+​Project Margin, Developer​
+
+​high-level health.​
+
+​Mode​
+
+​3. Deep Dive: Site Operations Module​
+​The Site Operations module is the execution engine of the project, tracking the day-to-day physical and​
+​financial reality.​
+
+​3.1 Budget Management​
+​●​ ​Bill of Quantities (BOQ) Integration:​​Live parsing​​of uploaded BOQ data. Support for​
+​multi-level hierarchical cost codes.​
+​●​ ​Live Cost Control:​​Real-time variance calculation​​tracking Approved Budget vs. Committed Cost​
+​(POs) vs. Actual Cost (Paid).​
+​●​ ​Predictive Forecasting:​​Trend analysis using historical​​burn rates to project Estimate at​
+​Completion (EAC) and Estimate to Complete (ETC).​
+​●​ ​Final Account Reconciliations:​​Automated aggregation​​of variations, prime cost sums, and​
+​provisional sums into a final closing ledger.​
+
+​3.2 Procurement Lifecycle​
+​●​ ​Requisitions Workflow:​​Auto-trigger requisitions based​​on material reorder levels.​
+​●​ ​Supplier Enquiry Board:​​Side-by-side bid comparisons​​tracking lead times, payment terms, and​
+​historical supplier quality scores.​
+​●​ ​Three-Way Financial Match:​​Automated validation between​​the Purchase Order (PO), Goods​
+​Received Note (GRN), and Supplier Invoice. Flagging discrepancies (e.g., 190 bags delivered vs​
+​200 bags invoiced).​
+
+​●​ ​Supplier Leaderboards:​​Automated scoring based on On-Time Delivery (OTD), Quality Pass​
+​Rates, and Price Competitiveness.​
+
+​3.3 Materials & Inventory​
+​●​ ​Live Stock Gauges:​​Visual tracking of available, reserved,​​and consumed stock levels per SKU.​
+​●​ ​Site-to-Site Transfers:​​Kanban-style tracking of material​​movement across multi-location​
+​projects.​
+​●​ ​Variance Logging:​​Dedicated workflows for logging​​damaged goods, over-issues, and​
+​reconciliation discrepancies.​
+
+​3.4 Labour & Productivity​
+​●​ ​Attendance Matrix:​​Weekly grid inputs for workers,​​crews, and trades. Integration with biometric​
+​site scanners (future-proofing).​
+​●​ ​Automated Payroll Calculation:​​Basic pay, overtime​​multipliers, and automated deduction​
+​processing.​
+​●​ ​Crew Productivity Scoring:​​Cross-referencing BOQ output​​metrics against labour hours to​
+​calculate real-time efficiency metrics (e.g., blocks laid per man-hour).​
+
+​3.5 Progress, Quality & Safety​
+​●​ ​Digital Site Diary:​​Time-stamped daily logs cross-referenced​​with local weather API data and​
+​workforce headcount.​
+​●​ ​Snagging & NCRs:​​Visual Kanban board for Non-Conformance​​Reports (NCRs), tracking issues​
+​from discovery to remediation and sign-off.​
+​●​ ​Safety Scorecards:​​Hero-metric displays for "Days​​Without Lost-Time Incident" and near-miss​
+​logs.​
+
+​4. Deep Dive: Commercial & Developer Mode​
+​This module adapts to the corporate structure of the user, splitting into Contractor and Developer​
+​contexts.​
+
+​4.1 Contractor Commercial Operations​
+​●​ ​Tender & Estimating:​​Pre-construction cost build-ups,​​preliminary pricing, and margin​
+​application.​
+​●​ ​Valuation & Certification:​​Generation of interim payment​​applications to the client based on​
+​verified physical progress.​
+
+​●​ ​Claims & Entitlements:​​Documenting loss and expense, linking site diary delays (weather, client​
+​changes) directly to Extension of Time (EOT) requests.​
+
+​4.2 Developer / Asset Owner Operations​
+​●​ ​Feasibility & Acquisition:​​Land cost tracking, ROI​​projections, and yield analyses.​
+​●​ ​Project Finance & Capital Stack:​​Tracking equity drawdown,​​development loans, and interest​
+​capitalization.​
+​●​ ​Sales & Receivables:​​Unit pricing, buyer ledgers,​​payment schedules, and collection status​
+​tracking.​
+
+​5. Technical Architecture & Backend Flow​
+​The system requires a highly scalable, real-time architecture capable of processing thousands of financial​
+​transactions, material movements, and user events securely.​
+
+​5.1 Core Technology Stack​
+​●​ ​Frontend Web Application:​​Built using​​Next.js​,​​React​,​​and​​TypeScript​. Styled comprehensively​
+​with​​Tailwind CSS​​to replicate the high-fidelity UI​​specifications.​
+​●​ ​Backend Services & API:​​Developed in​​Python​​(using​​FastAPI or Django), enabling rapid data​
+​processing, complex mathematical cost aggregations, and integration with AI libraries (e.g.,​
+​TensorFlow) for predictive forecasting.​
+​●​ ​Primary Database (Relational):​​Hosted on​​Supabase​​(PostgreSQL)​​to ensure ACID​
+​compliance, strict relational integrity for financial ledgers, and Row Level Security (RLS).​
+​●​ ​Real-Time Event Sync:​​Powered by​​Firebase​​Realtime​​Database and Cloud Messaging to push​
+​instant updates to the Notification Bell, Snag Kanban boards, and collaborative Site Diaries.​
+
+​5.2 Database Schema Overview (Supabase/PostgreSQL)​
+​Key entity relationships ensuring data integrity across the platform:​
+​-- Simplified Core Schema Representation​
+​Table: projects​
+​- id (UUID, PK)​
+​- name (VARCHAR)​
+​- type (ENUM: 'contractor', 'developer')​
+​- budget_total (DECIMAL)​
+​Table: boq_items​
+
+​- id (UUID, PK)​
+​- project_id (FK -> projects.id)​
+​- code (VARCHAR)​
+​- description (TEXT)​
+​- rate (DECIMAL)​
+​- quantity (DECIMAL)​
+​- category (ENUM: 'Material', 'Labour', 'Plant')​
+​Table: purchase_orders​
+​- id (UUID, PK)​
+​- boq_item_id (FK -> boq_items.id)​
+​- supplier_id (FK -> suppliers.id)​
+​- status (ENUM: 'Draft', 'Approved', 'Dispatched', 'Delivered')​
+​- total_value (DECIMAL)​
+​Table: goods_received_notes (GRN)​
+​- id (UUID, PK)​
+​- po_id (FK -> purchase_orders.id)​
+​- quantity_received (DECIMAL)​
+​- discrepancy_flag (BOOLEAN)​
+
+​5.3 Critical Backend Workflows​
+​Flow 1: The Three-Way Match (Invoice Approval)​
+​1.​ ​Trigger:​​Supplier submits an Invoice payload via API​​or manual entry.​
+​2.​ ​Python Backend Processing:​​The API fetches the corresponding​​Purchase Order and GRN​
+​records from Supabase.​
+​3.​ ​Validation Engine:​​The system compares:​
+​○​ ​PO.quantity vs GRN.quantity_received vs Invoice.billed_quantity​
+​○​ ​PO.agreed_rate vs Invoice.unit_rate​
+​4.​ ​Outcome Routing:​
+​○​ ​If Perfect Match:​​Update Invoice status to 'Matched',​​trigger Webhook to Accounting (e.g.,​
+​QuickBooks), and push Firebase notification to Finance Officer.​
+​○​ ​If Discrepancy:​​Update status to 'Discrepancy', lock​​payment release, and push Firebase​
+​alert to Procurement Officer outlining the exact variance.​
+​Flow 2: Automated AI Cost Forecasting​
+​1.​ ​Trigger:​​Weekly CRON job or manual refresh.​
+
+​2.​ ​Data Aggregation:​​Python backend pulls time-series data of material consumption rates, labour​
+​efficiency scores, and current weather delays.​
+​3.​ ​TensorFlow Model Execution:​​Feeds historical baseline​​data through the predictive model to​
+​calculate potential cost overruns for ongoing BOQ items.​
+​4.​ ​Insight Generation:​​Writes records to the ai_insights​​table, feeding the Reports Studio and​
+​highlighting risks in the Executive Command Center.​
+
+​6. Integrations & Webhooks​
+​●​ ​Accounting & ERP:​​Native two-way sync with QuickBooks​​and Xero for Accounts Payable​
+​(Invoices) and Accounts Receivable (Certifications).​
+​●​ ​Document Storage:​​Automated PDF generation for POs​​and Reports, syncing directly to Google​
+​Drive / SharePoint via OAuth2 tokens.​
+​●​ ​Communication:​​Email via SendGrid and WhatsApp Business​​API integrations for urgent​
+​supplier notifications and internal approval requests.​
+
+​7. Non-Functional Requirements​
+​Category​
+
+​Requirement Specification​
+
+​Security & Authentication​
+
+​JWT-based authentication. AES-256 encryption​
+​at rest. TLS 1.3 in transit. Full Row-Level​
+​Security (RLS) in Supabase.​
+
+​Scalability & Performance​
+
+​Support for concurrent multi-tenant architecture.​
+​API response time < 200ms for 95th percentile​
+​requests. Dashboard loads under 1.5 seconds.​
+
+​Availability & Compliance​
+
+​99.99% Uptime SLA. SOC2 Type II compliance.​
+​ISO 27001 data handling standards. Daily​
+​automated database backups with 30-day​
+​retention.​
+
+​8. Implementation & Rollout Strategy​
+​To mitigate risk and ensure maximum user adoption, the platform will be developed and released in​
+​strategic phases.​
+​●​ ​Phase 1: Foundation (Months 1-3):​​Supabase schema​​design, Next.js UI scaffolding,​
+​Authentication, Core BOQ import, and basic Budget tracking.​
+​●​ ​Phase 2: Operations & Real-Time (Months 4-6):​​Procurement​​workflows, Firebase real-time​
+​notifications, Materials inventory, and Labour logs.​
+​●​ ​Phase 3: Commercial & Integrations (Months 7-8):​​Developer/Contractor​​toggles, QuickBooks​
+​integration, and Document generation.​
+​●​ ​Phase 4: Intelligence (Months 9-10):​​Python-based​​predictive analytics, Reports Studio, and​
+​advanced Supplier Performance algorithms.​
+
+​Confidential & Proprietary - CostView 360 Product Requirements Document​
+
+
