@@ -235,6 +235,17 @@ CREATE TABLE material_transfers (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+CREATE TABLE material_issues (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+  item_id UUID NOT NULL REFERENCES inventory_items(id) ON DELETE CASCADE,
+  boq_item_id UUID REFERENCES boq_items(id),
+  quantity NUMERIC(14, 2) NOT NULL,
+  issued_to TEXT NOT NULL,
+  issued_by UUID REFERENCES auth.users(id),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 -- 7. LABOUR, PROGRESS, SNAGGING
 CREATE TABLE daily_attendance (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
