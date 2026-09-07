@@ -1,0 +1,442 @@
+CostView — Site Operations PRD
+What this covers: Budget, Procurement, Materials, Labour, Progress, Subcontractors,
+Variations, Reports, Admin, Help. Not covered: Commercial mode (Contractor/Developer
+toggle).
+Why this document exists: to tell developers, in plain terms, what each screen shows,
+where every number comes from, what the system should do on its own, and what a person
+still needs to do by hand — including everything the current prototype shows but doesn’t
+actually let you do yet.
+The one rule behind everything below: let the system calculate whatever it honestly can.
+A person only gets involved to (1) type in something the system has no way of knowing — a
+name, a decision, a brand-new item — or (2) approve/reject something the system has
+already flagged for them. Nobody should be typing numbers the system could work out
+itself, and nothing should sit stuck waiting on a person unless it’s genuinely an exception.
+
+1. Budget
+1.1 Overview
+Just a dashboard. Every number on it is pulled from the tabs below. Nobody types anything
+here.
+
+1.2 BOQ — this is where real data enters the system
+Someone uploads their BOQ, material list, labour list, or rebar schedule in whatever format
+they already have — Excel, Word, even a scanned PDF. The AI reads it and sorts it into the
+right columns (Item, Description, Qty, Unit, Rate, Amount). Before anything gets saved, the
+person reviews what the AI pulled out, fixes anything it got wrong, and confirms — only then
+does it go live.
+Every item gets a unique code so it can be linked to its material, labour, and rebar costs
+elsewhere in the system. Actual cost, budget vs. actual variance, and status (On Budget /
+Over / Under) all calculate themselves from there.
+Two things get added once, per item, at the start: who’s expected to finish it and by
+when, and who’s responsible for it.
+
+Still missing: a way to manually add a BOQ item (for anything the import missed), a way to
+edit or delete a row, and the confirm-before-saving step described above.
+
+1.3 Forecast — fully automatic, nothing to type
+Works out where the project’s costs are heading based on what’s actually happened so far,
+plus what’s left to do at the rate it’s currently costing. Shows expected total cost, how far
+that is from budget, how confident that number is, and when the project is likely to finish —
+compared against the planned finish date, so you can see if you’re ahead or behind. Nothing
+here needs manual entry, and nothing is missing.
+
+1.4 Cost Control — fully automatic, nothing to type
+Shows how efficiently money is being spent against how much work is actually done, flags
+anything trending over budget, and shows who’s responsible for each item.
+Still missing: a way to mark a flagged risk as “seen/handled” once someone’s dealt with it.
+
+1.5 Revisions — a person creates it, the system applies it
+A Revision is a real, approved change to the budget — always tied to something that actually
+happened: an approved Variation, a rate that was wrong, or a client-instructed change.
+Still missing, entirely: a button to add a new Revision (what changed, why, the ₦ amount,
+which BOQ item it affects); an automatic pre-filled entry whenever a Variation gets
+approved, so nobody has to retype it; and an Approve/Reject action on each one. Only an
+approved Revision should actually change the budget — and once it does, that change
+should flow through to Forecast, Cost Control, and Final Account on its own.
+
+1.6 Final Account — fully automatic, and reconciliation never gets stuck
+Compares the original budget against what was actually spent, item by item. Every item
+reconciles automatically — a variance never holds that up. If there’s a gap, it’s shown right
+next to the “Reconciled” tag (e.g. “Reconciled — Variance: +₦410,000”), and it shows up in
+management reports too, not hidden anywhere.
+Still missing: a simple way for the QS to leave a note on a flagged variance (wastage, theft,
+a negotiated rate — whatever the reason is) for the record. This is just a note for the audit
+trail — it never changes the Reconciled status.
+
+2. Procurement
+The chain here is: Requisition → Supplier Enquiry → Purchase Order → Delivery →
+
+Invoice → Payment, plus a Supplier Performance score built from all of it. Each document
+remembers which document it came from, so you can always trace the whole trail back.
+
+2.1 Overview
+Dashboard only, pulled from the tabs below.
+
+2.2 Requisitions
+Gets created two ways: automatically (when material stock runs low) or manually (a Site
+Engineer needs something for site).
+Still missing: a “New Requisition” form for the manual path, and an Approve/Reject action.
+
+2.3 Supplier Enquiries
+Sent out to suppliers for pricing, responses compared side by side, then converted straight
+into a Purchase Order.
+Still missing: a way to actually create a new enquiry, and every action button on this screen
+(Add Supplier, Compare Quotes, Select Supplier, Convert to PO, etc.) needs to actually work
+— right now they just sit there.
+
+2.4 Purchase Orders
+Created from a converted Enquiry (or directly).
+Still missing: a proper approval step before it goes to the supplier — right now it jumps
+straight from “created” to “supplier accepted” with nobody signing off in between. Also
+needs a way to pick how payment works for this order — pay first, pay after delivery, or
+partial upfront — since that decides whether an invoice can be raised before delivery
+happens.
+
+2.5 Deliveries
+Same record as the GRN in Materials — it shouldn’t be entered twice in two places.
+Delivered quantity is checked against the order automatically, and any shortfall gets
+flagged.
+Still missing: a real “Verify Delivery” / “Resolve Discrepancy” action — right now it’s just a
+static screen.
+
+2.6 Invoices
+Matched against the Purchase Order (and the delivery, once there is one). The system
+checks all three match up and flags anything that doesn’t.
+
+Still missing: a way to actually log a new invoice, and working buttons for flagging a
+discrepancy, requesting a credit note, and downloading.
+
+2.7 Payments
+Tracks back through Invoice → Order → Delivery. Needs to support paying in advance when
+that’s the agreed terms.
+Still missing: “Process Payment” and “Hold Payment” need to actually do something —
+record how it was paid, when, and update the invoice status.
+
+2.8 Supplier Performance
+On-time delivery and pricing can be worked out automatically from order/delivery/invoice
+history.
+Still missing: quality is a judgment call, not something the system can work out on its own
+— needs a simple “Rate This Delivery” action for whoever receives the goods, which then
+feeds the supplier’s score over time.
+
+3. Materials
+Handled by the Site Engineer, acting as storekeeper for this section (same person, no
+separate role needed).
+
+3.1 Inventory
+Shows stock levels and status (Healthy / Low / Out) per material. Read-only overview, click
+into any item for detail. Nothing missing here.
+
+3.2 GRN (delivery record)
+Created automatically when a Purchase Order is approved — nobody types this in by hand.
+The person’s job is just to confirm the count matches, or flag it if it doesn’t. Nothing
+missing.
+
+3.3 Consumption (material sent to site)
+Flags automatically if more is used than the work should have needed.
+Still missing: a way to actually record a new consumption entry — right now you can only
+confirm or reverse ones that already exist.
+
+3.4 Returns
+Always linked back to the delivery it came from. Person decides: restock, dispose, or reject.
+Nothing missing — this correctly starts from an existing record, not a blank form.
+
+3.5 Transfers
+Moving stock between sites/stores.
+Still missing: a “Create Transfer” button — right now there’s no way to start one.
+
+3.6 Stock Count
+Pulls the list of what to count automatically from Inventory. Person counts, system compares
+against what it expects, differences get reviewed. Nothing missing.
+
+4. Labour
+Two tabs only.
+
+4.1 Payroll
+Still missing: a way to add a worker (name, trade, pay period, daily rate) — this is the actual
+starting point for the whole module and it doesn’t exist yet.
+
+4.2 Timesheets
+Pulls from whoever’s already in Payroll — nothing separately typed here. Tracks hours and
+overtime, with an approval trail. Nothing missing.
+
+5. Progress
+5.1 Diary
+Day-by-day site journal. Right now you can only add an entry inside a day that’s already
+been started.
+Still missing: a way to start a brand-new day/entry from scratch.
+
+5.2 Photos
+A gallery of everything attached in Diary.
+
+Still missing: a direct way to upload a photo — right now the only way in is through a Diary
+entry.
+
+5.3 Inspections
+Still missing: a way to add a new inspection — right now you can only view existing ones.
+
+5.4 Snags (defects to fix)
+Correctly created only from an inspection (“Raise Snag”) — not something typed from
+scratch. Nothing missing.
+
+5.5 Safety
+Right now this is just a static list — no way to add anything, no way to click in for detail.
+Still missing: a way to log a new safety observation or incident. As it stands, this tab can’t
+actually be used.
+
+5.6 Quality
+Non-conformance reports get raised automatically from a failed inspection — correctly not
+something typed from scratch. Nothing missing.
+
+6. Subcontractors
+6.1 Contracts
+This should be where a subcontractor first gets added to the project.
+Still missing: a way to add a subcontractor — their name, trade, what they’re doing on site,
+contract value, retention held. Clicking into one should show their real financial summary,
+not a placeholder.
+
+6.2 Claims
+A claim is what a subcontractor submits for work done.
+Still missing: a way to log a new claim — subcontractor, period, amount, what it’s for.
+
+6.3 Certificates
+This is the output once a claim is certified — view and download only, which is correct. It
+just needs to actually pull from a real certified claim instead of showing static examples.
+
+6.4 Payments
+The ledger here — what’s been paid, what’s held as retention — should build itself from
+Claims and Certificates, not be typed separately.
+
+6.5 Performance
+Right now it just shows a fixed score with nothing behind it.
+Still missing: a way to actually grade a subcontractor across the four things that matter —
+quality of work, keeping to schedule, safety, responsiveness — so the score means
+something and updates over time, instead of being a fixed number.
+
+7. Variations
+Order these tabs: Instructions first, then Register, then Approval Workflow, then Cost
+Impact — since an instruction is usually what triggers a variation in the first place.
+
+7.1 Instructions
+Still missing: a way to log a new instruction (who issued it, when, what it says), which can
+then be linked to a variation once one is raised from it.
+
+7.2 Register
+The master list of variations.
+Still missing: a way to raise a new variation — who raised it, what it’s for, which instruction
+(if any) it’s linked to, which BOQ item it affects.
+
+7.3 Approval Workflow
+Draft → QS values it → PM reviews it → Approved. (No separate client-approval stage — PM
+approval is the final internal step.)
+Still missing: real buttons to move a variation through each stage — right now the board
+just shows numbers with nothing to click.
+
+7.4 Cost Impact
+Fully automatic — once QS has valued a variation, the totals (additions, omissions, net
+impact) and the chart calculate themselves. Nothing typed here.
+Once approved: the system should automatically create a pre-filled Revision in Budget, so
+
+nobody has to retype it there.
+
+8. Reports
+One of the most important sections — this is where everything gets reconciled and
+reviewed.
+Every report needs a project picker at the top — look at one project, or all of them
+combined.
+What’s needed here, kept simple: basic financial summaries a person can pull up
+whenever they want to check how the numbers are doing — budget vs. actual, what’s been
+spent, what’s committed, what’s left, cash position. Whatever cost question someone has,
+there should be a report that answers it, with real figures and tables, not vague summaries.
+A site progress report, built from the Diary/Inspections/Quality data, with actual numbers in
+it — not just a narrative.
+Nothing to type here — Reports is entirely a read/export layer on top of everything already
+entered elsewhere. The only thing missing is that it needs to actually show real detail and let
+you pick which project(s) to look at — right now it’s too thin.
+
+9. Admin
+Permissions — someone with admin access decides who can see and do what. This
+one genuinely has to stay manual — access is a judgment call, not something the system
+can decide on its own.
+Audit Log — right now it’s just a scrolling feed.
+Still missing: turn it into a proper searchable table — who did what, in which module, when,
+and what changed — so if someone needs to trace a specific event on a specific day, they
+can actually search for it instead of scrolling.
+
+10. Help
+A plain-language walkthrough of the whole platform, plus a phone number/email for anyone
+who’s stuck and needs a person. Nothing calculated here — it’s just a guide.
+
+Full List of What’s Missing — One Place
+#
+
+Where
+
+1
+
+Budget → BOQ
+
+2
+
+Budget → Cost Control
+
+Mark a risk alert as handled
+
+3
+
+Budget → Revisions
+
+“Add Revision” button + Approve/Reject
+
+4
+
+Budget → Final Account
+
+A note field on flagged variances
+
+5
+
+Procurement → Requisitions
+
+“New Requisition” form + Approve/Reject
+
+6
+
+7
+
+Procurement → Supplier
+Enquiries
+Procurement → Purchase
+Orders
+
+What needs adding
+Manual “Add Item” + edit/delete + review-beforesaving step
+
+“New Enquiry” + working buttons
+
+Approval step + payment-terms field
+
+8
+
+Procurement → Deliveries
+
+“Verify Delivery” / “Resolve Discrepancy”
+
+9
+
+Procurement → Invoices
+
+“New Invoice” + working buttons
+
+10
+
+Procurement → Payments
+
+“Process Payment” / “Hold Payment”
+
+11
+
+Procurement → Supplier
+Performance
+
+“Rate This Delivery”
+
+12
+
+Materials → Consumption
+
+“Record Consumption”
+
+13
+
+Materials → Transfers
+
+“Create Transfer”
+
+14
+
+Labour → Payroll
+
+“Add Worker”
+
+15
+
+Progress → Diary
+
+“New Day/Entry” from scratch
+
+16
+
+Progress → Photos
+
+Direct “Upload Photo”
+
+17
+
+Progress → Inspections
+
+“Add Inspection”
+
+18
+
+Progress → Safety
+
+“Add Observation/Incident” (currently unusable)
+
+19
+
+Subcontractors → Contracts
+
+“Add Subcontractor” + real detail view
+
+20
+
+Subcontractors → Claims
+
+“Add Claim”
+
+21
+
+Subcontractors → Performance
+
+A real grading interface, four categories
+
+22
+
+Variations → Instructions
+
+“Add Instruction”
+
+23
+
+Variations → Register
+
+“Add Variation”
+
+24
+
+Variations → Approval Workflow
+
+Working stage buttons
+
+25
+
+Reports
+
+Project picker + real figures (currently too thin)
+
+26
+
+Admin → Audit Log
+
+Rebuild as a searchable table
+
+Two Things Still To Confirm
+1. Budget status threshold — how far off budget before an item is marked “Over” or
+“Under” instead of “On Budget”? Suggesting ±5% as a starting point, but this is your
+call.
+2. Reports detail — this document lists the report types needed (budget vs. actual, cash
+position, what’s spent/committed/left). The exact layout and fields inside each one is
+worth a dedicated follow-up once you’ve had a chance to look at the report types you
+actually use day to day.
+
+

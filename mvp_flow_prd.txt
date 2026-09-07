@@ -1,0 +1,127 @@
+CostView — MVP Flow & Layout PRD
+How the product delivers on “Fast, Efficient, Secure”
+
+1. Starting point
+The founder story defines the promise in three words: Fast. Efficient. Secure.
+Secure is already solved. The PWA + cloud architecture means project data is never tied
+to one device, one laptop, one phone. That was the whole point of the story — that’s done at
+the infrastructure level, not the workflow level.
+This document is about the other two: Fast and Efficient. Not as slogans, but as specific
+things the MVP does differently from the traditional method (paper files, one laptop,
+WhatsApp, manual spreadsheet harmonizing) — grounded in what is already built in the
+current prototype.
+Working definitions for this document:
+Fast = less typing, less re-entry, less waiting for information that already exists
+somewhere else in the system.
+Efficient = the right person sees the right thing at the right time, without someone
+having to chase, compile, or manually route it.
+
+2. The core mechanic: one flow, not six silos
+The traditional method fails because each piece of information lives in its own silo — a
+requisition on paper, a PO in someone’s email, a delivery note in a site file, an invoice on an
+accountant’s desk — and someone has to manually walk between all of them to reconcile
+the numbers.
+CostView’s MVP is built around Operations, a single connected flow of seven modules that
+all point back to the same budget and the same audit trail:
+Budget → Procurement → Materials → Labour → Progress → Subcontractors →
+Variations
+
+The Fast/Efficient gain doesn’t come from any one module in isolation. It comes from the
+fact that a number entered once in one module automatically shows up, correctly,
+everywhere downstream — instead of being retyped by three different people into three
+different documents.
+
+3. The flow, end to end
+1. Budget (Overview, BOQ, Forecast, Cost Control, Revisions, Final Account) The BOQ is the
+anchor. Every cost line downstream — a purchase order, a labour cost, a variation —
+references a BOQ item, so cost control and forecast update themselves instead of being
+rebuilt from scratch every reporting cycle. → Fast: no manual spreadsheet harmonizing to
+see where the project stands. → Efficient: one true version of the budget everyone works
+against, instead of five people’s personal copies.
+2. Procurement (Requisitions → Supplier Enquiries → Purchase Orders → Deliveries →
+Invoices → Payments → Supplier Performance) This is the clearest example of the threedocument chain: a Requisition becomes a PO, the PO is matched against the GRN
+(delivery), and the Invoice/Payment is matched against both. Nobody re-types quantities
+or prices at each stage — they carry forward. → Fast: a requisition-to-payment cycle that
+took phone calls and paper trails now moves through pre-filled, linked documents. →
+Efficient: nothing gets paid that wasn’t ordered, and nothing gets ordered that wasn’t
+delivered — the three-way match happens automatically, not by someone manually crosschecking three files.
+3. Materials (Inventory, GRN, Issues, Returns, Transfers, Stock Count) Site-level stock is
+tracked against the same GRNs raised in Procurement — a delivery isn’t recorded twice. →
+Fast: store staff aren’t re-writing what procurement already recorded. → Efficient: real-time
+inventory means no over-ordering or site stock-outs discovered too late.
+4. Labour (Attendance, Payroll, Productivity, Timesheets) Attendance feeds payroll and
+productivity automatically instead of a foreman’s notebook being manually transcribed at
+month-end. → Fast: payroll doesn’t wait on someone re-keying a paper attendance register.
+→ Efficient: productivity numbers are a by-product of daily attendance, not a separate
+report someone has to build.
+5. Progress (Diary, Photos, Inspections, Snags, Safety, Quality) This is the module that
+saved the founder story — the site diary that lived on the cloud, not the laptop. Photos,
+inspections, and snags are logged where they happen and are immediately visible to anyone
+with access, not bundled into a report days later. → Fast: the progress report is a live view,
+not something compiled overnight before a meeting. → Efficient: an inspection finding
+routes straight into the snag list — it doesn’t need a second person to translate a paper note
+
+into a task.
+6. Subcontractors (Contracts, Claims, Certificates, Payments, Performance) A
+subcontractor’s claim references their contract terms directly, and payment references the
+certificate — the same linked-document logic as Procurement, applied to subcontract
+accounts. → Fast: no manually cross-checking a claim against a contract stored somewhere
+else. → Efficient: certified-but-unpaid and claimed-but-uncertified amounts are visible at a
+glance.
+7. Variations (Register, Approval Workflow, Cost Impact, Instructions) A variation’s cost
+impact is calculated against the live budget automatically, and the threshold-based approval
+workflow routes it to the right approver without anyone having to know who to send it to. →
+Fast: cost impact is instant, not a re-calculation exercise. → Efficient: approval routing is
+automatic — the system knows who signs off based on value, not a phone call to find out.
+
+4. What makes the whole thing fast (cross-cutting)
+Document linking, not document re-entry — Requisition → PO → GRN → Invoice →
+Payment is one continuous record, not five separate files someone has to reconcile by
+hand.
+Live dashboards instead of compiled reports — budget position, procurement funnel,
+top suppliers, and attention-needed items are always current, not assembled the night
+before a meeting.
+One place to look — no switching between paper diary, WhatsApp, Excel, and email to
+reconstruct what happened on site this week.
+
+5. What makes the whole thing efficient (cross-cutting)
+Threshold-based approvals — variations and payments route automatically to the
+correct approver based on value, removing the “who do I send this to” step entirely.
+Full audit trail — every entry is attributable and timestamped, so there’s no versionmerging chaos from five people’s spreadsheet copies.
+Role-based views — each of the six user roles sees only what’s relevant to their work,
+so people aren’t wading through modules that aren’t theirs to act on.
+
+6. Before / after, in the founder story’s terms
+
+Traditional method
+Progress report compiled by hand
+before it can be sent
+One laptop holds the only copy
+Requisition, PO, delivery note, invoice
+live in separate places
+Someone manually decides who
+approves a variation
+
+CostView MVP
+Progress report is a live view, always ready
+Cloud-based, PWA, accessible from any device
+One linked document chain, entered once
+
+Threshold-based routing decides automatically
+
+Budget position rebuilt from scratch
+
+Budget updates itself as procurement, labour, and
+
+each reporting cycle
+
+variations post against it
+
+7. Scope note
+This PRD covers the Operations flow only — the seven modules above are the core MVP
+that every user role touches. The Commercial (Contractor/Developer toggle) modules
+already scaffolded in the prototype (tendering, contracts, feasibility, project finance, etc.) sit
+on top of this core and are a later layer, not part of the MVP’s fast/efficient case — they
+extend what the platform does, not how the day-to-day flow works.
+
+

@@ -346,31 +346,52 @@ RETURNS BOOLEAN AS $$
   );
 $$ LANGUAGE sql SECURITY DEFINER;
 
--- Enable RLS on core tables
+-- Enable RLS on all tables
 ALTER TABLE workspaces ENABLE ROW LEVEL SECURITY;
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
 ALTER TABLE project_members ENABLE ROW LEVEL SECURITY;
+ALTER TABLE role_access ENABLE ROW LEVEL SECURITY;
 ALTER TABLE boq_items ENABLE ROW LEVEL SECURITY;
 ALTER TABLE budget_revisions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE suppliers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE purchase_orders ENABLE ROW LEVEL SECURITY;
+ALTER TABLE po_items ENABLE ROW LEVEL SECURITY;
 ALTER TABLE goods_received_notes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE grn_items ENABLE ROW LEVEL SECURITY;
+ALTER TABLE supplier_invoices ENABLE ROW LEVEL SECURITY;
+ALTER TABLE three_way_matches ENABLE ROW LEVEL SECURITY;
+ALTER TABLE inventory_items ENABLE ROW LEVEL SECURITY;
+ALTER TABLE stock_balances ENABLE ROW LEVEL SECURITY;
+ALTER TABLE material_transfers ENABLE ROW LEVEL SECURITY;
+ALTER TABLE material_issues ENABLE ROW LEVEL SECURITY;
+ALTER TABLE daily_attendance ENABLE ROW LEVEL SECURITY;
+ALTER TABLE site_diaries ENABLE ROW LEVEL SECURITY;
 ALTER TABLE snags_and_ncrs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE subcontractors ENABLE ROW LEVEL SECURITY;
+ALTER TABLE subcontractor_claims ENABLE ROW LEVEL SECURITY;
+ALTER TABLE variation_orders ENABLE ROW LEVEL SECURITY;
 ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
+
+-- Helper to check workspace membership
+CREATE OR REPLACE FUNCTION is_workspace_member(w_id UUID)
+RETURNS BOOLEAN AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM profiles
+    WHERE workspace_id = w_id
+      AND id = auth.uid()
+  );
+$$ LANGUAGE sql SECURITY DEFINER;
 
 -- Workspace Policies
 CREATE POLICY "Users can view their workspaces"
   ON workspaces FOR SELECT
-  USING (
-    EXISTS (SELECT 1 FROM profiles WHERE profiles.workspace_id = workspaces.id AND profiles.id = auth.uid())
-  );
+  USING (is_workspace_member(id));
 
 -- Profile Policies
 CREATE POLICY "Users can read all profiles in their workspace"
   ON profiles FOR SELECT
-  USING (
-    workspace_id IN (SELECT workspace_id FROM profiles WHERE id = auth.uid())
-  );
+  USING (is_workspace_member(workspace_id));
 
 CREATE POLICY "Users can update own profile"
   ON profiles FOR UPDATE
@@ -386,6 +407,85 @@ CREATE POLICY "Members can view project BOQ items"
   ON boq_items FOR SELECT
   USING (is_project_member(project_id));
 
+CREATE POLICY "Members can view budget revisions"
+  ON budget_revisions FOR SELECT
+  USING (EXISTS (SELECT 1 FROM boq_items WHERE boq_items.id = budget_revisions.boq_item_id AND is_project_member(boq_items.project_id)));
+
+-- Procurement Policies
+CREATE POLICY "Workspace members can view suppliers"
+  ON suppliers FOR SELECT
+  USING (is_workspace_member(workspace_id));
+
+CREATE POLICY "Members can view project POs"
+  ON purchase_orders FOR SELECT
+  USING (is_project_member(project_id));
+
+CREATE POLICY "Members can view project PO items"
+  ON po_items FOR SELECT
+  USING (EXISTS (SELECT 1 FROM purchase_orders WHERE purchase_orders.id = po_items.purchase_order_id AND is_project_member(purchase_orders.project_id)));
+
+CREATE POLICY "Members can view GRNs"
+  ON goods_received_notes FOR SELECT
+  USING (EXISTS (SELECT 1 FROM purchase_orders WHERE purchase_orders.id = goods_received_notes.purchase_order_id AND is_project_member(purchase_orders.project_id)));
+
+CREATE POLICY "Members can view GRN items"
+  ON grn_items FOR SELECT
+  USING (EXISTS (SELECT 1 FROM goods_received_notes g JOIN purchase_orders p ON p.id = g.purchase_order_id WHERE g.id = grn_items.grn_id AND is_project_member(p.project_id)));
+
+CREATE POLICY "Members can view supplier invoices"
+  ON supplier_invoices FOR SELECT
+  USING (EXISTS (SELECT 1 FROM purchase_orders WHERE purchase_orders.id = supplier_invoices.purchase_order_id AND is_project_member(purchase_orders.project_id)));
+
+CREATE POLICY "Members can view 3-way matches"
+  ON three_way_matches FOR SELECT
+  USING (EXISTS (SELECT 1 FROM purchase_orders WHERE purchase_orders.id = three_way_matches.po_id AND is_project_member(purchase_orders.project_id)));
+
+-- Materials & Inventory Policies
+CREATE POLICY "Workspace members can view inventory catalog"
+  ON inventory_items FOR SELECT
+  USING (is_workspace_member(workspace_id));
+
+CREATE POLICY "Members can view project stock"
+  ON stock_balances FOR SELECT
+  USING (is_project_member(project_id));
+
+CREATE POLICY "Members can view material transfers"
+  ON material_transfers FOR SELECT
+  USING (is_project_member(from_project_id) OR is_project_member(to_project_id));
+
+CREATE POLICY "Members can view material issues"
+  ON material_issues FOR SELECT
+  USING (is_project_member(project_id));
+
+-- Site Ops & Commercial Policies
+CREATE POLICY "Members can view daily attendance"
+  ON daily_attendance FOR SELECT
+  USING (is_project_member(project_id));
+
+CREATE POLICY "Members can view site diaries"
+  ON site_diaries FOR SELECT
+  USING (is_project_member(project_id));
+
+CREATE POLICY "Members can view snags"
+  ON snags_and_ncrs FOR SELECT
+  USING (is_project_member(project_id));
+
+CREATE POLICY "Workspace members can view subcontractors"
+  ON subcontractors FOR SELECT
+  USING (is_workspace_member(workspace_id));
+
+CREATE POLICY "Members can view subcontractor claims"
+  ON subcontractor_claims FOR SELECT
+  USING (is_project_member(project_id));
+
+CREATE POLICY "Members can view variations"
+  ON variation_orders FOR SELECT
+  USING (is_project_member(project_id));
+
+CREATE POLICY "Workspace members can view audit logs"
+  ON audit_logs FOR SELECT
+  USING (is_workspace_member(workspace_id));
+
 -- Trigger: Automatically create profile entry on auth.users signup
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
@@ -399,3 +499,4 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 CREATE OR REPLACE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
