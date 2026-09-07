@@ -28,3 +28,12 @@
 5. **Commit `2ba259c`**: Supabase Auth, login/register portals, session routes, and server actions.
 6. **Commit `00b90ec`**: Materials stock gauges, labour muster, subcontractor ledger, reports studio, audit log, CSV BOQ import.
 7. **Commit `253992f`**: Complete database schema and seed data applied to live Supabase cloud database.
+8. **Commit `daa89ee`**: Synchronize MEMORY.md with live Supabase database configuration.
+9. **Commit `f6aa4cf`**: Wire live Supabase boq_items queries, item edit/delete, risk-handled toggle, and variance notes (PRD items #1, #2, #3, #4).
+10. **Commit `2b70288`**: Implement requisition form, RFQ quotes, invoice modal, payment processing, and delivery rating (PRD items #5, #6, #7, #8, #9, #10, #11).
+11. **Commit `27f94e3`**: Add daily entry modal, photo attachments, inspections with auto-snags, and safety observation logging (PRD items #15, #16, #17, #18).
+12. **Commit `9b171d3`**: Implement interim claims register with 10% retention calculation, 4-factor grading modal, and site instructions register (PRD items #19, #20, #21, #22, #23, #24).
+
+## Verification Status
+- `npx tsc --noEmit`: Passed with 0 errors.
+- `npm run build`: Production build verified with all 7 static and dynamic routes compiled cleanly.
