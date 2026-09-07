@@ -1,17 +1,28 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useApp } from "@/app/providers";
 import { formatCurrency } from "@/lib/utils";
+import { createClient } from "@/lib/supabase/client";
 import {
   Search,
   Filter,
   Plus,
   ArrowUpDown,
   Edit3,
+  Trash2,
   FileCheck,
   AlertCircle,
   Download,
+  CheckCircle2,
+  XCircle,
+  MessageSquare,
+  ShieldAlert,
+  Clock,
+  Layers,
+  Check,
+  X,
+  FileText,
 } from "lucide-react";
 import { BOQImportModal } from "./boq-import-modal";
 
@@ -26,6 +37,29 @@ export interface BOQRecord {
   budgetAmount: number;
   committedAmount: number;
   actualAmount: number;
+  varianceNote?: string;
+}
+
+export interface RiskAlert {
+  id: string;
+  itemCode: string;
+  description: string;
+  variancePercentage: number;
+  severity: "High" | "Medium" | "Low";
+  isHandled: boolean;
+  handledBy?: string;
+  handledAt?: string;
+}
+
+export interface BudgetRevision {
+  id: string;
+  boqItemId: string;
+  boqItemCode: string;
+  deltaAmount: number;
+  reason: string;
+  requestedBy: string;
+  status: "Pending" | "Approved" | "Rejected";
+  createdAt: string;
 }
 
 const INITIAL_BOQ: BOQRecord[] = [
@@ -103,27 +137,122 @@ const INITIAL_BOQ: BOQRecord[] = [
   },
 ];
 
+const INITIAL_RISKS: RiskAlert[] = [
+  {
+    id: "risk-1",
+    itemCode: "CON-02.01",
+    description: "Concrete market rate surging due to diesel delivery surcharge (+5.8%).",
+    variancePercentage: 5.8,
+    severity: "High",
+    isHandled: false,
+  },
+  {
+    id: "risk-2",
+    itemCode: "STL-02.03",
+    description: "Foreign exchange volatility on imported billet rebar quotes (+4.2%).",
+    variancePercentage: 4.2,
+    severity: "Medium",
+    isHandled: false,
+  },
+  {
+    id: "risk-3",
+    itemCode: "BLK-03.01",
+    description: "Blockwork breakages during unloading on Grid Line C exceeds 3% allowance.",
+    variancePercentage: 3.1,
+    severity: "Low",
+    isHandled: true,
+    handledBy: "Engr. Tayo (Site Eng)",
+    handledAt: "2026-09-06 14:20",
+  },
+];
+
+const INITIAL_REVISIONS: BudgetRevision[] = [
+  {
+    id: "rev-1",
+    boqItemId: "boq-2",
+    boqItemCode: "CON-02.01",
+    deltaAmount: 4000000,
+    reason: "Escalation in ReadyMix batching plant tariff signed by Consultant QS.",
+    requestedBy: "Mrs. Nkechi (QS)",
+    status: "Pending",
+    createdAt: "2026-09-07 11:42",
+  },
+  {
+    id: "rev-2",
+    boqItemId: "boq-6",
+    boqItemCode: "MEP-04.01",
+    deltaAmount: 3500000,
+    reason: "Approved Variation VO-2026-001 relocation of water treatment annex.",
+    requestedBy: "Architect David",
+    status: "Approved",
+    createdAt: "2026-09-05 09:15",
+  },
+];
+
 export function BOQTable() {
   const { currency, activeRole } = useApp();
+  const [activeSubTab, setActiveSubTab] = useState<"master" | "risks" | "revisions" | "finalAccount">("master");
+
   const [items, setItems] = useState<BOQRecord[]>(INITIAL_BOQ);
+  const [risks, setRisks] = useState<RiskAlert[]>(INITIAL_RISKS);
+  const [revisions, setRevisions] = useState<BudgetRevision[]>(INITIAL_REVISIONS);
+
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
+  const [thresholdPercent] = useState<number>(5.0); // PRD recommendation: ±5% threshold
 
-  // Modal states
-  const [isRevisionModalOpen, setIsRevisionModalOpen] = useState(false);
+  // Modals
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isRevisionModalOpen, setIsRevisionModalOpen] = useState(false);
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [isVarianceNoteOpen, setIsVarianceNoteOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<BOQRecord | null>(null);
-  const [revisionReason, setRevisionReason] = useState("");
-  const [revisionDelta, setRevisionDelta] = useState<number>(0);
 
-  // New item form
+  // Forms
+  const [editingItem, setEditingItem] = useState<BOQRecord | null>(null);
   const [newCode, setNewCode] = useState("");
   const [newDesc, setNewDesc] = useState("");
   const [newCategory, setNewCategory] = useState<BOQRecord["category"]>("Material");
   const [newUnit, setNewUnit] = useState("m²");
   const [newQty, setNewQty] = useState<number>(100);
   const [newRate, setNewRate] = useState<number>(5000);
+
+  const [revisionDelta, setRevisionDelta] = useState<number>(0);
+  const [revisionReason, setRevisionReason] = useState("");
+  const [varianceNoteText, setVarianceNoteText] = useState("");
+
+  // Live Supabase integration
+  useEffect(() => {
+    async function fetchBOQItems() {
+      try {
+        const supabase = createClient();
+        const { data, error } = await supabase
+          .from("boq_items")
+          .select("*")
+          .order("item_code", { ascending: true });
+
+        if (!error && data && data.length > 0) {
+          const mapped: BOQRecord[] = data.map((d: any) => ({
+            id: d.id,
+            code: d.item_code,
+            description: d.description,
+            category: (d.category as BOQRecord["category"]) || "Material",
+            unit: d.unit,
+            quantity: Number(d.quantity),
+            rate: Number(d.rate),
+            budgetAmount: Number(d.budget_amount),
+            committedAmount: Number(d.committed_amount || 0),
+            actualAmount: Number(d.actual_amount || 0),
+          }));
+          setItems(mapped);
+        }
+      } catch (err) {
+        console.warn("Using offline/fallback BOQ seed dataset.", err);
+      }
+    }
+    fetchBOQItems();
+  }, []);
 
   // Filtered items
   const filteredItems = useMemo(() => {
@@ -137,33 +266,8 @@ export function BOQTable() {
     });
   }, [items, search, categoryFilter]);
 
-  const handleOpenRevision = (item: BOQRecord) => {
-    setSelectedItem(item);
-    setRevisionReason("");
-    setRevisionDelta(0);
-    setIsRevisionModalOpen(true);
-  };
-
-  const handleApplyRevision = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedItem) return;
-
-    setItems((prev) =>
-      prev.map((item) => {
-        if (item.id === selectedItem.id) {
-          const newBudget = item.budgetAmount + revisionDelta;
-          return {
-            ...item,
-            budgetAmount: newBudget,
-          };
-        }
-        return item;
-      })
-    );
-    setIsRevisionModalOpen(false);
-  };
-
-  const handleCreateItem = (e: React.FormEvent) => {
+  // 1. Create item (PRD Missing Checklist #1)
+  const handleCreateItem = async (e: React.FormEvent) => {
     e.preventDefault();
     const newItem: BOQRecord = {
       id: `boq-${Date.now()}`,
@@ -177,136 +281,601 @@ export function BOQTable() {
       committedAmount: 0,
       actualAmount: 0,
     };
+
     setItems((prev) => [newItem, ...prev]);
     setIsAddModalOpen(false);
+
+    // Persist to Supabase if connected
+    try {
+      const supabase = createClient();
+      await supabase.from("boq_items").insert({
+        project_id: "22222222-2222-2222-2222-222222222222",
+        item_code: newCode,
+        description: newDesc,
+        category: newCategory,
+        unit: newUnit,
+        quantity: Number(newQty),
+        rate: Number(newRate),
+        budget_amount: Number(newQty) * Number(newRate),
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  // 2. Edit item (PRD Missing Checklist #1)
+  const handleOpenEdit = (item: BOQRecord) => {
+    setEditingItem(item);
+    setIsEditModalOpen(true);
+  };
+
+  const handleSaveEdit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingItem) return;
+
+    setItems((prev) =>
+      prev.map((it) => (it.id === editingItem.id ? editingItem : it))
+    );
+    setIsEditModalOpen(false);
+  };
+
+  // 3. Delete item (PRD Missing Checklist #1)
+  const handleDeleteItem = (id: string) => {
+    if (confirm("Are you sure you want to delete this BOQ item from the project budget?")) {
+      setItems((prev) => prev.filter((it) => it.id !== id));
+    }
+  };
+
+  // 4. Mark Risk Alert as Handled (PRD Missing Checklist #2)
+  const handleToggleRiskHandled = (id: string) => {
+    setRisks((prev) =>
+      prev.map((r) => {
+        if (r.id === id) {
+          const handled = !r.isHandled;
+          return {
+            ...r,
+            isHandled: handled,
+            handledBy: handled ? activeRole : undefined,
+            handledAt: handled ? new Date().toISOString().replace("T", " ").substring(0, 16) : undefined,
+          };
+        }
+        return r;
+      })
+    );
+  };
+
+  // 5. Submit Revision (PRD Missing Checklist #3)
+  const handleOpenRevision = (item: BOQRecord) => {
+    setSelectedItem(item);
+    setRevisionReason("");
+    setRevisionDelta(0);
+    setIsRevisionModalOpen(true);
+  };
+
+  const handleApplyRevision = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedItem) return;
+
+    const newRev: BudgetRevision = {
+      id: `rev-${Date.now()}`,
+      boqItemId: selectedItem.id,
+      boqItemCode: selectedItem.code,
+      deltaAmount: revisionDelta,
+      reason: revisionReason,
+      requestedBy: activeRole,
+      status: "Pending",
+      createdAt: new Date().toISOString().replace("T", " ").substring(0, 16),
+    };
+
+    setRevisions((prev) => [newRev, ...prev]);
+    setIsRevisionModalOpen(false);
+  };
+
+  // 6. Approve / Reject Revision (PRD Missing Checklist #3)
+  const handleUpdateRevisionStatus = (id: string, newStatus: "Approved" | "Rejected") => {
+    setRevisions((prev) =>
+      prev.map((rev) => {
+        if (rev.id === id) {
+          if (newStatus === "Approved") {
+            // Apply delta automatically to approved budget!
+            setItems((boqPrev) =>
+              boqPrev.map((b) =>
+                b.id === rev.boqItemId
+                  ? { ...b, budgetAmount: b.budgetAmount + rev.deltaAmount }
+                  : b
+              )
+            );
+          }
+          return { ...rev, status: newStatus };
+        }
+        return rev;
+      })
+    );
+  };
+
+  // 7. Save Variance Note in Final Account (PRD Missing Checklist #4)
+  const handleOpenVarianceNote = (item: BOQRecord) => {
+    setSelectedItem(item);
+    setVarianceNoteText(item.varianceNote || "");
+    setIsVarianceNoteOpen(true);
+  };
+
+  const handleSaveVarianceNote = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedItem) return;
+
+    setItems((prev) =>
+      prev.map((it) =>
+        it.id === selectedItem.id ? { ...it, varianceNote: varianceNoteText } : it
+      )
+    );
+    setIsVarianceNoteOpen(false);
   };
 
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden shadow-sm">
-      {/* Table Toolbar */}
-      <div className="p-4 border-b border-zinc-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <div className="relative flex-1 md:w-72">
-            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
-            <input
-              type="text"
-              placeholder="Search code or description..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 bg-zinc-950 border border-zinc-700 rounded-lg text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-emerald-500"
-            />
-          </div>
+      {/* Sub-Navigation Tabs matching PRD Section 1 */}
+      <div className="p-3 bg-zinc-950 border-b border-zinc-800 flex items-center justify-between overflow-x-auto gap-2">
+        <div className="flex items-center gap-1.5">
+          <button
+            onClick={() => setActiveSubTab("master")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+              activeSubTab === "master"
+                ? "bg-zinc-800 text-white border border-zinc-700 shadow-sm"
+                : "text-zinc-400 hover:text-zinc-200"
+            }`}
+          >
+            <Layers className="w-3.5 h-3.5 text-emerald-400" />
+            <span>1.2 BOQ Master</span>
+          </button>
 
-          <div className="flex items-center gap-1 bg-zinc-950 border border-zinc-700 rounded-lg px-2 py-1">
-            <Filter className="w-3.5 h-3.5 text-zinc-400" />
-            <select
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-              className="bg-transparent text-xs text-zinc-300 focus:outline-none cursor-pointer"
-            >
-              <option value="All" className="bg-zinc-900">All Categories</option>
-              <option value="Material" className="bg-zinc-900">Materials</option>
-              <option value="Labour" className="bg-zinc-900">Labour</option>
-              <option value="Plant" className="bg-zinc-900">Plant & Machinery</option>
-              <option value="Subcontractor" className="bg-zinc-900">Subcontractor</option>
-            </select>
-          </div>
+          <button
+            onClick={() => setActiveSubTab("risks")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+              activeSubTab === "risks"
+                ? "bg-zinc-800 text-white border border-zinc-700 shadow-sm"
+                : "text-zinc-400 hover:text-zinc-200"
+            }`}
+          >
+            <ShieldAlert className="w-3.5 h-3.5 text-amber-400" />
+            <span>1.4 Cost Control & Risks</span>
+            {risks.filter((r) => !r.isHandled).length > 0 && (
+              <span className="text-[10px] bg-amber-950 text-amber-300 px-1.5 rounded-full font-mono">
+                {risks.filter((r) => !r.isHandled).length}
+              </span>
+            )}
+          </button>
+
+          <button
+            onClick={() => setActiveSubTab("revisions")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+              activeSubTab === "revisions"
+                ? "bg-zinc-800 text-white border border-zinc-700 shadow-sm"
+                : "text-zinc-400 hover:text-zinc-200"
+            }`}
+          >
+            <Clock className="w-3.5 h-3.5 text-blue-400" />
+            <span>1.5 Budget Revisions</span>
+            {revisions.filter((r) => r.status === "Pending").length > 0 && (
+              <span className="text-[10px] bg-blue-950 text-blue-300 px-1.5 rounded-full font-mono">
+                {revisions.filter((r) => r.status === "Pending").length}
+              </span>
+            )}
+          </button>
+
+          <button
+            onClick={() => setActiveSubTab("finalAccount")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+              activeSubTab === "finalAccount"
+                ? "bg-zinc-800 text-white border border-zinc-700 shadow-sm"
+                : "text-zinc-400 hover:text-zinc-200"
+            }`}
+          >
+            <FileText className="w-3.5 h-3.5 text-purple-400" />
+            <span>1.6 Final Account</span>
+          </button>
         </div>
 
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setIsImportModalOpen(true)}
-            className="flex items-center gap-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors"
-          >
-            <Download className="w-3.5 h-3.5 text-emerald-400 rotate-180" />
-            <span>Import BOQ / CSV</span>
-          </button>
-          <button
-            onClick={() => setIsAddModalOpen(true)}
-            className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm transition-colors"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Add BOQ Item</span>
-          </button>
+        {/* Global Threshold Tag (PRD Question 1) */}
+        <div className="hidden md:flex items-center gap-2 text-[11px] text-zinc-400 bg-zinc-900 border border-zinc-800 px-2.5 py-1 rounded-lg">
+          <span>Threshold:</span>
+          <span className="text-emerald-400 font-mono font-bold">±{thresholdPercent}%</span>
         </div>
       </div>
 
-      {/* Table Data */}
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs border-collapse">
-          <thead>
-            <tr className="border-b border-zinc-800 bg-zinc-950/60 text-zinc-400 font-semibold uppercase text-[10px] tracking-wider">
-              <th className="py-3 px-4">Cost Code</th>
-              <th className="py-3 px-4">Description</th>
-              <th className="py-3 px-3">Category</th>
-              <th className="py-3 px-3">Unit</th>
-              <th className="py-3 px-3 text-right">Qty</th>
-              <th className="py-3 px-3 text-right">Rate</th>
-              <th className="py-3 px-4 text-right">Approved Budget</th>
-              <th className="py-3 px-4 text-right">Committed (POs)</th>
-              <th className="py-3 px-4 text-right">Variance</th>
-              <th className="py-3 px-3 text-center">Action</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-zinc-800/60 text-zinc-200">
-            {filteredItems.map((item) => {
-              const variance = item.budgetAmount - item.committedAmount;
-              const isOverBudget = variance < 0;
+      {/* TAB 1: BOQ MASTER */}
+      {activeSubTab === "master" && (
+        <>
+          {/* Table Toolbar */}
+          <div className="p-4 border-b border-zinc-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <div className="relative flex-1 md:w-72">
+                <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                <input
+                  type="text"
+                  placeholder="Search code or description..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full pl-9 pr-3 py-1.5 bg-zinc-950 border border-zinc-700 rounded-lg text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-emerald-500"
+                />
+              </div>
 
-              return (
-                <tr key={item.id} className="hover:bg-zinc-800/40 transition-colors">
-                  <td className="py-3 px-4 font-mono font-bold text-emerald-400 whitespace-nowrap">
-                    {item.code}
-                  </td>
-                  <td className="py-3 px-4 font-medium text-zinc-100 max-w-xs">
-                    {item.description}
-                  </td>
-                  <td className="py-3 px-3">
-                    <span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${
-                      item.category === "Material"
-                        ? "bg-blue-950/70 text-blue-300 border-blue-800/40"
-                        : item.category === "Labour"
-                        ? "bg-amber-950/70 text-amber-300 border-amber-800/40"
-                        : item.category === "Plant"
-                        ? "bg-purple-950/70 text-purple-300 border-purple-800/40"
-                        : "bg-emerald-950/70 text-emerald-300 border-emerald-800/40"
-                    }`}>
-                      {item.category}
-                    </span>
-                  </td>
-                  <td className="py-3 px-3 text-zinc-400">{item.unit}</td>
-                  <td className="py-3 px-3 text-right font-mono text-zinc-200">
-                    {item.quantity.toLocaleString()}
-                  </td>
-                  <td className="py-3 px-3 text-right font-mono text-zinc-300">
-                    {formatCurrency(item.rate, currency)}
-                  </td>
-                  <td className="py-3 px-4 text-right font-mono font-bold text-white whitespace-nowrap">
-                    {formatCurrency(item.budgetAmount, currency)}
-                  </td>
-                  <td className="py-3 px-4 text-right font-mono text-zinc-300 whitespace-nowrap">
-                    {formatCurrency(item.committedAmount, currency)}
-                  </td>
-                  <td className="py-3 px-4 text-right font-mono whitespace-nowrap">
-                    <span className={`font-semibold ${isOverBudget ? "text-red-400" : "text-emerald-400"}`}>
-                      {formatCurrency(variance, currency)}
-                    </span>
-                  </td>
-                  <td className="py-3 px-3 text-center">
-                    <button
-                      onClick={() => handleOpenRevision(item)}
-                      title="Request Budget/Rate Revision"
-                      className="p-1.5 text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 rounded transition-colors"
-                    >
-                      <Edit3 className="w-3.5 h-3.5" />
-                    </button>
-                  </td>
+              <div className="flex items-center gap-1 bg-zinc-950 border border-zinc-700 rounded-lg px-2 py-1">
+                <Filter className="w-3.5 h-3.5 text-zinc-400" />
+                <select
+                  value={categoryFilter}
+                  onChange={(e) => setCategoryFilter(e.target.value)}
+                  className="bg-transparent text-xs text-zinc-300 focus:outline-none cursor-pointer"
+                >
+                  <option value="All" className="bg-zinc-900">All Categories</option>
+                  <option value="Material" className="bg-zinc-900">Materials</option>
+                  <option value="Labour" className="bg-zinc-900">Labour</option>
+                  <option value="Plant" className="bg-zinc-900">Plant & Machinery</option>
+                  <option value="Subcontractor" className="bg-zinc-900">Subcontractor</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setIsImportModalOpen(true)}
+                className="flex items-center gap-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors"
+              >
+                <Download className="w-3.5 h-3.5 text-emerald-400 rotate-180" />
+                <span>Import BOQ / CSV</span>
+              </button>
+              <button
+                onClick={() => setIsAddModalOpen(true)}
+                className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm transition-colors"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>Add BOQ Item</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Table Data */}
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr className="border-b border-zinc-800 bg-zinc-950/60 text-zinc-400 font-semibold uppercase text-[10px] tracking-wider">
+                  <th className="py-3 px-4">Cost Code</th>
+                  <th className="py-3 px-4">Description</th>
+                  <th className="py-3 px-3">Category</th>
+                  <th className="py-3 px-3">Unit</th>
+                  <th className="py-3 px-3 text-right">Qty</th>
+                  <th className="py-3 px-3 text-right">Rate</th>
+                  <th className="py-3 px-4 text-right">Approved Budget</th>
+                  <th className="py-3 px-4 text-right">Committed (POs)</th>
+                  <th className="py-3 px-4 text-right">Variance</th>
+                  <th className="py-3 px-3 text-center">Status</th>
+                  <th className="py-3 px-3 text-center">Actions</th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+              </thead>
+              <tbody className="divide-y divide-zinc-800/60 text-zinc-200">
+                {filteredItems.map((item) => {
+                  const variance = item.budgetAmount - item.committedAmount;
+                  const varianceRatio = item.budgetAmount > 0 ? (item.committedAmount - item.budgetAmount) / item.budgetAmount : 0;
+                  
+                  // PRD Question 1: ±5% threshold indicator
+                  const statusLabel =
+                    varianceRatio > 0.05
+                      ? "Over Budget"
+                      : varianceRatio < -0.05
+                      ? "Under Budget"
+                      : "On Budget";
+
+                  const statusColor =
+                    statusLabel === "Over Budget"
+                      ? "bg-red-950/80 text-red-400 border-red-800"
+                      : statusLabel === "Under Budget"
+                      ? "bg-blue-950/80 text-blue-400 border-blue-800"
+                      : "bg-emerald-950/80 text-emerald-400 border-emerald-800";
+
+                  return (
+                    <tr key={item.id} className="hover:bg-zinc-800/40 transition-colors">
+                      <td className="py-3 px-4 font-mono font-bold text-emerald-400 whitespace-nowrap">
+                        {item.code}
+                      </td>
+                      <td className="py-3 px-4 font-medium text-zinc-100 max-w-xs">
+                        {item.description}
+                      </td>
+                      <td className="py-3 px-3">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${
+                          item.category === "Material"
+                            ? "bg-blue-950/70 text-blue-300 border-blue-800/40"
+                            : item.category === "Labour"
+                            ? "bg-amber-950/70 text-amber-300 border-amber-800/40"
+                            : item.category === "Plant"
+                            ? "bg-purple-950/70 text-purple-300 border-purple-800/40"
+                            : "bg-emerald-950/70 text-emerald-300 border-emerald-800/40"
+                        }`}>
+                          {item.category}
+                        </span>
+                      </td>
+                      <td className="py-3 px-3 text-zinc-400">{item.unit}</td>
+                      <td className="py-3 px-3 text-right font-mono text-zinc-200">
+                        {item.quantity.toLocaleString()}
+                      </td>
+                      <td className="py-3 px-3 text-right font-mono text-zinc-300">
+                        {formatCurrency(item.rate, currency)}
+                      </td>
+                      <td className="py-3 px-4 text-right font-mono font-bold text-white whitespace-nowrap">
+                        {formatCurrency(item.budgetAmount, currency)}
+                      </td>
+                      <td className="py-3 px-4 text-right font-mono text-zinc-300 whitespace-nowrap">
+                        {formatCurrency(item.committedAmount, currency)}
+                      </td>
+                      <td className="py-3 px-4 text-right font-mono whitespace-nowrap">
+                        <span className={`font-semibold ${variance < 0 ? "text-red-400" : "text-emerald-400"}`}>
+                          {formatCurrency(variance, currency)}
+                        </span>
+                      </td>
+                      <td className="py-3 px-3 text-center whitespace-nowrap">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${statusColor}`}>
+                          {statusLabel}
+                        </span>
+                      </td>
+                      <td className="py-3 px-3 text-center whitespace-nowrap">
+                        <div className="flex items-center justify-center gap-1">
+                          <button
+                            onClick={() => handleOpenRevision(item)}
+                            title="Request Revision"
+                            className="p-1 text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 rounded transition-colors"
+                          >
+                            <Edit3 className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => handleOpenEdit(item)}
+                            title="Edit Item Details"
+                            className="p-1 text-zinc-400 hover:text-blue-400 hover:bg-zinc-800 rounded transition-colors"
+                          >
+                            <FileCheck className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteItem(item.id)}
+                            title="Delete Item"
+                            className="p-1 text-zinc-400 hover:text-red-400 hover:bg-zinc-800 rounded transition-colors"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+
+      {/* TAB 2: COST CONTROL & RISK ALERTS (PRD Item 2) */}
+      {activeSubTab === "risks" && (
+        <div className="p-5 space-y-4">
+          <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+            <div>
+              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <ShieldAlert className="w-4 h-4 text-amber-400" />
+                <span>Cost Control Exceptions & Trending Risks</span>
+              </h3>
+              <p className="text-xs text-zinc-400 mt-0.5">
+                System flagged cost rate escalations and site breakages beyond ±5% allowance.
+              </p>
+            </div>
+            <span className="text-xs text-zinc-400 font-mono">
+              {risks.filter((r) => r.isHandled).length} Handled / {risks.length} Total
+            </span>
+          </div>
+
+          <div className="space-y-3">
+            {risks.map((risk) => (
+              <div
+                key={risk.id}
+                className={`p-4 rounded-xl border transition-all flex flex-col md:flex-row md:items-center justify-between gap-3 ${
+                  risk.isHandled
+                    ? "bg-zinc-950/60 border-zinc-800/80 opacity-60"
+                    : "bg-zinc-950 border-amber-900/40"
+                }`}
+              >
+                <div className="flex items-start gap-3">
+                  <div className={`p-2 rounded-lg mt-0.5 ${
+                    risk.severity === "High"
+                      ? "bg-red-950 text-red-400 border border-red-800"
+                      : risk.severity === "Medium"
+                      ? "bg-amber-950 text-amber-400 border border-amber-800"
+                      : "bg-blue-950 text-blue-400 border border-blue-800"
+                  }`}>
+                    <AlertCircle className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-mono font-bold text-white text-xs">{risk.itemCode}</span>
+                      <span className="text-zinc-500">·</span>
+                      <span className="text-[10px] uppercase font-bold text-amber-300 bg-amber-950 px-1.5 py-0.2 rounded border border-amber-800/40">
+                        +{risk.variancePercentage}% Variance
+                      </span>
+                    </div>
+                    <p className="text-xs text-zinc-300 font-medium">{risk.description}</p>
+                    {risk.isHandled && (
+                      <p className="text-[11px] text-zinc-500 mt-1">
+                        Handled by <strong className="text-zinc-400">{risk.handledBy}</strong> on {risk.handledAt}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 self-end md:self-center">
+                  <button
+                    onClick={() => handleToggleRiskHandled(risk.id)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors ${
+                      risk.isHandled
+                        ? "bg-zinc-800 hover:bg-zinc-700 text-zinc-300 border border-zinc-700"
+                        : "bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm"
+                    }`}
+                  >
+                    {risk.isHandled ? (
+                      <>
+                        <X className="w-3.5 h-3.5" />
+                        <span>Re-open Risk</span>
+                      </>
+                    ) : (
+                      <>
+                        <Check className="w-3.5 h-3.5" />
+                        <span>Mark as Handled</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* TAB 3: BUDGET REVISIONS REGISTER (PRD Item 3) */}
+      {activeSubTab === "revisions" && (
+        <div className="p-5 space-y-4">
+          <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+            <div>
+              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <Clock className="w-4 h-4 text-blue-400" />
+                <span>Budget Revisions & Approval Trail</span>
+              </h3>
+              <p className="text-xs text-zinc-400 mt-0.5">
+                Approved revisions automatically update the approved budget baseline (PRD Section 1.5).
+              </p>
+            </div>
+            <button
+              onClick={() => {
+                if (items.length > 0) handleOpenRevision(items[0]);
+              }}
+              className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Add Revision</span>
+            </button>
+          </div>
+
+          <div className="divide-y divide-zinc-800/60">
+            {revisions.map((rev) => (
+              <div key={rev.id} className="py-4 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-zinc-800/20 px-2 rounded-lg transition-colors">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-mono font-bold text-emerald-400 text-xs">{rev.boqItemCode}</span>
+                    <span className="text-zinc-500">·</span>
+                    <span className="font-mono font-semibold text-white text-xs">
+                      {rev.deltaAmount >= 0 ? "+" : ""}{formatCurrency(rev.deltaAmount, currency)}
+                    </span>
+                    <span className="text-zinc-500">·</span>
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
+                      rev.status === "Approved"
+                        ? "bg-emerald-950 text-emerald-300 border-emerald-800"
+                        : rev.status === "Rejected"
+                        ? "bg-red-950 text-red-300 border-red-800"
+                        : "bg-blue-950 text-blue-300 border-blue-800"
+                    }`}>
+                      {rev.status}
+                    </span>
+                  </div>
+                  <p className="text-xs text-zinc-300">{rev.reason}</p>
+                  <p className="text-[11px] text-zinc-500 mt-1">
+                    Requested by: {rev.requestedBy} · {rev.createdAt}
+                  </p>
+                </div>
+
+                {rev.status === "Pending" && (
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => handleUpdateRevisionStatus(rev.id, "Approved")}
+                      className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors flex items-center gap-1"
+                    >
+                      <Check className="w-3.5 h-3.5" />
+                      <span>Approve Delta</span>
+                    </button>
+                    <button
+                      onClick={() => handleUpdateRevisionStatus(rev.id, "Rejected")}
+                      className="px-3 py-1.5 bg-red-950/80 hover:bg-red-900 text-red-300 border border-red-800 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                      <span>Reject</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* TAB 4: FINAL ACCOUNT RECONCILIATION (PRD Item 4) */}
+      {activeSubTab === "finalAccount" && (
+        <div className="p-5 space-y-4">
+          <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+            <div>
+              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <FileText className="w-4 h-4 text-purple-400" />
+                <span>Final Account Reconciliation & Audit Notes</span>
+              </h3>
+              <p className="text-xs text-zinc-400 mt-0.5">
+                Every line reconciles automatically. Flagged variances allow QS notes without blocking close-out (PRD Section 1.6).
+              </p>
+            </div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr className="border-b border-zinc-800 bg-zinc-950/60 text-zinc-400 font-semibold uppercase text-[10px] tracking-wider">
+                  <th className="py-3 px-4">Cost Code</th>
+                  <th className="py-3 px-4">Description</th>
+                  <th className="py-3 px-4 text-right">Original Budget</th>
+                  <th className="py-3 px-4 text-right">Actual Spent</th>
+                  <th className="py-3 px-4 text-right">Closing Variance</th>
+                  <th className="py-3 px-4 text-center">Status</th>
+                  <th className="py-3 px-4">QS Audit Note</th>
+                  <th className="py-3 px-3 text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-800/60 text-zinc-200">
+                {items.map((item) => {
+                  const closingVariance = item.budgetAmount - item.actualAmount;
+                  return (
+                    <tr key={item.id} className="hover:bg-zinc-800/30 transition-colors">
+                      <td className="py-3 px-4 font-mono font-bold text-emerald-400">{item.code}</td>
+                      <td className="py-3 px-4 font-medium text-zinc-200 max-w-xs">{item.description}</td>
+                      <td className="py-3 px-4 text-right font-mono">{formatCurrency(item.budgetAmount, currency)}</td>
+                      <td className="py-3 px-4 text-right font-mono text-zinc-300">{formatCurrency(item.actualAmount, currency)}</td>
+                      <td className="py-3 px-4 text-right font-mono">
+                        <span className={closingVariance < 0 ? "text-red-400 font-semibold" : "text-emerald-400 font-semibold"}>
+                          {closingVariance >= 0 ? "+" : ""}{formatCurrency(closingVariance, currency)}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 text-center">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-800">
+                          Reconciled
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 text-xs text-zinc-400 italic">
+                        {item.varianceNote ? item.varianceNote : "— No QS note attached —"}
+                      </td>
+                      <td className="py-3 px-3 text-center">
+                        <button
+                          onClick={() => handleOpenVarianceNote(item)}
+                          className="px-2.5 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded text-[11px] font-semibold transition-colors flex items-center gap-1 mx-auto"
+                        >
+                          <MessageSquare className="w-3 h-3 text-purple-400" />
+                          <span>Note</span>
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
 
       {/* Revision Modal */}
       {isRevisionModalOpen && selectedItem && (
@@ -370,7 +939,7 @@ export function BOQTable() {
                   type="submit"
                   className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors"
                 >
-                  Submit for Approval
+                  Submit Revision
                 </button>
               </div>
             </form>
@@ -486,6 +1055,127 @@ export function BOQTable() {
           </div>
         </div>
       )}
+
+      {/* Edit Item Modal (PRD Missing Checklist #1) */}
+      {isEditModalOpen && editingItem && (
+        <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
+          <div className="bg-zinc-900 border border-zinc-700 rounded-xl max-w-md w-full p-5 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+              <h3 className="text-sm font-bold text-white">Edit BOQ Item: {editingItem.code}</h3>
+            </div>
+
+            <form onSubmit={handleSaveEdit} className="mt-4 space-y-3">
+              <div>
+                <label className="block text-xs text-zinc-300 font-medium mb-1">Description</label>
+                <input
+                  type="text"
+                  required
+                  value={editingItem.description}
+                  onChange={(e) => setEditingItem({ ...editingItem, description: e.target.value })}
+                  className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-zinc-100 focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-xs text-zinc-300 font-medium mb-1">Quantity</label>
+                  <input
+                    type="number"
+                    required
+                    value={editingItem.quantity}
+                    onChange={(e) => {
+                      const q = Number(e.target.value);
+                      setEditingItem({
+                        ...editingItem,
+                        quantity: q,
+                        budgetAmount: q * editingItem.rate,
+                      });
+                    }}
+                    className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-zinc-100 font-mono focus:outline-none focus:border-emerald-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-zinc-300 font-medium mb-1">Rate (₦)</label>
+                  <input
+                    type="number"
+                    required
+                    value={editingItem.rate}
+                    onChange={(e) => {
+                      const r = Number(e.target.value);
+                      setEditingItem({
+                        ...editingItem,
+                        rate: r,
+                        budgetAmount: editingItem.quantity * r,
+                      });
+                    }}
+                    className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-zinc-100 font-mono focus:outline-none focus:border-emerald-500"
+                  />
+                </div>
+              </div>
+
+              <div className="pt-2 flex items-center justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsEditModalOpen(false)}
+                  className="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg text-xs font-semibold transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Variance Note Modal (PRD Missing Checklist #4) */}
+      {isVarianceNoteOpen && selectedItem && (
+        <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
+          <div className="bg-zinc-900 border border-zinc-700 rounded-xl max-w-md w-full p-5 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+              <h3 className="text-sm font-bold text-white">QS Variance Note · {selectedItem.code}</h3>
+            </div>
+            <p className="text-xs text-zinc-400 mt-2">
+              Attach an audit explanation for this variance (wastage, theft, rate concession). This does not impede reconciliation status.
+            </p>
+
+            <form onSubmit={handleSaveVarianceNote} className="mt-4 space-y-3">
+              <div>
+                <textarea
+                  required
+                  rows={4}
+                  placeholder="e.g. Rate concession negotiated with supplier due to bulk cement purchase..."
+                  value={varianceNoteText}
+                  onChange={(e) => setVarianceNoteText(e.target.value)}
+                  className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-zinc-100 focus:outline-none focus:border-purple-500"
+                />
+              </div>
+
+              <div className="pt-2 flex items-center justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsVarianceNoteOpen(false)}
+                  className="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg text-xs font-semibold transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors"
+                >
+                  Save Note
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {/* Import Modal */}
       <BOQImportModal
         isOpen={isImportModalOpen}
@@ -497,4 +1187,3 @@ export function BOQTable() {
     </div>
   );
 }
-
