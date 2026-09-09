@@ -413,7 +413,7 @@ export function BOQTable() {
   };
 
   return (
-    <div className="bg-white border-[3px] border-navy-800 shadow-brutal overflow-hidden">
+    <div className="bg-white border-2 border-navy-800 shadow-brutal overflow-hidden">
       {/* Sub-Navigation Tabs matching PRD Section 1 - Brutalist */}
       <div className="p-3 bg-navy-800 border-b-[3px] border-navy-800 flex items-center justify-between overflow-x-auto gap-2">
         <div className="flex items-center gap-1.5">
@@ -421,7 +421,7 @@ export function BOQTable() {
             onClick={() => setActiveSubTab("master")}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               activeSubTab === "master"
-                ? "bg-mustard-400 text-navy-800 border-[3px] border-navy-800 shadow-brutal-sm"
+                ? "bg-mustard-400 text-navy-800 border-2 border-navy-800 shadow-brutal-sm"
                 : "text-white/70 hover:text-navy-800 hover:bg-white/10 border border-transparent"
             }`}
           >
@@ -433,7 +433,7 @@ export function BOQTable() {
             onClick={() => setActiveSubTab("risks")}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               activeSubTab === "risks"
-                ? "bg-mustard-400 text-navy-800 border-[3px] border-navy-800 shadow-brutal-sm"
+                ? "bg-mustard-400 text-navy-800 border-2 border-navy-800 shadow-brutal-sm"
                 : "text-white/70 hover:text-navy-800 hover:bg-white/10 border border-transparent"
             }`}
           >
@@ -450,7 +450,7 @@ export function BOQTable() {
             onClick={() => setActiveSubTab("revisions")}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               activeSubTab === "revisions"
-                ? "bg-mustard-400 text-navy-800 border-[3px] border-navy-800 shadow-brutal-sm"
+                ? "bg-mustard-400 text-navy-800 border-2 border-navy-800 shadow-brutal-sm"
                 : "text-white/70 hover:text-navy-800 hover:bg-white/10 border border-transparent"
             }`}
           >
@@ -467,7 +467,7 @@ export function BOQTable() {
             onClick={() => setActiveSubTab("finalAccount")}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               activeSubTab === "finalAccount"
-                ? "bg-mustard-400 text-navy-800 border-[3px] border-navy-800 shadow-brutal-sm"
+                ? "bg-mustard-400 text-navy-800 border-2 border-navy-800 shadow-brutal-sm"
                 : "text-white/70 hover:text-navy-800 hover:bg-white/10 border border-transparent"
             }`}
           >
@@ -674,8 +674,8 @@ export function BOQTable() {
                 key={risk.id}
                 className={`p-4 rounded-xl border transition-all flex flex-col md:flex-row md:items-center justify-between gap-3 ${
                   risk.isHandled
-                    ? "bg-cream-100 border-[3px] border-navy-800 opacity-60"
-                    : "bg-white border-[3px] border-navy-800 shadow-brutal-sm"
+                    ? "bg-cream-100 border-2 border-navy-800 opacity-60"
+                    : "bg-white border-2 border-navy-800 shadow-brutal-sm"
                 }`}
               >
                 <div className="flex items-start gap-3">

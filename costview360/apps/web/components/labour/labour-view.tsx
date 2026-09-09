@@ -91,7 +91,7 @@ export function LabourView() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white border-[3px] border-navy-800 shadow-brutal p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white border-2 border-navy-800 shadow-brutal p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xs uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-800/60 font-mono">
@@ -118,7 +118,7 @@ export function LabourView() {
           </div>
           <button
             onClick={() => setIsAddWorkerOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white border-[2px] border-navy-800 text-xs font-semibold shadow-sm transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors"
           >
             <UserPlus className="w-3.5 h-3.5" />
             <span>Add Worker</span>

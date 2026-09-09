@@ -107,7 +107,7 @@ export function Sidebar({
       <div className="p-5 border-b-[3px] border-white/10 shrink-0">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 bg-mustard-400 border-[3px] border-white flex items-center justify-center font-black text-navy-800 text-sm shadow-[3px_3px_0px_0px_white] shrink-0">
+            <div className="w-11 h-11 bg-mustard-400 border-2 border-white flex items-center justify-center font-black text-navy-800 text-sm shadow-[3px_3px_0px_0px_white] shrink-0">
               <span className="font-display tracking-tighter">CV</span>
             </div>
             <div>
@@ -123,7 +123,7 @@ export function Sidebar({
         </div>
         <Link
           href="/"
-          className="mt-4 flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-mustard-400 hover:text-white border-[2px] border-mustard-400/30 px-3 py-1.5 w-fit"
+          className="mt-4 flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-mustard-400 hover:text-white border-2 border-mustard-400/30 px-3 py-1.5 w-fit"
         >
           <Home className="w-4 h-4" /> Back to Landing
         </Link>
@@ -131,10 +131,10 @@ export function Sidebar({
 
       {/* Mode Switcher - Brutalist */}
       <div className="px-4 pt-4 shrink-0">
-        <div className="bg-navy-900 border-[3px] border-white/20 p-1 flex gap-1">
+        <div className="bg-navy-900 border-2 border-white/20 p-1 flex gap-1">
           <button
             onClick={() => setActiveMode("site")}
-            className={`flex-1 py-2.5 px-2 font-black text-xs uppercase tracking-wide border-[2px] transition-all ${
+            className={`flex-1 py-2.5 px-2 font-black text-xs uppercase tracking-wide border-2 transition-all ${
               activeMode === "site"
                 ? "bg-mustard-400 text-navy-800 border-navy-800 shadow-[3px_3px_0px_0px_white]"
                 : "bg-transparent text-white/60 border-transparent hover:text-white hover:bg-white/10"
@@ -144,7 +144,7 @@ export function Sidebar({
           </button>
           <button
             onClick={() => setActiveMode("commercial")}
-            className={`flex-1 py-2.5 px-2 font-black text-xs uppercase tracking-wide border-[2px] transition-all ${
+            className={`flex-1 py-2.5 px-2 font-black text-xs uppercase tracking-wide border-2 transition-all ${
               activeMode === "commercial"
                 ? "bg-mustard-400 text-navy-800 border-navy-800 shadow-[3px_3px_0px_0px_white]"
                 : "bg-transparent text-white/60 border-transparent hover:text-white hover:bg-white/10"
@@ -157,7 +157,7 @@ export function Sidebar({
 
       {/* Role Preview Switcher */}
       <div className="px-4 pt-4 shrink-0">
-        <div className="bg-white border-[3px] border-navy-800 p-3 shadow-[4px_4px_0px_0px_#FFD23F]">
+        <div className="bg-white border-2 border-navy-800 p-3 shadow-[4px_4px_0px_0px_#FFD23F]">
           <div className="text-xs uppercase font-black tracking-widest text-navy-800 flex items-center justify-between mb-2">
             <span>Simulate Role</span>
             <span className="bg-navy-800 text-mustard-400 px-2 py-1 text-[10px]">RBAC ACTIVE</span>
@@ -165,7 +165,7 @@ export function Sidebar({
           <select
             value={activeRole}
             onChange={(e) => setActiveRole(e.target.value as RoleName)}
-            className="w-full bg-cream-100 border-[3px] border-navy-800 px-3 py-2.5 text-sm font-black text-navy-800 focus:outline-none cursor-pointer"
+            className="w-full bg-cream-100 border-2 border-navy-800 px-3 py-2.5 text-sm font-black text-navy-800 focus:outline-none cursor-pointer"
           >
             {ALL_ROLES.map((role) => (
               <option key={role} value={role}>
@@ -188,20 +188,20 @@ export function Sidebar({
             <button
               key={item.name}
               onClick={() => handleSelect(item.name)}
-              className={`w-full flex items-center justify-between px-3 py-3 text-sm font-black uppercase tracking-wide border-[3px] transition-all ${
+              className={`w-full flex items-center justify-between px-3 py-3 text-sm font-black uppercase tracking-wide border-2 transition-all ${
                 isActive
                   ? "bg-mustard-400 text-navy-800 border-navy-800 shadow-[4px_4px_0px_0px_white]"
                   : "bg-transparent text-white/70 border-transparent hover:text-white hover:bg-white/10 hover:border-white/20"
               }`}
             >
               <div className="flex items-center gap-3">
-                <span className={`w-8 h-8 border-[2px] flex items-center justify-center shrink-0 ${isActive ? "bg-navy-800 border-navy-800 text-white" : "bg-white/10 border-white/20 text-white"}`}>
+                <span className={`w-8 h-8 border-2 flex items-center justify-center shrink-0 ${isActive ? "bg-navy-800 border-navy-800 text-white" : "bg-white/10 border-white/20 text-white"}`}>
                   <Icon className="w-4 h-4" />
                 </span>
                 <span className="normal-case font-black tracking-tight text-[13px] text-left">{item.name}</span>
               </div>
               {item.badge && (
-                <span className={`text-xs px-2 py-1 font-mono font-black border-[2px] shrink-0 ${isActive ? "bg-navy-800 text-white border-navy-800" : "bg-mustard-400 text-navy-800 border-navy-800"}`}>
+                <span className={`text-xs px-2 py-1 font-mono font-black border-2 shrink-0 ${isActive ? "bg-navy-800 text-white border-navy-800" : "bg-mustard-400 text-navy-800 border-navy-800"}`}>
                   {item.badge}
                 </span>
               )}
@@ -212,8 +212,8 @@ export function Sidebar({
 
       {/* User Footer Profile */}
       <div className="p-4 border-t-[3px] border-white/10 bg-navy-900 shrink-0">
-        <div className="flex items-center gap-3 bg-white border-[3px] border-navy-800 p-3 shadow-[3px_3px_0px_0px_#FFD23F]">
-          <div className="w-10 h-10 bg-navy-800 border-[2px] border-navy-800 flex items-center justify-center text-sm font-black text-white">
+        <div className="flex items-center gap-3 bg-white border-2 border-navy-800 p-3 shadow-[3px_3px_0px_0px_#FFD23F]">
+          <div className="w-10 h-10 bg-navy-800 border-2 border-navy-800 flex items-center justify-center text-sm font-black text-white">
             IM
           </div>
           <div className="flex-1 min-w-0">

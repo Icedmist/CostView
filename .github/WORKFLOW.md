@@ -35,3 +35,7 @@ Set via: `gh api repos/Icedmist/CostView/branches/main/protection -X PUT --input
 - [ ] Issue exists?
 - [ ] On correct branch?
 - [ ] `npm run build` passes?
+
+## Design
+- Landing: heavy brutalism `border-[3px]` `shadow 6px 6px`
+- App: softened `border-2` `shadow 4px 4px`, `p-6`, `text-sm/base`, mobile cards, larger tap targets

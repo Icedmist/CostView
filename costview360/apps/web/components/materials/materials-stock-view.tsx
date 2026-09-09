@@ -124,7 +124,7 @@ export function MaterialsStockView() {
   return (
     <div className="space-y-6">
       {/* Header & Quick Action Buttons */}
-      <div className="bg-white border-[3px] border-navy-800 shadow-brutal p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white border-2 border-navy-800 shadow-brutal p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xs uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-blue-950 text-blue-400 border border-blue-800/60 font-mono">
@@ -146,7 +146,7 @@ export function MaterialsStockView() {
               setSelectedItem(stock[0]);
               setIsTransferModalOpen(true);
             }}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-cream-100 hover:bg-cream-100 text-navy-800 border-[2px] border-navy-800 text-xs font-semibold border border-navy-800 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-cream-100 hover:bg-cream-100 text-navy-800 border-2 border-navy-800 text-xs font-semibold border border-navy-800 transition-colors"
           >
             <ArrowRightLeft className="w-3.5 h-3.5 text-blue-400" />
             <span>Create Transfer</span>
@@ -156,7 +156,7 @@ export function MaterialsStockView() {
               setSelectedItem(stock[0]);
               setIsConsumptionModalOpen(true);
             }}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-[2px] border-navy-800 text-xs font-semibold shadow-sm transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors"
           >
             <MinusCircle className="w-3.5 h-3.5" />
             <span>Record Site Consumption</span>
@@ -175,7 +175,7 @@ export function MaterialsStockView() {
           return (
             <div
               key={item.id}
-              className={`bg-white border border-[3px] border-navy-800 p-4 shadow-sm relative overflow-hidden transition-all ${
+              className={`bg-white border border-2 border-navy-800 p-4 shadow-sm relative overflow-hidden transition-all ${
                 isLow ? "border-amber-700/80 bg-amber-950/10" : "border-navy-800"
               }`}
             >

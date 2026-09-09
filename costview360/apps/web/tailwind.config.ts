@@ -54,15 +54,12 @@ const config: Config = {
         display: ["Archivo Black", "Space Grotesk", "sans-serif"],
       },
       boxShadow: {
-        // Softened brutal — was 6px, now 4px for easier mobile
+        // App softened: 4px (was 6px landing), 3px sm, 6px lg
         brutal: "4px 4px 0px 0px #0A1931",
         "brutal-sm": "3px 3px 0px 0px #0A1931",
         "brutal-lg": "6px 6px 0px 0px #0A1931",
         "brutal-mustard": "4px 4px 0px 0px #FFD23F",
         "brutal-white": "4px 4px 0px 0px white",
-      },
-      borderWidth: {
-        "3": "2px",
       },
     },
   },

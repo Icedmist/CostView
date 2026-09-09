@@ -391,7 +391,7 @@ export function SubcontractorView() {
         <div className="flex items-center gap-1.5">
           <button
             onClick={() => setSubTab("contracts")}
-            className={`px-3 py-1.5 border-[2px] border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "contracts"
                 ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/60 hover:text-navy-800"
@@ -403,7 +403,7 @@ export function SubcontractorView() {
 
           <button
             onClick={() => setSubTab("claims")}
-            className={`px-3 py-1.5 border-[2px] border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "claims"
                 ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/60 hover:text-navy-800"
@@ -420,7 +420,7 @@ export function SubcontractorView() {
 
           <button
             onClick={() => setSubTab("instructions")}
-            className={`px-3 py-1.5 border-[2px] border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "instructions"
                 ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/60 hover:text-navy-800"
@@ -432,7 +432,7 @@ export function SubcontractorView() {
 
           <button
             onClick={() => setSubTab("variations")}
-            className={`px-3 py-1.5 border-[2px] border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "variations"
                 ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/60 hover:text-navy-800"
@@ -459,7 +459,7 @@ export function SubcontractorView() {
             </div>
             <button
               onClick={() => setIsAddSubOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-[2px] border-navy-800 text-xs font-semibold shadow-sm transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Subcontractor</span>
@@ -547,7 +547,7 @@ export function SubcontractorView() {
             </div>
             <button
               onClick={() => setIsAddClaimOpen(true)}
-              className="px-3 py-1.5 bg-amber-600 hover:bg-amber-500 text-white border-[2px] border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-amber-600 hover:bg-amber-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Interim Claim</span>
@@ -556,7 +556,7 @@ export function SubcontractorView() {
 
           <div className="divide-y divide-navy-800/10">
             {claims.map((c) => (
-              <div key={c.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/20 px-2 border-[2px] border-navy-800 transition-colors">
+              <div key={c.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/20 px-2 border-2 border-navy-800 transition-colors">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-mono font-bold text-amber-400 text-xs">{c.claimNumber}</span>
@@ -614,7 +614,7 @@ export function SubcontractorView() {
             </div>
             <button
               onClick={() => setIsAddInstructionOpen(true)}
-              className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white border-[2px] border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Instruction</span>
@@ -623,7 +623,7 @@ export function SubcontractorView() {
 
           <div className="divide-y divide-navy-800/10">
             {instructions.map((instr) => (
-              <div key={instr.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/20 px-2 border-[2px] border-navy-800 transition-colors">
+              <div key={instr.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/20 px-2 border-2 border-navy-800 transition-colors">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-mono font-bold text-blue-400 text-xs">{instr.instructionNumber}</span>
@@ -669,7 +669,7 @@ export function SubcontractorView() {
             </div>
             <button
               onClick={() => setIsAddVoOpen(true)}
-              className="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white border-[2px] border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Raise Variation</span>

@@ -45,11 +45,11 @@ export default function DashboardPage() {
               {activeTab === "Dashboard" && (
                 <div className="space-y-6">
                   {/* Executive Banner - Brutalist - EXPANDED */}
-                  <div className="bg-white border-[3px] border-navy-800 shadow-brutal p-6 md:p-8">
+                  <div className="bg-white border-2 border-navy-800 shadow-brutal p-6 md:p-8">
                     <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                       <div>
                         <div className="flex flex-wrap items-center gap-3 mb-3">
-                          <span className="text-xs uppercase font-black tracking-wider px-4 py-1.5 bg-navy-800 text-white border-[3px] border-navy-800 font-mono">
+                          <span className="text-xs uppercase font-black tracking-wider px-4 py-1.5 bg-navy-800 text-white border-2 border-navy-800 font-mono">
                             Site Operations Command Center
                           </span>
                           <span className="text-navy-800/60 text-sm font-bold font-mono">· Role: {activeRole}</span>
@@ -65,14 +65,14 @@ export default function DashboardPage() {
                       <div className="flex flex-wrap items-center gap-3">
                         <button
                           onClick={() => setActiveTab("Budget & BOQ")}
-                          className="px-6 py-3.5 bg-mustard-400 hover:bg-mustard-500 text-navy-800 border-[3px] border-navy-800 shadow-brutal text-sm font-black uppercase tracking-wide flex items-center gap-2 active:shadow-none active:translate-x-[3px] active:translate-y-[3px] transition-all"
+                          className="px-6 py-3.5 bg-mustard-400 hover:bg-mustard-500 text-navy-800 border-2 border-navy-800 shadow-brutal text-sm font-black uppercase tracking-wide flex items-center gap-2 active:shadow-none active:translate-x-[3px] active:translate-y-[3px] transition-all"
                         >
                           <span>Manage BOQ</span>
                           <ArrowUpRight className="w-5 h-5" />
                         </button>
                         <button
                           onClick={() => setActiveTab("Procurement")}
-                          className="px-6 py-3.5 bg-white hover:bg-cream-100 text-navy-800 border-[3px] border-navy-800 shadow-brutal text-sm font-black uppercase tracking-wide active:shadow-none active:translate-x-[3px] active:translate-y-[3px] transition-all"
+                          className="px-6 py-3.5 bg-white hover:bg-cream-100 text-navy-800 border-2 border-navy-800 shadow-brutal text-sm font-black uppercase tracking-wide active:shadow-none active:translate-x-[3px] active:translate-y-[3px] transition-all"
                         >
                           View 3-Way Match
                         </button>
@@ -90,16 +90,16 @@ export default function DashboardPage() {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div
                       onClick={() => setActiveTab("Procurement")}
-                      className="cursor-pointer bg-white border-[3px] border-navy-800 shadow-brutal p-6 hover:shadow-brutal-lg hover:-translate-y-1 transition-all min-h-[150px]"
+                      className="cursor-pointer bg-white border-2 border-navy-800 shadow-brutal p-6 hover:shadow-brutal-lg hover:-translate-y-1 transition-all min-h-[150px]"
                     >
                       <div className="flex items-center justify-between mb-3">
                         <span className="text-sm font-black flex items-center gap-2 text-navy-800 uppercase">
-                          <span className="w-9 h-9 bg-red-500 border-[3px] border-navy-800 flex items-center justify-center">
+                          <span className="w-9 h-9 bg-red-500 border-2 border-navy-800 flex items-center justify-center">
                             <AlertTriangle className="w-5 h-5 text-white" />
                           </span>
                           1 Invoice Discrepancy
                         </span>
-                        <span className="text-xs bg-red-500 text-white px-3 py-1 border-[2px] border-navy-800 font-mono font-black uppercase">
+                        <span className="text-xs bg-red-500 text-white px-3 py-1 border-2 border-navy-800 font-mono font-black uppercase">
                           Action Needed
                         </span>
                       </div>
@@ -113,16 +113,16 @@ export default function DashboardPage() {
 
                     <div
                       onClick={() => setActiveTab("Budget & BOQ")}
-                      className="cursor-pointer bg-white border-[3px] border-navy-800 shadow-brutal p-6 hover:shadow-brutal-lg hover:-translate-y-1 transition-all min-h-[150px]"
+                      className="cursor-pointer bg-white border-2 border-navy-800 shadow-brutal p-6 hover:shadow-brutal-lg hover:-translate-y-1 transition-all min-h-[150px]"
                     >
                       <div className="flex items-center justify-between mb-3">
                         <span className="text-sm font-black flex items-center gap-2 text-navy-800 uppercase">
-                          <span className="w-9 h-9 bg-mustard-400 border-[3px] border-navy-800 flex items-center justify-center">
+                          <span className="w-9 h-9 bg-mustard-400 border-2 border-navy-800 flex items-center justify-center">
                             <Clock className="w-5 h-5 text-navy-800" />
                           </span>
                           Pending Revision
                         </span>
-                        <span className="text-xs bg-navy-800 text-white px-3 py-1 border-[2px] border-navy-800 font-mono font-black uppercase">
+                        <span className="text-xs bg-navy-800 text-white px-3 py-1 border-2 border-navy-800 font-mono font-black uppercase">
                           QS Valuation
                         </span>
                       </div>
@@ -136,16 +136,16 @@ export default function DashboardPage() {
 
                     <div
                       onClick={() => setActiveTab("Site Progress & Diary")}
-                      className="cursor-pointer bg-white border-[3px] border-navy-800 shadow-brutal p-6 hover:shadow-brutal-lg hover:-translate-y-1 transition-all min-h-[150px]"
+                      className="cursor-pointer bg-white border-2 border-navy-800 shadow-brutal p-6 hover:shadow-brutal-lg hover:-translate-y-1 transition-all min-h-[150px]"
                     >
                       <div className="flex items-center justify-between mb-3">
                         <span className="text-sm font-black flex items-center gap-2 text-navy-800 uppercase">
-                          <span className="w-9 h-9 bg-navy-800 border-[3px] border-navy-800 flex items-center justify-center">
+                          <span className="w-9 h-9 bg-navy-800 border-2 border-navy-800 flex items-center justify-center">
                             <CheckCircle2 className="w-5 h-5 text-white" />
                           </span>
                           Site Execution Sync
                         </span>
-                        <span className="text-xs bg-mustard-400 text-navy-800 px-3 py-1 border-[2px] border-navy-800 font-mono font-black uppercase">
+                        <span className="text-xs bg-mustard-400 text-navy-800 px-3 py-1 border-2 border-navy-800 font-mono font-black uppercase">
                           Today
                         </span>
                       </div>
@@ -165,7 +165,7 @@ export default function DashboardPage() {
                       </h2>
                       <button
                         onClick={() => setActiveTab("Budget & BOQ")}
-                        className="text-xs bg-navy-800 text-white px-3 py-1.5 border-[2px] border-navy-800 font-black uppercase tracking-wide hover:bg-navy-700"
+                        className="text-xs bg-navy-800 text-white px-3 py-1.5 border-2 border-navy-800 font-black uppercase tracking-wide hover:bg-navy-700"
                       >
                         View Full Budget →
                       </button>
@@ -177,7 +177,7 @@ export default function DashboardPage() {
 
               {activeTab === "Budget & BOQ" && (
                 <div className="space-y-4">
-                  <div className="bg-white border-[3px] border-navy-800 shadow-brutal-sm p-4">
+                  <div className="bg-white border-2 border-navy-800 shadow-brutal-sm p-4">
                     <h2 className="text-base font-black text-navy-800 tracking-tighter uppercase">
                       Budget Management & Bill of Quantities
                     </h2>
@@ -191,7 +191,7 @@ export default function DashboardPage() {
 
               {activeTab === "Procurement" && (
                 <div className="space-y-4">
-                  <div className="bg-white border-[3px] border-navy-800 shadow-brutal-sm p-4">
+                  <div className="bg-white border-2 border-navy-800 shadow-brutal-sm p-4">
                     <h2 className="text-base font-black text-navy-800 tracking-tighter uppercase">
                       Procurement Lifecycle & Invoice Validation
                     </h2>
@@ -205,7 +205,7 @@ export default function DashboardPage() {
 
               {activeTab === "Site Progress & Diary" && (
                 <div className="space-y-4">
-                  <div className="bg-white border-[3px] border-navy-800 shadow-brutal-sm p-4">
+                  <div className="bg-white border-2 border-navy-800 shadow-brutal-sm p-4">
                     <h2 className="text-base font-black text-navy-800 tracking-tighter uppercase">
                       Site Execution, Daily Diary & Snagging
                     </h2>
@@ -230,7 +230,7 @@ export default function DashboardPage() {
               {activeTab === "Admin & Roles" && <AuditLogView />}
 
               {activeTab === "Settings" && (
-                <div className="bg-white border-[3px] border-navy-800 shadow-brutal p-8 text-center">
+                <div className="bg-white border-2 border-navy-800 shadow-brutal p-8 text-center">
                   <h3 className="text-sm font-black text-navy-800 uppercase">Project Settings</h3>
                   <p className="text-xs font-bold text-navy-800/60 mt-1 max-w-sm mx-auto">
                     Manage default currency (₦ NGN), timezone (Africa/Lagos), and notifications.
