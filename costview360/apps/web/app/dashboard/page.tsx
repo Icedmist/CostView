@@ -20,6 +20,8 @@ import {
   CheckCircle2,
   Clock,
 } from "lucide-react";
+import { RoleGuard } from "@/components/auth/role-guard";
+import { canAccess } from "@/lib/auth/permissions";
 
 export default function DashboardPage() {
   const { activeMode, activeRole } = useApp();
@@ -30,6 +32,25 @@ export default function DashboardPage() {
   const committedCost = 292250000;
   const actualCost = 216400000;
 
+  // Auto-redirect if current tab not allowed for role
+  React.useEffect(() => {
+    const permMap: Record<string, string> = {
+      "Budget & BOQ": "Budget",
+      Procurement: "Procurement",
+      "Materials & Stock": "Materials",
+      "Labour & Muster": "Labour",
+      "Site Progress & Diary": "Progress",
+      Subcontractors: "Subcontractors",
+      "Variations & Claims": "Variations",
+      "Reports Studio": "Reports",
+      "Admin & Roles": "Admin",
+    };
+    const perm = permMap[activeTab];
+    if (perm && !canAccess(activeRole, perm as any)) {
+      setActiveTab("Dashboard");
+    }
+  }, [activeRole, activeTab]);
+
   return (
     <div className="flex h-screen overflow-hidden bg-cream-100 font-sans">
       <Sidebar activeTab={activeTab} onSelectTab={setActiveTab} open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
@@ -37,7 +58,7 @@ export default function DashboardPage() {
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <Header onMenuClick={() => setSidebarOpen((v) => !v)} />
 
-        <main className="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 bg-[#FFF8E1]/40">
+        <main className="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 bg-cream-100/40">
           {activeMode === "commercial" ? (
             <CommercialView />
           ) : (
@@ -94,12 +115,12 @@ export default function DashboardPage() {
                     >
                       <div className="flex items-center justify-between mb-3">
                         <span className="text-sm font-black flex items-center gap-2 text-navy-800 uppercase">
-                          <span className="w-9 h-9 bg-red-500 border-2 border-navy-800 flex items-center justify-center">
+                          <span className="w-9 h-9 bg-[#9B6B6B] border-2 border-navy-800 flex items-center justify-center">
                             <AlertTriangle className="w-5 h-5 text-white" />
                           </span>
                           1 Invoice Discrepancy
                         </span>
-                        <span className="text-xs bg-red-500 text-white px-3 py-1 border-2 border-navy-800 font-mono font-black uppercase">
+                        <span className="text-xs bg-[#9B6B6B] text-white px-3 py-1 border-2 border-navy-800 font-mono font-black uppercase">
                           Action Needed
                         </span>
                       </div>
@@ -176,58 +197,82 @@ export default function DashboardPage() {
               )}
 
               {activeTab === "Budget & BOQ" && (
-                <div className="space-y-4">
-                  <div className="bg-white border-2 border-navy-800 shadow-brutal-sm p-4">
-                    <h2 className="text-base font-black text-navy-800 tracking-tighter uppercase">
-                      Budget Management & Bill of Quantities
-                    </h2>
-                    <p className="text-xs font-bold text-navy-800/60">
-                      Line-item budget vs committed (POs) vs actual (certified), with revision audit trails.
-                    </p>
+                <RoleGuard permission="Budget">
+                  <div className="space-y-4">
+                    <div className="bg-white border-2 border-navy-800 shadow-brutal-sm p-4">
+                      <h2 className="text-base font-black text-navy-800 tracking-tighter uppercase">
+                        Budget Management & Bill of Quantities
+                      </h2>
+                      <p className="text-xs font-bold text-navy-800/60">
+                        Line-item budget vs committed (POs) vs actual (certified), with revision audit trails.
+                      </p>
+                    </div>
+                    <BOQTable />
                   </div>
-                  <BOQTable />
-                </div>
+                </RoleGuard>
               )}
 
               {activeTab === "Procurement" && (
-                <div className="space-y-4">
-                  <div className="bg-white border-2 border-navy-800 shadow-brutal-sm p-4">
-                    <h2 className="text-base font-black text-navy-800 tracking-tighter uppercase">
-                      Procurement Lifecycle & Invoice Validation
-                    </h2>
-                    <p className="text-xs font-bold text-navy-800/60">
-                      Requisitions, Purchase Orders, and Automated Three-Way Matching.
-                    </p>
+                <RoleGuard permission="Procurement">
+                  <div className="space-y-4">
+                    <div className="bg-white border-2 border-navy-800 shadow-brutal-sm p-4">
+                      <h2 className="text-base font-black text-navy-800 tracking-tighter uppercase">
+                        Procurement Lifecycle & Invoice Validation
+                      </h2>
+                      <p className="text-xs font-bold text-navy-800/60">
+                        Requisitions, Purchase Orders, and Automated Three-Way Matching.
+                      </p>
+                    </div>
+                    <ThreeWayMatchView />
                   </div>
-                  <ThreeWayMatchView />
-                </div>
+                </RoleGuard>
               )}
 
               {activeTab === "Site Progress & Diary" && (
-                <div className="space-y-4">
-                  <div className="bg-white border-2 border-navy-800 shadow-brutal-sm p-4">
-                    <h2 className="text-base font-black text-navy-800 tracking-tighter uppercase">
-                      Site Execution, Daily Diary & Snagging
-                    </h2>
-                    <p className="text-xs font-bold text-navy-800/60">
-                      Weather-stamped logs, workforce muster, and remediation.
-                    </p>
+                <RoleGuard permission="Progress">
+                  <div className="space-y-4">
+                    <div className="bg-white border-2 border-navy-800 shadow-brutal-sm p-4">
+                      <h2 className="text-base font-black text-navy-800 tracking-tighter uppercase">
+                        Site Execution, Daily Diary & Snagging
+                      </h2>
+                      <p className="text-xs font-bold text-navy-800/60">
+                        Weather-stamped logs, workforce muster, and remediation.
+                      </p>
+                    </div>
+                    <SiteDiaryView />
                   </div>
-                  <SiteDiaryView />
-                </div>
+                </RoleGuard>
               )}
 
-              {activeTab === "Materials & Stock" && <MaterialsStockView />}
+              {activeTab === "Materials & Stock" && (
+                <RoleGuard permission="Materials">
+                  <MaterialsStockView />
+                </RoleGuard>
+              )}
 
-              {activeTab === "Labour & Muster" && <LabourView />}
+              {activeTab === "Labour & Muster" && (
+                <RoleGuard permission="Labour">
+                  <LabourView />
+                </RoleGuard>
+              )}
 
               {(activeTab === "Subcontractors" || activeTab === "Variations & Claims") && (
-                <SubcontractorView />
+                <RoleGuard permission={activeTab === "Subcontractors" ? "Subcontractors" : "Variations"}>
+                  <SubcontractorView />
+                </RoleGuard>
               )}
 
-              {activeTab === "Reports Studio" && <ReportsView />}
+              {activeTab === "Reports Studio" && (
+                <RoleGuard permission="Reports">
+                  <ReportsView />
+                </RoleGuard>
+              )}
 
-              {activeTab === "Admin & Roles" && <AuditLogView />}
+              {activeTab === "Admin & Roles" && (
+                <RoleGuard permission="Admin">
+                  <AuditLogView />
+                </RoleGuard>
+              )}
 
               {activeTab === "Settings" && (
                 <div className="bg-white border-2 border-navy-800 shadow-brutal p-8 text-center">

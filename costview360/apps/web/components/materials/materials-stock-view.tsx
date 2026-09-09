@@ -156,7 +156,7 @@ export function MaterialsStockView() {
               setSelectedItem(stock[0]);
               setIsConsumptionModalOpen(true);
             }}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-[#6B8A6B] hover:bg-[#7A9B7A] text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors"
           >
             <MinusCircle className="w-3.5 h-3.5" />
             <span>Record Site Consumption</span>
@@ -222,7 +222,7 @@ export function MaterialsStockView() {
                 {/* Progress Bar */}
                 <div className="w-full bg-cream-100 rounded-full h-1.5 mt-2 overflow-hidden border border-navy-800">
                   <div
-                    className={`h-full ${isLow ? "bg-amber-500" : "bg-emerald-500"}`}
+                    className={`h-full ${isLow ? "bg-[#A68A5A]" : "bg-[#7A9B7A]"}`}
                     style={{ width: `${Math.min(100, percentUsed)}%` }}
                   ></div>
                 </div>
@@ -279,7 +279,7 @@ export function MaterialsStockView() {
                 </button>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs font-semibold"
+                  className="px-3 py-1.5 bg-[#6B8A6B] hover:bg-[#7A9B7A] text-white rounded text-xs font-semibold"
                 >
                   Confirm Issue
                 </button>

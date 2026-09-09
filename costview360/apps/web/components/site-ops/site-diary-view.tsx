@@ -358,7 +358,7 @@ export function SiteDiaryView() {
                 : "text-navy-800/60 hover:text-navy-800"
             }`}
           >
-            <Calendar className="w-3.5 h-3.5 text-emerald-400" />
+            <Calendar className="w-3.5 h-3.5 text-[#6B8A6B]" />
             <span>5.1 Daily Diary</span>
           </button>
 
@@ -423,7 +423,7 @@ export function SiteDiaryView() {
           <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
               <h3 className="text-sm font-bold text-navy-800 flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-emerald-400" />
+                <Calendar className="w-4 h-4 text-[#6B8A6B]" />
                 <span>Cloud-Based Site Journal & Daily Shifts</span>
               </h3>
               <p className="text-xs text-navy-800/60 mt-0.5">
@@ -432,7 +432,7 @@ export function SiteDiaryView() {
             </div>
             <button
               onClick={() => setIsNewLogOpen(true)}
-              className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-[#6B8A6B] hover:bg-[#7A9B7A] text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>New Daily Entry</span>
@@ -445,7 +445,7 @@ export function SiteDiaryView() {
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-navy-800 pb-3">
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-mono text-emerald-400 font-bold">
+                      <span className="text-xs font-mono text-[#6B8A6B] font-bold">
                         LOG #{log.logNumber}
                       </span>
                       <span className="text-navy-800/40">·</span>
@@ -460,7 +460,7 @@ export function SiteDiaryView() {
                       <span>{log.weather} ({log.delayHours} hr delay)</span>
                     </div>
                     <div className="flex items-center gap-1.5 bg-white border border-navy-800 border-2 border-navy-800 px-2.5 py-1 text-xs text-navy-800">
-                      <Users className="w-3.5 h-3.5 text-emerald-400" />
+                      <Users className="w-3.5 h-3.5 text-[#6B8A6B]" />
                       <span className="font-bold text-navy-800 font-mono">{log.workerHeadcount} Workers</span>
                     </div>
                   </div>
@@ -641,7 +641,7 @@ export function SiteDiaryView() {
             </div>
             <button
               onClick={() => setIsNewSafetyOpen(true)}
-              className="px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-red-600 hover:bg-[#8B6B6B] text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Log Observation / Incident</span>
@@ -741,7 +741,7 @@ export function SiteDiaryView() {
                 </button>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs font-semibold"
+                  className="px-3 py-1.5 bg-[#6B8A6B] hover:bg-[#7A9B7A] text-white rounded text-xs font-semibold"
                 >
                   Publish Daily Log
                 </button>
@@ -896,7 +896,7 @@ export function SiteDiaryView() {
                   <select
                     value={safetyType}
                     onChange={(e) => setSafetyType(e.target.value as SafetyObservation["type"])}
-                    className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-red-500"
+                    className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#8B6B6B]"
                   >
                     <option value="Unsafe Act">Unsafe Act</option>
                     <option value="Near Miss">Near Miss</option>
@@ -909,7 +909,7 @@ export function SiteDiaryView() {
                   <select
                     value={safetySev}
                     onChange={(e) => setSafetySev(e.target.value as SafetyObservation["severity"])}
-                    className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-red-500"
+                    className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#8B6B6B]"
                   >
                     <option value="Low">Low</option>
                     <option value="Medium">Medium</option>
@@ -927,7 +927,7 @@ export function SiteDiaryView() {
                   value={safetyDesc}
                   onChange={(e) => setSafetyDesc(e.target.value)}
                   placeholder="Detail the safety hazard or proactive measure observed..."
-                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-red-500"
+                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#8B6B6B]"
                 />
               </div>
 
@@ -939,7 +939,7 @@ export function SiteDiaryView() {
                   value={safetyLoc}
                   onChange={(e) => setSafetyLoc(e.target.value)}
                   placeholder="e.g. Scaffolding elevation north side"
-                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-red-500"
+                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#8B6B6B]"
                 />
               </div>
 
@@ -953,7 +953,7 @@ export function SiteDiaryView() {
                 </button>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white rounded text-xs font-semibold"
+                  className="px-3 py-1.5 bg-red-600 hover:bg-[#8B6B6B] text-white rounded text-xs font-semibold"
                 >
                   Record Safety Event
                 </button>
