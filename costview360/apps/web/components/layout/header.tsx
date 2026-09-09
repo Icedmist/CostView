@@ -1,13 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useApp } from "@/app/providers";
-import { Building2, Bell, Menu, LogOut } from "lucide-react";
+import { Building2, Bell, Menu, LogOut, BookOpen } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { OnboardingModal } from "@/components/onboarding/onboarding-modal";
 
 export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
   const { currentProject, currency, setCurrency } = useApp();
+  const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
   const router = useRouter();
   const supabase = createClient();
   const handleLogout = async () => {
@@ -54,6 +56,15 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
           </select>
         </div>
 
+        <button
+          onClick={() => setIsOnboardingOpen(true)}
+          title="Open User Guide & Onboarding Hub"
+          className="flex items-center gap-1.5 px-3 py-2 bg-cream-100 hover:bg-cream-200 border-2 border-navy-800 text-navy-800 shadow-brutal-sm font-black text-xs uppercase transition-transform active:translate-x-0.5 active:translate-y-0.5"
+        >
+          <BookOpen className="w-4 h-4 text-navy-800" />
+          <span className="hidden sm:inline">Guide & Manual</span>
+        </button>
+
         <div className="hidden md:flex items-center gap-2 bg-navy-800 text-white border-2 border-navy-800 px-4 py-2.5 shadow-brutal-sm">
           <span className="w-2.5 h-2.5 bg-green-400 border-2 border-white rounded-full animate-pulse" />
           <span className="text-xs font-black uppercase tracking-wide">Live</span>
@@ -76,6 +87,11 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
           <LogOut className="w-5 h-5" />
         </button>
       </div>
+
+      <OnboardingModal
+        isOpen={isOnboardingOpen}
+        onClose={() => setIsOnboardingOpen(false)}
+      />
     </header>
   );
 }

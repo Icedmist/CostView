@@ -90,9 +90,9 @@ export function AuditLogView() {
       <div className="p-4 border-b border-navy-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
           <h3 className="text-sm font-black text-navy-800 flex items-center gap-2">
-            <History className="w-4 h-4 text-emerald-400" />
+            <History className="w-4 h-4 text-emerald-600" />
             <span>Searchable Compliance Audit Journal</span>
-            <span className="text-xs bg-cream-100 text-navy-800/60 border border-navy-800 px-2 py-0.5 rounded font-mono">
+            <span className="text-xs bg-cream-100 text-navy-800 border border-navy-800 px-2 py-0.5 font-mono font-bold">
               Immutable Ledger
             </span>
           </h3>
@@ -109,14 +109,14 @@ export function AuditLogView() {
               placeholder="Search actor, entity, or change..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 bg-cream-100 border border-navy-800 border-2 border-navy-800 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500"
+              className="w-full pl-9 pr-3 py-1.5 bg-white border-2 border-navy-800 text-xs text-navy-800 placeholder-navy-800/50 focus:outline-none focus:ring-2 focus:ring-navy-800"
             />
           </div>
 
           <select
             value={moduleFilter}
             onChange={(e) => setModuleFilter(e.target.value)}
-            className="bg-cream-100 border border-navy-800 border-2 border-navy-800 px-2 py-1.5 text-xs text-navy-800 focus:outline-none cursor-pointer"
+            className="bg-white border-2 border-navy-800 px-2 py-1.5 text-xs text-navy-800 font-bold focus:outline-none cursor-pointer"
           >
             <option value="All">All Modules</option>
             <option value="Budget">Budget</option>
@@ -153,11 +153,11 @@ export function AuditLogView() {
                   <div className="text-xs text-navy-800/40">{log.role}</div>
                 </td>
                 <td className="py-3 px-3">
-                  <span className="px-2 py-0.5 rounded bg-cream-100 border border-navy-800 text-xs font-medium text-navy-800">
+                  <span className="px-2 py-0.5 bg-cream-100 border border-navy-800 text-xs font-bold text-navy-800">
                     {log.module}
                   </span>
                 </td>
-                <td className="py-3 px-4 font-semibold text-emerald-300">
+                <td className="py-3 px-4 font-bold text-emerald-700">
                   {log.action}
                 </td>
                 <td className="py-3 px-3 font-mono font-bold text-navy-800">

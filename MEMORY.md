@@ -33,10 +33,12 @@
 10. **Commit `2b70288`**: Implement requisition form, RFQ quotes, invoice modal, payment processing, and delivery rating (PRD items #5, #6, #7, #8, #9, #10, #11).
 11. **Commit `27f94e3`**: Add daily entry modal, photo attachments, inspections with auto-snags, and safety observation logging (PRD items #15, #16, #17, #18).
 12. **Commit `9b171d3`**: Implement interim claims register with 10% retention calculation, 4-factor grading modal, and site instructions register (PRD items #19, #20, #21, #22, #23, #24).
-
-## Workflow (since 2026-09-09)
-- Every change = Issue → Branch `feat/issue-<n>-slug` → PR `Closes #<n>` → squash-merge. See `AGENTS.md`, `.github/WORKFLOW.md`, `.github/CONTRIBUTING.md`. Enforced for humans and AI agents.
-
-## Verification Status
-- `npx tsc --noEmit`: Passed with 0 errors.
-- `npm run build`: Production build verified with all 7 static and dynamic routes compiled cleanly.
+36: 13. **Issue #23 (`feat/issue-23-straighten-edges-and-onboarding-guide`)**: Straighten all in-app component edges to sharp neo-brutalist styling, generate branded 5-page Neo-Brutalism PDF guide (`CostView-360-User-Guide.pdf`), and add interactive in-app onboarding modal hub accessible from Header & Sidebar.
+37: 
+38: ## Workflow (since 2026-09-09)
+39: - Every change = Issue → Branch `feat/issue-<n>-slug` → PR `Closes #<n>` → squash-merge. See `AGENTS.md`, `.github/WORKFLOW.md`, `.github/CONTRIBUTING.md`. Enforced for humans and AI agents.
+40: 
+41: ## Verification Status
+42: - `npm run build --workspace=apps/web`: Production build verified with all 19 static/dynamic routes compiled cleanly (0 errors, 0 warnings).
+43: - Edge styling audit: 0 unintended `rounded` classes remaining across web components (only pulsating LED status indicator lights).
+44: - Branded User Guide PDF generated at `CostView-360-User-Guide.pdf` (root) and `costview360/apps/web/public/docs/CostView-360-User-Guide.pdf` (90 KB, 5 pages).

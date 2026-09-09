@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useApp } from "@/app/providers";
 import type { RoleName } from "@/lib/supabase/database.types";
@@ -25,8 +25,10 @@ import {
   X,
   Lock,
   LogOut,
+  BookOpen,
 } from "lucide-react";
 import { canAccess } from "@/lib/auth/permissions";
+import { OnboardingModal } from "@/components/onboarding/onboarding-modal";
 
 interface NavItem {
   name: string;
@@ -84,6 +86,7 @@ export function Sidebar({
   onClose?: () => void;
 }) {
   const { activeMode, setActiveMode, activeRole, setActiveRole } = useApp();
+  const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
   const navItems = activeMode === "site" ? SITE_OPS_NAV : COMMERCIAL_NAV;
 
   const handleSelect = (tab: string) => {
@@ -222,7 +225,13 @@ export function Sidebar({
       </nav>
 
       {/* User Footer Profile */}
-      <div className="p-4 border-t-[3px] border-white/10 bg-navy-900 shrink-0 space-y-3">
+      <div className="p-4 border-t-[3px] border-white/10 bg-navy-900 shrink-0 space-y-2.5">
+        <button
+          onClick={() => setIsOnboardingOpen(true)}
+          className="w-full py-2 bg-mustard-400 border-2 border-navy-800 text-navy-800 font-black uppercase text-xs flex items-center justify-center gap-2 hover:bg-mustard-500 shadow-[2px_2px_0px_0px_white] transition-transform active:translate-x-0.5 active:translate-y-0.5"
+        >
+          <BookOpen className="w-4 h-4" /> User Guide & Manual
+        </button>
         <button
           onClick={async () => {
             const { createClient } = await import("@/lib/supabase/client");
@@ -232,7 +241,7 @@ export function Sidebar({
             sessionStorage.clear();
             window.location.href = "/login";
           }}
-          className="w-full py-2.5 bg-white border-2 border-navy-800 font-black uppercase text-xs flex items-center justify-center gap-2 hover:bg-cream-100"
+          className="w-full py-2 bg-white border-2 border-navy-800 font-black uppercase text-xs flex items-center justify-center gap-2 hover:bg-cream-100"
         >
           <LogOut className="w-4 h-4" /> Log out — 2h / tab close
         </button>
@@ -248,6 +257,11 @@ export function Sidebar({
         </div>
       </div>
     </aside>
+
+    <OnboardingModal
+      isOpen={isOnboardingOpen}
+      onClose={() => setIsOnboardingOpen(false)}
+    />
     </>
   );
 }

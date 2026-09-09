@@ -419,28 +419,28 @@ export function BOQTable() {
         <div className="flex items-center gap-1.5">
           <button
             onClick={() => setActiveSubTab("master")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 text-xs font-black uppercase tracking-wider transition-all flex items-center gap-1.5 border-2 ${
               activeSubTab === "master"
-                ? "bg-mustard-400 text-navy-800 border-2 border-navy-800 shadow-brutal-sm"
-                : "text-white/70 hover:text-navy-800 hover:bg-white/10 border border-transparent"
+                ? "bg-mustard-400 text-navy-800 border-navy-800 shadow-brutal-sm"
+                : "text-white/80 hover:text-white hover:bg-white/10 border-transparent hover:border-white/20"
             }`}
           >
-            <Layers className="w-3.5 h-3.5 text-emerald-500" />
+            <Layers className="w-3.5 h-3.5 text-emerald-400" />
             <span>1.2 BOQ Master</span>
           </button>
 
           <button
             onClick={() => setActiveSubTab("risks")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 text-xs font-black uppercase tracking-wider transition-all flex items-center gap-1.5 border-2 ${
               activeSubTab === "risks"
-                ? "bg-mustard-400 text-navy-800 border-2 border-navy-800 shadow-brutal-sm"
-                : "text-white/70 hover:text-navy-800 hover:bg-white/10 border border-transparent"
+                ? "bg-mustard-400 text-navy-800 border-navy-800 shadow-brutal-sm"
+                : "text-white/80 hover:text-white hover:bg-white/10 border-transparent hover:border-white/20"
             }`}
           >
             <ShieldAlert className="w-3.5 h-3.5 text-amber-400" />
             <span>1.4 Cost Control & Risks</span>
             {risks.filter((r) => !r.isHandled).length > 0 && (
-              <span className="text-xs bg-amber-950 text-amber-300 px-1.5 rounded-full font-mono">
+              <span className="text-[11px] bg-amber-400 text-navy-800 px-1.5 py-0.5 font-mono font-black border border-navy-800">
                 {risks.filter((r) => !r.isHandled).length}
               </span>
             )}
@@ -448,16 +448,16 @@ export function BOQTable() {
 
           <button
             onClick={() => setActiveSubTab("revisions")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 text-xs font-black uppercase tracking-wider transition-all flex items-center gap-1.5 border-2 ${
               activeSubTab === "revisions"
-                ? "bg-mustard-400 text-navy-800 border-2 border-navy-800 shadow-brutal-sm"
-                : "text-white/70 hover:text-navy-800 hover:bg-white/10 border border-transparent"
+                ? "bg-mustard-400 text-navy-800 border-navy-800 shadow-brutal-sm"
+                : "text-white/80 hover:text-white hover:bg-white/10 border-transparent hover:border-white/20"
             }`}
           >
             <Clock className="w-3.5 h-3.5 text-blue-400" />
             <span>1.5 Budget Revisions</span>
             {revisions.filter((r) => r.status === "Pending").length > 0 && (
-              <span className="text-xs bg-blue-950 text-blue-300 px-1.5 rounded-full font-mono">
+              <span className="text-[11px] bg-blue-400 text-navy-800 px-1.5 py-0.5 font-mono font-black border border-navy-800">
                 {revisions.filter((r) => r.status === "Pending").length}
               </span>
             )}
@@ -465,10 +465,10 @@ export function BOQTable() {
 
           <button
             onClick={() => setActiveSubTab("finalAccount")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 text-xs font-black uppercase tracking-wider transition-all flex items-center gap-1.5 border-2 ${
               activeSubTab === "finalAccount"
-                ? "bg-mustard-400 text-navy-800 border-2 border-navy-800 shadow-brutal-sm"
-                : "text-white/70 hover:text-navy-800 hover:bg-white/10 border border-transparent"
+                ? "bg-mustard-400 text-navy-800 border-navy-800 shadow-brutal-sm"
+                : "text-white/80 hover:text-white hover:bg-white/10 border-transparent hover:border-white/20"
             }`}
           >
             <FileText className="w-3.5 h-3.5 text-purple-400" />
@@ -477,9 +477,9 @@ export function BOQTable() {
         </div>
 
         {/* Global Threshold Tag (PRD Question 1) */}
-        <div className="hidden md:flex items-center gap-2 text-sm text-navy-800/60 bg-white border border-navy-800 px-2.5 py-1 rounded-lg">
-          <span>Threshold:</span>
-          <span className="text-emerald-500 font-mono font-bold">±{thresholdPercent}%</span>
+        <div className="hidden md:flex items-center gap-2 text-xs font-bold text-navy-800 bg-white border-2 border-navy-800 px-3 py-1.5 shadow-brutal-sm">
+          <span className="uppercase tracking-wider">Threshold:</span>
+          <span className="text-emerald-600 font-mono font-black">±{thresholdPercent}%</span>
         </div>
       </div>
 
@@ -496,16 +496,16 @@ export function BOQTable() {
                   placeholder="Search code or description..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full pl-9 pr-3 py-1.5 bg-white border border-navy-800 rounded-lg text-xs text-navy-800 placeholder-zinc-500 focus:outline-none focus:border-emerald-500"
+                  className="w-full pl-9 pr-3 py-2 bg-white border-2 border-navy-800 text-xs font-bold text-navy-800 placeholder-navy-800/40 focus:outline-none focus:shadow-brutal-sm transition-shadow"
                 />
               </div>
 
-              <div className="flex items-center gap-1 bg-white border border-navy-800 rounded-lg px-2 py-1">
+              <div className="flex items-center gap-1 bg-white border-2 border-navy-800 px-2 py-1.5 shadow-brutal-sm">
                 <Filter className="w-3.5 h-3.5 text-navy-800/60" />
                 <select
                   value={categoryFilter}
                   onChange={(e) => setCategoryFilter(e.target.value)}
-                  className="bg-transparent text-xs text-navy-800 focus:outline-none cursor-pointer"
+                  className="bg-transparent text-xs font-black text-navy-800 focus:outline-none cursor-pointer uppercase"
                 >
                   <option value="All" className="bg-white">All Categories</option>
                   <option value="Material" className="bg-white">Materials</option>
@@ -519,14 +519,14 @@ export function BOQTable() {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setIsImportModalOpen(true)}
-                className="flex items-center gap-1.5 bg-cream-100 hover:bg-cream-100 text-navy-800 border border-navy-800 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors"
+                className="flex items-center gap-1.5 bg-white hover:bg-cream-100 text-navy-800 border-2 border-navy-800 px-3.5 py-2 text-xs font-black uppercase tracking-wider shadow-brutal-sm transition-all active:translate-x-[1px] active:translate-y-[1px]"
               >
-                <Download className="w-3.5 h-3.5 text-emerald-500 rotate-180" />
+                <Download className="w-3.5 h-3.5 text-navy-800 rotate-180" />
                 <span>Import BOQ / CSV</span>
               </button>
               <button
                 onClick={() => setIsAddModalOpen(true)}
-                className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm transition-colors"
+                className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 px-3.5 py-2 text-xs font-black uppercase tracking-wider shadow-brutal-sm transition-all active:translate-x-[2px] active:translate-y-[2px]"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Add BOQ Item</span>
@@ -577,65 +577,65 @@ export function BOQTable() {
                       <td className="py-3 px-4 font-mono font-bold text-emerald-500 whitespace-nowrap">
                         {item.code}
                       </td>
-                      <td className="py-3 px-4 font-medium text-navy-800 max-w-xs">
+                      <td className="py-3 px-4 font-bold text-navy-800 max-w-xs">
                         {item.description}
                       </td>
                       <td className="py-3 px-3">
-                        <span className={`px-2 py-0.5 rounded text-xs font-semibold border ${
+                        <span className={`px-2.5 py-1 text-xs font-black uppercase tracking-wider border-2 ${
                           item.category === "Material"
-                            ? "bg-blue-950/70 text-blue-300 border-blue-800/40"
+                            ? "bg-blue-100 text-blue-900 border-navy-800"
                             : item.category === "Labour"
-                            ? "bg-amber-950/70 text-amber-300 border-amber-800/40"
+                            ? "bg-amber-100 text-amber-900 border-navy-800"
                             : item.category === "Plant"
-                            ? "bg-purple-950/70 text-purple-300 border-purple-800/40"
-                            : "bg-emerald-950/70 text-emerald-300 border-emerald-800/40"
+                            ? "bg-purple-100 text-purple-900 border-navy-800"
+                            : "bg-emerald-100 text-emerald-900 border-navy-800"
                         }`}>
                           {item.category}
                         </span>
                       </td>
-                      <td className="py-3 px-3 text-navy-800/60">{item.unit}</td>
-                      <td className="py-3 px-3 text-right font-mono text-navy-800">
+                      <td className="py-3 px-3 text-navy-800/80 font-bold">{item.unit}</td>
+                      <td className="py-3 px-3 text-right font-mono font-bold text-navy-800">
                         {item.quantity.toLocaleString()}
                       </td>
-                      <td className="py-3 px-3 text-right font-mono text-navy-800">
+                      <td className="py-3 px-3 text-right font-mono font-bold text-navy-800">
                         {formatCurrency(item.rate, currency)}
                       </td>
-                      <td className="py-3 px-4 text-right font-mono font-bold text-white whitespace-nowrap">
+                      <td className="py-3 px-4 text-right font-mono font-black text-navy-800 whitespace-nowrap">
                         {formatCurrency(item.budgetAmount, currency)}
                       </td>
-                      <td className="py-3 px-4 text-right font-mono text-navy-800 whitespace-nowrap">
+                      <td className="py-3 px-4 text-right font-mono font-bold text-navy-800 whitespace-nowrap">
                         {formatCurrency(item.committedAmount, currency)}
                       </td>
                       <td className="py-3 px-4 text-right font-mono whitespace-nowrap">
-                        <span className={`font-semibold ${variance < 0 ? "text-red-400" : "text-emerald-500"}`}>
+                        <span className={`font-black ${variance < 0 ? "text-red-600" : "text-emerald-700"}`}>
                           {formatCurrency(variance, currency)}
                         </span>
                       </td>
                       <td className="py-3 px-3 text-center whitespace-nowrap">
-                        <span className={`px-2 py-0.5 rounded text-xs font-bold border ${statusColor}`}>
+                        <span className={`px-2.5 py-1 text-xs font-black uppercase tracking-wider border-2 ${statusColor}`}>
                           {statusLabel}
                         </span>
                       </td>
                       <td className="py-3 px-3 text-center whitespace-nowrap">
-                        <div className="flex items-center justify-center gap-1">
+                        <div className="flex items-center justify-center gap-1.5">
                           <button
                             onClick={() => handleOpenRevision(item)}
                             title="Request Revision"
-                            className="p-1 text-navy-800/60 hover:text-emerald-500 hover:bg-cream-100 rounded transition-colors"
+                            className="p-1.5 text-navy-800/70 hover:text-navy-800 border-2 border-transparent hover:border-navy-800 hover:bg-cream-100 transition-all"
                           >
                             <Edit3 className="w-3.5 h-3.5" />
                           </button>
                           <button
                             onClick={() => handleOpenEdit(item)}
                             title="Edit Item Details"
-                            className="p-1 text-navy-800/60 hover:text-blue-400 hover:bg-cream-100 rounded transition-colors"
+                            className="p-1.5 text-navy-800/70 hover:text-navy-800 border-2 border-transparent hover:border-navy-800 hover:bg-cream-100 transition-all"
                           >
                             <FileCheck className="w-3.5 h-3.5" />
                           </button>
                           <button
                             onClick={() => handleDeleteItem(item.id)}
                             title="Delete Item"
-                            className="p-1 text-navy-800/60 hover:text-red-400 hover:bg-cream-100 rounded transition-colors"
+                            className="p-1.5 text-navy-800/70 hover:text-red-600 border-2 border-transparent hover:border-navy-800 hover:bg-cream-100 transition-all"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -653,17 +653,17 @@ export function BOQTable() {
       {/* TAB 2: COST CONTROL & RISK ALERTS (PRD Item 2) */}
       {activeSubTab === "risks" && (
         <div className="p-4 space-y-4">
-          <div className="flex items-center justify-between border-b border-navy-800 pb-3">
+          <div className="flex items-center justify-between border-b-2 border-navy-800 pb-3">
             <div>
               <h3 className="text-sm font-black text-navy-800 flex items-center gap-2">
-                <ShieldAlert className="w-4 h-4 text-amber-400" />
+                <ShieldAlert className="w-4 h-4 text-amber-500" />
                 <span>Cost Control Exceptions & Trending Risks</span>
               </h3>
-              <p className="text-xs text-navy-800/60 mt-0.5">
+              <p className="text-xs font-bold text-navy-800/60 mt-0.5">
                 System flagged cost rate escalations and site breakages beyond ±5% allowance.
               </p>
             </div>
-            <span className="text-xs text-navy-800/60 font-mono">
+            <span className="text-xs font-bold text-navy-800/60 font-mono">
               {risks.filter((r) => r.isHandled).length} Handled / {risks.length} Total
             </span>
           </div>
@@ -672,34 +672,34 @@ export function BOQTable() {
             {risks.map((risk) => (
               <div
                 key={risk.id}
-                className={`p-4 rounded-xl border transition-all flex flex-col md:flex-row md:items-center justify-between gap-3 ${
+                className={`p-4 border-2 border-navy-800 transition-all flex flex-col md:flex-row md:items-center justify-between gap-3 ${
                   risk.isHandled
-                    ? "bg-cream-100 border-2 border-navy-800 opacity-60"
-                    : "bg-white border-2 border-navy-800 shadow-brutal-sm"
+                    ? "bg-cream-100 opacity-60"
+                    : "bg-white shadow-brutal-sm"
                 }`}
               >
                 <div className="flex items-start gap-3">
-                  <div className={`p-2 rounded-lg mt-0.5 ${
+                  <div className={`p-2 border-2 border-navy-800 mt-0.5 ${
                     risk.severity === "High"
-                      ? "bg-red-950 text-red-400 border border-red-800"
+                      ? "bg-red-500 text-white"
                       : risk.severity === "Medium"
-                      ? "bg-amber-950 text-amber-400 border border-amber-800"
-                      : "bg-blue-950 text-blue-400 border border-blue-800"
+                      ? "bg-mustard-400 text-navy-800"
+                      : "bg-navy-800 text-white"
                   }`}>
                     <AlertCircle className="w-4 h-4" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="font-mono font-bold text-white text-xs">{risk.itemCode}</span>
+                      <span className="font-mono font-black text-navy-800 text-xs">{risk.itemCode}</span>
                       <span className="text-navy-800/40">·</span>
-                      <span className="text-xs uppercase font-bold text-amber-300 bg-amber-950 px-1.5 py-0.2 rounded border border-amber-800/40">
+                      <span className="text-xs uppercase font-black text-navy-800 bg-mustard-400 px-2 py-0.5 border-2 border-navy-800">
                         +{risk.variancePercentage}% Variance
                       </span>
                     </div>
-                    <p className="text-xs text-navy-800 font-medium">{risk.description}</p>
+                    <p className="text-xs text-navy-800 font-bold">{risk.description}</p>
                     {risk.isHandled && (
-                      <p className="text-sm text-navy-800/40 mt-1">
-                        Handled by <strong className="text-navy-800/60">{risk.handledBy}</strong> on {risk.handledAt}
+                      <p className="text-xs text-navy-800/60 font-medium mt-1">
+                        Handled by <strong className="text-navy-800">{risk.handledBy}</strong> on {risk.handledAt}
                       </p>
                     )}
                   </div>
@@ -708,10 +708,10 @@ export function BOQTable() {
                 <div className="flex items-center gap-2 self-end md:self-center">
                   <button
                     onClick={() => handleToggleRiskHandled(risk.id)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors ${
+                    className={`px-4 py-2 text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-all border-2 border-navy-800 shadow-brutal-sm active:translate-x-[1px] active:translate-y-[1px] ${
                       risk.isHandled
-                        ? "bg-cream-100 hover:bg-cream-100 text-navy-800 border border-navy-800"
-                        : "bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm"
+                        ? "bg-white hover:bg-cream-100 text-navy-800"
+                        : "bg-emerald-600 hover:bg-emerald-500 text-white"
                     }`}
                   >
                     {risk.isHandled ? (
@@ -750,36 +750,36 @@ export function BOQTable() {
               onClick={() => {
                 if (items.length > 0) handleOpenRevision(items[0]);
               }}
-              className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-black uppercase tracking-wider shadow-brutal-sm transition-all active:translate-x-[2px] active:translate-y-[2px] flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Revision</span>
             </button>
           </div>
 
-          <div className="divide-y-[3px] divide-navy-800/10">
+          <div className="divide-y-[3px] divide-navy-800/20">
             {revisions.map((rev) => (
-              <div key={rev.id} className="py-4 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/20 px-2 rounded-lg transition-colors">
+              <div key={rev.id} className="py-4 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/40 px-3 transition-colors border-b-2 border-navy-800/10">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-mono font-bold text-emerald-500 text-xs">{rev.boqItemCode}</span>
+                    <span className="font-mono font-black text-emerald-600 text-xs">{rev.boqItemCode}</span>
                     <span className="text-navy-800/40">·</span>
-                    <span className="font-mono font-semibold text-white text-xs">
+                    <span className="font-mono font-bold text-navy-800 text-xs">
                       {rev.deltaAmount >= 0 ? "+" : ""}{formatCurrency(rev.deltaAmount, currency)}
                     </span>
                     <span className="text-navy-800/40">·</span>
-                    <span className={`px-2 py-0.5 rounded text-xs font-bold border ${
+                    <span className={`px-2.5 py-0.5 text-xs font-black uppercase tracking-wider border-2 ${
                       rev.status === "Approved"
-                        ? "bg-emerald-950 text-emerald-300 border-emerald-800"
+                        ? "bg-emerald-100 text-emerald-900 border-navy-800"
                         : rev.status === "Rejected"
-                        ? "bg-red-950 text-red-300 border-red-800"
-                        : "bg-blue-950 text-blue-300 border-blue-800"
+                        ? "bg-red-100 text-red-900 border-navy-800"
+                        : "bg-blue-100 text-blue-900 border-navy-800"
                     }`}>
                       {rev.status}
                     </span>
                   </div>
-                  <p className="text-xs text-navy-800">{rev.reason}</p>
-                  <p className="text-sm text-navy-800/40 mt-1">
+                  <p className="text-xs text-navy-800 font-bold">{rev.reason}</p>
+                  <p className="text-xs text-navy-800/60 font-medium mt-1">
                     Requested by: {rev.requestedBy} · {rev.createdAt}
                   </p>
                 </div>
@@ -788,14 +788,14 @@ export function BOQTable() {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => handleUpdateRevisionStatus(rev.id, "Approved")}
-                      className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors flex items-center gap-1"
+                      className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-black uppercase tracking-wider shadow-brutal-sm transition-all active:translate-x-[1px] active:translate-y-[1px] flex items-center gap-1"
                     >
                       <Check className="w-3.5 h-3.5" />
                       <span>Approve Delta</span>
                     </button>
                     <button
                       onClick={() => handleUpdateRevisionStatus(rev.id, "Rejected")}
-                      className="px-3 py-1.5 bg-red-950/80 hover:bg-red-900 text-red-300 border border-red-800 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1"
+                      className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white border-2 border-navy-800 text-xs font-black uppercase tracking-wider shadow-brutal-sm transition-all active:translate-x-[1px] active:translate-y-[1px] flex items-center gap-1"
                     >
                       <X className="w-3.5 h-3.5" />
                       <span>Reject</span>
@@ -811,13 +811,13 @@ export function BOQTable() {
       {/* TAB 4: FINAL ACCOUNT RECONCILIATION (PRD Item 4) */}
       {activeSubTab === "finalAccount" && (
         <div className="p-4 space-y-4">
-          <div className="flex items-center justify-between border-b border-navy-800 pb-3">
+          <div className="flex items-center justify-between border-b-2 border-navy-800 pb-3">
             <div>
               <h3 className="text-sm font-black text-navy-800 flex items-center gap-2">
-                <FileText className="w-4 h-4 text-purple-400" />
+                <FileText className="w-4 h-4 text-purple-600" />
                 <span>Final Account Reconciliation & Audit Notes</span>
               </h3>
-              <p className="text-xs text-navy-800/60 mt-0.5">
+              <p className="text-xs font-bold text-navy-800/60 mt-0.5">
                 Every line reconciles automatically. Flagged variances allow QS notes without blocking close-out (PRD Section 1.6).
               </p>
             </div>
@@ -826,7 +826,7 @@ export function BOQTable() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="border-b-[3px] border-navy-800 bg-cream-100 text-navy-800 font-semibold uppercase text-xs tracking-wider">
+                <tr className="border-b-[3px] border-navy-800 bg-cream-100 text-navy-800 font-black uppercase text-xs tracking-wider">
                   <th className="py-3 px-4">Cost Code</th>
                   <th className="py-3 px-4">Description</th>
                   <th className="py-3 px-4 text-right">Original Budget</th>
@@ -837,34 +837,34 @@ export function BOQTable() {
                   <th className="py-3 px-3 text-center">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y-[3px] divide-navy-800/10 text-navy-800">
+              <tbody className="divide-y-2 divide-navy-800/10 text-navy-800">
                 {items.map((item) => {
                   const closingVariance = item.budgetAmount - item.actualAmount;
                   return (
-                    <tr key={item.id} className="hover:bg-cream-100/30 transition-colors">
-                      <td className="py-3 px-4 font-mono font-bold text-emerald-500">{item.code}</td>
-                      <td className="py-3 px-4 font-medium text-navy-800 max-w-xs">{item.description}</td>
-                      <td className="py-3 px-4 text-right font-mono">{formatCurrency(item.budgetAmount, currency)}</td>
-                      <td className="py-3 px-4 text-right font-mono text-navy-800">{formatCurrency(item.actualAmount, currency)}</td>
-                      <td className="py-3 px-4 text-right font-mono">
-                        <span className={closingVariance < 0 ? "text-red-400 font-semibold" : "text-emerald-500 font-semibold"}>
+                    <tr key={item.id} className="hover:bg-cream-100/50 transition-colors">
+                      <td className="py-3 px-4 font-mono font-bold text-emerald-600">{item.code}</td>
+                      <td className="py-3 px-4 font-bold text-navy-800 max-w-xs">{item.description}</td>
+                      <td className="py-3 px-4 text-right font-mono font-bold">{formatCurrency(item.budgetAmount, currency)}</td>
+                      <td className="py-3 px-4 text-right font-mono font-bold text-navy-800">{formatCurrency(item.actualAmount, currency)}</td>
+                      <td className="py-3 px-4 text-right font-mono font-bold">
+                        <span className={closingVariance < 0 ? "text-red-600 font-black" : "text-emerald-700 font-black"}>
                           {closingVariance >= 0 ? "+" : ""}{formatCurrency(closingVariance, currency)}
                         </span>
                       </td>
                       <td className="py-3 px-4 text-center">
-                        <span className="px-2 py-0.5 rounded text-xs font-bold bg-emerald-950 text-emerald-300 border border-emerald-800">
+                        <span className="px-2.5 py-1 text-xs font-black uppercase tracking-wider bg-emerald-100 text-emerald-900 border-2 border-navy-800">
                           Reconciled
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-xs text-navy-800/60 italic">
+                      <td className="py-3 px-4 text-xs text-navy-800/70 font-medium italic">
                         {item.varianceNote ? item.varianceNote : "— No QS note attached —"}
                       </td>
                       <td className="py-3 px-3 text-center">
                         <button
                           onClick={() => handleOpenVarianceNote(item)}
-                          className="px-2.5 py-1 bg-cream-100 hover:bg-cream-100 text-navy-800 rounded text-sm font-semibold transition-colors flex items-center gap-1 mx-auto"
+                          className="px-3 py-1.5 bg-white hover:bg-cream-100 text-navy-800 border-2 border-navy-800 text-xs font-black uppercase tracking-wider shadow-brutal-sm transition-all active:translate-x-[1px] active:translate-y-[1px] flex items-center gap-1 mx-auto"
                         >
-                          <MessageSquare className="w-3 h-3 text-purple-400" />
+                          <MessageSquare className="w-3.5 h-3.5 text-purple-600" />
                           <span>Note</span>
                         </button>
                       </td>
@@ -879,28 +879,28 @@ export function BOQTable() {
 
       {/* Revision Modal */}
       {isRevisionModalOpen && selectedItem && (
-        <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
-          <div className="bg-white border border-navy-800 rounded-xl max-w-md w-full p-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-navy-800 pb-3">
+        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
+          <div className="bg-white border-2 border-navy-800 max-w-md w-full p-6 shadow-brutal">
+            <div className="flex items-center justify-between border-b-2 border-navy-800 pb-3">
               <div>
-                <h3 className="text-sm font-bold text-navy-800">Rate/Budget Revision Request</h3>
-                <p className="text-xs text-navy-800/60 font-mono mt-0.5">{selectedItem.code} · {selectedItem.description}</p>
+                <h3 className="text-sm font-black text-navy-800 uppercase tracking-wide">Rate/Budget Revision Request</h3>
+                <p className="text-xs text-navy-800/60 font-mono font-bold mt-0.5">{selectedItem.code} · {selectedItem.description}</p>
               </div>
             </div>
 
             <form onSubmit={handleApplyRevision} className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs text-navy-800/60 mb-1">Current Approved Budget</label>
+                <label className="block text-xs font-bold text-navy-800/70 mb-1 uppercase tracking-wider">Current Approved Budget</label>
                 <input
                   type="text"
                   disabled
                   value={formatCurrency(selectedItem.budgetAmount, currency)}
-                  className="w-full bg-white border border-navy-800 rounded px-3 py-1.5 text-xs text-navy-800/60 font-mono"
+                  className="w-full bg-cream-100 border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 font-mono font-bold"
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-navy-800 font-medium mb-1">
+                <label className="block text-xs font-bold text-navy-800 mb-1 uppercase tracking-wider">
                   Budget Adjustment Delta (₦)
                 </label>
                 <input
@@ -909,12 +909,12 @@ export function BOQTable() {
                   placeholder="e.g. 5000000 or -2000000"
                   value={revisionDelta}
                   onChange={(e) => setRevisionDelta(Number(e.target.value))}
-                  className="w-full bg-white border border-navy-800 rounded px-3 py-1.5 text-xs text-navy-800 font-mono focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 font-mono font-bold focus:outline-none focus:shadow-brutal-sm"
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-navy-800 font-medium mb-1">
+                <label className="block text-xs font-bold text-navy-800 mb-1 uppercase tracking-wider">
                   Revision Justification / Reason (Audit Requirement)
                 </label>
                 <textarea
@@ -923,21 +923,21 @@ export function BOQTable() {
                   placeholder="e.g. Market price escalation for steel bars approved by Consultant QS..."
                   value={revisionReason}
                   onChange={(e) => setRevisionReason(e.target.value)}
-                  className="w-full bg-white border border-navy-800 rounded px-3 py-1.5 text-xs text-navy-800 focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs font-bold text-navy-800 focus:outline-none focus:shadow-brutal-sm"
                 />
               </div>
 
-              <div className="pt-2 flex items-center justify-end gap-2">
+              <div className="pt-3 flex items-center justify-end gap-3 border-t-2 border-navy-800/10">
                 <button
                   type="button"
                   onClick={() => setIsRevisionModalOpen(false)}
-                  className="px-3 py-1.5 bg-cream-100 hover:bg-cream-100 text-navy-800 rounded-lg text-xs font-semibold transition-colors"
+                  className="px-4 py-2 bg-white hover:bg-cream-100 text-navy-800 border-2 border-navy-800 text-xs font-black uppercase tracking-wider shadow-brutal-sm active:translate-x-[1px] active:translate-y-[1px]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-black uppercase tracking-wider shadow-brutal-sm transition-all active:translate-x-[2px] active:translate-y-[2px]"
                 >
                   Submit Revision
                 </button>
@@ -949,31 +949,31 @@ export function BOQTable() {
 
       {/* Add Item Modal */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
-          <div className="bg-white border border-navy-800 rounded-xl max-w-md w-full p-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-navy-800 pb-3">
-              <h3 className="text-sm font-bold text-navy-800">Add New BOQ Line Item</h3>
+        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
+          <div className="bg-white border-2 border-navy-800 max-w-md w-full p-6 shadow-brutal">
+            <div className="flex items-center justify-between border-b-2 border-navy-800 pb-3">
+              <h3 className="text-sm font-black text-navy-800 uppercase tracking-wide">Add New BOQ Line Item</h3>
             </div>
 
             <form onSubmit={handleCreateItem} className="mt-4 space-y-3">
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-xs text-navy-800 font-medium mb-1">Cost Code</label>
+                  <label className="block text-xs font-bold text-navy-800 mb-1 uppercase tracking-wider">Cost Code</label>
                   <input
                     type="text"
                     required
                     placeholder="e.g. ELEC-01.01"
                     value={newCode}
                     onChange={(e) => setNewCode(e.target.value)}
-                    className="w-full bg-white border border-navy-800 rounded px-3 py-1.5 text-xs text-navy-800 font-mono focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 font-mono font-bold focus:outline-none focus:shadow-brutal-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-navy-800 font-medium mb-1">Category</label>
+                  <label className="block text-xs font-bold text-navy-800 mb-1 uppercase tracking-wider">Category</label>
                   <select
                     value={newCategory}
                     onChange={(e) => setNewCategory(e.target.value as BOQRecord["category"])}
-                    className="w-full bg-white border border-navy-800 rounded px-3 py-1.5 text-xs text-navy-800 focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs font-black text-navy-800 uppercase focus:outline-none focus:shadow-brutal-sm"
                   >
                     <option value="Material">Material</option>
                     <option value="Labour">Labour</option>
@@ -984,69 +984,69 @@ export function BOQTable() {
               </div>
 
               <div>
-                <label className="block text-xs text-navy-800 font-medium mb-1">Description</label>
+                <label className="block text-xs font-bold text-navy-800 mb-1 uppercase tracking-wider">Description</label>
                 <input
                   type="text"
                   required
                   placeholder="Detailed work description"
                   value={newDesc}
                   onChange={(e) => setNewDesc(e.target.value)}
-                  className="w-full bg-white border border-navy-800 rounded px-3 py-1.5 text-xs text-navy-800 focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs font-bold text-navy-800 focus:outline-none focus:shadow-brutal-sm"
                 />
               </div>
 
               <div className="grid grid-cols-3 gap-2">
                 <div>
-                  <label className="block text-xs text-navy-800 font-medium mb-1">Unit</label>
+                  <label className="block text-xs font-bold text-navy-800 mb-1 uppercase tracking-wider">Unit</label>
                   <input
                     type="text"
                     required
                     placeholder="m², m³, ton"
                     value={newUnit}
                     onChange={(e) => setNewUnit(e.target.value)}
-                    className="w-full bg-white border border-navy-800 rounded px-3 py-1.5 text-xs text-navy-800 focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs font-bold text-navy-800 focus:outline-none focus:shadow-brutal-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-navy-800 font-medium mb-1">Quantity</label>
+                  <label className="block text-xs font-bold text-navy-800 mb-1 uppercase tracking-wider">Quantity</label>
                   <input
                     type="number"
                     required
                     value={newQty}
                     onChange={(e) => setNewQty(Number(e.target.value))}
-                    className="w-full bg-white border border-navy-800 rounded px-3 py-1.5 text-xs text-navy-800 font-mono focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 font-mono font-bold focus:outline-none focus:shadow-brutal-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-navy-800 font-medium mb-1">Rate (₦)</label>
+                  <label className="block text-xs font-bold text-navy-800 mb-1 uppercase tracking-wider">Rate (₦)</label>
                   <input
                     type="number"
                     required
                     value={newRate}
                     onChange={(e) => setNewRate(Number(e.target.value))}
-                    className="w-full bg-white border border-navy-800 rounded px-3 py-1.5 text-xs text-navy-800 font-mono focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 font-mono font-bold focus:outline-none focus:shadow-brutal-sm"
                   />
                 </div>
               </div>
 
-              <div className="p-2.5 bg-white border border-navy-800 rounded-lg flex items-center justify-between text-xs">
-                <span className="text-navy-800/60">Total Budget Amount:</span>
-                <span className="text-emerald-500 font-bold font-mono">
+              <div className="p-3 bg-cream-100 border-2 border-navy-800 flex items-center justify-between text-xs">
+                <span className="font-bold text-navy-800/70 uppercase">Total Budget:</span>
+                <span className="text-emerald-600 font-black font-mono">
                   {formatCurrency(newQty * newRate, currency)}
                 </span>
               </div>
 
-              <div className="pt-2 flex items-center justify-end gap-2">
+              <div className="pt-3 flex items-center justify-end gap-3 border-t-2 border-navy-800/10">
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="px-3 py-1.5 bg-cream-100 hover:bg-cream-100 text-navy-800 rounded-lg text-xs font-semibold transition-colors"
+                  className="px-4 py-2 bg-white hover:bg-cream-100 text-navy-800 border-2 border-navy-800 text-xs font-black uppercase tracking-wider shadow-brutal-sm active:translate-x-[1px] active:translate-y-[1px]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-black uppercase tracking-wider shadow-brutal-sm transition-all active:translate-x-[2px] active:translate-y-[2px]"
                 >
                   Create Item
                 </button>
@@ -1058,27 +1058,27 @@ export function BOQTable() {
 
       {/* Edit Item Modal (PRD Missing Checklist #1) */}
       {isEditModalOpen && editingItem && (
-        <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
-          <div className="bg-white border border-navy-800 rounded-xl max-w-md w-full p-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-navy-800 pb-3">
-              <h3 className="text-sm font-bold text-navy-800">Edit BOQ Item: {editingItem.code}</h3>
+        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
+          <div className="bg-white border-2 border-navy-800 max-w-md w-full p-6 shadow-brutal">
+            <div className="flex items-center justify-between border-b-2 border-navy-800 pb-3">
+              <h3 className="text-sm font-black text-navy-800 uppercase tracking-wide">Edit BOQ Item: {editingItem.code}</h3>
             </div>
 
             <form onSubmit={handleSaveEdit} className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs text-navy-800 font-medium mb-1">Description</label>
+                <label className="block text-xs font-bold text-navy-800 mb-1 uppercase tracking-wider">Description</label>
                 <input
                   type="text"
                   required
                   value={editingItem.description}
                   onChange={(e) => setEditingItem({ ...editingItem, description: e.target.value })}
-                  className="w-full bg-white border border-navy-800 rounded px-3 py-1.5 text-xs text-navy-800 focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs font-bold text-navy-800 focus:outline-none focus:shadow-brutal-sm"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-xs text-navy-800 font-medium mb-1">Quantity</label>
+                  <label className="block text-xs font-bold text-navy-800 mb-1 uppercase tracking-wider">Quantity</label>
                   <input
                     type="number"
                     required
@@ -1091,11 +1091,11 @@ export function BOQTable() {
                         budgetAmount: q * editingItem.rate,
                       });
                     }}
-                    className="w-full bg-white border border-navy-800 rounded px-3 py-1.5 text-xs text-navy-800 font-mono focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 font-mono font-bold focus:outline-none focus:shadow-brutal-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-navy-800 font-medium mb-1">Rate (₦)</label>
+                  <label className="block text-xs font-bold text-navy-800 mb-1 uppercase tracking-wider">Rate (₦)</label>
                   <input
                     type="number"
                     required
@@ -1108,22 +1108,22 @@ export function BOQTable() {
                         budgetAmount: editingItem.quantity * r,
                       });
                     }}
-                    className="w-full bg-white border border-navy-800 rounded px-3 py-1.5 text-xs text-navy-800 font-mono focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 font-mono font-bold focus:outline-none focus:shadow-brutal-sm"
                   />
                 </div>
               </div>
 
-              <div className="pt-2 flex items-center justify-end gap-2">
+              <div className="pt-3 flex items-center justify-end gap-3 border-t-2 border-navy-800/10">
                 <button
                   type="button"
                   onClick={() => setIsEditModalOpen(false)}
-                  className="px-3 py-1.5 bg-cream-100 hover:bg-cream-100 text-navy-800 rounded-lg text-xs font-semibold transition-colors"
+                  className="px-4 py-2 bg-white hover:bg-cream-100 text-navy-800 border-2 border-navy-800 text-xs font-black uppercase tracking-wider shadow-brutal-sm active:translate-x-[1px] active:translate-y-[1px]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors"
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white border-2 border-navy-800 text-xs font-black uppercase tracking-wider shadow-brutal-sm transition-all active:translate-x-[2px] active:translate-y-[2px]"
                 >
                   Save Changes
                 </button>
@@ -1135,12 +1135,12 @@ export function BOQTable() {
 
       {/* Variance Note Modal (PRD Missing Checklist #4) */}
       {isVarianceNoteOpen && selectedItem && (
-        <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
-          <div className="bg-white border border-navy-800 rounded-xl max-w-md w-full p-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-navy-800 pb-3">
-              <h3 className="text-sm font-bold text-navy-800">QS Variance Note · {selectedItem.code}</h3>
+        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
+          <div className="bg-white border-2 border-navy-800 max-w-md w-full p-6 shadow-brutal">
+            <div className="flex items-center justify-between border-b-2 border-navy-800 pb-3">
+              <h3 className="text-sm font-black text-navy-800 uppercase tracking-wide">QS Variance Note · {selectedItem.code}</h3>
             </div>
-            <p className="text-xs text-navy-800/60 mt-2">
+            <p className="text-xs font-bold text-navy-800/60 mt-2">
               Attach an audit explanation for this variance (wastage, theft, rate concession). This does not impede reconciliation status.
             </p>
 
@@ -1152,21 +1152,21 @@ export function BOQTable() {
                   placeholder="e.g. Rate concession negotiated with supplier due to bulk cement purchase..."
                   value={varianceNoteText}
                   onChange={(e) => setVarianceNoteText(e.target.value)}
-                  className="w-full bg-white border border-navy-800 rounded px-3 py-1.5 text-xs text-navy-800 focus:outline-none focus:border-purple-500"
+                  className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs font-bold text-navy-800 focus:outline-none focus:shadow-brutal-sm"
                 />
               </div>
 
-              <div className="pt-2 flex items-center justify-end gap-2">
+              <div className="pt-3 flex items-center justify-end gap-3 border-t-2 border-navy-800/10">
                 <button
                   type="button"
                   onClick={() => setIsVarianceNoteOpen(false)}
-                  className="px-3 py-1.5 bg-cream-100 hover:bg-cream-100 text-navy-800 rounded-lg text-xs font-semibold transition-colors"
+                  className="px-4 py-2 bg-white hover:bg-cream-100 text-navy-800 border-2 border-navy-800 text-xs font-black uppercase tracking-wider shadow-brutal-sm active:translate-x-[1px] active:translate-y-[1px]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors"
+                  className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white border-2 border-navy-800 text-xs font-black uppercase tracking-wider shadow-brutal-sm transition-all active:translate-x-[2px] active:translate-y-[2px]"
                 >
                   Save Note
                 </button>
