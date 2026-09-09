@@ -40,12 +40,12 @@ export default function LandingPage() {
       <nav className="sticky top-0 z-50 bg-white border-b-[3px] border-navy-800">
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-[76px] flex items-center justify-between gap-4">
           <Logo size="md" />
-          <div className="hidden lg:flex items-center gap-8 font-black uppercase text-sm tracking-widest">
-            <a href="#features" className="hover:underline decoration-[4px] underline-offset-4">Features</a>
-            <a href="#personas" className="hover:underline decoration-[4px] underline-offset-4">For Teams</a>
-            <a href="#how" className="hover:underline decoration-[4px] underline-offset-4">How it Works</a>
-            <a href="#faq" className="hover:underline decoration-[4px] underline-offset-4">FAQ</a>
-            <a href="#pricing" className="hover:underline decoration-[4px] underline-offset-4">Pricing</a>
+          <div className="hidden lg:flex items-center gap-6 font-black uppercase text-sm tracking-widest">
+            <Link href="/features" className="hover:underline decoration-[4px] underline-offset-4">Features</Link>
+            <Link href="/how-it-works" className="hover:underline decoration-[4px] underline-offset-4">How it Works</Link>
+            <Link href="/pricing" className="hover:underline decoration-[4px] underline-offset-4">Pricing</Link>
+            <Link href="/about" className="hover:underline decoration-[4px] underline-offset-4">About</Link>
+            <Link href="/contact" className="hover:underline decoration-[4px] underline-offset-4">Contact</Link>
           </div>
           <div className="hidden sm:flex items-center gap-3">
             <Link href="/login" className="px-5 py-3 bg-white border-[3px] border-navy-800 font-black uppercase text-sm tracking-wide hover:bg-cream-200 shadow-brutal-sm active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all">Sign In</Link>
@@ -57,10 +57,11 @@ export default function LandingPage() {
         </div>
         {mobileNavOpen && (
           <div className="lg:hidden border-t-[3px] border-navy-800 bg-white p-4 space-y-3">
-            <a href="#features" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-cream-100 border-[3px] border-navy-800 font-black uppercase text-sm">Features</a>
-            <a href="#personas" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-cream-100 border-[3px] border-navy-800 font-black uppercase text-sm">For Teams</a>
-            <a href="#how" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-cream-100 border-[3px] border-navy-800 font-black uppercase text-sm">How it Works</a>
-            <a href="#pricing" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-cream-100 border-[3px] border-navy-800 font-black uppercase text-sm">Pricing</a>
+            <Link href="/features" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-cream-100 border-[3px] border-navy-800 font-black uppercase text-sm">Features</Link>
+            <Link href="/how-it-works" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-cream-100 border-[3px] border-navy-800 font-black uppercase text-sm">How it Works</Link>
+            <Link href="/pricing" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-cream-100 border-[3px] border-navy-800 font-black uppercase text-sm">Pricing</Link>
+            <Link href="/about" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-cream-100 border-[3px] border-navy-800 font-black uppercase text-sm">About</Link>
+            <Link href="/contact" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-cream-100 border-[3px] border-navy-800 font-black uppercase text-sm">Contact</Link>
             <Link href="/dashboard" className="block text-center px-4 py-3 bg-mustard-400 border-[3px] border-navy-800 font-black uppercase text-sm">Launch App →</Link>
             <Link href="/login" className="block text-center px-4 py-3 bg-navy-800 text-white border-[3px] border-navy-800 font-black uppercase text-sm">Sign In</Link>
           </div>
@@ -160,7 +161,7 @@ export default function LandingPage() {
                   </div>
                 </div>
               </div>
-              <div className="absolute -bottom-5 -left-5 bg-mustard-400 border-[3px] border-navy-800 px-5 py-3 shadow-brutal font-black uppercase text-sm hidden md:block">RBAC · Audit Log · Live</div>
+              <div className="absolute -bottom-5 -left-5 bg-mustard-400 border-[3px] border-navy-800 px-5 py-3 shadow-brutal font-black uppercase text-sm hidden md:block">Secure · Auditable · Live</div>
               <div className="absolute -top-5 -right-5 bg-navy-800 text-white border-[3px] border-navy-800 px-4 py-3 shadow-brutal-sm font-mono text-xs font-black hidden md:block">ZERO SPREADSHEET DRIFT</div>
             </div>
           </div>
@@ -193,7 +194,7 @@ export default function LandingPage() {
             <p className="mt-4 text-base font-bold text-navy-800/60 leading-relaxed">Every Nigerian contractor knows the drill: BOQ in Excel, POs in WhatsApp, deliveries on paper, invoices in email. By month 3, no one knows the true cost.</p>
             <div className="mt-8 space-y-4">
               {[
-                { title: "₦4.35M lost on one delivery", desc: "Pulkit Steels billed 30 Tons, delivered 27. Without 3-way match, you pay for air." },
+                { title: "₦4.35M lost on one delivery", desc: "A supplier billed 30 Tons, delivered 27. Without 3-way match, you pay for air." },
                 { title: "±15% BOQ drift by month 6", desc: "No revision audit. QS can’t defend escalation. Client disputes." },
                 { title: "Zero material visibility", desc: "Cement bags counted by eye. Stockouts delay slab pours by days." },
               ].map((item) => (
@@ -331,7 +332,7 @@ export default function LandingPage() {
             <div className="mt-10 space-y-6">
               {[
                 { n: "01", t: "Import BOQ & Lock Baseline", d: "CSV import → locked Approved Budget ₦301.8M. From now, every naira moved needs a delta + reason + approver. No silent edits.", bullets: ["Code · Description · Qty · Rate", "Category: Material / Labour / Plant / Subcon", "Threshold badge: On / Over / Under"] },
-                { n: "02", t: "Execute & Auto-Match", d: "Site orders → RFQ quotes → PO → GRN photo → Invoice. Engine compares PO qty vs GRN vs Invoice — mismatch locks payment.", bullets: ["Requisition High/Critical triage", "RFQ 3-supplier side-by-side", "Pulkit 27 vs 30 Tons → HOLD"] },
+                { n: "02", t: "Execute & Auto-Match", d: "Site orders → RFQ quotes → PO → GRN photo → Invoice. Engine compares PO qty vs GRN vs Invoice — mismatch locks payment.", bullets: ["Requisition High/Critical triage", "RFQ 3-supplier side-by-side", "Billed 30T vs Delivered 27T → Auto-HOLD"] },
                 { n: "03", t: "Close With Confidence", d: "Live variances, commercial GDV ₦1.2B, margin 35%, final account QS notes without blocking. Hand client a defensible close-out.", bullets: ["BOQ vs Actual variance note", "Interim Valuation cert", "Sales & receivables 40% realized"] },
               ].map((s) => (
                 <div key={s.n} className="flex gap-5 bg-white border-[3px] border-navy-800 p-6 shadow-brutal">
@@ -349,7 +350,7 @@ export default function LandingPage() {
             <div className="bg-navy-800 text-white border-[3px] border-navy-800 shadow-brutal p-6">
               <div className="flex items-center gap-2 font-black uppercase text-sm"><Zap className="w-6 h-6 text-mustard-400" /> Why Teams Switch</div>
               <ul className="mt-4 space-y-3">{[
-                "₦4.35M short-delivery caught before payment (Pulkit Steels)",
+                    "₦4.35M short-delivery caught before payment (auto 3-way match)",
                 "±5% threshold — no silent bleed, QS alerted day 1",
                 "Storekeeper: 840 bags on-hand, 800 min → healthy",
                 "PM: 48 workers, Shift #142, 0 lost-time incidents",
@@ -382,7 +383,7 @@ export default function LandingPage() {
           </div>
           <div className="mt-12 grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {[
-              { name: "Starter", price: "Free", sub: "For pilot teams", feats: ["1 Project live", "BOQ + Procurement", "3 Users + RBAC", "Community Support", "Supabase self-host"], cta: "Start Free", dark: false },
+              { name: "Starter", price: "Free", sub: "For pilot teams", feats: ["1 Project live", "BOQ + Procurement", "3 Users + RBAC", "Community Support", "Cloud hosted"], cta: "Start Free", dark: false },
               { name: "Growth", price: "₦45k", sub: "/ month per project", feats: ["Unlimited Projects", "All Site Ops Modules", "Unlimited Users", "RBAC + Audit Log", "Priority WhatsApp", "CSV + Photo proofs"], cta: "Start 14-Day Trial", dark: true, badge: "Most Popular" },
               { name: "Enterprise", price: "Custom", sub: "For developers & groups", feats: ["Commercial Mode 18 modules", "Valuation & Claims", "Sales & Receivables", "Dedicated Success", "SLA & On-Prem", "Naira / USD billing"], cta: "Talk to Founders", dark: false },
             ].map((p) => (
@@ -408,7 +409,7 @@ export default function LandingPage() {
             { q: "What if my site has patchy internet?", a: "Site diary & GRN photo are offline-first. Queue and sync when back on 4G. Audit log shows sync time." },
             { q: "How does RBAC work with 8 roles?", a: "Admin maps permission_keys to roles in role_access. PM sees budget+reports, Storekeeper only stock, QS only BOQ/claims. Seeded 8 users to try instantly." },
             { q: "Can I import my BOQ from Excel?", a: "Yes. CSV import modal parses code, description, unit, qty, rate, auto-computes budget_amount. Test with SUB-01.01…MEP-04.01 sample." },
-            { q: "Is Supabase required?", a: "Dev works without it (fallback seed dataset). For production, set NEXT_PUBLIC_SUPABASE_URL + ANON_KEY — RLS and auth kick in." },
+            { q: "Is cloud setup required?", a: "No — start free, cloud sync is automatic. For self-hosting, contact us for on-prem options." },
             { q: "How is commercial margin computed?", a: "GDV ₦1.2B minus TDC ₦780M = ₦420M (35%). Debt 58% drawn, sales 40% collected live from claims + receivables." },
           ].map((item, idx) => (
             <div key={idx} className="bg-white border-[3px] border-navy-800 shadow-brutal">
@@ -465,7 +466,7 @@ export default function LandingPage() {
               <h4 className="font-black uppercase text-sm">Legal</h4>
               <ul className="mt-3 space-y-2 text-sm font-bold text-navy-800/60">
                 <li>© 2026 CostView</li>
-                <li>Supabase Live · ₦ NGN</li>
+                <li>Live Sync · ₦ NGN</li>
                 <li className="flex items-center gap-2"><span className="w-2.5 h-2.5 bg-green-500 border-2 border-navy-800 rounded-full animate-pulse" /> All systems operational</li>
               </ul>
             </div>
