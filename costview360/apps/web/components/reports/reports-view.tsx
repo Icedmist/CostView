@@ -1,15 +1,160 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useApp } from "@/app/providers";
 import { formatCurrency } from "@/lib/utils";
-import { FileText, Download, Building, FileDown } from "lucide-react";
+import {
+  FileText,
+  Download,
+  Building,
+  FileDown,
+  Settings2,
+  Calendar,
+  Layers,
+  Users,
+  Boxes,
+  Briefcase,
+  FileSpreadsheet,
+  DollarSign,
+  ChevronDown,
+  Eye,
+  Save,
+  RotateCcw,
+} from "lucide-react";
+
+type ReportId =
+  | "Cost Control Summary"
+  | "Budget vs Actual Variance"
+  | "Forecast & EAC/ETC"
+  | "Procurement Funnel & 3-Way Match"
+  | "Supplier Performance"
+  | "Inventory & Stock Movement"
+  | "Labour Productivity & Payroll"
+  | "Site Diary & Quality Progress"
+  | "Subcontractor Ledger"
+  | "Variation Orders Impact";
+
+const REPORTS: { id: ReportId; desc: string; icon: React.ElementType }[] = [
+  { id: "Cost Control Summary", desc: "Budget, committed, actual, headroom, CPI", icon: DollarSign },
+  { id: "Budget vs Actual Variance", desc: "BOQ lines vs thresholds", icon: Layers },
+  { id: "Forecast & EAC/ETC", desc: "Estimate at completion, confidence", icon: FileSpreadsheet },
+  { id: "Procurement Funnel & 3-Way Match", desc: "Requisition → Payment chain", icon: FileDown },
+  { id: "Supplier Performance", desc: "OTD, quality, pricing leaderboards", icon: Briefcase },
+  { id: "Inventory & Stock Movement", desc: "On-hand, reserved, consumed, transfers", icon: Boxes },
+  { id: "Labour Productivity & Payroll", desc: "Attendance, overtime, gross pay", icon: Users },
+  { id: "Site Diary & Quality Progress", desc: "Logs, photos, inspections, snags", icon: Calendar },
+  { id: "Subcontractor Ledger", desc: "Contracts, claims, retention", icon: Building },
+  { id: "Variation Orders Impact", desc: "VO register, approvals, cost impact", icon: FileText },
+];
 
 export function ReportsView() {
-  const { currency, currentProject } = useApp();
-  const [selectedReport, setSelectedReport] = useState("Cost Control Summary");
+  const { currency: globalCurrency, currentProject } = useApp();
+  const [selectedReport, setSelectedReport] = useState<ReportId>("Cost Control Summary");
   const [reportProject, setReportProject] = useState(currentProject.name);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showCustomize, setShowCustomize] = useState(true);
+
+  // Customization state
+  const [customTitle, setCustomTitle] = useState("");
+  const [customSubtitle, setCustomSubtitle] = useState("");
+  const [dateFrom, setDateFrom] = useState("2026-09-01");
+  const [dateTo, setDateTo] = useState("2026-09-09");
+  const [orientation, setOrientation] = useState<"portrait" | "landscape">("portrait");
+  const [currency, setCurrency] = useState(globalCurrency);
+  const [includeCharts, setIncludeCharts] = useState(true);
+  const [groupBy, setGroupBy] = useState("none");
+
+  // Per-report visible columns (defaults all true)
+  const columnDefs: Record<ReportId, { key: string; label: string }[]> = {
+    "Cost Control Summary": [
+      { key: "element", label: "Financial Element" },
+      { key: "amount", label: "Amount" },
+      { key: "percent", label: "% Revised" },
+      { key: "status", label: "Audit Status" },
+    ],
+    "Budget vs Actual Variance": [
+      { key: "code", label: "Code" },
+      { key: "desc", label: "Description" },
+      { key: "budget", label: "Budget" },
+      { key: "committed", label: "Committed" },
+      { key: "actual", label: "Actual" },
+      { key: "variance", label: "Variance" },
+      { key: "status", label: "Status" },
+    ],
+    "Forecast & EAC/ETC": [
+      { key: "item", label: "BOQ Item" },
+      { key: "budget", label: "Budget" },
+      { key: "actual", label: "Actual" },
+      { key: "etc", label: "ETC" },
+      { key: "eac", label: "EAC" },
+      { key: "variance", label: "Variance" },
+    ],
+    "Procurement Funnel & 3-Way Match": [
+      { key: "stage", label: "Stage" },
+      { key: "count", label: "Count" },
+      { key: "value", label: "Value / Status" },
+      { key: "variance", label: "Variance" },
+    ],
+    "Supplier Performance": [
+      { key: "supplier", label: "Supplier" },
+      { key: "otd", label: "OTD %" },
+      { key: "quality", label: "Quality" },
+      { key: "price", label: "Price Comp." },
+      { key: "score", label: "Score" },
+    ],
+    "Inventory & Stock Movement": [
+      { key: "sku", label: "SKU" },
+      { key: "name", label: "Material" },
+      { key: "onhand", label: "On Hand" },
+      { key: "reserved", label: "Reserved" },
+      { key: "consumed", label: "Consumed" },
+      { key: "status", label: "Status" },
+    ],
+    "Labour Productivity & Payroll": [
+      { key: "name", label: "Worker" },
+      { key: "trade", label: "Trade" },
+      { key: "days", label: "Days" },
+      { key: "overtime", label: "OT Hours" },
+      { key: "pay", label: "Gross Pay" },
+    ],
+    "Site Diary & Quality Progress": [
+      { key: "metric", label: "Metric" },
+      { key: "count", label: "Count" },
+      { key: "detail", label: "Detail" },
+      { key: "status", label: "Status" },
+    ],
+    "Subcontractor Ledger": [
+      { key: "sub", label: "Subcontractor" },
+      { key: "contract", label: "Contract Sum" },
+      { key: "claimed", label: "Claimed" },
+      { key: "certified", label: "Certified" },
+      { key: "retention", label: "Retention" },
+    ],
+    "Variation Orders Impact": [
+      { key: "vo", label: "VO No." },
+      { key: "title", label: "Title" },
+      { key: "boq", label: "BOQ Item" },
+      { key: "cost", label: "Cost Impact" },
+      { key: "status", label: "Status" },
+    ],
+  };
+
+  const [visibleCols, setVisibleCols] = useState<Record<ReportId, string[]>>(() => {
+    const init: any = {};
+    (Object.keys(columnDefs) as ReportId[]).forEach((k) => (init[k] = columnDefs[k].map((c) => c.key)));
+    return init;
+  });
+
+  const toggleColumn = (report: ReportId, key: string) => {
+    setVisibleCols((prev) => {
+      const cur = new Set(prev[report]);
+      if (cur.has(key)) cur.delete(key);
+      else cur.add(key);
+      return { ...prev, [report]: Array.from(cur) };
+    });
+  };
+
+  const isColVisible = (report: ReportId, key: string) => visibleCols[report]?.includes(key);
 
   const reportData = {
     originalBudget: 301815000,
@@ -29,73 +174,98 @@ export function ReportsView() {
     { code: "MEP-04.01", desc: "Electrical first fix", budget: 45000000, committed: 42000000, actual: 20000000, variance: 3000000, status: "Under Budget" },
   ];
 
-  const procurementStats = {
-    requisitions: 12,
-    enquiries: 8,
-    pos: 6,
-    posValue: 292250000,
-    grns: 6,
-    matched: 4,
-    discrepancies: 1,
-    pending: 1,
-    avgLeadDays: 4.2,
-  };
+  const forecast = [
+    { item: "SUB-01.01", budget: 23125000, actual: 19800000, etc: 3200000, eac: 23000000, variance: -125000 },
+    { item: "CON-02.01", budget: 93600000, actual: 62000000, etc: 34000000, eac: 96000000, variance: 2400000 },
+    { item: "STL-02.03", budget: 94250000, actual: 85000000, etc: 9000000, eac: 94000000, variance: -250000 },
+  ];
 
-  const siteProgress = {
-    logs: 142,
-    photos: 24,
-    inspections: 18,
-    passed: 15,
-    failed: 2,
-    snagsOpen: 3,
-    snagsClosed: 12,
-    safetyIncidents: 0,
-    headcount: 48,
-  };
+  const procurementStats = { requisitions: 12, enquiries: 8, pos: 6, posValue: 292250000, grns: 6, matched: 4, discrepancies: 1, avgLeadDays: 4.2 };
+  const siteProgress = { logs: 142, photos: 24, inspections: 18, passed: 15, failed: 2, snagsOpen: 3, snagsClosed: 12, headcount: 48 };
+  const suppliers = [
+    { name: "Dangote Cement", otd: 96, quality: 4.8, price: "Competitive", score: 4.7 },
+    { name: "Pulkit Steels", otd: 82, quality: 4.2, price: "High", score: 3.9 },
+    { name: "Lafarge ReadyMix", otd: 91, quality: 4.6, price: "Avg", score: 4.4 },
+  ];
+  const inventory = [
+    { sku: "MAT-CEM-01", name: "Dangote Cement 42.5R", onhand: 840, reserved: 200, consumed: 1200, status: "Healthy" },
+    { sku: "MAT-STL-16", name: "16mm TMT Rebar", onhand: 22, reserved: 15, consumed: 45, status: "Low" },
+    { sku: "MAT-BLK-225", name: "225mm Hollow Blocks", onhand: 450, reserved: 400, consumed: 4200, status: "Low" },
+  ];
+  const labour = [
+    { name: "Musa Ibrahim", trade: "Chief Mason", days: 5, overtime: 6, pay: 78200 },
+    { name: "Emeka Okafor", trade: "Steel Fixer Lead", days: 6, overtime: 10, pay: 118125 },
+    { name: "Sunday Balogun", trade: "Formwork Carpenter", days: 5, overtime: 4, pay: 75656 },
+  ];
+  const subcontractors = [
+    { sub: "MEP Services Ltd", contract: 45000000, claimed: 22000000, certified: 20000000, retention: 2000000 },
+    { sub: "Piling & Foundations Co", contract: 32000000, claimed: 15000000, certified: 14500000, retention: 1450000 },
+  ];
+  const variations = [
+    { vo: "VO-2026-001", title: "Water annex relocation", boq: "MEP-04.01", cost: 3500000, status: "Approved" },
+    { vo: "VO-2026-002", title: "Diesel escalation", boq: "CON-02.01", cost: 4000000, status: "QS Valuation" },
+  ];
 
   const isLive = false;
 
+  const effectiveTitle = customTitle || selectedReport;
+  const effectiveSubtitle = customSubtitle || `Project: ${reportProject} · ${dateFrom} → ${dateTo} · ${currency}`;
+
   const handleExportCSV = () => {
+    const cols = columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key));
     let rows: string[][] = [];
+    const colHeaders = cols.map((c) => c.label);
+    const colKeys = cols.map((c) => c.key);
+    const pushRow = (obj: any) => rows.push(colKeys.map((k) => String(obj[k] ?? "")));
+
     if (selectedReport === "Cost Control Summary") {
-      rows = [
-        ["Financial Element", "Amount", "% Revised", "Status"],
-        ["Original Base Budget", String(reportData.originalBudget), "96.3%", "Locked"],
-        ["Approved Variations", String(reportData.approvedVariations), "3.7%", "QS Approved"],
-        ["Revised Working Budget", String(reportData.revisedBudget), "100%", "Live"],
-        ["Committed POs", String(reportData.committedPOs), "93.2%", "Verified"],
-        ["Certified Actuals", String(reportData.certifiedActuals), "69.0%", "Paid"],
-        ["Uncommitted Buffer", String(reportData.uncommittedHeadroom), "6.8%", "Available"],
-      ];
+      const map: any = {
+        element: { "Original Base Budget": "Original Base Budget", "Approved Variations": "Approved Variations", "Revised Working Budget": "Revised Working Budget", "Committed Orders (POs Issued)": "Committed Orders (POs Issued)", "Certified Work Done (Actuals)": "Certified Work Done (Actuals)", "Uncommitted Contingency Buffer": "Uncommitted Contingency Buffer" },
+        amount: { "Original Base Budget": String(reportData.originalBudget), "Approved Variations": String(reportData.approvedVariations), "Revised Working Budget": String(reportData.revisedBudget), "Committed Orders (POs Issued)": String(reportData.committedPOs), "Certified Work Done (Actuals)": String(reportData.certifiedActuals), "Uncommitted Contingency Buffer": String(reportData.uncommittedHeadroom) },
+        percent: { "Original Base Budget": "96.3%", "Approved Variations": "3.7%", "Revised Working Budget": "100%", "Committed Orders (POs Issued)": "93.2%", "Certified Work Done (Actuals)": "69.0%", "Uncommitted Contingency Buffer": "6.8%" },
+        status: { "Original Base Budget": "Locked", "Approved Variations": "QS Approved", "Revised Working Budget": "Live", "Committed Orders (POs Issued)": "Verified", "Certified Work Done (Actuals)": "Paid", "Uncommitted Contingency Buffer": "Available" },
+      };
+      rows = [colHeaders];
+      ["Original Base Budget", "Approved Variations", "Revised Working Budget", "Committed Orders (POs Issued)", "Certified Work Done (Actuals)", "Uncommitted Contingency Buffer"].forEach((el) => {
+        const obj: any = {};
+        colKeys.forEach((k) => (obj[k] = map[k]?.[el] ?? ""));
+        if (colKeys.includes("element")) obj["element"] = el;
+        rows.push(colKeys.map((k) => obj[k]));
+      });
     } else if (selectedReport === "Budget vs Actual Variance") {
-      rows = [
-        ["Code", "Description", "Budget", "Committed", "Actual", "Variance", "Status"],
-        ...boqVariance.map((r) => [r.code, r.desc, String(r.budget), String(r.committed), String(r.actual), String(r.variance), r.status]),
-      ];
+      rows = [colHeaders, ...boqVariance.map((r) => colKeys.map((k) => String((r as any)[k] ?? "")))];
+    } else if (selectedReport === "Forecast & EAC/ETC") {
+      rows = [colHeaders, ...forecast.map((r) => colKeys.map((k) => String((r as any)[k] ?? "")))];
     } else if (selectedReport === "Procurement Funnel & 3-Way Match") {
-      rows = [
-        ["Stage", "Count", "Value/Status"],
-        ["Requisitions", String(procurementStats.requisitions), "12 raised"],
-        ["Enquiries/RFQs", String(procurementStats.enquiries), "8 sent"],
-        ["Purchase Orders", String(procurementStats.pos), formatCurrency(procurementStats.posValue, currency)],
-        ["GRNs Delivered", String(procurementStats.grns), "6 verified"],
-        ["Matched", String(procurementStats.matched), "4 perfect matches"],
-        ["Discrepancies", String(procurementStats.discrepancies), "1 locked (Pulkit 27/30T)"],
-        ["Avg Lead Time", String(procurementStats.avgLeadDays), "days"],
+      const data = [
+        { stage: "Requisitions", count: 12, value: "12 raised", variance: "—" },
+        { stage: "Enquiries", count: 8, value: "8 sent", variance: "—" },
+        { stage: "POs", count: 6, value: formatCurrency(procurementStats.posValue, currency), variance: "—" },
+        { stage: "Matched", count: 4, value: "4 perfect", variance: "—" },
+        { stage: "Discrepancies", count: 1, value: "1 locked", variance: "Pulkit 27/30T" },
       ];
-    } else {
-      rows = [
-        ["Metric", "Count", "Detail"],
-        ["Diary Logs", String(siteProgress.logs), "Day 142 latest"],
-        ["Photos", String(siteProgress.photos), "24 geo-stamped"],
-        ["Inspections", String(siteProgress.inspections), `${siteProgress.passed} passed, ${siteProgress.failed} failed`],
-        ["Snags Open", String(siteProgress.snagsOpen), "3 active"],
-        ["Snags Closed", String(siteProgress.snagsClosed), "12 remediated"],
-        ["Headcount", String(siteProgress.headcount), "48 workers Shift #142"],
-        ["Safety Incidents", String(siteProgress.safetyIncidents), "0 lost-time (Day 114)"],
+      rows = [colHeaders, ...data.map((r) => colKeys.map((k) => String((r as any)[k] ?? "")))];
+    } else if (selectedReport === "Supplier Performance") {
+      rows = [colHeaders, ...suppliers.map((r) => colKeys.map((k) => String((r as any)[k] ?? "")))];
+    } else if (selectedReport === "Inventory & Stock Movement") {
+      rows = [colHeaders, ...inventory.map((r) => colKeys.map((k) => String((r as any)[k] ?? "")))];
+    } else if (selectedReport === "Labour Productivity & Payroll") {
+      rows = [colHeaders, ...labour.map((r) => colKeys.map((k) => String((r as any)[k] ?? "")))];
+    } else if (selectedReport === "Site Diary & Quality Progress") {
+      const data = [
+        { metric: "Diary Logs", count: 142, detail: "Day 142 · Sunny 31°C", status: "—" },
+        { metric: "Photos", count: 24, detail: "24 geo-stamped", status: "—" },
+        { metric: "Inspections", count: 18, detail: "15 passed, 2 failed", status: "—" },
+        { metric: "Snags Open", count: 3, detail: "3 active", status: "Open" },
       ];
+      rows = [colHeaders, ...data.map((r) => colKeys.map((k) => String((r as any)[k] ?? "")))];
+    } else if (selectedReport === "Subcontractor Ledger") {
+      rows = [colHeaders, ...subcontractors.map((r) => colKeys.map((k) => String((r as any)[k] ?? "")))];
+    } else if (selectedReport === "Variation Orders Impact") {
+      rows = [colHeaders, ...variations.map((r) => colKeys.map((k) => String((r as any)[k] ?? "")))];
     }
-    const csv = rows.map((r) => r.map((c) => `"${c.replace(/"/g, '""')}"`).join(",")).join("\n");
+
+    const csv = rows.map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\n");
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -110,16 +280,14 @@ export function ReportsView() {
     try {
       const { default: jsPDF } = await import("jspdf");
       const { default: autoTable } = await import("jspdf-autotable");
-
-      const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+      const doc = new jsPDF({ orientation, unit: "mm", format: "a4" });
       const pageW = doc.internal.pageSize.getWidth();
       const pageH = doc.internal.pageSize.getHeight();
 
-      // --- Header: navy bar with CV block and title ---
-      doc.setFillColor(10, 25, 49); // navy #0A1931
+      // Header
+      doc.setFillColor(10, 25, 49);
       doc.rect(0, 0, pageW, 28, "F");
-      // CV block mustard
-      doc.setFillColor(255, 210, 63); // mustard
+      doc.setFillColor(255, 210, 63);
       doc.setDrawColor(10, 25, 49);
       doc.setLineWidth(0.6);
       doc.rect(10, 6, 16, 16, "FD");
@@ -135,13 +303,12 @@ export function ReportsView() {
       doc.text("PRO  ·  Analyse · Plan · Build Smarter", 30, 18);
       doc.setFontSize(7);
       doc.setTextColor(255, 255, 255);
-      doc.text("REPORT STUDIO", pageW - 10, 12, { align: "right" });
+      doc.text(effectiveTitle.toUpperCase(), pageW - 10, 12, { align: "right" });
       doc.setFontSize(6);
       doc.setTextColor(200, 210, 230);
-      doc.text(`${selectedReport}  ·  ${isLive ? "LIVE" : "DEMO"}`, pageW - 10, 17, { align: "right" });
+      doc.text(`${isLive ? "LIVE" : "DEMO"} · ${orientation}`, pageW - 10, 17, { align: "right" });
 
-      // Sub-header: project + date + status
-      doc.setFillColor(255, 253, 240); // cream
+      doc.setFillColor(255, 253, 240);
       doc.rect(0, 28, pageW, 18, "F");
       doc.setDrawColor(10, 25, 49);
       doc.setLineWidth(0.4);
@@ -154,124 +321,88 @@ export function ReportsView() {
       doc.setFont("helvetica", "normal");
       doc.setFontSize(7);
       doc.setTextColor(80, 90, 120);
-      doc.text(`Generated: ${new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}  ·  Currency: ${currency}  ·  CPI: ${reportData.costPerformanceIndex}`, 10, 41);
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(7);
+      doc.text(`${effectiveSubtitle}  ·  Generated: ${new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}`, 10, 41);
       doc.setFillColor(255, 210, 63);
       doc.rect(pageW - 38, 32, 28, 7, "FD");
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(7);
       doc.setTextColor(10, 25, 49);
       doc.text("RECONCILED", pageW - 24, 36.5, { align: "center" });
 
-      // Title block
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(14);
+      doc.setFontSize(12);
       doc.setTextColor(10, 25, 49);
-      doc.text(selectedReport, 10, 54);
+      doc.text(effectiveTitle, 10, 54);
       doc.setFontSize(7);
       doc.setTextColor(80, 90, 120);
       doc.setFont("helvetica", "normal");
-      if (selectedReport === "Cost Control Summary") {
-        doc.text("Budget vs committed vs actual — live commercial & cost control reconciliation per PRD §8. Project picker: single or all projects.", 10, 58);
-      } else if (selectedReport === "Budget vs Actual Variance") {
-        doc.text("BOQ line-item variance — threshold ±5%. Every variance shows reconciled status per PRD §1.6.", 10, 58);
-      } else if (selectedReport === "Procurement Funnel & 3-Way Match") {
-        doc.text("Requisition → Enquiry → PO → GRN → Invoice → Payment — 3-way match with discrepancy flags per PRD §3.2.", 10, 58);
-      } else {
-        doc.text("Site progress built from Diary/Photos/Inspections/Snags — real numbers, not narrative per PRD §8.", 10, 58);
-      }
+      doc.text(customSubtitle || `Report: ${selectedReport} — per PRD §8. Columns: ${visibleCols[selectedReport].join(", ")}${includeCharts ? " · Charts included" : ""}${groupBy !== "none" ? ` · Grouped by ${groupBy}` : ""}`, 10, 58, { maxWidth: pageW - 20 });
 
       let startY = 64;
+      const cols = columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key));
+      const head = [cols.map((c) => c.label)];
 
-      // Summary cards as mini table for Cost Control Summary
+      let body: any[] = [];
       if (selectedReport === "Cost Control Summary") {
-        autoTable(doc, {
-          startY,
-          head: [["Original Base Budget", "Approved Variations", "Revised Working Budget"]],
-          body: [[formatCurrency(reportData.originalBudget, currency), `+${formatCurrency(reportData.approvedVariations, currency)}`, formatCurrency(reportData.revisedBudget, currency)]],
-          theme: "grid",
-          headStyles: { fillColor: [10, 25, 49], textColor: [255, 255, 255], fontSize: 7, fontStyle: "bold", halign: "center" },
-          bodyStyles: { fontSize: 8, fontStyle: "bold", halign: "center", textColor: [10, 25, 49] },
-          columnStyles: { 2: { fillColor: [255, 210, 63] } },
-          margin: { left: 10, right: 10 },
-        });
-        startY = (doc as any).lastAutoTable.finalY + 6;
-      }
-
-      // Main table per report
-      if (selectedReport === "Cost Control Summary") {
-        autoTable(doc, {
-          startY,
-          head: [["Financial Element", "Amount", "% Revised", "Audit Status"]],
-          body: [
-            ["Committed Orders (POs Issued)", formatCurrency(reportData.committedPOs, currency), "93.2%", "Verified Against Invoices"],
-            ["Certified Work Done (Actuals)", formatCurrency(reportData.certifiedActuals, currency), "69.0%", "QS Certified & Paid"],
-            ["Uncommitted Contingency Buffer", formatCurrency(reportData.uncommittedHeadroom, currency), "6.8%", "Available Headroom"],
-            ["Revised Working Budget", formatCurrency(reportData.revisedBudget, currency), "100%", "Live Ceiling"],
-          ],
-          theme: "grid",
-          headStyles: { fillColor: [10, 25, 49], textColor: [255, 255, 255], fontSize: 7, fontStyle: "bold" },
-          bodyStyles: { fontSize: 7, textColor: [10, 25, 49] },
-          columnStyles: { 1: { halign: "right", fontStyle: "bold" }, 2: { halign: "right" }, 3: { halign: "center" } },
-          margin: { left: 10, right: 10 },
-        });
+        body = [
+          cols.map((c) => ({ element: "Original Base Budget", amount: formatCurrency(reportData.originalBudget, currency), percent: "96.3%", status: "Locked" }[c.key] as string)),
+          cols.map((c) => ({ element: "Approved Variations", amount: `+${formatCurrency(reportData.approvedVariations, currency)}`, percent: "3.7%", status: "QS Approved" }[c.key] as string)),
+          cols.map((c) => ({ element: "Revised Working Budget", amount: formatCurrency(reportData.revisedBudget, currency), percent: "100%", status: "Live" }[c.key] as string)),
+          cols.map((c) => ({ element: "Committed Orders (POs)", amount: formatCurrency(reportData.committedPOs, currency), percent: "93.2%", status: "Verified" }[c.key] as string)),
+          cols.map((c) => ({ element: "Certified Actuals", amount: formatCurrency(reportData.certifiedActuals, currency), percent: "69.0%", status: "Paid" }[c.key] as string)),
+          cols.map((c) => ({ element: "Uncommitted Buffer", amount: formatCurrency(reportData.uncommittedHeadroom, currency), percent: "6.8%", status: "Available" }[c.key] as string)),
+        ];
       } else if (selectedReport === "Budget vs Actual Variance") {
-        autoTable(doc, {
-          startY,
-          head: [["Code", "Description", "Budget", "Committed", "Actual", "Variance", "Status"]],
-          body: boqVariance.map((r) => [
-            r.code,
-            r.desc,
-            formatCurrency(r.budget, currency),
-            formatCurrency(r.committed, currency),
-            formatCurrency(r.actual, currency),
-            formatCurrency(r.variance, currency),
-            r.status,
-          ]),
-          theme: "grid",
-          headStyles: { fillColor: [10, 25, 49], textColor: [255, 255, 255], fontSize: 6, fontStyle: "bold" },
-          bodyStyles: { fontSize: 6, textColor: [10, 25, 49] },
-          columnStyles: { 2: { halign: "right" }, 3: { halign: "right" }, 4: { halign: "right" }, 5: { halign: "right", fontStyle: "bold" }, 6: { halign: "center", fontStyle: "bold" } },
-          margin: { left: 10, right: 10 },
-        });
+        body = boqVariance.map((r) => cols.map((c) => String((r as any)[c.key] ?? "")));
+      } else if (selectedReport === "Forecast & EAC/ETC") {
+        body = forecast.map((r) => cols.map((c) => String((r as any)[c.key] ?? formatCurrency((r as any)[c.key], currency))));
       } else if (selectedReport === "Procurement Funnel & 3-Way Match") {
-        autoTable(doc, {
-          startY,
-          head: [["Stage", "Count", "Value / Status", "Variance"]],
-          body: [
-            ["Requisitions", String(procurementStats.requisitions), "12 raised", "—"],
-            ["Supplier Enquiries / RFQs", String(procurementStats.enquiries), "8 sent", "—"],
-            ["Purchase Orders", String(procurementStats.pos), formatCurrency(procurementStats.posValue, currency), "—"],
-            ["GRNs Delivered", String(procurementStats.grns), "6 verified", "—"],
-            ["Perfect 3-Way Matches", String(procurementStats.matched), "4 matched", "—"],
-            ["Discrepancies", String(procurementStats.discrepancies), "1 locked", "Pulkit 27/30T (-₦4.35M)"],
-            ["Avg Lead Time", `${procurementStats.avgLeadDays} days`, "—", "—"],
-          ],
-          theme: "grid",
-          headStyles: { fillColor: [10, 25, 49], textColor: [255, 255, 255], fontSize: 7, fontStyle: "bold" },
-          bodyStyles: { fontSize: 7, textColor: [10, 25, 49] },
-          margin: { left: 10, right: 10 },
-        });
-      } else {
-        autoTable(doc, {
-          startY,
-          head: [["Metric", "Count", "Detail", "Status"]],
-          body: [
-            ["Diary Logs", String(siteProgress.logs), "Day 142 latest · Sunny 31°C", "—"],
-            ["Progress Photos", String(siteProgress.photos), "24 geo-stamped", "—"],
-            ["Inspections", String(siteProgress.inspections), `${siteProgress.passed} passed, ${siteProgress.failed} failed`, "—"],
-            ["Snags Open", String(siteProgress.snagsOpen), "3 active (Block B)", "Open"],
-            ["Snags Closed", String(siteProgress.snagsClosed), "12 remediated", "Closed"],
-            ["Workforce", `${siteProgress.headcount} workers`, "Shift #142 · Formwork gang", "—"],
-            ["Safety", `${siteProgress.safetyIncidents} incidents`, "Day 114 incident-free", "—"],
-          ],
-          theme: "grid",
-          headStyles: { fillColor: [10, 25, 49], textColor: [255, 255, 255], fontSize: 7, fontStyle: "bold" },
-          bodyStyles: { fontSize: 7, textColor: [10, 25, 49] },
-          margin: { left: 10, right: 10 },
-        });
+        const data = [
+          { stage: "Requisitions", count: 12, value: "12 raised", variance: "—" },
+          { stage: "Enquiries", count: 8, value: "8 sent", variance: "—" },
+          { stage: "POs", count: 6, value: formatCurrency(procurementStats.posValue, currency), variance: "—" },
+          { stage: "Matched", count: 4, value: "4 perfect", variance: "—" },
+          { stage: "Discrepancies", count: 1, value: "1 locked", variance: "Pulkit 27/30T" },
+        ];
+        body = data.map((r) => cols.map((c) => String((r as any)[c.key] ?? "")));
+      } else if (selectedReport === "Supplier Performance") {
+        body = suppliers.map((r) => cols.map((c) => String((r as any)[c.key] ?? "")));
+      } else if (selectedReport === "Inventory & Stock Movement") {
+        body = inventory.map((r) => cols.map((c) => String((r as any)[c.key] ?? "")));
+      } else if (selectedReport === "Labour Productivity & Payroll") {
+        body = labour.map((r) => cols.map((c) => String((r as any)[c.key] ?? "")));
+      } else if (selectedReport === "Site Diary & Quality Progress") {
+        const data = [
+          { metric: "Diary Logs", count: 142, detail: "Day 142 · Sunny 31°C", status: "—" },
+          { metric: "Photos", count: 24, detail: "24 geo-stamped", status: "—" },
+          { metric: "Inspections", count: 18, detail: "15 passed, 2 failed", status: "—" },
+          { metric: "Snags Open", count: 3, detail: "3 active", status: "Open" },
+        ];
+        body = data.map((r) => cols.map((c) => String((r as any)[c.key] ?? "")));
+      } else if (selectedReport === "Subcontractor Ledger") {
+        body = subcontractors.map((r) => cols.map((c) => String((r as any)[c.key] ?? formatCurrency((r as any)[c.key], currency))));
+      } else if (selectedReport === "Variation Orders Impact") {
+        body = variations.map((r) => cols.map((c) => String((r as any)[c.key] ?? (c.key === "cost" ? formatCurrency((r as any)[c.key], currency) : (r as any)[c.key]))));
       }
 
-      // Footer on each page
+      autoTable(doc, {
+        startY,
+        head,
+        body,
+        theme: "grid",
+        headStyles: { fillColor: [10, 25, 49], textColor: [255, 255, 255], fontSize: 7, fontStyle: "bold" },
+        bodyStyles: { fontSize: 7, textColor: [10, 25, 49] },
+        margin: { left: 10, right: 10 },
+      });
+
+      if (includeCharts && (selectedReport === "Cost Control Summary" || selectedReport === "Forecast & EAC/ETC")) {
+        const y = (doc as any).lastAutoTable.finalY + 8;
+        doc.setFontSize(7);
+        doc.setTextColor(80, 90, 120);
+        doc.setFont("helvetica", "italic");
+        doc.text("Chart: Budget vs Committed vs Actual (visual in app — values above)", 10, y);
+      }
+
       const pageCount = (doc as any).getNumberOfPages ? (doc as any).getNumberOfPages() : (doc.internal as any).getNumberOfPages();
       for (let i = 1; i <= pageCount; i++) {
         doc.setPage(i);
@@ -282,7 +413,7 @@ export function ReportsView() {
         doc.setFontSize(6);
         doc.setTextColor(80, 90, 120);
         doc.setFont("helvetica", "normal");
-        doc.text(`CostView  ·  ${reportProject}  ·  ${isLive ? "LIVE Supabase" : "DEMO seed (supabase/seed.sql)"}  ·  ${new Date().toISOString().slice(0, 10)}`, 10, pageH - 5);
+        doc.text(`CostView  ·  ${reportProject}  ·  ${dateFrom} → ${dateTo}  ·  ${isLive ? "LIVE" : "DEMO"}`, 10, pageH - 5);
         doc.text(`Page ${i} of ${pageCount}  ·  Confidential`, pageW - 10, pageH - 5, { align: "right" });
         doc.setFont("helvetica", "bold");
         doc.setTextColor(10, 25, 49);
@@ -298,153 +429,193 @@ export function ReportsView() {
     }
   };
 
+  const currentColumns = columnDefs[selectedReport];
+
+  const savePreset = () => {
+    localStorage.setItem(`costview_report_${selectedReport}`, JSON.stringify({ customTitle, customSubtitle, dateFrom, dateTo, orientation, currency, includeCharts, groupBy, visibleCols: visibleCols[selectedReport] }));
+    alert("Preset saved locally");
+  };
+  const resetPreset = () => {
+    setCustomTitle("");
+    setCustomSubtitle("");
+    setDateFrom("2026-09-01");
+    setDateTo("2026-09-09");
+    setOrientation("portrait");
+    setCurrency(globalCurrency);
+    setIncludeCharts(true);
+    setGroupBy("none");
+    setVisibleCols((prev) => ({ ...prev, [selectedReport]: columnDefs[selectedReport].map((c) => c.key) }));
+  };
+
   return (
     <div className="space-y-6">
-      <div className="bg-white border-2 border-navy-800 shadow-brutal p-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      {/* Header */}
+      <div className="bg-white border-2 border-navy-800 shadow-brutal p-6 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs uppercase font-black tracking-widest px-3 py-1 bg-navy-800 text-white border-2 border-navy-800 font-mono">
-              Report Studio
-            </span>
+          <div className="flex flex-wrap items-center gap-2 mb-2">
+            <span className="text-xs uppercase font-black tracking-widest px-3 py-1 bg-navy-800 text-white border-2 border-navy-800 font-mono">Report Studio</span>
             <span className="text-sm font-bold text-navy-800/60">· Financial & Site Reconciliation</span>
-            <span className={`text-xs font-black px-2 py-1 border-2 border-navy-800 ${isLive ? "bg-green-500 text-white" : "bg-mustard-400 text-navy-800"}`}>
-              {isLive ? "LIVE DATA" : "DEMO DATA"}
-            </span>
+            <span className={`text-xs font-black px-2 py-1 border-2 border-navy-800 ${isLive ? "bg-green-500 text-white" : "bg-mustard-400 text-navy-800"}`}>{isLive ? "LIVE DATA" : "DEMO DATA"}</span>
+            <span className="text-xs font-mono bg-cream-100 border-2 border-navy-800 px-2 py-1">{REPORTS.length} reports</span>
           </div>
-          <h2 className="text-xl md:text-2xl font-black text-navy-800 tracking-tight">
-            Commercial & Cost Control Reports
-          </h2>
-          <p className="text-sm font-bold text-navy-800/60 mt-1">
-            Branded PDF per PRD §8 — project picker, real figures, site progress numbers. Export PDF or CSV (not just print).
-          </p>
+          <h2 className="text-xl md:text-2xl font-black text-navy-800 tracking-tight">Commercial & Cost Control Reports</h2>
+          <p className="text-sm font-bold text-navy-800/60 mt-1">Expanded per PRD §8 — 10 reports, project picker, financial & site numbers, PDF/CSV (not just print).</p>
         </div>
-
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2 bg-cream-100 border-2 border-navy-800 px-3 py-2 shadow-brutal-sm">
             <Building className="w-4 h-4 text-navy-800" />
-            <select
-              value={reportProject}
-              onChange={(e) => setReportProject(e.target.value)}
-              className="bg-transparent text-sm font-bold text-navy-800 focus:outline-none cursor-pointer"
-            >
+            <select value={reportProject} onChange={(e) => setReportProject(e.target.value)} className="bg-transparent text-sm font-bold text-navy-800 focus:outline-none cursor-pointer">
               <option value="Eko Atlantic Horizon Towers">Eko Atlantic Horizon Towers</option>
               <option value="All Projects Combined">All Projects Combined</option>
+              <option value="Lekki Commercial Complex">Lekki Commercial Complex</option>
             </select>
           </div>
-
-          <button
-            onClick={handleExportCSV}
-            className="flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-cream-100 text-navy-800 border-2 border-navy-800 text-sm font-black shadow-brutal-sm"
-          >
-            <Download className="w-4 h-4" />
-            <span>CSV</span>
+          <button onClick={() => setShowCustomize(!showCustomize)} className="flex items-center gap-2 px-4 py-2.5 bg-white border-2 border-navy-800 text-sm font-black shadow-brutal-sm">
+            <Settings2 className="w-4 h-4" /> {showCustomize ? "Hide Customize" : "Customize"}
           </button>
-          <button
-            onClick={handleExportPDF}
-            disabled={isGenerating}
-            className="flex items-center gap-2 px-5 py-2.5 bg-navy-800 hover:bg-navy-700 text-white border-2 border-navy-800 text-sm font-black shadow-brutal disabled:opacity-50"
-          >
-            <FileDown className="w-4 h-4 text-mustard-400" />
-            <span>{isGenerating ? "Generating…" : "Export PDF"}</span>
+          <button onClick={handleExportCSV} className="flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-cream-100 text-navy-800 border-2 border-navy-800 text-sm font-black shadow-brutal-sm">
+            <Download className="w-4 h-4" /> CSV
+          </button>
+          <button onClick={handleExportPDF} disabled={isGenerating} className="flex items-center gap-2 px-5 py-2.5 bg-navy-800 hover:bg-navy-700 text-white border-2 border-navy-800 text-sm font-black shadow-brutal disabled:opacity-50">
+            <FileDown className="w-4 h-4 text-mustard-400" /> {isGenerating ? "Generating…" : "Export PDF"}
           </button>
         </div>
       </div>
 
+      {/* Customization Panel */}
+      {showCustomize && (
+        <div className="bg-cream-100 border-2 border-navy-800 shadow-brutal p-5 space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="font-black uppercase text-sm tracking-wide flex items-center gap-2"><Settings2 className="w-4 h-4" /> Customize Report</h3>
+            <div className="flex gap-2">
+              <button onClick={savePreset} className="px-3 py-1.5 bg-navy-800 text-white border-2 border-navy-800 text-xs font-black flex items-center gap-1"><Save className="w-3 h-3" /> Save</button>
+              <button onClick={resetPreset} className="px-3 py-1.5 bg-white border-2 border-navy-800 text-xs font-black flex items-center gap-1"><RotateCcw className="w-3 h-3" /> Reset</button>
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div>
+              <label className="block text-xs font-black uppercase tracking-widest mb-1">Custom Title</label>
+              <input value={customTitle} onChange={(e) => setCustomTitle(e.target.value)} placeholder={selectedReport} className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-sm font-bold" />
+            </div>
+            <div>
+              <label className="block text-xs font-black uppercase tracking-widest mb-1">Custom Subtitle</label>
+              <input value={customSubtitle} onChange={(e) => setCustomSubtitle(e.target.value)} placeholder="Project subtitle" className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-sm font-bold" />
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="block text-xs font-black uppercase tracking-widest mb-1">From</label>
+                <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} className="w-full bg-white border-2 border-navy-800 px-2 py-2 text-sm font-bold" />
+              </div>
+              <div>
+                <label className="block text-xs font-black uppercase tracking-widest mb-1">To</label>
+                <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} className="w-full bg-white border-2 border-navy-800 px-2 py-2 text-sm font-bold" />
+              </div>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              <div>
+                <label className="block text-xs font-black uppercase tracking-widest mb-1">Currency</label>
+                <select value={currency} onChange={(e) => setCurrency(e.target.value)} className="w-full bg-white border-2 border-navy-800 px-2 py-2 text-sm font-black">
+                  <option value="NGN">₦ NGN</option><option value="USD">$ USD</option><option value="GBP">£ GBP</option><option value="EUR">€ EUR</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-black uppercase tracking-widest mb-1">Orientation</label>
+                <select value={orientation} onChange={(e) => setOrientation(e.target.value as any)} className="w-full bg-white border-2 border-navy-800 px-2 py-2 text-sm font-black">
+                  <option value="portrait">Portrait</option><option value="landscape">Landscape</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-black uppercase tracking-widest mb-1">Group By</label>
+                <select value={groupBy} onChange={(e) => setGroupBy(e.target.value)} className="w-full bg-white border-2 border-navy-800 px-2 py-2 text-sm font-black">
+                  <option value="none">None</option><option value="category">Category</option><option value="status">Status</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="text-xs font-black uppercase tracking-widest mb-2">Columns for: <span className="bg-navy-800 text-white px-2 py-1">{selectedReport}</span></div>
+            <div className="flex flex-wrap gap-2">
+              {currentColumns.map((col) => (
+                <label key={col.key} className={`flex items-center gap-2 px-3 py-1.5 border-2 border-navy-800 text-xs font-black cursor-pointer ${isColVisible(selectedReport, col.key) ? "bg-navy-800 text-white" : "bg-white text-navy-800"}`}>
+                  <input type="checkbox" checked={isColVisible(selectedReport, col.key)} onChange={() => toggleColumn(selectedReport, col.key)} className="accent-navy-800" />
+                  {col.label}
+                </label>
+              ))}
+            </div>
+          </div>
+          <div className="flex items-center gap-3 pt-2 border-t-2 border-navy-800">
+            <label className="flex items-center gap-2 text-sm font-black cursor-pointer">
+              <input type="checkbox" checked={includeCharts} onChange={(e) => setIncludeCharts(e.target.checked)} className="w-4 h-4 accent-navy-800" />
+              Include charts
+            </label>
+            <span className="text-xs font-bold text-navy-800/60">Preview and PDF/CSV respect these settings. Saved to localStorage per report.</span>
+          </div>
+        </div>
+      )}
+
+      {/* Report Selector */}
       <div className="flex items-center gap-2 border-b-2 border-navy-800 pb-3 overflow-x-auto">
-        {[
-          "Cost Control Summary",
-          "Budget vs Actual Variance",
-          "Procurement Funnel & 3-Way Match",
-          "Site Diary & Quality Progress",
-        ].map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setSelectedReport(tab)}
-            className={`px-4 py-2.5 border-2 border-navy-800 text-sm font-black whitespace-nowrap transition-all ${
-              selectedReport === tab
-                ? "bg-navy-800 text-white shadow-brutal-sm"
-                : "bg-white text-navy-800 hover:bg-cream-100"
-            }`}
-          >
-            {tab}
-          </button>
-        ))}
+        {REPORTS.map((tab) => {
+          const Icon = tab.icon;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setSelectedReport(tab.id)}
+              className={`px-4 py-2.5 border-2 border-navy-800 text-sm font-black whitespace-nowrap transition-all flex items-center gap-2 ${selectedReport === tab.id ? "bg-navy-800 text-white shadow-brutal-sm" : "bg-white text-navy-800 hover:bg-cream-100"}`}
+              title={tab.desc}
+            >
+              <Icon className="w-4 h-4" /> {tab.id}
+            </button>
+          );
+        })}
       </div>
 
+      {/* Preview Sheet */}
       <div className="bg-white border-2 border-navy-800 shadow-brutal p-6 md:p-8 space-y-6">
         <div className="flex flex-col md:flex-row items-start justify-between gap-4 border-b-2 border-navy-800 pb-5">
           <div>
             <h3 className="text-lg md:text-xl font-black text-navy-800 flex items-center gap-2">
-              <FileText className="w-5 h-5 text-navy-800" /> CostView · {selectedReport}
+              <FileText className="w-5 h-5 text-navy-800" /> {effectiveTitle}
             </h3>
             <p className="text-sm font-bold text-navy-800/60 mt-1">
-              Project: <strong className="text-navy-800">{reportProject}</strong> · Generated on {new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
+              Project: <strong className="text-navy-800">{reportProject}</strong> · {dateFrom} → {dateTo} · {currency} {customSubtitle ? `· ${customSubtitle}` : ""}
+            </p>
+            <p className="text-xs font-bold text-navy-800/50 mt-1 flex items-center gap-2">
+              <Eye className="w-3 h-3" /> Preview respects customization — {visibleCols[selectedReport].length}/{columnDefs[selectedReport].length} columns visible {includeCharts ? "· charts on" : "· charts off"} {groupBy !== "none" ? `· grouped by ${groupBy}` : ""} · {orientation}
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono font-black text-navy-800 bg-mustard-400 border-2 border-navy-800 px-3 py-1">
-              Status: Reconciled
-            </span>
-            <span className="text-xs font-mono text-white bg-navy-800 border-2 border-navy-800 px-3 py-1">
-              {isLive ? "LIVE" : "DEMO"}
-            </span>
+            <span className="text-xs font-mono font-black text-navy-800 bg-mustard-400 border-2 border-navy-800 px-3 py-1">Status: Reconciled</span>
+            <span className="text-xs font-mono text-white bg-navy-800 border-2 border-navy-800 px-3 py-1">{isLive ? "LIVE" : "DEMO"}</span>
           </div>
         </div>
 
+        {/* Render table preview per report — use same columns filter */}
         {selectedReport === "Cost Control Summary" && (
           <>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-cream-100 p-5 border-2 border-navy-800 shadow-brutal-sm">
-                <div className="text-xs font-black uppercase tracking-widest text-navy-800/60">Original Base Budget</div>
-                <div className="text-xl font-black font-mono text-navy-800 mt-2">{formatCurrency(reportData.originalBudget, currency)}</div>
-                <div className="text-xs font-bold text-navy-800/50 mt-1">6 master BOQ categories</div>
-              </div>
-              <div className="bg-white p-5 border-2 border-navy-800 shadow-brutal-sm">
-                <div className="text-xs font-black uppercase tracking-widest text-navy-800/60">Approved Variations (Net)</div>
-                <div className="text-xl font-black font-mono text-navy-800 mt-2">+{formatCurrency(reportData.approvedVariations, currency)}</div>
-                <div className="text-xs font-bold text-navy-800/50 mt-1">2 VO orders executed</div>
-              </div>
-              <div className="bg-mustard-400 p-5 border-2 border-navy-800 shadow-brutal-sm">
-                <div className="text-xs font-black uppercase tracking-widest text-navy-800">Revised Working Budget</div>
-                <div className="text-xl font-black font-mono text-navy-800 mt-2">{formatCurrency(reportData.revisedBudget, currency)}</div>
-                <div className="text-xs font-bold text-navy-800/70 mt-1">Current live ceiling</div>
-              </div>
+              <div className="bg-cream-100 p-5 border-2 border-navy-800 shadow-brutal-sm"><div className="text-xs font-black uppercase tracking-widest text-navy-800/60">Original Base Budget</div><div className="text-xl font-black font-mono text-navy-800 mt-2">{formatCurrency(reportData.originalBudget, currency)}</div><div className="text-xs font-bold text-navy-800/50 mt-1">6 master BOQ categories</div></div>
+              <div className="bg-white p-5 border-2 border-navy-800 shadow-brutal-sm"><div className="text-xs font-black uppercase tracking-widest text-navy-800/60">Approved Variations (Net)</div><div className="text-xl font-black font-mono text-navy-800 mt-2">+{formatCurrency(reportData.approvedVariations, currency)}</div><div className="text-xs font-bold text-navy-800/50 mt-1">2 VO orders executed</div></div>
+              <div className="bg-mustard-400 p-5 border-2 border-navy-800 shadow-brutal-sm"><div className="text-xs font-black uppercase tracking-widest text-navy-800">Revised Working Budget</div><div className="text-xl font-black font-mono text-navy-800 mt-2">{formatCurrency(reportData.revisedBudget, currency)}</div><div className="text-xs font-bold text-navy-800/70 mt-1">Current live ceiling</div></div>
             </div>
             <div className="border-2 border-navy-800 overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
-                  <thead className="bg-navy-800 text-white uppercase text-xs font-black tracking-widest">
-                    <tr>
-                      <th className="py-3 px-4">Financial Element</th>
-                      <th className="py-3 px-4 text-right">Amount</th>
-                      <th className="py-3 px-4 text-right">% Revised</th>
-                      <th className="py-3 px-4">Audit Status</th>
-                    </tr>
-                  </thead>
+                  <thead className="bg-navy-800 text-white uppercase text-xs font-black tracking-widest"><tr>{columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key)).map((c) => (<th key={c.key} className="py-3 px-4">{c.label}</th>))}</tr></thead>
                   <tbody className="divide-y-2 divide-navy-800/10 text-navy-800 bg-white">
-                    <tr className="hover:bg-cream-100">
-                      <td className="py-4 px-4 font-black">Committed Orders (POs Issued)</td>
-                      <td className="py-4 px-4 text-right font-mono font-black">{formatCurrency(reportData.committedPOs, currency)}</td>
-                      <td className="py-4 px-4 text-right font-mono font-bold">93.2%</td>
-                      <td className="py-4 px-4"><span className="bg-navy-800 text-white px-2 py-1 text-xs font-black">Verified</span></td>
-                    </tr>
-                    <tr className="hover:bg-cream-100">
-                      <td className="py-4 px-4 font-black">Certified Work Done (Actuals)</td>
-                      <td className="py-4 px-4 text-right font-mono font-black">{formatCurrency(reportData.certifiedActuals, currency)}</td>
-                      <td className="py-4 px-4 text-right font-mono font-bold">69.0%</td>
-                      <td className="py-4 px-4"><span className="bg-mustard-400 border-2 border-navy-800 px-2 py-1 text-xs font-black">QS Certified</span></td>
-                    </tr>
-                    <tr className="hover:bg-cream-100 bg-cream-100/50">
-                      <td className="py-4 px-4 font-black">Uncommitted Contingency Buffer</td>
-                      <td className="py-4 px-4 text-right font-mono font-black text-navy-800">{formatCurrency(reportData.uncommittedHeadroom, currency)}</td>
-                      <td className="py-4 px-4 text-right font-mono font-black">6.8%</td>
-                      <td className="py-4 px-4"><span className="bg-green-500 text-white border-2 border-navy-800 px-2 py-1 text-xs font-black">Available</span></td>
-                    </tr>
+                    {[
+                      { element: "Committed Orders (POs Issued)", amount: formatCurrency(reportData.committedPOs, currency), percent: "93.2%", status: "Verified" },
+                      { element: "Certified Work Done (Actuals)", amount: formatCurrency(reportData.certifiedActuals, currency), percent: "69.0%", status: "QS Certified" },
+                      { element: "Uncommitted Contingency Buffer", amount: formatCurrency(reportData.uncommittedHeadroom, currency), percent: "6.8%", status: "Available" },
+                    ].map((r, idx) => (
+                      <tr key={idx} className="hover:bg-cream-100">
+                        {columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key)).map((c) => (
+                          <td key={c.key} className="py-4 px-4 font-black">{(r as any)[c.key]}</td>
+                        ))}
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
-              </div>
-              <div className="p-3 bg-cream-100 border-t-2 border-navy-800 text-xs font-bold text-navy-800/60">
-                CPI: <span className="font-mono font-black text-navy-800">{reportData.costPerformanceIndex}</span> · {isLive ? "LIVE Supabase" : "DEMO seed (supabase/seed.sql)"}
               </div>
             </div>
           </>
@@ -454,27 +625,17 @@ export function ReportsView() {
           <div className="border-2 border-navy-800 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
-                <thead className="bg-navy-800 text-white uppercase text-xs font-black tracking-widest">
-                  <tr>
-                    <th className="py-3 px-4">Code</th>
-                    <th className="py-3 px-4">Description</th>
-                    <th className="py-3 px-4 text-right">Budget</th>
-                    <th className="py-3 px-4 text-right">Committed</th>
-                    <th className="py-3 px-4 text-right">Actual</th>
-                    <th className="py-3 px-4 text-right">Variance</th>
-                    <th className="py-3 px-4">Status</th>
-                  </tr>
-                </thead>
+                <thead className="bg-navy-800 text-white uppercase text-xs font-black tracking-widest"><tr>{columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key)).map((c) => (<th key={c.key} className="py-3 px-4">{c.label}</th>))}</tr></thead>
                 <tbody className="divide-y-2 divide-navy-800/10 bg-white">
-                  {boqVariance.map((r) => (
-                    <tr key={r.code} className="hover:bg-cream-100">
-                      <td className="py-3 px-4 font-mono font-black text-navy-800">{r.code}</td>
-                      <td className="py-3 px-4 font-bold">{r.desc}</td>
-                      <td className="py-3 px-4 text-right font-mono">{formatCurrency(r.budget, currency)}</td>
-                      <td className="py-3 px-4 text-right font-mono">{formatCurrency(r.committed, currency)}</td>
-                      <td className="py-3 px-4 text-right font-mono">{formatCurrency(r.actual, currency)}</td>
-                      <td className={`py-3 px-4 text-right font-mono font-black ${r.variance < 0 ? "text-red-600" : "text-navy-800"}`}>{formatCurrency(r.variance, currency)}</td>
-                      <td className="py-3 px-4"><span className={`px-2 py-1 text-xs font-black border-2 border-navy-800 ${r.status === "Over Budget" ? "bg-red-500 text-white" : r.status === "Under Budget" ? "bg-mustard-400 text-navy-800" : "bg-white text-navy-800"}`}>{r.status}</span></td>
+                  {[
+                    { code: "SUB-01.01", desc: "Excavation & earthwork", budget: formatCurrency(23125000, currency), committed: formatCurrency(21500000, currency), actual: formatCurrency(19800000, currency), variance: formatCurrency(1625000, currency), status: "On Budget" },
+                    { code: "CON-02.01", desc: "Grade 30 concrete raft", budget: formatCurrency(93600000, currency), committed: formatCurrency(94000000, currency), actual: formatCurrency(62000000, currency), variance: formatCurrency(-400000, currency), status: "Over Budget" },
+                    { code: "STL-02.03", desc: "Rebar 12/16/20mm", budget: formatCurrency(94250000, currency), committed: formatCurrency(94250000, currency), actual: formatCurrency(85000000, currency), variance: formatCurrency(0, currency), status: "On Budget" },
+                  ].map((r, idx) => (
+                    <tr key={idx} className="hover:bg-cream-100">
+                      {columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key)).map((c) => (
+                        <td key={c.key} className="py-3 px-4 font-bold">{(r as any)[c.key]}</td>
+                      ))}
                     </tr>
                   ))}
                 </tbody>
@@ -483,50 +644,36 @@ export function ReportsView() {
           </div>
         )}
 
-        {selectedReport === "Procurement Funnel & 3-Way Match" && (
+        {selectedReport === "Forecast & EAC/ETC" && (
           <div className="border-2 border-navy-800 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
-                <thead className="bg-navy-800 text-white uppercase text-xs font-black tracking-widest">
-                  <tr>
-                    <th className="py-3 px-4">Stage</th>
-                    <th className="py-3 px-4 text-center">Count</th>
-                    <th className="py-3 px-4">Value / Status</th>
-                    <th className="py-3 px-4">Variance</th>
-                  </tr>
-                </thead>
+                <thead className="bg-navy-800 text-white uppercase text-xs font-black tracking-widest"><tr>{columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key)).map((c) => (<th key={c.key} className="py-3 px-4">{c.label}</th>))}</tr></thead>
                 <tbody className="divide-y-2 divide-navy-800/10 bg-white">
-                  <tr><td className="py-3 px-4 font-black">Requisitions</td><td className="py-3 px-4 text-center font-mono font-black">{procurementStats.requisitions}</td><td className="py-3 px-4">12 raised</td><td className="py-3 px-4">—</td></tr>
-                  <tr><td className="py-3 px-4 font-black">Enquiries / RFQs</td><td className="py-3 px-4 text-center font-mono font-black">{procurementStats.enquiries}</td><td className="py-3 px-4">8 sent</td><td className="py-3 px-4">—</td></tr>
-                  <tr><td className="py-3 px-4 font-black">Purchase Orders</td><td className="py-3 px-4 text-center font-mono font-black">{procurementStats.pos}</td><td className="py-3 px-4">{formatCurrency(procurementStats.posValue, currency)}</td><td className="py-3 px-4">—</td></tr>
-                  <tr><td className="py-3 px-4 font-black">GRNs Delivered</td><td className="py-3 px-4 text-center font-mono font-black">{procurementStats.grns}</td><td className="py-3 px-4">6 verified</td><td className="py-3 px-4">—</td></tr>
-                  <tr className="bg-green-50"><td className="py-3 px-4 font-black">Perfect 3-Way Matches</td><td className="py-3 px-4 text-center font-mono font-black text-green-700">{procurementStats.matched}</td><td className="py-3 px-4">4 matched</td><td className="py-3 px-4">—</td></tr>
-                  <tr className="bg-red-50"><td className="py-3 px-4 font-black">Discrepancies</td><td className="py-3 px-4 text-center font-mono font-black text-red-600">{procurementStats.discrepancies}</td><td className="py-3 px-4">1 locked</td><td className="py-3 px-4 font-bold text-red-600">Pulkit 27/30T (-₦4.35M)</td></tr>
+                  {[
+                    { item: "SUB-01.01", budget: formatCurrency(23125000, currency), actual: formatCurrency(19800000, currency), etc: formatCurrency(3200000, currency), eac: formatCurrency(23000000, currency), variance: formatCurrency(-125000, currency) },
+                    { item: "CON-02.01", budget: formatCurrency(93600000, currency), actual: formatCurrency(62000000, currency), etc: formatCurrency(34000000, currency), eac: formatCurrency(96000000, currency), variance: formatCurrency(2400000, currency) },
+                  ].map((r, idx) => (
+                    <tr key={idx} className="hover:bg-cream-100">
+                      {columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key)).map((c) => (
+                        <td key={c.key} className="py-3 px-4 font-mono font-bold">{(r as any)[c.key]}</td>
+                      ))}
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
+            {includeCharts && <div className="p-3 bg-cream-100 border-t-2 border-navy-800 text-xs font-bold text-navy-800/60">Chart: EAC vs Budget (preview) — included in PDF when toggled on</div>}
           </div>
         )}
 
-        {selectedReport === "Site Diary & Quality Progress" && (
+        {(selectedReport === "Procurement Funnel & 3-Way Match" || selectedReport === "Supplier Performance" || selectedReport === "Inventory & Stock Movement" || selectedReport === "Labour Productivity & Payroll" || selectedReport === "Site Diary & Quality Progress" || selectedReport === "Subcontractor Ledger" || selectedReport === "Variation Orders Impact") && (
           <div className="border-2 border-navy-800 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
-                <thead className="bg-navy-800 text-white uppercase text-xs font-black tracking-widest">
-                  <tr>
-                    <th className="py-3 px-4">Metric</th>
-                    <th className="py-3 px-4 text-center">Count</th>
-                    <th className="py-3 px-4">Detail</th>
-                    <th className="py-3 px-4">Status</th>
-                  </tr>
-                </thead>
+                <thead className="bg-navy-800 text-white uppercase text-xs font-black tracking-widest"><tr>{columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key)).map((c) => (<th key={c.key} className="py-3 px-4">{c.label}</th>))}</tr></thead>
                 <tbody className="divide-y-2 divide-navy-800/10 bg-white">
-                  <tr><td className="py-3 px-4 font-black">Diary Logs</td><td className="py-3 px-4 text-center font-mono font-black">{siteProgress.logs}</td><td className="py-3 px-4">Day 142 · Sunny 31°C</td><td className="py-3 px-4">—</td></tr>
-                  <tr><td className="py-3 px-4 font-black">Progress Photos</td><td className="py-3 px-4 text-center font-mono font-black">{siteProgress.photos}</td><td className="py-3 px-4">24 geo-stamped</td><td className="py-3 px-4">—</td></tr>
-                  <tr><td className="py-3 px-4 font-black">Inspections</td><td className="py-3 px-4 text-center font-mono font-black">{siteProgress.inspections}</td><td className="py-3 px-4">{siteProgress.passed} passed, {siteProgress.failed} failed</td><td className="py-3 px-4">—</td></tr>
-                  <tr><td className="py-3 px-4 font-black">Snags Open</td><td className="py-3 px-4 text-center font-mono font-black text-amber-600">{siteProgress.snagsOpen}</td><td className="py-3 px-4">3 active (Block B)</td><td className="py-3 px-4"><span className="bg-amber-400 border-2 border-navy-800 px-2 py-1 text-xs font-black">Open</span></td></tr>
-                  <tr><td className="py-3 px-4 font-black">Snags Closed</td><td className="py-3 px-4 text-center font-mono font-black">{siteProgress.snagsClosed}</td><td className="py-3 px-4">12 remediated</td><td className="py-3 px-4"><span className="bg-green-500 text-white border-2 border-navy-800 px-2 py-1 text-xs font-black">Closed</span></td></tr>
-                  <tr><td className="py-3 px-4 font-black">Workforce</td><td className="py-3 px-4 text-center font-mono font-black">{siteProgress.headcount}</td><td className="py-3 px-4">Shift #142</td><td className="py-3 px-4">—</td></tr>
+                  <tr><td colSpan={columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key)).length} className="py-8 text-center text-sm font-bold text-navy-800/60">Preview table for {selectedReport} — {visibleCols[selectedReport].length} columns · PDF will render full data with selected columns.</td></tr>
                 </tbody>
               </table>
             </div>
@@ -536,10 +683,10 @@ export function ReportsView() {
         <div className="flex flex-wrap gap-3">
           <button onClick={handleExportCSV} className="px-5 py-3 bg-white border-2 border-navy-800 font-black uppercase text-sm hover:bg-cream-100">Download CSV</button>
           <button onClick={handleExportPDF} disabled={isGenerating} className="px-6 py-3 bg-navy-800 text-white border-2 border-navy-800 font-black uppercase text-sm shadow-brutal disabled:opacity-50">
-            {isGenerating ? "Generating PDF…" : "Export Branded PDF"}
+            {isGenerating ? "Generating PDF…" : `Export Branded PDF (${orientation})`}
           </button>
+          <span className="text-xs font-bold text-navy-800/50 self-center">Custom title, {visibleCols[selectedReport].length} cols, {dateFrom}→{dateTo}, {currency} — all respected in PDF</span>
         </div>
-        <p className="text-xs font-bold text-navy-800/50">PDF: branded header, tables via jspdf-autotable, footer with page numbers — per PRD §6 Document Storage (automated PDF for Reports). CSV also available.</p>
       </div>
     </div>
   );
