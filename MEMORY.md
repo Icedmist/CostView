@@ -34,6 +34,9 @@
 11. **Commit `27f94e3`**: Add daily entry modal, photo attachments, inspections with auto-snags, and safety observation logging (PRD items #15, #16, #17, #18).
 12. **Commit `9b171d3`**: Implement interim claims register with 10% retention calculation, 4-factor grading modal, and site instructions register (PRD items #19, #20, #21, #22, #23, #24).
 
+## Workflow (since 2026-09-09)
+- Every change = Issue → Branch `feat/issue-<n>-slug` → PR `Closes #<n>` → squash-merge. See `AGENTS.md`, `.github/WORKFLOW.md`, `.github/CONTRIBUTING.md`. Enforced for humans and AI agents.
+
 ## Verification Status
 - `npx tsc --noEmit`: Passed with 0 errors.
 - `npm run build`: Production build verified with all 7 static and dynamic routes compiled cleanly.

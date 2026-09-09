@@ -1,5 +1,7 @@
 # CostView 360
 
+> **Workflow:** Every change = Issue → Branch → PR → Merge. See `../AGENTS.md` and `../.github/WORKFLOW.md` (also `../.github/CONTRIBUTING.md`). Do not push to `main`.
+
 Scaffold for Phase 1 (Site Operations MVP) per `CostView360-PRD.md`.
 
 ## Structure
