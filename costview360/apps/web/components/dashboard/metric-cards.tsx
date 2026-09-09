@@ -20,12 +20,12 @@ export function MetricCards({ approvedBudget, committedCost, actualCost }: Metri
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
       {/* Approved Budget */}
-      <div className="bg-white border-[3px] border-navy-800 shadow-brutal p-6 relative overflow-hidden min-h-[160px] flex flex-col justify-between">
+      <div className="bg-white border-2 border-navy-800 shadow-brutal p-6 relative overflow-hidden min-h-[160px] flex flex-col justify-between">
         <div className="flex items-start justify-between gap-3">
           <span className="text-sm font-black uppercase tracking-widest text-navy-800/60 leading-tight">
             Approved Budget
           </span>
-          <div className="w-11 h-11 bg-navy-800 border-[3px] border-navy-800 flex items-center justify-center text-mustard-400 shrink-0">
+          <div className="w-11 h-11 bg-navy-800 border-2 border-navy-800 flex items-center justify-center text-mustard-400 shrink-0">
             <DollarSign className="w-6 h-6" />
           </div>
         </div>
@@ -40,12 +40,12 @@ export function MetricCards({ approvedBudget, committedCost, actualCost }: Metri
       </div>
 
       {/* Committed Spend */}
-      <div className="bg-white border-[3px] border-navy-800 shadow-brutal p-6 relative overflow-hidden min-h-[160px] flex flex-col justify-between">
+      <div className="bg-white border-2 border-navy-800 shadow-brutal p-6 relative overflow-hidden min-h-[160px] flex flex-col justify-between">
         <div className="flex items-start justify-between gap-3">
           <span className="text-sm font-black uppercase tracking-widest text-navy-800/60 leading-tight">
             Committed (POs)
           </span>
-          <div className="w-11 h-11 bg-mustard-400 border-[3px] border-navy-800 flex items-center justify-center text-navy-800 shrink-0">
+          <div className="w-11 h-11 bg-mustard-400 border-2 border-navy-800 flex items-center justify-center text-navy-800 shrink-0">
             <FileSpreadsheet className="w-6 h-6" />
           </div>
         </div>
@@ -53,7 +53,7 @@ export function MetricCards({ approvedBudget, committedCost, actualCost }: Metri
           {formatCurrency(committedCost, currency)}
         </div>
         <div className="mt-3 flex items-center gap-2 text-sm font-bold">
-          <span className="bg-mustard-400 border-[2px] border-navy-800 px-3 py-1 text-navy-800 font-black text-sm">{committedPercentage}%</span>
+          <span className="bg-mustard-400 border-2 border-navy-800 px-3 py-1 text-navy-800 font-black text-sm">{committedPercentage}%</span>
           <span className="text-navy-800/60 text-xs font-bold">of total committed</span>
         </div>
         <div className="absolute bottom-0 left-0 h-2 bg-mustard-400" style={{ width: `${Math.min(100, committedPercentage)}%` }} />
@@ -61,12 +61,12 @@ export function MetricCards({ approvedBudget, committedCost, actualCost }: Metri
       </div>
 
       {/* Actual Spend */}
-      <div className="bg-white border-[3px] border-navy-800 shadow-brutal p-6 relative overflow-hidden min-h-[160px] flex flex-col justify-between">
+      <div className="bg-white border-2 border-navy-800 shadow-brutal p-6 relative overflow-hidden min-h-[160px] flex flex-col justify-between">
         <div className="flex items-start justify-between gap-3">
           <span className="text-sm font-black uppercase tracking-widest text-navy-800/60 leading-tight">
             Actual (Certified)
           </span>
-          <div className="w-11 h-11 bg-white border-[3px] border-navy-800 flex items-center justify-center text-navy-800 shrink-0">
+          <div className="w-11 h-11 bg-white border-2 border-navy-800 flex items-center justify-center text-navy-800 shrink-0">
             <CheckCircle2 className="w-6 h-6" />
           </div>
         </div>
@@ -81,12 +81,12 @@ export function MetricCards({ approvedBudget, committedCost, actualCost }: Metri
       </div>
 
       {/* Remaining */}
-      <div className={`border-[3px] border-navy-800 shadow-brutal p-6 relative overflow-hidden min-h-[160px] flex flex-col justify-between ${uncommittedBalance >= 0 ? "bg-mustard-400" : "bg-red-500"}`}>
+      <div className={`border-2 border-navy-800 shadow-brutal p-6 relative overflow-hidden min-h-[160px] flex flex-col justify-between ${uncommittedBalance >= 0 ? "bg-mustard-400" : "bg-red-500"}`}>
         <div className="flex items-start justify-between gap-3">
           <span className="text-sm font-black uppercase tracking-widest text-navy-800 leading-tight">
             Uncommitted<br />Contingency
           </span>
-          <div className={`w-11 h-11 border-[3px] border-navy-800 flex items-center justify-center shrink-0 ${uncommittedBalance >= 0 ? "bg-white text-navy-800" : "bg-navy-800 text-white"}`}>
+          <div className={`w-11 h-11 border-2 border-navy-800 flex items-center justify-center shrink-0 ${uncommittedBalance >= 0 ? "bg-white text-navy-800" : "bg-navy-800 text-white"}`}>
             {uncommittedBalance >= 0 ? <TrendingDown className="w-6 h-6" /> : <AlertTriangle className="w-6 h-6" />}
           </div>
         </div>

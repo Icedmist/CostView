@@ -352,7 +352,7 @@ export function SiteDiaryView() {
         <div className="flex items-center gap-1.5">
           <button
             onClick={() => setSubTab("diary")}
-            className={`px-3 py-1.5 border-[2px] border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "diary"
                 ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/60 hover:text-navy-800"
@@ -364,7 +364,7 @@ export function SiteDiaryView() {
 
           <button
             onClick={() => setSubTab("photos")}
-            className={`px-3 py-1.5 border-[2px] border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "photos"
                 ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/60 hover:text-navy-800"
@@ -376,7 +376,7 @@ export function SiteDiaryView() {
 
           <button
             onClick={() => setSubTab("inspections")}
-            className={`px-3 py-1.5 border-[2px] border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "inspections"
                 ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/60 hover:text-navy-800"
@@ -388,7 +388,7 @@ export function SiteDiaryView() {
 
           <button
             onClick={() => setSubTab("snags")}
-            className={`px-3 py-1.5 border-[2px] border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "snags"
                 ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/60 hover:text-navy-800"
@@ -405,7 +405,7 @@ export function SiteDiaryView() {
 
           <button
             onClick={() => setSubTab("safety")}
-            className={`px-3 py-1.5 border-[2px] border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "safety"
                 ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/60 hover:text-navy-800"
@@ -432,7 +432,7 @@ export function SiteDiaryView() {
             </div>
             <button
               onClick={() => setIsNewLogOpen(true)}
-              className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-[2px] border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>New Daily Entry</span>
@@ -441,7 +441,7 @@ export function SiteDiaryView() {
 
           <div className="space-y-4">
             {logs.map((log) => (
-              <div key={log.id} className="bg-cream-100 border border-navy-800 border-[3px] border-navy-800 p-5 space-y-3">
+              <div key={log.id} className="bg-cream-100 border border-navy-800 border-2 border-navy-800 p-5 space-y-3">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-navy-800 pb-3">
                   <div>
                     <div className="flex items-center gap-2">
@@ -455,11 +455,11 @@ export function SiteDiaryView() {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-1.5 bg-white border border-navy-800 border-[2px] border-navy-800 px-2.5 py-1 text-xs text-navy-800">
+                    <div className="flex items-center gap-1.5 bg-white border border-navy-800 border-2 border-navy-800 px-2.5 py-1 text-xs text-navy-800">
                       <Sun className="w-3.5 h-3.5 text-amber-400" />
                       <span>{log.weather} ({log.delayHours} hr delay)</span>
                     </div>
-                    <div className="flex items-center gap-1.5 bg-white border border-navy-800 border-[2px] border-navy-800 px-2.5 py-1 text-xs text-navy-800">
+                    <div className="flex items-center gap-1.5 bg-white border border-navy-800 border-2 border-navy-800 px-2.5 py-1 text-xs text-navy-800">
                       <Users className="w-3.5 h-3.5 text-emerald-400" />
                       <span className="font-bold text-navy-800 font-mono">{log.workerHeadcount} Workers</span>
                     </div>
@@ -492,7 +492,7 @@ export function SiteDiaryView() {
             </div>
             <button
               onClick={() => setIsUploadPhotoOpen(true)}
-              className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white border-[2px] border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
             >
               <Upload className="w-3.5 h-3.5" />
               <span>Upload Photo</span>
@@ -501,7 +501,7 @@ export function SiteDiaryView() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {photos.map((p) => (
-              <div key={p.id} className="bg-cream-100 border border-navy-800 border-[3px] border-navy-800 overflow-hidden group">
+              <div key={p.id} className="bg-cream-100 border border-navy-800 border-2 border-navy-800 overflow-hidden group">
                 <div className="h-36 bg-white flex items-center justify-center border-b border-navy-800 relative">
                   <Camera className="w-8 h-8 text-zinc-700" />
                   <span className="absolute top-2 left-2 px-2 py-0.5 rounded text-xs font-bold bg-white/90 text-white border border-navy-800">
@@ -535,7 +535,7 @@ export function SiteDiaryView() {
             </div>
             <button
               onClick={() => setIsNewInspectionOpen(true)}
-              className="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white border-[2px] border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Inspection</span>
@@ -544,7 +544,7 @@ export function SiteDiaryView() {
 
           <div className="divide-y divide-navy-800/10">
             {inspections.map((insp) => (
-              <div key={insp.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/20 px-2 border-[2px] border-navy-800 transition-colors">
+              <div key={insp.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/20 px-2 border-2 border-navy-800 transition-colors">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-semibold text-white text-xs">{insp.title}</span>
@@ -589,7 +589,7 @@ export function SiteDiaryView() {
 
           <div className="divide-y divide-navy-800/10">
             {snags.map((snag) => (
-              <div key={snag.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/20 px-2 border-[2px] border-navy-800 transition-colors">
+              <div key={snag.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/20 px-2 border-2 border-navy-800 transition-colors">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className={`px-2 py-0.5 rounded text-xs font-bold border ${
@@ -641,7 +641,7 @@ export function SiteDiaryView() {
             </div>
             <button
               onClick={() => setIsNewSafetyOpen(true)}
-              className="px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white border-[2px] border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Log Observation / Incident</span>
@@ -650,7 +650,7 @@ export function SiteDiaryView() {
 
           <div className="divide-y divide-navy-800/10">
             {safetyLogs.map((s) => (
-              <div key={s.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/20 px-2 border-[2px] border-navy-800 transition-colors">
+              <div key={s.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/20 px-2 border-2 border-navy-800 transition-colors">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className={`px-2 py-0.5 rounded text-xs font-bold border ${
@@ -783,7 +783,7 @@ export function SiteDiaryView() {
                 </select>
               </div>
 
-              <div className="p-6 border-2 border-dashed border-navy-800 border-[3px] border-navy-800 text-center bg-cream-100">
+              <div className="p-6 border-2 border-dashed border-navy-800 border-2 border-navy-800 text-center bg-cream-100">
                 <Upload className="w-8 h-8 text-navy-800/40 mx-auto mb-2" />
                 <p className="text-xs text-navy-800 font-medium">Click or drag photo file here</p>
                 <p className="text-sm text-navy-800/40 mt-1">PNG, JPG, HEIC up to 10MB</p>

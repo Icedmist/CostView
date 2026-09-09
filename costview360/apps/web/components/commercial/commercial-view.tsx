@@ -26,11 +26,11 @@ export function CommercialView() {
   return (
     <div className="space-y-6">
       {/* Commercial Header Banner - Brutalist */}
-      <div className="bg-navy-800 border-[3px] border-navy-800 shadow-brutal p-5 text-white">
+      <div className="bg-navy-800 border-2 border-navy-800 shadow-brutal p-5 text-white">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-sm uppercase font-black tracking-widest px-3 py-1 bg-mustard-400 text-navy-800 border-[2px] border-navy-800 font-mono">
+              <span className="text-sm uppercase font-black tracking-widest px-3 py-1 bg-mustard-400 text-navy-800 border-2 border-navy-800 font-mono">
                 Commercial Mode Active
               </span>
               <span className="text-white/60 text-xs font-bold">· Developer & Investor View</span>
@@ -42,7 +42,7 @@ export function CommercialView() {
               Live feasibility yield, debt drawdowns, and receivables for {currentProject.name}.
             </p>
           </div>
-          <div className="bg-white border-[3px] border-navy-800 px-5 py-3 shadow-[4px_4px_0px_0px_#FFD23F] text-center">
+          <div className="bg-white border-2 border-navy-800 px-5 py-3 shadow-[4px_4px_0px_0px_#FFD23F] text-center">
             <div className="text-sm font-black uppercase tracking-widest text-navy-800/60">Target Margin</div>
             <div className="text-2xl font-black font-mono text-navy-800">
               {metrics.marginPercent}% (₦420M)
@@ -53,10 +53,10 @@ export function CommercialView() {
 
       {/* Commercial KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white border-[3px] border-navy-800 shadow-brutal p-4">
+        <div className="bg-white border-2 border-navy-800 shadow-brutal p-4">
           <div className="flex items-center justify-between text-navy-800/60 text-xs font-black uppercase tracking-widest">
             <span>Gross Development Value</span>
-            <span className="w-8 h-8 bg-navy-800 text-mustard-400 border-[2px] border-navy-800 flex items-center justify-center">
+            <span className="w-8 h-8 bg-navy-800 text-mustard-400 border-2 border-navy-800 flex items-center justify-center">
               <Building className="w-4 h-4" />
             </span>
           </div>
@@ -69,10 +69,10 @@ export function CommercialView() {
           </div>
         </div>
 
-        <div className="bg-mustard-400 border-[3px] border-navy-800 shadow-brutal p-4">
+        <div className="bg-mustard-400 border-2 border-navy-800 shadow-brutal p-4">
           <div className="flex items-center justify-between text-navy-800 text-xs font-black uppercase tracking-widest">
             <span>Debt Facility Drawdown</span>
-            <span className="w-8 h-8 bg-navy-800 text-white border-[2px] border-navy-800 flex items-center justify-center">
+            <span className="w-8 h-8 bg-navy-800 text-white border-2 border-navy-800 flex items-center justify-center">
               <Landmark className="w-4 h-4" />
             </span>
           </div>
@@ -85,10 +85,10 @@ export function CommercialView() {
           </div>
         </div>
 
-        <div className="bg-white border-[3px] border-navy-800 shadow-brutal p-4">
+        <div className="bg-white border-2 border-navy-800 shadow-brutal p-4">
           <div className="flex items-center justify-between text-navy-800/60 text-xs font-black uppercase tracking-widest">
             <span>Collections</span>
-            <span className="w-8 h-8 bg-white border-[3px] border-navy-800 flex items-center justify-center text-navy-800">
+            <span className="w-8 h-8 bg-white border-2 border-navy-800 flex items-center justify-center text-navy-800">
               <DollarSign className="w-4 h-4" />
             </span>
           </div>
@@ -103,7 +103,7 @@ export function CommercialView() {
       </div>
 
       {/* Lifecycle Tracker */}
-      <div className="bg-white border-[3px] border-navy-800 shadow-brutal overflow-hidden">
+      <div className="bg-white border-2 border-navy-800 shadow-brutal overflow-hidden">
         <div className="p-4 border-b-[3px] border-navy-800 bg-cream-100">
           <h3 className="text-sm font-black uppercase tracking-tight text-navy-800">Commercial Lifecycle Tracker</h3>
           <p className="text-xs font-bold text-navy-800/60 mt-1">
@@ -122,7 +122,7 @@ export function CommercialView() {
           ].map((row, i) => (
             <div key={i} className="p-4 flex items-center justify-between hover:bg-cream-100 transition-colors">
               <div className="flex items-center gap-3">
-                <span className="w-8 h-8 bg-navy-800 text-white border-[2px] border-navy-800 flex items-center justify-center text-xs font-mono font-black">
+                <span className="w-8 h-8 bg-navy-800 text-white border-2 border-navy-800 flex items-center justify-center text-xs font-mono font-black">
                   {i + 1}
                 </span>
                 <div>
@@ -135,7 +135,7 @@ export function CommercialView() {
                 <div className="text-right font-mono font-black text-navy-800 hidden sm:block">
                   {formatCurrency(row.amount, currency)}
                 </div>
-                <span className={`px-3 py-1 text-sm font-black uppercase border-[2px] border-navy-800 ${
+                <span className={`px-3 py-1 text-sm font-black uppercase border-2 border-navy-800 ${
                   row.status === "Completed"
                     ? "bg-navy-800 text-white"
                     : row.status === "Active"

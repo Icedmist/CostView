@@ -109,14 +109,14 @@ export function AuditLogView() {
               placeholder="Search actor, entity, or change..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 bg-cream-100 border border-navy-800 border-[2px] border-navy-800 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500"
+              className="w-full pl-9 pr-3 py-1.5 bg-cream-100 border border-navy-800 border-2 border-navy-800 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500"
             />
           </div>
 
           <select
             value={moduleFilter}
             onChange={(e) => setModuleFilter(e.target.value)}
-            className="bg-cream-100 border border-navy-800 border-[2px] border-navy-800 px-2 py-1.5 text-xs text-navy-800 focus:outline-none cursor-pointer"
+            className="bg-cream-100 border border-navy-800 border-2 border-navy-800 px-2 py-1.5 text-xs text-navy-800 focus:outline-none cursor-pointer"
           >
             <option value="All">All Modules</option>
             <option value="Budget">Budget</option>
