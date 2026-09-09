@@ -91,7 +91,7 @@ export function LabourView() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white border-2 border-navy-800 shadow-brutal p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white border-2 border-navy-800 shadow-brutal p-4 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xs uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-800/60 font-mono">
@@ -112,13 +112,13 @@ export function LabourView() {
             <div className="text-sm font-bold text-navy-800/60 uppercase font-semibold">
               Weekly Est. Payroll
             </div>
-            <div className="text-lg font-bold text-[#6B8A6B] font-mono">
+            <div className="text-lg font-bold text-emerald-500 font-mono">
               {formatCurrency(totalPayroll, currency)}
             </div>
           </div>
           <button
             onClick={() => setIsAddWorkerOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-2 bg-[#6B8A6B] hover:bg-[#7A9B7A] text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors"
           >
             <UserPlus className="w-3.5 h-3.5" />
             <span>Add Worker</span>
@@ -161,7 +161,7 @@ export function LabourView() {
                     <td className="py-3 px-4 text-right font-mono text-navy-800">
                       {formatCurrency(w.dailyRate, currency)}
                     </td>
-                    <td className="py-3 px-4 text-center font-mono font-bold text-[#6B8A6B]">
+                    <td className="py-3 px-4 text-center font-mono font-bold text-emerald-500">
                       {w.daysPresent} / 6 Days
                     </td>
                     <td className="py-3 px-4 text-center font-mono text-amber-400">
@@ -189,7 +189,7 @@ export function LabourView() {
       {/* Add Worker Modal */}
       {isAddWorkerOpen && (
         <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-          <div className="bg-white border-2 border-navy-800 border-navy-800 max-w-md w-full p-5 shadow-2xl">
+          <div className="bg-white border-2 border-navy-800 border-navy-800 max-w-md w-full p-4 shadow-2xl">
             <h3 className="text-sm font-bold text-navy-800">Add Worker to Site Roster</h3>
             <p className="text-sm font-bold text-navy-800/60 mt-0.5">Register new craftsman or general labourer</p>
 
@@ -240,7 +240,7 @@ export function LabourView() {
                 </button>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 bg-[#6B8A6B] hover:bg-[#7A9B7A] text-white rounded text-xs font-semibold"
+                  className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs font-semibold"
                 >
                   Add Worker
                 </button>

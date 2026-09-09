@@ -58,7 +58,7 @@ export default function DashboardPage() {
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <Header onMenuClick={() => setSidebarOpen((v) => !v)} />
 
-        <main className="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 bg-cream-100/40">
+        <main className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 bg-cream-100/40">
           {activeMode === "commercial" ? (
             <CommercialView />
           ) : (
@@ -66,19 +66,19 @@ export default function DashboardPage() {
               {activeTab === "Dashboard" && (
                 <div className="space-y-6">
                   {/* Executive Banner - Brutalist - EXPANDED */}
-                  <div className="bg-white border-2 border-navy-800 shadow-brutal p-6 md:p-8">
-                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                  <div className="bg-white border-2 border-navy-800 shadow-brutal p-5 md:p-6">
+                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                       <div>
                         <div className="flex flex-wrap items-center gap-3 mb-3">
                           <span className="text-xs uppercase font-black tracking-wider px-4 py-1.5 bg-navy-800 text-white border-2 border-navy-800 font-mono">
                             Site Operations Command Center
                           </span>
-                          <span className="text-navy-800/60 text-sm font-bold font-mono">· Role: {activeRole}</span>
+                          <span className="text-navy-800/60 text-xs font-bold font-mono">· Role: {activeRole}</span>
                         </div>
                         <h1 className="text-2xl md:text-3xl font-black text-navy-800 tracking-tighter leading-none">
                           PROJECT COST & EXECUTION STATUS
                         </h1>
-                        <p className="text-sm font-bold text-navy-800/60 mt-2 max-w-2xl leading-relaxed">
+                        <p className="text-xs font-bold text-navy-800/60 mt-2 max-w-2xl leading-relaxed">
                           Consolidated budget, committed POs, site deliveries, and approval alerts — all in one brutalist command center.
                         </p>
                       </div>
@@ -86,14 +86,14 @@ export default function DashboardPage() {
                       <div className="flex flex-wrap items-center gap-3">
                         <button
                           onClick={() => setActiveTab("Budget & BOQ")}
-                          className="px-6 py-3.5 bg-mustard-400 hover:bg-mustard-500 text-navy-800 border-2 border-navy-800 shadow-brutal text-sm font-black uppercase tracking-wide flex items-center gap-2 active:shadow-none active:translate-x-[3px] active:translate-y-[3px] transition-all"
+                          className="px-4 py-2.5 bg-mustard-400 hover:bg-mustard-500 text-navy-800 border-2 border-navy-800 shadow-brutal text-xs font-black uppercase tracking-wide flex items-center gap-2 active:shadow-none active:translate-x-[3px] active:translate-y-[3px] transition-all"
                         >
                           <span>Manage BOQ</span>
-                          <ArrowUpRight className="w-5 h-5" />
+                          <ArrowUpRight className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => setActiveTab("Procurement")}
-                          className="px-6 py-3.5 bg-white hover:bg-cream-100 text-navy-800 border-2 border-navy-800 shadow-brutal text-sm font-black uppercase tracking-wide active:shadow-none active:translate-x-[3px] active:translate-y-[3px] transition-all"
+                          className="px-4 py-2.5 bg-white hover:bg-cream-100 text-navy-800 border-2 border-navy-800 shadow-brutal text-xs font-black uppercase tracking-wide active:shadow-none active:translate-x-[3px] active:translate-y-[3px] transition-all"
                         >
                           View 3-Way Match
                         </button>
@@ -108,38 +108,38 @@ export default function DashboardPage() {
                   />
 
                   {/* Attention Cards - Brutalist - EXPANDED */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div
                       onClick={() => setActiveTab("Procurement")}
-                      className="cursor-pointer bg-white border-2 border-navy-800 shadow-brutal p-6 hover:shadow-brutal-lg hover:-translate-y-1 transition-all min-h-[150px]"
+                      className="cursor-pointer bg-white border-2 border-navy-800 shadow-brutal p-4 hover:shadow-brutal hover:-translate-y-1 transition-all min-h-[120px]"
                     >
                       <div className="flex items-center justify-between mb-3">
-                        <span className="text-sm font-black flex items-center gap-2 text-navy-800 uppercase">
-                          <span className="w-9 h-9 bg-[#9B6B6B] border-2 border-navy-800 flex items-center justify-center">
-                            <AlertTriangle className="w-5 h-5 text-white" />
+                        <span className="text-xs font-black flex items-center gap-2 text-navy-800 uppercase">
+                          <span className="w-8 h-8 bg-red-500 border-2 border-navy-800 flex items-center justify-center">
+                            <AlertTriangle className="w-4 h-4 text-white" />
                           </span>
                           1 Invoice Discrepancy
                         </span>
-                        <span className="text-xs bg-[#9B6B6B] text-white px-3 py-1 border-2 border-navy-800 font-mono font-black uppercase">
+                        <span className="text-xs bg-red-500 text-white px-3 py-1 border-2 border-navy-800 font-mono font-black uppercase">
                           Action Needed
                         </span>
                       </div>
                       <p className="text-sm text-navy-800 font-black">
                         Pulkit Steels & Alloys (PO-2026-092)
                       </p>
-                      <p className="text-sm font-bold text-navy-800/60 mt-2 leading-relaxed">
+                      <p className="text-xs font-bold text-navy-800/60 mt-2 leading-relaxed">
                         Invoiced for 30 Tons, but GRN shows only 27 Tons delivered. Payment locked.
                       </p>
                     </div>
 
                     <div
                       onClick={() => setActiveTab("Budget & BOQ")}
-                      className="cursor-pointer bg-white border-2 border-navy-800 shadow-brutal p-6 hover:shadow-brutal-lg hover:-translate-y-1 transition-all min-h-[150px]"
+                      className="cursor-pointer bg-white border-2 border-navy-800 shadow-brutal p-4 hover:shadow-brutal hover:-translate-y-1 transition-all min-h-[120px]"
                     >
                       <div className="flex items-center justify-between mb-3">
-                        <span className="text-sm font-black flex items-center gap-2 text-navy-800 uppercase">
-                          <span className="w-9 h-9 bg-mustard-400 border-2 border-navy-800 flex items-center justify-center">
-                            <Clock className="w-5 h-5 text-navy-800" />
+                        <span className="text-xs font-black flex items-center gap-2 text-navy-800 uppercase">
+                          <span className="w-8 h-8 bg-mustard-400 border-2 border-navy-800 flex items-center justify-center">
+                            <Clock className="w-4 h-4 text-navy-800" />
                           </span>
                           Pending Revision
                         </span>
@@ -150,19 +150,19 @@ export default function DashboardPage() {
                       <p className="text-sm text-navy-800 font-black">
                         CON-02.01 Grade 30 ReadyMix
                       </p>
-                      <p className="text-sm font-bold text-navy-800/60 mt-2 leading-relaxed">
+                      <p className="text-xs font-bold text-navy-800/60 mt-2 leading-relaxed">
                         +₦4,000,000 delta requested due to diesel pump price.
                       </p>
                     </div>
 
                     <div
                       onClick={() => setActiveTab("Site Progress & Diary")}
-                      className="cursor-pointer bg-white border-2 border-navy-800 shadow-brutal p-6 hover:shadow-brutal-lg hover:-translate-y-1 transition-all min-h-[150px]"
+                      className="cursor-pointer bg-white border-2 border-navy-800 shadow-brutal p-4 hover:shadow-brutal hover:-translate-y-1 transition-all min-h-[120px]"
                     >
                       <div className="flex items-center justify-between mb-3">
-                        <span className="text-sm font-black flex items-center gap-2 text-navy-800 uppercase">
-                          <span className="w-9 h-9 bg-navy-800 border-2 border-navy-800 flex items-center justify-center">
-                            <CheckCircle2 className="w-5 h-5 text-white" />
+                        <span className="text-xs font-black flex items-center gap-2 text-navy-800 uppercase">
+                          <span className="w-8 h-8 bg-navy-800 border-2 border-navy-800 flex items-center justify-center">
+                            <CheckCircle2 className="w-4 h-4 text-white" />
                           </span>
                           Site Execution Sync
                         </span>
@@ -173,7 +173,7 @@ export default function DashboardPage() {
                       <p className="text-sm text-navy-800 font-black">
                         48 Workers · Shift #142
                       </p>
-                      <p className="text-sm font-bold text-navy-800/60 mt-2 leading-relaxed">
+                      <p className="text-xs font-bold text-navy-800/60 mt-2 leading-relaxed">
                         2 active snags on Block B. 0 safety incidents.
                       </p>
                     </div>
@@ -181,7 +181,7 @@ export default function DashboardPage() {
 
                   <div>
                     <div className="flex items-center justify-between mb-3">
-                      <h2 className="text-sm font-black text-navy-800 tracking-tight uppercase">
+                      <h2 className="text-xs font-black text-navy-800 tracking-tight uppercase">
                         Bill of Quantities — Variances
                       </h2>
                       <button
@@ -276,7 +276,7 @@ export default function DashboardPage() {
 
               {activeTab === "Settings" && (
                 <div className="bg-white border-2 border-navy-800 shadow-brutal p-8 text-center">
-                  <h3 className="text-sm font-black text-navy-800 uppercase">Project Settings</h3>
+                  <h3 className="text-xs font-black text-navy-800 uppercase">Project Settings</h3>
                   <p className="text-xs font-bold text-navy-800/60 mt-1 max-w-sm mx-auto">
                     Manage default currency (₦ NGN), timezone (Africa/Lagos), and notifications.
                   </p>

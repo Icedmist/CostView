@@ -18,18 +18,18 @@ export function MetricCards({ approvedBudget, committedCost, actualCost }: Metri
   const actualPercentage = Math.round((actualCost / (approvedBudget || 1)) * 100);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
       {/* Approved Budget */}
-      <div className="bg-white border-2 border-navy-800 shadow-brutal p-6 relative overflow-hidden min-h-[160px] flex flex-col justify-between">
+      <div className="bg-white border-2 border-navy-800 shadow-brutal p-4 relative overflow-hidden min-h-[130px] flex flex-col justify-between">
         <div className="flex items-start justify-between gap-3">
-          <span className="text-sm font-black uppercase tracking-widest text-navy-800/60 leading-tight">
+          <span className="text-xs font-black uppercase tracking-widest text-navy-800/60 leading-tight">
             Approved Budget
           </span>
-          <div className="w-11 h-11 bg-navy-800 border-2 border-navy-800 flex items-center justify-center text-mustard-400 shrink-0">
+          <div className="w-9 h-9 bg-navy-800 border-2 border-navy-800 flex items-center justify-center text-mustard-400 shrink-0">
             <DollarSign className="w-6 h-6" />
           </div>
         </div>
-        <div className="mt-4 text-[28px] font-black tracking-tighter text-navy-800 font-mono leading-none">
+        <div className="mt-4 text-xl font-black tracking-tighter text-navy-800 font-mono leading-none">
           {formatCurrency(approvedBudget, currency)}
         </div>
         <div className="mt-3 flex items-center gap-2 text-sm font-black">
@@ -40,16 +40,16 @@ export function MetricCards({ approvedBudget, committedCost, actualCost }: Metri
       </div>
 
       {/* Committed Spend */}
-      <div className="bg-white border-2 border-navy-800 shadow-brutal p-6 relative overflow-hidden min-h-[160px] flex flex-col justify-between">
+      <div className="bg-white border-2 border-navy-800 shadow-brutal p-4 relative overflow-hidden min-h-[130px] flex flex-col justify-between">
         <div className="flex items-start justify-between gap-3">
-          <span className="text-sm font-black uppercase tracking-widest text-navy-800/60 leading-tight">
+          <span className="text-xs font-black uppercase tracking-widest text-navy-800/60 leading-tight">
             Committed (POs)
           </span>
-          <div className="w-11 h-11 bg-mustard-400 border-2 border-navy-800 flex items-center justify-center text-navy-800 shrink-0">
+          <div className="w-9 h-9 bg-mustard-400 border-2 border-navy-800 flex items-center justify-center text-navy-800 shrink-0">
             <FileSpreadsheet className="w-6 h-6" />
           </div>
         </div>
-        <div className="mt-4 text-[28px] font-black tracking-tighter text-navy-800 font-mono leading-none">
+        <div className="mt-4 text-xl font-black tracking-tighter text-navy-800 font-mono leading-none">
           {formatCurrency(committedCost, currency)}
         </div>
         <div className="mt-3 flex items-center gap-2 text-sm font-bold">
@@ -61,16 +61,16 @@ export function MetricCards({ approvedBudget, committedCost, actualCost }: Metri
       </div>
 
       {/* Actual Spend */}
-      <div className="bg-white border-2 border-navy-800 shadow-brutal p-6 relative overflow-hidden min-h-[160px] flex flex-col justify-between">
+      <div className="bg-white border-2 border-navy-800 shadow-brutal p-4 relative overflow-hidden min-h-[130px] flex flex-col justify-between">
         <div className="flex items-start justify-between gap-3">
-          <span className="text-sm font-black uppercase tracking-widest text-navy-800/60 leading-tight">
+          <span className="text-xs font-black uppercase tracking-widest text-navy-800/60 leading-tight">
             Actual (Certified)
           </span>
-          <div className="w-11 h-11 bg-white border-2 border-navy-800 flex items-center justify-center text-navy-800 shrink-0">
+          <div className="w-9 h-9 bg-white border-2 border-navy-800 flex items-center justify-center text-navy-800 shrink-0">
             <CheckCircle2 className="w-6 h-6" />
           </div>
         </div>
-        <div className="mt-4 text-[28px] font-black tracking-tighter text-navy-800 font-mono leading-none">
+        <div className="mt-4 text-xl font-black tracking-tighter text-navy-800 font-mono leading-none">
           {formatCurrency(actualCost, currency)}
         </div>
         <div className="mt-3 flex items-center gap-2 text-sm font-bold">
@@ -81,16 +81,16 @@ export function MetricCards({ approvedBudget, committedCost, actualCost }: Metri
       </div>
 
       {/* Remaining */}
-      <div className={`border-2 border-navy-800 shadow-brutal p-6 relative overflow-hidden min-h-[160px] flex flex-col justify-between ${uncommittedBalance >= 0 ? "bg-mustard-400" : "bg-[#8B6B6B]"}`}>
+      <div className={`border-2 border-navy-800 shadow-brutal p-4 relative overflow-hidden min-h-[130px] flex flex-col justify-between ${uncommittedBalance >= 0 ? "bg-mustard-400" : "bg-red-500"}`}>
         <div className="flex items-start justify-between gap-3">
-          <span className="text-sm font-black uppercase tracking-widest text-navy-800 leading-tight">
+          <span className="text-xs font-black uppercase tracking-widest text-navy-800 leading-tight">
             Uncommitted<br />Contingency
           </span>
-          <div className={`w-11 h-11 border-2 border-navy-800 flex items-center justify-center shrink-0 ${uncommittedBalance >= 0 ? "bg-white text-navy-800" : "bg-navy-800 text-white"}`}>
+          <div className={`w-9 h-9 border-2 border-navy-800 flex items-center justify-center shrink-0 ${uncommittedBalance >= 0 ? "bg-white text-navy-800" : "bg-navy-800 text-white"}`}>
             {uncommittedBalance >= 0 ? <TrendingDown className="w-6 h-6" /> : <AlertTriangle className="w-6 h-6" />}
           </div>
         </div>
-        <div className={`mt-4 text-[28px] font-black tracking-tighter font-mono leading-none ${uncommittedBalance >= 0 ? "text-navy-800" : "text-white"}`}>
+        <div className={`mt-4 text-xl font-black tracking-tighter font-mono leading-none ${uncommittedBalance >= 0 ? "text-navy-800" : "text-white"}`}>
           {formatCurrency(uncommittedBalance, currency)}
         </div>
         <div className="mt-3 flex items-center gap-2 text-sm font-black">

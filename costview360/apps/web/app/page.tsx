@@ -35,7 +35,7 @@ export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   return (
-    <div className="min-h-screen bg-cream-100 text-navy-800 font-sans selection:bg-mustard-400 selection:text-navy-800">
+    <div className="min-h-screen bg-[#FFFDF0] text-navy-800 font-sans selection:bg-[#FFD23F] selection:text-navy-800">
       {/* NAV */}
       <nav className="sticky top-0 z-50 bg-white border-b-[3px] border-navy-800">
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-[76px] flex items-center justify-between gap-4">
@@ -48,8 +48,8 @@ export default function LandingPage() {
             <Link href="/contact" className="hover:underline decoration-[4px] underline-offset-4">Contact</Link>
           </div>
           <div className="hidden sm:flex items-center gap-3">
-            <Link href="/login" className="px-5 py-3 bg-white border-[3px] border-navy-800 font-black uppercase text-sm tracking-wide hover:bg-cream-200 shadow-brutal-sm active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all">Sign In</Link>
-            <Link href="/dashboard" className="inline-flex items-center gap-2 px-6 py-3 bg-mustard-400 border-[3px] border-navy-800 font-black uppercase text-sm tracking-wide shadow-brutal-sm hover:bg-mustard-500 active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all">Launch App <ArrowUpRight className="w-5 h-5" /></Link>
+            <Link href="/login" className="px-5 py-3 bg-white border-[3px] border-navy-800 font-black uppercase text-sm tracking-wide hover:bg-[#FFF8D6] shadow-brutal-sm active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all">Sign In</Link>
+            <Link href="/dashboard" className="inline-flex items-center gap-2 px-6 py-3 bg-[#FFD23F] border-[3px] border-navy-800 font-black uppercase text-sm tracking-wide shadow-brutal-sm hover:bg-[#FFC11E] active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all">Launch App <ArrowUpRight className="w-5 h-5" /></Link>
           </div>
           <button onClick={() => setMobileNavOpen(!mobileNavOpen)} className="lg:hidden w-11 h-11 bg-navy-800 border-[3px] border-navy-800 flex items-center justify-center text-white">
             {mobileNavOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -57,12 +57,12 @@ export default function LandingPage() {
         </div>
         {mobileNavOpen && (
           <div className="lg:hidden border-t-[3px] border-navy-800 bg-white p-4 space-y-3">
-            <Link href="/features" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-cream-100 border-[3px] border-navy-800 font-black uppercase text-sm">Features</Link>
-            <Link href="/how-it-works" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-cream-100 border-[3px] border-navy-800 font-black uppercase text-sm">How it Works</Link>
-            <Link href="/pricing" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-cream-100 border-[3px] border-navy-800 font-black uppercase text-sm">Pricing</Link>
-            <Link href="/about" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-cream-100 border-[3px] border-navy-800 font-black uppercase text-sm">About</Link>
-            <Link href="/contact" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-cream-100 border-[3px] border-navy-800 font-black uppercase text-sm">Contact</Link>
-            <Link href="/dashboard" className="block text-center px-4 py-3 bg-mustard-400 border-[3px] border-navy-800 font-black uppercase text-sm">Launch App →</Link>
+            <Link href="/features" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-[#FFFDF0] border-[3px] border-navy-800 font-black uppercase text-sm">Features</Link>
+            <Link href="/how-it-works" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-[#FFFDF0] border-[3px] border-navy-800 font-black uppercase text-sm">How it Works</Link>
+            <Link href="/pricing" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-[#FFFDF0] border-[3px] border-navy-800 font-black uppercase text-sm">Pricing</Link>
+            <Link href="/about" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-[#FFFDF0] border-[3px] border-navy-800 font-black uppercase text-sm">About</Link>
+            <Link href="/contact" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-[#FFFDF0] border-[3px] border-navy-800 font-black uppercase text-sm">Contact</Link>
+            <Link href="/dashboard" className="block text-center px-4 py-3 bg-[#FFD23F] border-[3px] border-navy-800 font-black uppercase text-sm">Launch App →</Link>
             <Link href="/login" className="block text-center px-4 py-3 bg-navy-800 text-white border-[3px] border-navy-800 font-black uppercase text-sm">Sign In</Link>
           </div>
         )}
@@ -70,25 +70,25 @@ export default function LandingPage() {
 
       {/* HERO — larger */}
       <section className="relative overflow-hidden border-b-[3px] border-navy-800">
-        <div className="absolute inset-0 bg-cream-100" />
-        <div className="absolute top-0 right-0 w-[62%] h-full bg-mustard-400 border-l-[3px] border-navy-800 hidden xl:block" style={{ clipPath: "polygon(18% 0, 100% 0, 100% 100%, 0% 100%)" }} />
+        <div className="absolute inset-0 bg-[#FFFDF0]" />
+        <div className="absolute top-0 right-0 w-[62%] h-full bg-[#FFD23F] border-l-[3px] border-navy-800 hidden xl:block" style={{ clipPath: "polygon(18% 0, 100% 0, 100% 100%, 0% 100%)" }} />
         <div className="absolute -top-12 -left-12 w-48 h-48 bg-navy-800 rotate-12 hidden md:block border-[3px] border-navy-800" />
         <div className="relative max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-20">
           <div className="grid xl:grid-cols-2 gap-12 items-center">
             <div>
               <div className="inline-flex items-center gap-2 bg-navy-800 text-white px-4 py-2 border-[3px] border-navy-800 font-mono text-xs font-black uppercase tracking-widest shadow-brutal-sm mb-6">
-                <Sparkles className="w-4 h-4 text-mustard-400" /> Construction Cost Intelligence — v2.0 · Lagos Built
+                <Sparkles className="w-4 h-4 text-mustard-400" /> Construction Cost Intelligence — v2.0
               </div>
               <h1 className="font-display text-[46px] md:text-[64px] lg:text-[68px] leading-[0.88] tracking-tighter uppercase text-navy-800">
                 Analyse.<br />
-                <span className="bg-mustard-400 px-3 border-[3px] border-navy-800 shadow-brutal inline-block -rotate-1">Plan.</span><br />Build Smarter.
+                <span className="bg-[#FFD23F] px-3 border-[3px] border-navy-800 shadow-brutal inline-block -rotate-1">Plan.</span><br />Build Smarter.
               </h1>
               <p className="mt-6 text-lg font-bold leading-relaxed text-navy-800/70 max-w-xl border-l-[5px] border-navy-800 pl-5">
                 The unified system of record for <span className="bg-white px-1.5 border-[2px] border-navy-800 font-black text-navy-800">budget, procurement, site progress</span> and project margins. Stop spreadsheet chaos — command every naira from BOQ to final account with audit trails the QS can defend.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Link href="/dashboard" className="px-8 py-4 bg-navy-800 text-white border-[3px] border-navy-800 font-black uppercase text-base tracking-wide shadow-brutal flex items-center gap-2 hover:bg-navy-700 active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all">Start Building Free <ArrowRight className="w-6 h-6 text-mustard-400" /></Link>
-                <Link href="/register" className="px-8 py-4 bg-white border-[3px] border-navy-800 font-black uppercase text-base tracking-wide shadow-brutal hover:bg-cream-200 active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all">Create Workspace</Link>
+                <Link href="/register" className="px-8 py-4 bg-white border-[3px] border-navy-800 font-black uppercase text-base tracking-wide shadow-brutal hover:bg-[#FFF8D6] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all">Create Workspace</Link>
               </div>
               <div className="mt-8 flex flex-wrap items-center gap-4 text-sm font-black uppercase tracking-wide">
                 <span className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5" /> No credit card</span>
@@ -112,24 +112,24 @@ export default function LandingPage() {
             <div className="relative">
               <div className="bg-white border-[3px] border-navy-800 shadow-brutal-lg overflow-hidden">
                 <div className="h-12 bg-navy-800 border-b-[3px] border-navy-800 flex items-center gap-2 px-4">
-                  <span className="w-3.5 h-3.5 bg-mustard-400 border-2 border-white rounded-full" />
+                  <span className="w-3.5 h-3.5 bg-[#FFD23F] border-2 border-white rounded-full" />
                   <span className="w-3.5 h-3.5 bg-white border-2 border-navy-800 rounded-full" />
                   <span className="w-3.5 h-3.5 bg-red-500 border-2 border-white rounded-full" />
                   <span className="ml-4 text-xs font-mono font-bold text-white/80 tracking-widest hidden sm:inline">COSTVIEW:// DASHBOARD — EKO ATLANTIC</span>
                 </div>
-                <div className="p-5 bg-cream-100">
+                <div className="p-5 bg-[#FFFDF0]">
                   <div className="grid grid-cols-3 gap-3 mb-4">
                     <div className="bg-white border-[3px] border-navy-800 p-4 shadow-brutal-sm">
                       <div className="text-[11px] font-black uppercase tracking-widest text-navy-800/60">Approved Budget</div>
                       <div className="text-base font-black font-mono text-navy-800 mt-1">₦301.8M</div>
-                      <div className="h-2 bg-mustard-400 border border-navy-800 mt-2" />
+                      <div className="h-2 bg-[#FFD23F] border border-navy-800 mt-2" />
                     </div>
                     <div className="bg-navy-800 border-[3px] border-navy-800 p-4 shadow-brutal-sm text-white">
                       <div className="text-[11px] font-black uppercase tracking-widest text-white/60">Committed</div>
                       <div className="text-base font-black font-mono mt-1">₦292.2M</div>
                       <div className="h-2 bg-white mt-2" />
                     </div>
-                    <div className="bg-mustard-400 border-[3px] border-navy-800 p-4 shadow-brutal-sm">
+                    <div className="bg-[#FFD23F] border-[3px] border-navy-800 p-4 shadow-brutal-sm">
                       <div className="text-[11px] font-black uppercase tracking-widest">Actual Cost</div>
                       <div className="text-base font-black font-mono mt-1">₦216.4M</div>
                       <div className="h-2 bg-navy-800 mt-2" />
@@ -143,14 +143,14 @@ export default function LandingPage() {
                     <div className="space-y-3">
                       <div className="flex items-center gap-3 text-sm font-bold">
                         <span className="w-20 font-mono font-black">CON-02.01</span>
-                        <div className="flex-1 h-4 bg-cream-100 border-[3px] border-navy-800 flex">
-                          <div className="h-full bg-navy-800 w-[78%]" /><div className="h-full bg-mustard-400 w-[12%]" />
+                        <div className="flex-1 h-4 bg-[#FFFDF0] border-[3px] border-navy-800 flex">
+                          <div className="h-full bg-navy-800 w-[78%]" /><div className="h-full bg-[#FFD23F] w-[12%]" />
                         </div>
                         <span className="font-mono text-xs bg-red-500 text-white px-2 py-1 border border-navy-800">OVER</span>
                       </div>
                       <div className="flex items-center gap-3 text-sm font-bold">
                         <span className="w-20 font-mono font-black">STL-02.03</span>
-                        <div className="flex-1 h-4 bg-cream-100 border-[3px] border-navy-800"><div className="h-full bg-navy-800 w-[92%]" /></div>
+                        <div className="flex-1 h-4 bg-[#FFFDF0] border-[3px] border-navy-800"><div className="h-full bg-navy-800 w-[92%]" /></div>
                         <span className="font-mono text-xs bg-navy-800 text-white px-2 py-1">ON TRACK</span>
                       </div>
                     </div>
@@ -161,7 +161,7 @@ export default function LandingPage() {
                   </div>
                 </div>
               </div>
-              <div className="absolute -bottom-5 -left-5 bg-mustard-400 border-[3px] border-navy-800 px-5 py-3 shadow-brutal font-black uppercase text-sm hidden md:block">Secure · Auditable · Live</div>
+              <div className="absolute -bottom-5 -left-5 bg-[#FFD23F] border-[3px] border-navy-800 px-5 py-3 shadow-brutal font-black uppercase text-sm hidden md:block">Secure · Auditable · Live</div>
               <div className="absolute -top-5 -right-5 bg-navy-800 text-white border-[3px] border-navy-800 px-4 py-3 shadow-brutal-sm font-mono text-xs font-black hidden md:block">ZERO SPREADSHEET DRIFT</div>
             </div>
           </div>
@@ -220,13 +220,13 @@ export default function LandingPage() {
                   "PM sees margin, not just spend — 35% target vs 28% live",
                 ].map((li) => (
                   <li key={li} className="flex items-start gap-3 text-sm font-bold leading-relaxed">
-                    <span className="mt-1 w-6 h-6 bg-mustard-400 border-[2px] border-navy-800 flex items-center justify-center shrink-0"><CheckCircle2 className="w-4 h-4 text-navy-800" /></span>
+                    <span className="mt-1 w-6 h-6 bg-[#FFD23F] border-[2px] border-navy-800 flex items-center justify-center shrink-0"><CheckCircle2 className="w-4 h-4 text-navy-800" /></span>
                     <span>{li}</span>
                   </li>
                 ))}
               </ul>
             </div>
-            <div className="bg-mustard-400 border-[3px] border-navy-800 shadow-brutal p-6">
+            <div className="bg-[#FFD23F] border-[3px] border-navy-800 shadow-brutal p-6">
               <div className="flex items-center gap-2 font-black uppercase text-sm"><Eye className="w-5 h-5" /> The CostView Fix</div>
               <p className="text-sm font-bold mt-2 leading-relaxed">From BOQ Master → Requisition → RFQ → PO → GRN → 3-Way Match → Payment → Stock → Diary → Final Account. One chain, one truth. No drift.</p>
             </div>
@@ -239,7 +239,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-20">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
             <div>
-              <div className="inline-block bg-mustard-400 border-[3px] border-navy-800 px-4 py-2 font-black uppercase text-sm tracking-widest shadow-brutal-sm">Platform Modules</div>
+              <div className="inline-block bg-[#FFD23F] border-[3px] border-navy-800 px-4 py-2 font-black uppercase text-sm tracking-widest shadow-brutal-sm">Platform Modules</div>
               <h2 className="mt-4 text-3xl md:text-5xl font-display uppercase tracking-tighter leading-none">Every Cost.<br />Every Site. <span className="bg-navy-800 text-white px-3">One View.</span></h2>
             </div>
             <p className="max-w-md text-base font-bold text-navy-800/60 border-l-[5px] border-navy-800 pl-5 leading-relaxed">Built for Nigerian reality — Naira-first, offline-tolerant, role-aware. From BOQ master to commercial margin.</p>
@@ -253,7 +253,7 @@ export default function LandingPage() {
               { icon: TrendingUp, title: "Site Diary & Snags", bullets: ["Weather-stamped logs", "48 workers, Shift #142 live", "Snag/NCR with photos", "Remediation status closed-loop"] },
               { icon: Building2, title: "Commercial Command", bullets: ["GDV ₦1.2B · Cost ₦780M", "35% margin live tracker", "Debt drawdown 58%", "Sales & receivables off-plan"] },
             ].map((f) => (
-              <div key={f.title} className="bg-cream-100 border-[3px] border-navy-800 shadow-brutal p-6 hover:shadow-brutal-lg hover:-translate-y-1 transition-all flex flex-col">
+              <div key={f.title} className="bg-[#FFFDF0] border-[3px] border-navy-800 shadow-brutal p-6 hover:shadow-brutal-lg hover:-translate-y-1 transition-all flex flex-col">
                 <div className="w-14 h-14 bg-navy-800 border-[3px] border-navy-800 flex items-center justify-center text-white mb-4"><f.icon className="w-7 h-7" /></div>
                 <h3 className="font-black uppercase tracking-tight text-lg leading-none">{f.title}</h3>
                 <ul className="mt-4 space-y-2 flex-1">
@@ -272,24 +272,24 @@ export default function LandingPage() {
         <div className="text-center max-w-3xl mx-auto">
           <div className="inline-block bg-navy-800 text-white border-[3px] border-navy-800 px-4 py-2 font-black uppercase text-sm tracking-widest">Built For 8 Roles</div>
           <h2 className="mt-4 text-3xl md:text-5xl font-display uppercase tracking-tighter">Everyone Sees <span className="underline decoration-mustard-400 decoration-[10px]">Their Truth</span></h2>
-          <p className="mt-3 text-base font-bold text-navy-800/60">RBAC ensures a Site Engineer never approves budget, and a QS never confirms delivery. Seeded demo users below — all password <span className="bg-mustard-400 border border-navy-800 px-1 font-mono font-black">DemoPass2026!</span></p>
+          <p className="mt-3 text-base font-bold text-navy-800/60">RBAC ensures a Site Engineer never approves budget, and a QS never confirms delivery. Seeded demo users below — all password <span className="bg-[#FFD23F] border border-navy-800 px-1 font-mono font-black">DemoPass2026!</span></p>
         </div>
         <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
           {[
             { role: "Admin", user: "admin@costview.ng", desc: "Full access, role editor", color: "bg-red-500 text-white" },
             { role: "Project Manager", user: "pm@costview.ng", desc: "Budget + Procurement + Reports", color: "bg-navy-800 text-white" },
-            { role: "Quantity Surveyor", user: "qs@costview.ng", desc: "BOQ · Variations · Valuations", color: "bg-mustard-400 text-navy-800" },
+            { role: "Quantity Surveyor", user: "qs@costview.ng", desc: "BOQ · Variations · Valuations", color: "bg-[#FFD23F] text-navy-800" },
             { role: "Site Engineer", user: "site@costview.ng", desc: "Materials · Labour · Diary", color: "bg-white text-navy-800" },
             { role: "Procurement Officer", user: "procure@costview.ng", desc: "RFQ · PO · 3-Way Match", color: "bg-white text-navy-800" },
-            { role: "Accountant", user: "acct@costview.ng", desc: "Invoices · Payments · Audit", color: "bg-cream-100 text-navy-800" },
-            { role: "Storekeeper", user: "store@costview.ng", desc: "Stock · Issues · Transfers", color: "bg-mustard-400 text-navy-800" },
+            { role: "Accountant", user: "acct@costview.ng", desc: "Invoices · Payments · Audit", color: "bg-[#FFFDF0] text-navy-800" },
+            { role: "Storekeeper", user: "store@costview.ng", desc: "Stock · Issues · Transfers", color: "bg-[#FFD23F] text-navy-800" },
             { role: "Architect", user: "arch@costview.ng", desc: "Drawings · Variations · Snags", color: "bg-navy-800 text-white" },
           ].map((p) => (
             <div key={p.role} className="bg-white border-[3px] border-navy-800 shadow-brutal p-5">
               <div className={`w-full text-center py-1.5 font-black uppercase text-xs tracking-widest border-[2px] border-navy-800 mb-3 ${p.color}`}>{p.role}</div>
               <div className="font-mono text-sm font-black text-navy-800 truncate">{p.user}</div>
               <div className="text-xs font-bold text-navy-800/60 mt-1">{p.desc}</div>
-              <div className="mt-3 text-[11px] font-mono font-bold bg-cream-100 border border-navy-800 px-2 py-1">pwd: DemoPass2026!</div>
+              <div className="mt-3 text-[11px] font-mono font-bold bg-[#FFFDF0] border border-navy-800 px-2 py-1">pwd: DemoPass2026!</div>
             </div>
           ))}
         </div>
@@ -299,12 +299,12 @@ export default function LandingPage() {
       </section>
 
       {/* COMPARISON */}
-      <section className="bg-cream-100 border-y-[3px] border-navy-800">
+      <section className="bg-[#FFFDF0] border-y-[3px] border-navy-800">
         <div className="max-w-5xl mx-auto px-4 md:px-6 py-12 md:py-16">
           <h3 className="text-center text-2xl md:text-3xl font-black uppercase tracking-tighter">Excel vs CostView</h3>
           <div className="mt-8 bg-white border-[3px] border-navy-800 shadow-brutal overflow-hidden">
             <div className="grid grid-cols-3 bg-navy-800 text-white font-black uppercase text-sm">
-              <div className="p-4">Capability</div><div className="p-4 text-center bg-white/10">Excel / WhatsApp</div><div className="p-4 text-center bg-mustard-400 text-navy-800">CostView</div>
+              <div className="p-4">Capability</div><div className="p-4 text-center bg-white/10">Excel / WhatsApp</div><div className="p-4 text-center bg-[#FFD23F] text-navy-800">CostView</div>
             </div>
             {[
               ["BOQ variance alert", "Manual, after month", "Auto ±5% flag"],
@@ -315,9 +315,9 @@ export default function LandingPage() {
               ["Commercial margin", "Separate spreadsheet", "Live 35% tracker"],
             ].map((row) => (
               <div key={row[0]} className="grid grid-cols-3 border-t-[3px] border-navy-800 text-sm font-bold">
-                <div className="p-4 bg-cream-100 border-r-[3px] border-navy-800 font-black">{row[0]}</div>
+                <div className="p-4 bg-[#FFFDF0] border-r-[3px] border-navy-800 font-black">{row[0]}</div>
                 <div className="p-4 text-center border-r-[3px] border-navy-800 text-navy-800/60">{row[1]}</div>
-                <div className="p-4 text-center bg-mustard-400 font-black flex items-center justify-center gap-2"><CheckCircle2 className="w-4 h-4" /> {row[2]}</div>
+                <div className="p-4 text-center bg-[#FFD23F] font-black flex items-center justify-center gap-2"><CheckCircle2 className="w-4 h-4" /> {row[2]}</div>
               </div>
             ))}
           </div>
@@ -336,7 +336,7 @@ export default function LandingPage() {
                 { n: "03", t: "Close With Confidence", d: "Live variances, commercial GDV ₦1.2B, margin 35%, final account QS notes without blocking. Hand client a defensible close-out.", bullets: ["BOQ vs Actual variance note", "Interim Valuation cert", "Sales & receivables 40% realized"] },
               ].map((s) => (
                 <div key={s.n} className="flex gap-5 bg-white border-[3px] border-navy-800 p-6 shadow-brutal">
-                  <div className="w-14 h-14 shrink-0 bg-mustard-400 text-navy-800 border-[3px] border-navy-800 flex items-center justify-center font-black font-mono text-lg shadow-brutal-sm">{s.n}</div>
+                  <div className="w-14 h-14 shrink-0 bg-[#FFD23F] text-navy-800 border-[3px] border-navy-800 flex items-center justify-center font-black font-mono text-lg shadow-brutal-sm">{s.n}</div>
                   <div>
                     <h4 className="font-black uppercase text-lg leading-none">{s.t}</h4>
                     <p className="text-sm font-bold text-navy-800/60 mt-2 leading-relaxed">{s.d}</p>
@@ -357,7 +357,7 @@ export default function LandingPage() {
               ].map((li) => (<li key={li} className="flex items-start gap-3 text-sm font-bold leading-relaxed"><CheckCircle2 className="w-5 h-5 text-mustard-400 shrink-0 mt-0.5" />{li}</li>))}</ul>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-mustard-400 border-[3px] border-navy-800 p-6 shadow-brutal"><BarChart3 className="w-8 h-8 mb-3" /><div className="font-black uppercase text-sm">Margin Live</div><div className="text-3xl font-black font-mono">35%</div><div className="text-xs font-bold uppercase">₦420M projected</div></div>
+              <div className="bg-[#FFD23F] border-[3px] border-navy-800 p-6 shadow-brutal"><BarChart3 className="w-8 h-8 mb-3" /><div className="font-black uppercase text-sm">Margin Live</div><div className="text-3xl font-black font-mono">35%</div><div className="text-xs font-bold uppercase">₦420M projected</div></div>
               <div className="bg-white border-[3px] border-navy-800 p-6 shadow-brutal"><ShieldCheck className="w-8 h-8 mb-3" /><div className="font-black uppercase text-sm">Audit Ready</div><div className="text-3xl font-black font-mono">100%</div><div className="text-xs font-bold uppercase text-navy-800/60">Every mutation logged</div></div>
             </div>
             <div className="bg-white border-[3px] border-navy-800 shadow-brutal p-6">
@@ -377,7 +377,7 @@ export default function LandingPage() {
       <section id="pricing" className="bg-white border-y-[3px] border-navy-800">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-20">
           <div className="text-center max-w-3xl mx-auto">
-            <div className="inline-block bg-mustard-400 border-[3px] border-navy-800 px-5 py-2 font-black uppercase text-sm tracking-widest shadow-brutal-sm">Simple Pricing — Naira Friendly</div>
+            <div className="inline-block bg-[#FFD23F] border-[3px] border-navy-800 px-5 py-2 font-black uppercase text-sm tracking-widest shadow-brutal-sm">Simple Pricing — Naira Friendly</div>
             <h2 className="mt-4 text-3xl md:text-5xl font-display uppercase tracking-tighter">Start Free. Scale When You Win.</h2>
             <p className="mt-3 text-base font-bold text-navy-800/60">One workspace per company. Unlimited projects. Pricing that respects Nigerian margins.</p>
           </div>
@@ -387,13 +387,13 @@ export default function LandingPage() {
               { name: "Growth", price: "₦45k", sub: "/ month per project", feats: ["Unlimited Projects", "All Site Ops Modules", "Unlimited Users", "RBAC + Audit Log", "Priority WhatsApp", "CSV + Photo proofs"], cta: "Start 14-Day Trial", dark: true, badge: "Most Popular" },
               { name: "Enterprise", price: "Custom", sub: "For developers & groups", feats: ["Commercial Mode 18 modules", "Valuation & Claims", "Sales & Receivables", "Dedicated Success", "SLA & On-Prem", "Naira / USD billing"], cta: "Talk to Founders", dark: false },
             ].map((p) => (
-              <div key={p.name} className={`${p.dark ? "bg-navy-800 text-white" : "bg-cream-100"} border-[3px] border-navy-800 shadow-brutal p-8 relative flex flex-col min-h-[420px]`}>
-                {p.badge && (<div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-mustard-400 text-navy-800 border-[3px] border-navy-800 px-4 py-1.5 font-black uppercase text-xs tracking-widest whitespace-nowrap shadow-brutal-sm">{p.badge}</div>)}
+              <div key={p.name} className={`${p.dark ? "bg-navy-800 text-white" : "bg-[#FFFDF0]"} border-[3px] border-navy-800 shadow-brutal p-8 relative flex flex-col min-h-[420px]`}>
+                {p.badge && (<div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#FFD23F] text-navy-800 border-[3px] border-navy-800 px-4 py-1.5 font-black uppercase text-xs tracking-widest whitespace-nowrap shadow-brutal-sm">{p.badge}</div>)}
                 <h3 className="font-black uppercase tracking-tight text-lg">{p.name}</h3>
                 <div className={`mt-2 text-4xl font-black font-mono tracking-tighter ${p.dark ? "text-mustard-400" : "text-navy-800"}`}>{p.price}</div>
                 <div className={`text-sm font-bold uppercase tracking-wide ${p.dark ? "text-white/60" : "text-navy-800/60"}`}>{p.sub}</div>
-                <ul className="mt-6 space-y-3 flex-1">{p.feats.map((f) => (<li key={f} className="flex items-center gap-3 text-sm font-bold"><span className={`w-6 h-6 border-[2px] border-navy-800 flex items-center justify-center shrink-0 ${p.dark ? "bg-mustard-400 text-navy-800" : "bg-navy-800 text-white"}`}><CheckCircle2 className="w-4 h-4" /></span>{f}</li>))}</ul>
-                <Link href={p.name === "Enterprise" ? "/register" : "/dashboard"} className={`mt-8 w-full text-center py-4 border-[3px] border-navy-800 font-black uppercase text-sm tracking-wide shadow-brutal-sm active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all ${p.dark ? "bg-mustard-400 text-navy-800 hover:bg-mustard-500" : "bg-white hover:bg-white text-navy-800"}`}>{p.cta}</Link>
+                <ul className="mt-6 space-y-3 flex-1">{p.feats.map((f) => (<li key={f} className="flex items-center gap-3 text-sm font-bold"><span className={`w-6 h-6 border-[2px] border-navy-800 flex items-center justify-center shrink-0 ${p.dark ? "bg-[#FFD23F] text-navy-800" : "bg-navy-800 text-white"}`}><CheckCircle2 className="w-4 h-4" /></span>{f}</li>))}</ul>
+                <Link href={p.name === "Enterprise" ? "/register" : "/dashboard"} className={`mt-8 w-full text-center py-4 border-[3px] border-navy-800 font-black uppercase text-sm tracking-wide shadow-brutal-sm active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all ${p.dark ? "bg-[#FFD23F] text-navy-800 hover:bg-[#FFC11E]" : "bg-white hover:bg-white text-navy-800"}`}>{p.cta}</Link>
               </div>
             ))}
           </div>
@@ -415,9 +415,9 @@ export default function LandingPage() {
             <div key={idx} className="bg-white border-[3px] border-navy-800 shadow-brutal">
               <button onClick={() => setOpenFaq(openFaq === idx ? null : idx)} className="w-full flex items-center justify-between p-5 text-left">
                 <span className="font-black uppercase text-sm pr-4">{item.q}</span>
-                <span className={`w-9 h-9 border-[3px] border-navy-800 flex items-center justify-center shrink-0 transition-colors ${openFaq === idx ? "bg-mustard-400" : "bg-white"}`}><ChevronDown className={`w-5 h-5 transition-transform ${openFaq === idx ? "rotate-180" : ""}`} /></span>
+                <span className={`w-9 h-9 border-[3px] border-navy-800 flex items-center justify-center shrink-0 transition-colors ${openFaq === idx ? "bg-[#FFD23F]" : "bg-white"}`}><ChevronDown className={`w-5 h-5 transition-transform ${openFaq === idx ? "rotate-180" : ""}`} /></span>
               </button>
-              {openFaq === idx && (<div className="px-5 pb-5 text-sm font-bold text-navy-800/70 leading-relaxed border-t-[3px] border-navy-800 bg-cream-100 pt-4">{item.a}</div>)}
+              {openFaq === idx && (<div className="px-5 pb-5 text-sm font-bold text-navy-800/70 leading-relaxed border-t-[3px] border-navy-800 bg-[#FFFDF0] pt-4">{item.a}</div>)}
             </div>
           ))}
         </div>
@@ -431,18 +431,18 @@ export default function LandingPage() {
             <p className="mt-4 text-base font-bold text-white/70 max-w-lg">Join PMs, QSs and Site Engineers running ₦100M+ projects without spreadsheet drift. Launch in 2 minutes — 8 demo roles waiting.</p>
           </div>
           <div className="flex flex-wrap gap-4 lg:justify-end">
-            <Link href="/dashboard" className="px-8 py-4 bg-mustard-400 text-navy-800 border-[3px] border-navy-800 font-black uppercase text-base tracking-wide shadow-[6px_6px_0px_0px_white] hover:bg-mustard-500 active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all">Launch Dashboard →</Link>
-            <Link href="/login" className="px-8 py-4 bg-white text-navy-800 border-[3px] border-navy-800 font-black uppercase text-base tracking-wide hover:bg-cream-100">Sign In</Link>
+            <Link href="/dashboard" className="px-8 py-4 bg-[#FFD23F] text-navy-800 border-[3px] border-navy-800 font-black uppercase text-base tracking-wide shadow-[6px_6px_0px_0px_white] hover:bg-[#FFC11E] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all">Launch Dashboard →</Link>
+            <Link href="/login" className="px-8 py-4 bg-white text-navy-800 border-[3px] border-navy-800 font-black uppercase text-base tracking-wide hover:bg-[#FFFDF0]">Sign In</Link>
           </div>
         </div>
       </section>
 
-      <footer className="bg-cream-100 border-t-[3px] border-navy-800">
+      <footer className="bg-[#FFFDF0] border-t-[3px] border-navy-800">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-10">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <Logo size="sm" />
-              <p className="mt-3 text-sm font-bold text-navy-800/60 leading-relaxed">Analyse · Plan · Build Smarter.<br />Lagos · Nigeria · NAVY-BRUTAL v2</p>
+              <p className="mt-3 text-sm font-bold text-navy-800/60 leading-relaxed">Analyse · Plan · Build Smarter.<br />NAVY-BRUTAL v2</p>
             </div>
             <div>
               <h4 className="font-black uppercase text-sm">Product</h4>

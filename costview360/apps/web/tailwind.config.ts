@@ -24,16 +24,16 @@ const config: Config = {
         },
         cream: {
           50: "#FFFEFB",
-          100: "#F5F1E8",
-          200: "#E8E0C8",
-          300: "#D8CFC0",
-          DEFAULT: "#F5F1E8",
+          100: "#FFFDF0",
+          200: "#FFF8D6",
+          300: "#FFF0B3",
+          DEFAULT: "#FFFDF0",
         },
         mustard: {
-          400: "#D1B15E",
-          500: "#C9A227",
-          600: "#A68A1E",
-          DEFAULT: "#C9A227",
+          400: "#FFD23F",
+          500: "#FFC11E",
+          600: "#E8A800",
+          DEFAULT: "#FFD23F",
         },
         ink: "#0A0A0A",
         paper: "#FFFDF0",
@@ -54,11 +54,11 @@ const config: Config = {
         display: ["Archivo Black", "Space Grotesk", "sans-serif"],
       },
       boxShadow: {
-        // App softened: 4px (was 6px landing), 3px sm, 6px lg — dull mustard
+        // Softened brutalism for in-app: 4px (was 6px), 3px sm, 6px lg
         brutal: "4px 4px 0px 0px #0A1931",
         "brutal-sm": "3px 3px 0px 0px #0A1931",
         "brutal-lg": "6px 6px 0px 0px #0A1931",
-        "brutal-mustard": "4px 4px 0px 0px #C9A227",
+        "brutal-mustard": "4px 4px 0px 0px #FFD23F",
         "brutal-white": "4px 4px 0px 0px white",
       },
     },
