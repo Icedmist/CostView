@@ -374,7 +374,7 @@ export function ThreeWayMatchView() {
                 : "text-navy-800/70 hover:text-navy-800"
             }`}
           >
-            <BadgeCheck className="w-3.5 h-3.5 text-emerald-400" />
+            <BadgeCheck className="w-3.5 h-3.5 text-[#6B8A6B]" />
             <span>2.1 Three-Way Match</span>
           </button>
 
@@ -427,7 +427,7 @@ export function ThreeWayMatchView() {
                 : "text-navy-800/70 hover:text-navy-800"
             }`}
           >
-            <CreditCard className="w-3.5 h-3.5 text-emerald-400" />
+            <CreditCard className="w-3.5 h-3.5 text-[#6B8A6B]" />
             <span>2.7 Payments Ledger</span>
           </button>
         </div>
@@ -450,7 +450,7 @@ export function ThreeWayMatchView() {
             </div>
             <button
               onClick={() => setIsNewInvoiceOpen(true)}
-              className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-[#6B8A6B] hover:bg-[#7A9B7A] text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Log Supplier Invoice</span>
@@ -463,7 +463,7 @@ export function ThreeWayMatchView() {
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="font-mono font-bold text-emerald-400 text-xs">
+                      <span className="font-mono font-bold text-[#6B8A6B] text-xs">
                         {rec.poNumber}
                       </span>
                       <span className="text-navy-800/40">·</span>
@@ -504,7 +504,7 @@ export function ThreeWayMatchView() {
                           </button>
                         </div>
                         <div className="text-xs font-mono text-navy-800">
-                          Received: <span className={`font-bold ${rec.grnQtyReceived !== rec.poQty ? "text-amber-400" : "text-emerald-400"}`}>
+                          Received: <span className={`font-bold ${rec.grnQtyReceived !== rec.poQty ? "text-amber-400" : "text-[#6B8A6B]"}`}>
                             {rec.grnQtyReceived}
                           </span>
                         </div>
@@ -545,7 +545,7 @@ export function ThreeWayMatchView() {
                       </div>
                     ) : (
                       <div className="flex items-center gap-1.5 px-3 py-1.5 border-2 border-navy-800 bg-emerald-950/80 border border-emerald-800 text-emerald-300 text-xs font-semibold">
-                        <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
+                        <CheckCircle className="w-3.5 h-3.5 text-[#6B8A6B]" />
                         <span>{rec.matchStatus}</span>
                       </div>
                     )}
@@ -555,7 +555,7 @@ export function ThreeWayMatchView() {
                         onClick={() => handleResolveDiscrepancy(rec.id)}
                         className="flex items-center gap-1 px-3 py-1.5 bg-cream-100 hover:bg-cream-100 text-navy-800 border-2 border-navy-800 text-xs font-semibold transition-colors"
                       >
-                        <Unlock className="w-3.5 h-3.5 text-emerald-400" />
+                        <Unlock className="w-3.5 h-3.5 text-[#6B8A6B]" />
                         <span>Adjust Credit & Unlock</span>
                       </button>
                     )}
@@ -563,7 +563,7 @@ export function ThreeWayMatchView() {
                     {!rec.paymentLocked && rec.matchStatus !== "Paid" && (
                       <button
                         onClick={() => handleOpenProcessPayment(rec)}
-                        className="flex items-center gap-1 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors"
+                        className="flex items-center gap-1 px-3 py-1.5 bg-[#6B8A6B] hover:bg-[#7A9B7A] text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors"
                       >
                         <CreditCard className="w-3.5 h-3.5" />
                         <span>Process Payment</span>
@@ -592,7 +592,7 @@ export function ThreeWayMatchView() {
             </div>
             <button
               onClick={() => setIsNewReqOpen(true)}
-              className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-[#6B8A6B] hover:bg-[#7A9B7A] text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>New Requisition</span>
@@ -621,7 +621,7 @@ export function ThreeWayMatchView() {
                   <div className="flex items-center gap-3 text-xs text-navy-800/70">
                     <span>Qty: <strong className="text-navy-800">{req.quantity} {req.unit}</strong></span>
                     <span>·</span>
-                    <span>Est. Cost: <strong className="text-emerald-400 font-mono">{formatCurrency(req.estimatedCost, currency)}</strong></span>
+                    <span>Est. Cost: <strong className="text-[#6B8A6B] font-mono">{formatCurrency(req.estimatedCost, currency)}</strong></span>
                     <span>·</span>
                     <span>Requested by {req.requestedBy} on {req.date}</span>
                   </div>
@@ -642,7 +642,7 @@ export function ThreeWayMatchView() {
                     <div className="flex items-center gap-1.5 ml-2">
                       <button
                         onClick={() => handleUpdateReqStatus(req.id, "Approved")}
-                        className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs font-semibold shadow-sm transition-colors flex items-center gap-1"
+                        className="px-2.5 py-1 bg-[#6B8A6B] hover:bg-[#7A9B7A] text-white rounded text-xs font-semibold shadow-sm transition-colors flex items-center gap-1"
                       >
                         <Check className="w-3 h-3" />
                         <span>Approve</span>
@@ -706,7 +706,7 @@ export function ThreeWayMatchView() {
                     <div key={idx} className="p-3 border-2 border-navy-800 bg-white border border-navy-800 flex flex-col justify-between">
                       <div>
                         <div className="text-xs font-bold text-navy-800">{quote.name}</div>
-                        <div className="text-xs font-mono text-emerald-400 font-semibold mt-1">
+                        <div className="text-xs font-mono text-[#6B8A6B] font-semibold mt-1">
                           {formatCurrency(quote.quoteRate, currency)} / {enq.unit}
                         </div>
                         <div className="text-xs text-navy-800/70 mt-0.5">
@@ -718,7 +718,7 @@ export function ThreeWayMatchView() {
                         className="mt-3 w-full py-1 bg-cream-100 hover:bg-cream-100 text-white rounded text-xs font-semibold transition-colors flex items-center justify-center gap-1"
                       >
                         <span>Award & Create PO</span>
-                        <ArrowRight className="w-3 h-3 text-emerald-400" />
+                        <ArrowRight className="w-3 h-3 text-[#6B8A6B]" />
                       </button>
                     </div>
                   ))}
@@ -760,7 +760,7 @@ export function ThreeWayMatchView() {
                     <span className="text-navy-800/40">·</span>
                     <span className="font-semibold text-white text-xs">{r.supplierName}</span>
                     <span className="text-navy-800/40">·</span>
-                    <span className="font-mono text-emerald-400 text-xs font-bold">
+                    <span className="font-mono text-[#6B8A6B] text-xs font-bold">
                       {formatCurrency(r.invoiceTotal, currency)}
                     </span>
                   </div>
@@ -801,7 +801,7 @@ export function ThreeWayMatchView() {
           <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <CreditCard className="w-4 h-4 text-emerald-400" />
+                <CreditCard className="w-4 h-4 text-[#6B8A6B]" />
                 <span>Supplier Disbursement & Payment Trail</span>
               </h3>
               <p className="text-xs text-navy-800/70 mt-0.5">
@@ -817,7 +817,7 @@ export function ThreeWayMatchView() {
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-mono font-bold text-white text-xs">{r.supplierName}</span>
                     <span className="text-navy-800/40">·</span>
-                    <span className="font-mono text-emerald-400 text-xs font-bold">
+                    <span className="font-mono text-[#6B8A6B] text-xs font-bold">
                       {formatCurrency(r.invoiceTotal, currency)}
                     </span>
                     <span className="text-navy-800/40">·</span>
@@ -849,7 +849,7 @@ export function ThreeWayMatchView() {
                       </button>
                       <button
                         onClick={() => handleOpenProcessPayment(r)}
-                        className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1"
+                        className="px-3 py-1.5 bg-[#6B8A6B] hover:bg-[#7A9B7A] text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1"
                       >
                         <CreditCard className="w-3 h-3" />
                         <span>Process</span>
@@ -939,7 +939,7 @@ export function ThreeWayMatchView() {
                 </button>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs font-semibold"
+                  className="px-3 py-1.5 bg-[#6B8A6B] hover:bg-[#7A9B7A] text-white rounded text-xs font-semibold"
                 >
                   Submit Requisition
                 </button>
@@ -1077,7 +1077,7 @@ export function ThreeWayMatchView() {
           <div className="bg-white border border-navy-800 border-2 border-navy-800 max-w-md w-full p-5 shadow-2xl">
             <h3 className="text-sm font-bold text-white">Process Supplier Disbursement</h3>
             <p className="text-xs text-navy-800/70 mt-1">
-              Disbursing <strong className="text-emerald-400 font-mono">{formatCurrency(selectedRecord.invoiceTotal, currency)}</strong> to {selectedRecord.supplierName}.
+              Disbursing <strong className="text-[#6B8A6B] font-mono">{formatCurrency(selectedRecord.invoiceTotal, currency)}</strong> to {selectedRecord.supplierName}.
             </p>
 
             <form onSubmit={handleConfirmPayment} className="mt-4 space-y-3">
@@ -1114,7 +1114,7 @@ export function ThreeWayMatchView() {
                 </button>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs font-semibold"
+                  className="px-3 py-1.5 bg-[#6B8A6B] hover:bg-[#7A9B7A] text-white rounded text-xs font-semibold"
                 >
                   Confirm & Release Funds
                 </button>
@@ -1176,7 +1176,7 @@ export function ThreeWayMatchView() {
                 </button>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 bg-amber-600 hover:bg-amber-500 text-white rounded text-xs font-semibold"
+                  className="px-3 py-1.5 bg-amber-600 hover:bg-[#A68A5A] text-white rounded text-xs font-semibold"
                 >
                   Save Quality Rating
                 </button>

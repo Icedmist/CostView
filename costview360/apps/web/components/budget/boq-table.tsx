@@ -425,7 +425,7 @@ export function BOQTable() {
                 : "text-white/70 hover:text-navy-800 hover:bg-white/10 border border-transparent"
             }`}
           >
-            <Layers className="w-3.5 h-3.5 text-emerald-400" />
+            <Layers className="w-3.5 h-3.5 text-[#6B8A6B]" />
             <span>1.2 BOQ Master</span>
           </button>
 
@@ -479,7 +479,7 @@ export function BOQTable() {
         {/* Global Threshold Tag (PRD Question 1) */}
         <div className="hidden md:flex items-center gap-2 text-sm text-navy-800/60 bg-white border border-navy-800 px-2.5 py-1 rounded-lg">
           <span>Threshold:</span>
-          <span className="text-emerald-400 font-mono font-bold">±{thresholdPercent}%</span>
+          <span className="text-[#6B8A6B] font-mono font-bold">±{thresholdPercent}%</span>
         </div>
       </div>
 
@@ -521,12 +521,12 @@ export function BOQTable() {
                 onClick={() => setIsImportModalOpen(true)}
                 className="flex items-center gap-1.5 bg-cream-100 hover:bg-cream-100 text-navy-800 border border-navy-800 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors"
               >
-                <Download className="w-3.5 h-3.5 text-emerald-400 rotate-180" />
+                <Download className="w-3.5 h-3.5 text-[#6B8A6B] rotate-180" />
                 <span>Import BOQ / CSV</span>
               </button>
               <button
                 onClick={() => setIsAddModalOpen(true)}
-                className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm transition-colors"
+                className="flex items-center gap-1.5 bg-[#6B8A6B] hover:bg-[#7A9B7A] text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm transition-colors"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Add BOQ Item</span>
@@ -570,11 +570,11 @@ export function BOQTable() {
                       ? "bg-red-950/80 text-red-400 border-red-800"
                       : statusLabel === "Under Budget"
                       ? "bg-blue-950/80 text-blue-400 border-blue-800"
-                      : "bg-emerald-950/80 text-emerald-400 border-emerald-800";
+                      : "bg-emerald-950/80 text-[#6B8A6B] border-emerald-800";
 
                   return (
                     <tr key={item.id} className="hover:bg-cream-100/40 transition-colors">
-                      <td className="py-3 px-4 font-mono font-bold text-emerald-400 whitespace-nowrap">
+                      <td className="py-3 px-4 font-mono font-bold text-[#6B8A6B] whitespace-nowrap">
                         {item.code}
                       </td>
                       <td className="py-3 px-4 font-medium text-navy-800 max-w-xs">
@@ -607,7 +607,7 @@ export function BOQTable() {
                         {formatCurrency(item.committedAmount, currency)}
                       </td>
                       <td className="py-3 px-4 text-right font-mono whitespace-nowrap">
-                        <span className={`font-semibold ${variance < 0 ? "text-red-400" : "text-emerald-400"}`}>
+                        <span className={`font-semibold ${variance < 0 ? "text-red-400" : "text-[#6B8A6B]"}`}>
                           {formatCurrency(variance, currency)}
                         </span>
                       </td>
@@ -621,7 +621,7 @@ export function BOQTable() {
                           <button
                             onClick={() => handleOpenRevision(item)}
                             title="Request Revision"
-                            className="p-1 text-navy-800/60 hover:text-emerald-400 hover:bg-cream-100 rounded transition-colors"
+                            className="p-1 text-navy-800/60 hover:text-[#6B8A6B] hover:bg-cream-100 rounded transition-colors"
                           >
                             <Edit3 className="w-3.5 h-3.5" />
                           </button>
@@ -711,7 +711,7 @@ export function BOQTable() {
                     className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors ${
                       risk.isHandled
                         ? "bg-cream-100 hover:bg-cream-100 text-navy-800 border border-navy-800"
-                        : "bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm"
+                        : "bg-[#6B8A6B] hover:bg-[#7A9B7A] text-white shadow-sm"
                     }`}
                   >
                     {risk.isHandled ? (
@@ -750,7 +750,7 @@ export function BOQTable() {
               onClick={() => {
                 if (items.length > 0) handleOpenRevision(items[0]);
               }}
-              className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-[#6B8A6B] hover:bg-[#7A9B7A] text-white rounded-lg text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Revision</span>
@@ -762,7 +762,7 @@ export function BOQTable() {
               <div key={rev.id} className="py-4 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/20 px-2 rounded-lg transition-colors">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-mono font-bold text-emerald-400 text-xs">{rev.boqItemCode}</span>
+                    <span className="font-mono font-bold text-[#6B8A6B] text-xs">{rev.boqItemCode}</span>
                     <span className="text-navy-800/40">·</span>
                     <span className="font-mono font-semibold text-white text-xs">
                       {rev.deltaAmount >= 0 ? "+" : ""}{formatCurrency(rev.deltaAmount, currency)}
@@ -788,7 +788,7 @@ export function BOQTable() {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => handleUpdateRevisionStatus(rev.id, "Approved")}
-                      className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors flex items-center gap-1"
+                      className="px-3 py-1.5 bg-[#6B8A6B] hover:bg-[#7A9B7A] text-white rounded-lg text-xs font-semibold shadow-sm transition-colors flex items-center gap-1"
                     >
                       <Check className="w-3.5 h-3.5" />
                       <span>Approve Delta</span>
@@ -842,12 +842,12 @@ export function BOQTable() {
                   const closingVariance = item.budgetAmount - item.actualAmount;
                   return (
                     <tr key={item.id} className="hover:bg-cream-100/30 transition-colors">
-                      <td className="py-3 px-4 font-mono font-bold text-emerald-400">{item.code}</td>
+                      <td className="py-3 px-4 font-mono font-bold text-[#6B8A6B]">{item.code}</td>
                       <td className="py-3 px-4 font-medium text-navy-800 max-w-xs">{item.description}</td>
                       <td className="py-3 px-4 text-right font-mono">{formatCurrency(item.budgetAmount, currency)}</td>
                       <td className="py-3 px-4 text-right font-mono text-navy-800">{formatCurrency(item.actualAmount, currency)}</td>
                       <td className="py-3 px-4 text-right font-mono">
-                        <span className={closingVariance < 0 ? "text-red-400 font-semibold" : "text-emerald-400 font-semibold"}>
+                        <span className={closingVariance < 0 ? "text-red-400 font-semibold" : "text-[#6B8A6B] font-semibold"}>
                           {closingVariance >= 0 ? "+" : ""}{formatCurrency(closingVariance, currency)}
                         </span>
                       </td>
@@ -937,7 +937,7 @@ export function BOQTable() {
                 </button>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors"
+                  className="px-3 py-1.5 bg-[#6B8A6B] hover:bg-[#7A9B7A] text-white rounded-lg text-xs font-semibold shadow-sm transition-colors"
                 >
                   Submit Revision
                 </button>
@@ -1031,7 +1031,7 @@ export function BOQTable() {
 
               <div className="p-2.5 bg-white border border-navy-800 rounded-lg flex items-center justify-between text-xs">
                 <span className="text-navy-800/60">Total Budget Amount:</span>
-                <span className="text-emerald-400 font-bold font-mono">
+                <span className="text-[#6B8A6B] font-bold font-mono">
                   {formatCurrency(newQty * newRate, currency)}
                 </span>
               </div>
@@ -1046,7 +1046,7 @@ export function BOQTable() {
                 </button>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors"
+                  className="px-3 py-1.5 bg-[#6B8A6B] hover:bg-[#7A9B7A] text-white rounded-lg text-xs font-semibold shadow-sm transition-colors"
                 >
                   Create Item
                 </button>

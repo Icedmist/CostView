@@ -23,7 +23,9 @@ import {
   ClipboardList,
   Home,
   X,
+  Lock,
 } from "lucide-react";
+import { canAccess } from "@/lib/auth/permissions";
 
 interface NavItem {
   name: string;
@@ -157,7 +159,7 @@ export function Sidebar({
 
       {/* Role Preview Switcher */}
       <div className="px-4 pt-4 shrink-0">
-        <div className="bg-white border-2 border-navy-800 p-3 shadow-[4px_4px_0px_0px_#FFD23F]">
+        <div className="bg-white border-2 border-navy-800 p-3 shadow-[4px_4px_0px_0px_#C9A227]">
           <div className="text-xs uppercase font-black tracking-widest text-navy-800 flex items-center justify-between mb-2">
             <span>Simulate Role</span>
             <span className="bg-navy-800 text-mustard-400 px-2 py-1 text-[10px]">RBAC ACTIVE</span>
@@ -184,27 +186,35 @@ export function Sidebar({
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.name;
+          const hasAccess = !item.permission || canAccess(activeRole, item.permission as any);
           return (
             <button
               key={item.name}
-              onClick={() => handleSelect(item.name)}
+              onClick={() => hasAccess && handleSelect(item.name)}
+              disabled={!hasAccess}
+              title={!hasAccess ? `Restricted — ${activeRole} lacks ${item.permission}` : undefined}
               className={`w-full flex items-center justify-between px-3 py-3 text-sm font-black uppercase tracking-wide border-2 transition-all ${
-                isActive
+                !hasAccess
+                  ? "bg-white/5 text-white/30 border-transparent cursor-not-allowed"
+                  : isActive
                   ? "bg-mustard-400 text-navy-800 border-navy-800 shadow-[4px_4px_0px_0px_white]"
                   : "bg-transparent text-white/70 border-transparent hover:text-white hover:bg-white/10 hover:border-white/20"
               }`}
             >
               <div className="flex items-center gap-3">
-                <span className={`w-8 h-8 border-2 flex items-center justify-center shrink-0 ${isActive ? "bg-navy-800 border-navy-800 text-white" : "bg-white/10 border-white/20 text-white"}`}>
-                  <Icon className="w-4 h-4" />
+                <span className={`w-8 h-8 border-2 flex items-center justify-center shrink-0 ${!hasAccess ? "bg-white/5 border-white/10 text-white/20" : isActive ? "bg-navy-800 border-navy-800 text-white" : "bg-white/10 border-white/20 text-white"}`}>
+                  {hasAccess ? <Icon className="w-4 h-4" /> : <Lock className="w-3.5 h-3.5" />}
                 </span>
                 <span className="normal-case font-black tracking-tight text-[13px] text-left">{item.name}</span>
               </div>
-              {item.badge && (
-                <span className={`text-xs px-2 py-1 font-mono font-black border-2 shrink-0 ${isActive ? "bg-navy-800 text-white border-navy-800" : "bg-mustard-400 text-navy-800 border-navy-800"}`}>
-                  {item.badge}
-                </span>
-              )}
+              <div className="flex items-center gap-2">
+                {!hasAccess && <Lock className="w-3 h-3 text-white/20" />}
+                {item.badge && hasAccess && (
+                  <span className={`text-xs px-2 py-1 font-mono font-black border-2 shrink-0 ${isActive ? "bg-navy-800 text-white border-navy-800" : "bg-mustard-400 text-navy-800 border-navy-800"}`}>
+                    {item.badge}
+                  </span>
+                )}
+              </div>
             </button>
           );
         })}
@@ -212,7 +222,7 @@ export function Sidebar({
 
       {/* User Footer Profile */}
       <div className="p-4 border-t-[3px] border-white/10 bg-navy-900 shrink-0">
-        <div className="flex items-center gap-3 bg-white border-2 border-navy-800 p-3 shadow-[3px_3px_0px_0px_#FFD23F]">
+        <div className="flex items-center gap-3 bg-white border-2 border-navy-800 p-3 shadow-[3px_3px_0px_0px_#C9A227]">
           <div className="w-10 h-10 bg-navy-800 border-2 border-navy-800 flex items-center justify-center text-sm font-black text-white">
             IM
           </div>

@@ -81,7 +81,7 @@ export function MetricCards({ approvedBudget, committedCost, actualCost }: Metri
       </div>
 
       {/* Remaining */}
-      <div className={`border-2 border-navy-800 shadow-brutal p-6 relative overflow-hidden min-h-[160px] flex flex-col justify-between ${uncommittedBalance >= 0 ? "bg-mustard-400" : "bg-red-500"}`}>
+      <div className={`border-2 border-navy-800 shadow-brutal p-6 relative overflow-hidden min-h-[160px] flex flex-col justify-between ${uncommittedBalance >= 0 ? "bg-mustard-400" : "bg-[#8B6B6B]"}`}>
         <div className="flex items-start justify-between gap-3">
           <span className="text-sm font-black uppercase tracking-widest text-navy-800 leading-tight">
             Uncommitted<br />Contingency
