@@ -412,7 +412,7 @@ export function SubcontractorView() {
             <Receipt className="w-3.5 h-3.5 text-amber-400" />
             <span>6.2 Interim Claims & Certs</span>
             {claims.filter((c) => c.status === "Submitted").length > 0 && (
-              <span className="text-[10px] bg-amber-950 text-amber-300 px-1.5 rounded-full font-mono">
+              <span className="text-xs bg-amber-950 text-amber-300 px-1.5 rounded-full font-mono">
                 {claims.filter((c) => c.status === "Submitted").length}
               </span>
             )}
@@ -468,7 +468,7 @@ export function SubcontractorView() {
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-navy-800 text-white uppercase text-[10px] font-semibold border-b border-navy-800">
+              <thead className="bg-navy-800 text-white uppercase text-xs font-semibold border-b border-navy-800">
                 <tr>
                   <th className="py-3 px-4">Subcontractor</th>
                   <th className="py-3 px-4">Trade Scope</th>
@@ -500,7 +500,7 @@ export function SubcontractorView() {
                         {formatCurrency(s.paidAmount, currency)}
                       </td>
                       <td className="py-3 px-4 text-center">
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-cream-100 border border-navy-800 text-amber-300 text-[11px] font-bold">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-cream-100 border border-navy-800 text-amber-300 text-sm font-bold">
                           <Star className="w-3 h-3 fill-amber-300" />
                           {avgScore}
                         </span>
@@ -510,7 +510,7 @@ export function SubcontractorView() {
                           <button
                             onClick={() => handleOpenSubDetail(s)}
                             title="View Financial Statement"
-                            className="p-1 text-navy-800/60 hover:text-white hover:bg-cream-100 rounded transition-colors"
+                            className="p-1 text-navy-800/60 hover:text-navy-800 hover:bg-cream-100 rounded transition-colors"
                           >
                             <Eye className="w-3.5 h-3.5 text-emerald-400" />
                           </button>
@@ -630,7 +630,7 @@ export function SubcontractorView() {
                     <span className="text-navy-800/40">·</span>
                     <span className="font-semibold text-white text-xs">{instr.subject}</span>
                     <span className="text-navy-800/40">·</span>
-                    <span className="text-[10px] bg-cream-100 text-navy-800 px-2 py-0.5 rounded font-mono">
+                    <span className="text-xs bg-cream-100 text-navy-800 px-2 py-0.5 rounded font-mono">
                       Issued by: {instr.issuedBy} ({instr.issueDate})
                     </span>
                   </div>
@@ -685,7 +685,7 @@ export function SubcontractorView() {
                     <span className="text-navy-800/40">·</span>
                     <span className="font-bold text-white text-xs">{vo.title}</span>
                     <span className="text-navy-800/40">·</span>
-                    <span className="text-[10px] bg-cream-100 text-emerald-400 px-1.5 py-0.5 rounded font-mono">
+                    <span className="text-xs bg-cream-100 text-emerald-400 px-1.5 py-0.5 rounded font-mono">
                       Affects BOQ: {vo.linkedBOQItem}
                     </span>
                   </div>
@@ -714,7 +714,7 @@ export function SubcontractorView() {
                   {vo.stage !== "Approved" && (
                     <button
                       onClick={() => handleAdvanceVoStage(vo.id)}
-                      className="flex items-center gap-1 px-3 py-1.5 bg-cream-100 hover:bg-zinc-700 text-navy-800 rounded text-xs font-semibold border border-navy-800 transition-colors"
+                      className="flex items-center gap-1 px-3 py-1.5 bg-cream-100 hover:bg-cream-100 text-navy-800 rounded text-xs font-semibold border border-navy-800 transition-colors"
                     >
                       <span>Advance Stage</span>
                       <ArrowRight className="w-3.5 h-3.5" />
