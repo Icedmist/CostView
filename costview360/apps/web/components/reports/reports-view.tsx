@@ -455,7 +455,7 @@ export function ReportsView() {
           <div className="flex flex-wrap items-center gap-2 mb-2">
             <span className="text-xs uppercase font-black tracking-widest px-3 py-1 bg-navy-800 text-white border-2 border-navy-800 font-mono">Report Studio</span>
             <span className="text-sm font-bold text-navy-800/60">· Financial & Site Reconciliation</span>
-            <span className={`text-xs font-black px-2 py-1 border-2 border-navy-800 ${isLive ? "bg-[#7A9B7A] text-white" : "bg-mustard-400 text-navy-800"}`}>{isLive ? "LIVE DATA" : "DEMO DATA"}</span>
+            <span className={`text-xs font-black px-2 py-1 border-2 border-navy-800 ${isLive ? "bg-emerald-500 text-white" : "bg-mustard-400 text-navy-800"}`}>{isLive ? "LIVE DATA" : "DEMO DATA"}</span>
             <span className="text-xs font-mono bg-cream-100 border-2 border-navy-800 px-2 py-1">{REPORTS.length} reports</span>
           </div>
           <h2 className="text-xl md:text-2xl font-black text-navy-800 tracking-tight">Commercial & Cost Control Reports</h2>

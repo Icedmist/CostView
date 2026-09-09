@@ -124,7 +124,7 @@ export function MaterialsStockView() {
   return (
     <div className="space-y-6">
       {/* Header & Quick Action Buttons */}
-      <div className="bg-white border-2 border-navy-800 shadow-brutal p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white border-2 border-navy-800 shadow-brutal p-4 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xs uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-blue-950 text-blue-400 border border-blue-800/60 font-mono">
@@ -156,7 +156,7 @@ export function MaterialsStockView() {
               setSelectedItem(stock[0]);
               setIsConsumptionModalOpen(true);
             }}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-[#6B8A6B] hover:bg-[#7A9B7A] text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors"
           >
             <MinusCircle className="w-3.5 h-3.5" />
             <span>Record Site Consumption</span>
@@ -222,7 +222,7 @@ export function MaterialsStockView() {
                 {/* Progress Bar */}
                 <div className="w-full bg-cream-100 rounded-full h-1.5 mt-2 overflow-hidden border border-navy-800">
                   <div
-                    className={`h-full ${isLow ? "bg-[#A68A5A]" : "bg-[#7A9B7A]"}`}
+                    className={`h-full ${isLow ? "bg-amber-500" : "bg-emerald-500"}`}
                     style={{ width: `${Math.min(100, percentUsed)}%` }}
                   ></div>
                 </div>
@@ -240,7 +240,7 @@ export function MaterialsStockView() {
       {/* Record Consumption Modal */}
       {isConsumptionModalOpen && selectedItem && (
         <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-          <div className="bg-white border-2 border-navy-800 border-navy-800 max-w-md w-full p-5 shadow-2xl">
+          <div className="bg-white border-2 border-navy-800 border-navy-800 max-w-md w-full p-4 shadow-2xl">
             <h3 className="text-sm font-bold text-navy-800">Record Material Issue / Consumption</h3>
             <p className="text-xs text-navy-800/60 mt-0.5">{selectedItem.name}</p>
 
@@ -279,7 +279,7 @@ export function MaterialsStockView() {
                 </button>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 bg-[#6B8A6B] hover:bg-[#7A9B7A] text-white rounded text-xs font-semibold"
+                  className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs font-semibold"
                 >
                   Confirm Issue
                 </button>
@@ -292,7 +292,7 @@ export function MaterialsStockView() {
       {/* Create Transfer Modal */}
       {isTransferModalOpen && selectedItem && (
         <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-          <div className="bg-white border-2 border-navy-800 border-navy-800 max-w-md w-full p-5 shadow-2xl">
+          <div className="bg-white border-2 border-navy-800 border-navy-800 max-w-md w-full p-4 shadow-2xl">
             <h3 className="text-sm font-bold text-navy-800">Create Inter-Site Material Transfer</h3>
             <p className="text-xs text-navy-800/60 mt-0.5">{selectedItem.name}</p>
 

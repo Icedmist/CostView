@@ -42,7 +42,7 @@ const FEATURES = [
 
 export default function FeaturesPage() {
   return (
-    <div className="min-h-screen bg-cream-100 text-navy-800 font-sans">
+    <div className="min-h-screen bg-[#FFFDF0] text-navy-800 font-sans">
       <nav className="sticky top-0 z-50 bg-white border-b-[3px] border-navy-800">
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-[76px] flex items-center justify-between gap-4">
           <Link href="/"><Logo size="md" /></Link>
@@ -55,14 +55,14 @@ export default function FeaturesPage() {
           </div>
           <div className="flex items-center gap-3">
             <Link href="/login" className="hidden sm:inline-flex px-5 py-3 bg-white border-[3px] border-navy-800 font-black uppercase text-sm">Sign In</Link>
-            <Link href="/dashboard" className="px-6 py-3 bg-mustard-400 border-[3px] border-navy-800 font-black uppercase text-sm shadow-brutal-sm">Launch App →</Link>
+            <Link href="/dashboard" className="px-6 py-3 bg-[#FFD23F] border-[3px] border-navy-800 font-black uppercase text-sm shadow-brutal-sm">Launch App →</Link>
           </div>
         </div>
       </nav>
 
       <header className="border-b-[3px] border-navy-800 bg-navy-800 text-white">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-10 md:py-14">
-          <div className="inline-block bg-mustard-400 text-navy-800 border-[3px] border-navy-800 px-4 py-2 font-black uppercase text-sm shadow-brutal-sm">Platform</div>
+          <div className="inline-block bg-[#FFD23F] text-navy-800 border-[3px] border-navy-800 px-4 py-2 font-black uppercase text-sm shadow-brutal-sm">Platform</div>
           <h1 className="mt-4 text-4xl md:text-5xl font-black tracking-tighter leading-none">Every Module.<br /><span className="text-mustard-400">One System.</span></h1>
           <p className="mt-4 text-base font-bold text-white/70 max-w-2xl">Per PRD §5 — 7 operations modules, 10 reports, 18 commercial stages. Let the system calculate what it can; people only type what it can’t know.</p>
         </div>
@@ -88,12 +88,12 @@ export default function FeaturesPage() {
       <section className="bg-white border-y-[3px] border-navy-800">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-10">
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-cream-100 border-[3px] border-navy-800 p-6 shadow-brutal">
+            <div className="bg-[#FFFDF0] border-[3px] border-navy-800 p-6 shadow-brutal">
               <Zap className="w-8 h-8 mb-3" />
               <h4 className="font-black uppercase">Fast</h4>
               <p className="text-sm font-bold text-navy-800/60 mt-2">Less typing — numbers entered once in Budget automatically show downstream in Procurement, Materials, Labour.</p>
             </div>
-            <div className="bg-mustard-400 border-[3px] border-navy-800 p-6 shadow-brutal">
+            <div className="bg-[#FFD23F] border-[3px] border-navy-800 p-6 shadow-brutal">
               <Eye className="w-8 h-8 mb-3" />
               <h4 className="font-black uppercase">Efficient</h4>
               <p className="text-sm font-bold mt-2">Right person, right module, right time — role views + threshold approvals, no chasing.</p>
@@ -107,7 +107,7 @@ export default function FeaturesPage() {
         </div>
       </section>
 
-      <footer className="bg-cream-100 border-t-[3px] border-navy-800">
+      <footer className="bg-[#FFFDF0] border-t-[3px] border-navy-800">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <Link href="/"><Logo size="sm" /></Link>
           <div className="flex gap-4 text-sm font-black uppercase">
