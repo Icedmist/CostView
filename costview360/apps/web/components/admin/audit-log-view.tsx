@@ -92,7 +92,7 @@ export function AuditLogView() {
           <h3 className="text-sm font-bold text-white flex items-center gap-2">
             <History className="w-4 h-4 text-emerald-400" />
             <span>Searchable Compliance Audit Journal</span>
-            <span className="text-[10px] bg-cream-100 text-navy-800/60 border border-navy-800 px-2 py-0.5 rounded font-mono">
+            <span className="text-xs bg-cream-100 text-navy-800/60 border border-navy-800 px-2 py-0.5 rounded font-mono">
               Immutable Ledger
             </span>
           </h3>
@@ -132,7 +132,7 @@ export function AuditLogView() {
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs">
-          <thead className="bg-navy-800 text-white uppercase text-[10px] font-semibold border-b border-navy-800">
+          <thead className="bg-navy-800 text-white uppercase text-xs font-semibold border-b border-navy-800">
             <tr>
               <th className="py-3 px-4">Timestamp</th>
               <th className="py-3 px-4">Actor</th>
@@ -150,10 +150,10 @@ export function AuditLogView() {
                 </td>
                 <td className="py-3 px-4">
                   <div className="font-bold text-navy-800">{log.actor}</div>
-                  <div className="text-[10px] text-navy-800/40">{log.role}</div>
+                  <div className="text-xs text-navy-800/40">{log.role}</div>
                 </td>
                 <td className="py-3 px-3">
-                  <span className="px-2 py-0.5 rounded bg-cream-100 border border-navy-800 text-[10px] font-medium text-navy-800">
+                  <span className="px-2 py-0.5 rounded bg-cream-100 border border-navy-800 text-xs font-medium text-navy-800">
                     {log.module}
                   </span>
                 </td>

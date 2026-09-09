@@ -127,7 +127,7 @@ export function MaterialsStockView() {
       <div className="bg-white border-[3px] border-navy-800 shadow-brutal p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-blue-950 text-blue-400 border border-blue-800/60 font-mono">
+            <span className="text-xs uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-blue-950 text-blue-400 border border-blue-800/60 font-mono">
               Live Stock Gauges
             </span>
             <span className="text-navy-800/40 text-xs">· Site Store Operations</span>
@@ -146,7 +146,7 @@ export function MaterialsStockView() {
               setSelectedItem(stock[0]);
               setIsTransferModalOpen(true);
             }}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-cream-100 hover:bg-zinc-700 text-navy-800 border-[2px] border-navy-800 text-xs font-semibold border border-navy-800 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-cream-100 hover:bg-cream-100 text-navy-800 border-[2px] border-navy-800 text-xs font-semibold border border-navy-800 transition-colors"
           >
             <ArrowRightLeft className="w-3.5 h-3.5 text-blue-400" />
             <span>Create Transfer</span>
@@ -180,11 +180,11 @@ export function MaterialsStockView() {
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono font-bold text-navy-800/60">
+                <span className="text-xs font-mono font-bold text-navy-800/60">
                   {item.sku}
                 </span>
                 <span
-                  className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
+                  className={`px-2 py-0.5 rounded text-xs font-bold border ${
                     isLow
                       ? "bg-amber-950 text-amber-300 border-amber-800"
                       : "bg-emerald-950 text-emerald-300 border-emerald-800"
@@ -206,13 +206,13 @@ export function MaterialsStockView() {
                     {available} {item.unit}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-navy-800/60 text-[11px] font-mono">
+                <div className="flex items-center justify-between text-navy-800/60 text-sm font-mono">
                   <span>Reserved:</span>
                   <span>
                     {item.qtyReserved} {item.unit}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-navy-800/60 text-[11px] font-mono">
+                <div className="flex items-center justify-between text-navy-800/60 text-sm font-mono">
                   <span>Consumed:</span>
                   <span>
                     {item.qtyConsumed} {item.unit} ({percentUsed}%)
@@ -227,7 +227,7 @@ export function MaterialsStockView() {
                   ></div>
                 </div>
 
-                <div className="flex items-center justify-between text-[10px] text-navy-800/40 pt-1">
+                <div className="flex items-center justify-between text-xs text-navy-800/40 pt-1">
                   <span>Store: {item.location}</span>
                   <span>Min: {item.minReorderLevel}</span>
                 </div>

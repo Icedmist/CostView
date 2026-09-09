@@ -30,7 +30,7 @@ export function CommercialView() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-[11px] uppercase font-black tracking-widest px-3 py-1 bg-mustard-400 text-navy-800 border-[2px] border-navy-800 font-mono">
+              <span className="text-sm uppercase font-black tracking-widest px-3 py-1 bg-mustard-400 text-navy-800 border-[2px] border-navy-800 font-mono">
                 Commercial Mode Active
               </span>
               <span className="text-white/60 text-xs font-bold">· Developer & Investor View</span>
@@ -43,7 +43,7 @@ export function CommercialView() {
             </p>
           </div>
           <div className="bg-white border-[3px] border-navy-800 px-5 py-3 shadow-[4px_4px_0px_0px_#FFD23F] text-center">
-            <div className="text-[11px] font-black uppercase tracking-widest text-navy-800/60">Target Margin</div>
+            <div className="text-sm font-black uppercase tracking-widest text-navy-800/60">Target Margin</div>
             <div className="text-2xl font-black font-mono text-navy-800">
               {metrics.marginPercent}% (₦420M)
             </div>
@@ -127,7 +127,7 @@ export function CommercialView() {
                 </span>
                 <div>
                   <div className="font-black text-navy-800 uppercase tracking-tight text-xs">{row.stage}</div>
-                  <div className="text-[10px] font-bold text-navy-800/60 uppercase">Lead: {row.responsible}</div>
+                  <div className="text-xs font-bold text-navy-800/60 uppercase">Lead: {row.responsible}</div>
                 </div>
               </div>
 
@@ -135,7 +135,7 @@ export function CommercialView() {
                 <div className="text-right font-mono font-black text-navy-800 hidden sm:block">
                   {formatCurrency(row.amount, currency)}
                 </div>
-                <span className={`px-3 py-1 text-[11px] font-black uppercase border-[2px] border-navy-800 ${
+                <span className={`px-3 py-1 text-sm font-black uppercase border-[2px] border-navy-800 ${
                   row.status === "Completed"
                     ? "bg-navy-800 text-white"
                     : row.status === "Active"

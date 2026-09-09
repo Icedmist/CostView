@@ -477,7 +477,7 @@ export function ThreeWayMatchView() {
                     </div>
 
                     {/* 3 Steps Matrix */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3 bg-zinc-950/60 p-3 border-[2px] border-navy-800 border border-navy-800/80">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3 bg-cream-100/60 p-3 border-[2px] border-navy-800 border border-navy-800/80">
                       {/* Step 1: PO */}
                       <div>
                         <div className="text-xs font-semibold text-navy-800/40 uppercase tracking-wider mb-1">
@@ -553,7 +553,7 @@ export function ThreeWayMatchView() {
                     {rec.paymentLocked && (
                       <button
                         onClick={() => handleResolveDiscrepancy(rec.id)}
-                        className="flex items-center gap-1 px-3 py-1.5 bg-cream-100 hover:bg-zinc-700 text-navy-800 border-[2px] border-navy-800 text-xs font-semibold transition-colors"
+                        className="flex items-center gap-1 px-3 py-1.5 bg-cream-100 hover:bg-cream-100 text-navy-800 border-[2px] border-navy-800 text-xs font-semibold transition-colors"
                       >
                         <Unlock className="w-3.5 h-3.5 text-emerald-400" />
                         <span>Adjust Credit & Unlock</span>
@@ -687,7 +687,7 @@ export function ThreeWayMatchView() {
 
           <div className="space-y-4">
             {enquiries.map((enq) => (
-              <div key={enq.id} className="bg-zinc-950 p-4 border-[3px] border-navy-800 border border-navy-800 space-y-3">
+              <div key={enq.id} className="bg-cream-100 p-4 border-[3px] border-navy-800 border border-navy-800 space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
                     <span className="font-mono font-bold text-blue-400 text-xs">{enq.enquiryNumber}</span>
@@ -715,7 +715,7 @@ export function ThreeWayMatchView() {
                       </div>
                       <button
                         onClick={() => alert(`Supplier ${quote.name} selected. Converting RFQ to Purchase Order.`)}
-                        className="mt-3 w-full py-1 bg-cream-100 hover:bg-zinc-700 text-white rounded text-xs font-semibold transition-colors flex items-center justify-center gap-1"
+                        className="mt-3 w-full py-1 bg-cream-100 hover:bg-cream-100 text-white rounded text-xs font-semibold transition-colors flex items-center justify-center gap-1"
                       >
                         <span>Award & Create PO</span>
                         <ArrowRight className="w-3 h-3 text-emerald-400" />
@@ -877,7 +877,7 @@ export function ThreeWayMatchView() {
                   value={reqDesc}
                   onChange={(e) => setReqDesc(e.target.value)}
                   placeholder="e.g. 100 bags rapid setting cement"
-                  className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
                 />
               </div>
 
@@ -889,7 +889,7 @@ export function ThreeWayMatchView() {
                     required
                     value={reqQty}
                     onChange={(e) => setReqQty(Number(e.target.value))}
-                    className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500"
                   />
                 </div>
                 <div>
@@ -899,7 +899,7 @@ export function ThreeWayMatchView() {
                     required
                     value={reqUnit}
                     onChange={(e) => setReqUnit(e.target.value)}
-                    className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
                   />
                 </div>
               </div>
@@ -912,7 +912,7 @@ export function ThreeWayMatchView() {
                     required
                     value={reqEstCost}
                     onChange={(e) => setReqEstCost(Number(e.target.value))}
-                    className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500"
                   />
                 </div>
                 <div>
@@ -920,7 +920,7 @@ export function ThreeWayMatchView() {
                   <select
                     value={reqUrgency}
                     onChange={(e) => setReqUrgency(e.target.value as Requisition["urgency"])}
-                    className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
                   >
                     <option value="Normal">Normal</option>
                     <option value="High">High</option>
@@ -963,7 +963,7 @@ export function ThreeWayMatchView() {
                   value={enqDesc}
                   onChange={(e) => setEnqDesc(e.target.value)}
                   placeholder="e.g. 20mm aggregate gravel"
-                  className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500"
                 />
               </div>
 
@@ -975,7 +975,7 @@ export function ThreeWayMatchView() {
                     required
                     value={enqQty}
                     onChange={(e) => setEnqQty(Number(e.target.value))}
-                    className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-blue-500"
+                    className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-blue-500"
                   />
                 </div>
                 <div>
@@ -985,7 +985,7 @@ export function ThreeWayMatchView() {
                     required
                     value={enqUnit}
                     onChange={(e) => setEnqUnit(e.target.value)}
-                    className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                    className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500"
                   />
                 </div>
               </div>
@@ -1024,7 +1024,7 @@ export function ThreeWayMatchView() {
                   value={invNumber}
                   onChange={(e) => setInvNumber(e.target.value)}
                   placeholder="e.g. INV-SUPP-9021"
-                  className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-purple-500"
+                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-purple-500"
                 />
               </div>
 
@@ -1036,7 +1036,7 @@ export function ThreeWayMatchView() {
                   value={invSupplier}
                   onChange={(e) => setInvSupplier(e.target.value)}
                   placeholder="e.g. Dangote Cement Plc"
-                  className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-purple-500"
+                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-purple-500"
                 />
               </div>
 
@@ -1047,7 +1047,7 @@ export function ThreeWayMatchView() {
                   required
                   value={invAmount}
                   onChange={(e) => setInvAmount(Number(e.target.value))}
-                  className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-purple-500"
+                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-purple-500"
                 />
               </div>
 
@@ -1086,7 +1086,7 @@ export function ThreeWayMatchView() {
                 <select
                   value={paymentMethod}
                   onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
                 >
                   <option value="Bank Transfer (Zenith Bank NGN)">Zenith Bank Project Operations Account</option>
                   <option value="Bank Transfer (Access Bank NGN)">Access Bank Corporate Escrow</option>
@@ -1100,7 +1100,7 @@ export function ThreeWayMatchView() {
                   type="text"
                   required
                   defaultValue={`TXN-${Date.now().toString().slice(-6)}`}
-                  className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500"
                 />
               </div>
 
@@ -1145,7 +1145,7 @@ export function ThreeWayMatchView() {
                       className={`p-2 border-[2px] border-navy-800 border flex items-center gap-1 ${
                         ratingScore >= star
                           ? "bg-amber-950 text-amber-300 border-amber-800"
-                          : "bg-zinc-950 text-navy-800/40 border-navy-800"
+                          : "bg-cream-100 text-navy-800/40 border-navy-800"
                       }`}
                     >
                       <Star className={`w-4 h-4 ${ratingScore >= star ? "fill-amber-400 text-amber-400" : ""}`} />
@@ -1162,7 +1162,7 @@ export function ThreeWayMatchView() {
                   value={ratingNote}
                   onChange={(e) => setRatingNote(e.target.value)}
                   placeholder="e.g. Clean delivery, certificates of conformity verified on arrival..."
-                  className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500"
+                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500"
                 />
               </div>
 

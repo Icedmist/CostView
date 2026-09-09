@@ -397,7 +397,7 @@ export function SiteDiaryView() {
             <AlertCircle className="w-3.5 h-3.5 text-amber-400" />
             <span>5.4 Snags & NCRs</span>
             {snags.filter((s) => s.status !== "Closed").length > 0 && (
-              <span className="text-[10px] bg-amber-950 text-amber-300 px-1.5 rounded-full font-mono">
+              <span className="text-xs bg-amber-950 text-amber-300 px-1.5 rounded-full font-mono">
                 {snags.filter((s) => s.status !== "Closed").length}
               </span>
             )}
@@ -422,7 +422,7 @@ export function SiteDiaryView() {
         <div className="p-5 space-y-5">
           <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="text-sm font-bold text-navy-800 flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-emerald-400" />
                 <span>Cloud-Based Site Journal & Daily Shifts</span>
               </h3>
@@ -451,7 +451,7 @@ export function SiteDiaryView() {
                       <span className="text-navy-800/40">·</span>
                       <span className="text-xs text-navy-800 font-semibold">{log.date}</span>
                     </div>
-                    <h4 className="text-sm font-bold text-white mt-1">{log.title}</h4>
+                    <h4 className="text-sm font-bold text-navy-800 mt-1">{log.title}</h4>
                   </div>
 
                   <div className="flex items-center gap-2">
@@ -482,7 +482,7 @@ export function SiteDiaryView() {
         <div className="p-5 space-y-4">
           <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="text-sm font-bold text-navy-800 flex items-center gap-2">
                 <ImageIcon className="w-4 h-4 text-blue-400" />
                 <span>Site Progress Photo Documentation</span>
               </h3>
@@ -504,13 +504,13 @@ export function SiteDiaryView() {
               <div key={p.id} className="bg-cream-100 border border-navy-800 border-[3px] border-navy-800 overflow-hidden group">
                 <div className="h-36 bg-white flex items-center justify-center border-b border-navy-800 relative">
                   <Camera className="w-8 h-8 text-zinc-700" />
-                  <span className="absolute top-2 left-2 px-2 py-0.5 rounded text-[10px] font-bold bg-white/90 text-white border border-navy-800">
+                  <span className="absolute top-2 left-2 px-2 py-0.5 rounded text-xs font-bold bg-white/90 text-white border border-navy-800">
                     {p.category}
                   </span>
                 </div>
                 <div className="p-3">
                   <h5 className="text-xs font-bold text-white line-clamp-1">{p.title}</h5>
-                  <p className="text-[11px] text-navy-800/60 mt-1">
+                  <p className="text-sm text-navy-800/60 mt-1">
                     Uploaded by {p.uploadedBy} · {p.timestamp}
                   </p>
                 </div>
@@ -525,7 +525,7 @@ export function SiteDiaryView() {
         <div className="p-5 space-y-4">
           <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="text-sm font-bold text-navy-800 flex items-center gap-2">
                 <FileCheck2 className="w-4 h-4 text-purple-400" />
                 <span>Quality & Pre-Pour Sign-Off Inspections</span>
               </h3>
@@ -552,7 +552,7 @@ export function SiteDiaryView() {
                     <span className="text-navy-800/60 text-xs">Element: <strong className="text-navy-800">{insp.element}</strong></span>
                   </div>
                   <p className="text-xs text-navy-800">{insp.notes}</p>
-                  <p className="text-[11px] text-navy-800/40 mt-1">
+                  <p className="text-sm text-navy-800/40 mt-1">
                     Inspector: {insp.inspector} · {insp.date}
                   </p>
                 </div>
@@ -577,7 +577,7 @@ export function SiteDiaryView() {
         <div className="p-5 space-y-4">
           <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="text-sm font-bold text-navy-800 flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 text-amber-400" />
                 <span>Defects, Snags & Non-Conformance Reports (NCR)</span>
               </h3>
@@ -592,7 +592,7 @@ export function SiteDiaryView() {
               <div key={snag.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/20 px-2 border-[2px] border-navy-800 transition-colors">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
+                    <span className={`px-2 py-0.5 rounded text-xs font-bold border ${
                       snag.severity === "Critical"
                         ? "bg-red-950 text-red-300 border-red-800"
                         : snag.severity === "High"
@@ -631,7 +631,7 @@ export function SiteDiaryView() {
         <div className="p-5 space-y-4">
           <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="text-sm font-bold text-navy-800 flex items-center gap-2">
                 <HardHat className="w-4 h-4 text-red-400" />
                 <span>Site Safety Observations & Lost-Time Incidents</span>
               </h3>
@@ -653,7 +653,7 @@ export function SiteDiaryView() {
               <div key={s.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/20 px-2 border-[2px] border-navy-800 transition-colors">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
+                    <span className={`px-2 py-0.5 rounded text-xs font-bold border ${
                       s.type === "Incident"
                         ? "bg-red-950 text-red-300 border-red-800"
                         : s.type === "Unsafe Act"
@@ -786,7 +786,7 @@ export function SiteDiaryView() {
               <div className="p-6 border-2 border-dashed border-navy-800 border-[3px] border-navy-800 text-center bg-cream-100">
                 <Upload className="w-8 h-8 text-navy-800/40 mx-auto mb-2" />
                 <p className="text-xs text-navy-800 font-medium">Click or drag photo file here</p>
-                <p className="text-[11px] text-navy-800/40 mt-1">PNG, JPG, HEIC up to 10MB</p>
+                <p className="text-sm text-navy-800/40 mt-1">PNG, JPG, HEIC up to 10MB</p>
               </div>
 
               <div className="pt-2 flex items-center justify-end gap-2">
