@@ -91,34 +91,34 @@ export function LabourView() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white border-2 border-navy-800 shadow-brutal p-4 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white border-2 border-navy-800 shadow-brutal p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-800/60 font-mono">
+            <span className="text-xs uppercase font-bold tracking-wider px-2 py-0.5 bg-amber-100 text-amber-900 border border-navy-800 font-mono">
               Labour Muster & Timesheets
             </span>
-            <span className="text-navy-800/40 text-xs">· Site Workforce Operations</span>
+            <span className="text-navy-800/60 text-xs">· Site Workforce Operations</span>
           </div>
           <h2 className="text-lg font-bold text-navy-800 tracking-tight">
             Labour Productivity & Automated Payroll
           </h2>
-          <p className="text-sm font-bold text-navy-800/60 mt-0.5">
+          <p className="text-xs text-navy-800/60 mt-0.5">
             Attendance muster grid automatically compiling weekly site payroll disbursements.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <div className="text-right">
-            <div className="text-sm font-bold text-navy-800/60 uppercase font-semibold">
+            <div className="text-xs text-navy-800/60 uppercase font-semibold">
               Weekly Est. Payroll
             </div>
-            <div className="text-lg font-bold text-emerald-500 font-mono">
+            <div className="text-lg font-bold text-emerald-600 font-mono">
               {formatCurrency(totalPayroll, currency)}
             </div>
           </div>
           <button
             onClick={() => setIsAddWorkerOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-sm transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-brutal-sm transition-colors"
           >
             <UserPlus className="w-3.5 h-3.5" />
             <span>Add Worker</span>
@@ -154,17 +154,17 @@ export function LabourView() {
                   <tr key={w.id} className="hover:bg-cream-100/30 transition-colors">
                     <td className="py-3 px-4 font-bold text-navy-800">{w.name}</td>
                     <td className="py-3 px-4 text-navy-800">
-                      <span className="px-2 py-0.5 rounded bg-cream-100 border border-navy-800 text-xs font-semibold">
+                      <span className="px-2 py-0.5 bg-cream-100 border border-navy-800 text-xs font-bold text-navy-800">
                         {w.trade}
                       </span>
                     </td>
                     <td className="py-3 px-4 text-right font-mono text-navy-800">
                       {formatCurrency(w.dailyRate, currency)}
                     </td>
-                    <td className="py-3 px-4 text-center font-mono font-bold text-emerald-500">
+                    <td className="py-3 px-4 text-center font-mono font-bold text-emerald-600">
                       {w.daysPresent} / 6 Days
                     </td>
-                    <td className="py-3 px-4 text-center font-mono text-amber-400">
+                    <td className="py-3 px-4 text-center font-mono text-amber-600 font-bold">
                       {w.overtimeHours} hrs
                     </td>
                     <td className="py-3 px-4 text-right font-mono font-bold text-navy-800">
@@ -173,7 +173,7 @@ export function LabourView() {
                     <td className="py-3 px-4 text-center">
                       <button
                         onClick={() => handleToggleAttendance(w.id)}
-                        className="px-2.5 py-1 bg-cream-100 hover:bg-emerald-950 hover:text-emerald-300 border border-navy-800 hover:border-emerald-700 rounded text-sm font-medium transition-colors"
+                        className="px-2.5 py-1 bg-cream-100 hover:bg-cream-200 border-2 border-navy-800 text-navy-800 shadow-brutal-sm text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
                       >
                         + Mark Day
                       </button>
@@ -188,45 +188,45 @@ export function LabourView() {
 
       {/* Add Worker Modal */}
       {isAddWorkerOpen && (
-        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-          <div className="bg-white border-2 border-navy-800 border-navy-800 max-w-md w-full p-4 shadow-2xl">
-            <h3 className="text-sm font-bold text-navy-800">Add Worker to Site Roster</h3>
-            <p className="text-sm font-bold text-navy-800/60 mt-0.5">Register new craftsman or general labourer</p>
+        <div className="fixed inset-0 z-50 bg-navy-950/70 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-cream-50 border-2 border-navy-800 max-w-md w-full p-6 shadow-brutal">
+            <h3 className="text-sm font-bold text-navy-800 uppercase tracking-wide">Add Worker to Site Roster</h3>
+            <p className="text-xs text-navy-800/70 mt-0.5 font-medium">Register new craftsman or general labourer</p>
 
             <form onSubmit={handleAddWorker} className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs text-navy-800 mb-1">Full Name</label>
+                <label className="block text-xs font-bold text-navy-800 mb-1">Full Name</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Kenneth Nwosu"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 focus:outline-none focus:ring-2 focus:ring-navy-800"
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-navy-800 mb-1">Trade / Specialization</label>
+                <label className="block text-xs font-bold text-navy-800 mb-1">Trade / Specialization</label>
                 <input
                   type="text"
                   required
                   placeholder="Mason, Carpenter, Steel Fixer, Plumber"
                   value={trade}
                   onChange={(e) => setTrade(e.target.value)}
-                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 focus:outline-none focus:ring-2 focus:ring-navy-800"
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-navy-800 mb-1">Agreed Daily Rate (₦)</label>
+                <label className="block text-xs font-bold text-navy-800 mb-1">Agreed Daily Rate (₦)</label>
                 <input
                   type="number"
                   required
                   min={1000}
                   value={dailyRate}
                   onChange={(e) => setDailyRate(Number(e.target.value))}
-                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-navy-800 font-mono focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 font-mono focus:outline-none focus:ring-2 focus:ring-navy-800"
                 />
               </div>
 
@@ -234,13 +234,13 @@ export function LabourView() {
                 <button
                   type="button"
                   onClick={() => setIsAddWorkerOpen(false)}
-                  className="px-3 py-1.5 bg-cream-100 text-navy-800 rounded text-xs font-semibold"
+                  className="px-3 py-1.5 bg-cream-100 hover:bg-cream-200 border-2 border-navy-800 text-navy-800 text-xs font-bold transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs font-semibold"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 shadow-brutal-sm text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
                 >
                   Add Worker
                 </button>
