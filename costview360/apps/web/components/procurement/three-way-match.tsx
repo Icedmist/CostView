@@ -370,7 +370,7 @@ export function ThreeWayMatchView() {
             onClick={() => setSubTab("match")}
             className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "match"
-                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                ? "bg-navy-800 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/70 hover:text-navy-800"
             }`}
           >
@@ -382,7 +382,7 @@ export function ThreeWayMatchView() {
             onClick={() => setSubTab("requisitions")}
             className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "requisitions"
-                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                ? "bg-navy-800 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/70 hover:text-navy-800"
             }`}
           >
@@ -399,7 +399,7 @@ export function ThreeWayMatchView() {
             onClick={() => setSubTab("enquiries")}
             className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "enquiries"
-                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                ? "bg-navy-800 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/70 hover:text-navy-800"
             }`}
           >
@@ -411,7 +411,7 @@ export function ThreeWayMatchView() {
             onClick={() => setSubTab("invoices")}
             className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "invoices"
-                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                ? "bg-navy-800 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/70 hover:text-navy-800"
             }`}
           >
@@ -423,7 +423,7 @@ export function ThreeWayMatchView() {
             onClick={() => setSubTab("payments")}
             className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "payments"
-                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                ? "bg-navy-800 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/70 hover:text-navy-800"
             }`}
           >
@@ -438,7 +438,7 @@ export function ThreeWayMatchView() {
         <div>
           <div className="p-4 border-b border-navy-800 flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="text-sm font-black text-navy-800 flex items-center gap-2">
                 <span>Three-Way Financial Match Engine</span>
                 <span className="text-xs bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded border border-emerald-800 font-mono">
                   PO ⇄ GRN ⇄ Invoice
@@ -467,7 +467,7 @@ export function ThreeWayMatchView() {
                         {rec.poNumber}
                       </span>
                       <span className="text-navy-800/40">·</span>
-                      <span className="font-semibold text-white text-xs">{rec.supplierName}</span>
+                      <span className="font-black text-navy-800 text-xs">{rec.supplierName}</span>
                       <span className="text-navy-800/40">·</span>
                       <span className="text-xs text-navy-800/70">{rec.itemDescription}</span>
                       <span className="text-navy-800/40">·</span>
@@ -484,7 +484,7 @@ export function ThreeWayMatchView() {
                           1. Purchase Order
                         </div>
                         <div className="text-xs font-mono text-navy-800">
-                          Qty: <span className="font-bold text-white">{rec.poQty}</span> @ {formatCurrency(rec.poRate, currency)}
+                          Qty: <span className="font-black text-navy-800">{rec.poQty}</span> @ {formatCurrency(rec.poRate, currency)}
                         </div>
                         <div className="text-xs font-mono font-semibold text-navy-800 mt-0.5">
                           Total: {formatCurrency(rec.poTotal, currency)}
@@ -519,7 +519,7 @@ export function ThreeWayMatchView() {
                           3. Supplier Invoice ({rec.invoiceNumber})
                         </div>
                         <div className="text-xs font-mono text-navy-800">
-                          Billed: <span className="font-bold text-white">{rec.invoiceQtyBilled}</span> @ {formatCurrency(rec.invoiceRateBilled, currency)}
+                          Billed: <span className="font-black text-navy-800">{rec.invoiceQtyBilled}</span> @ {formatCurrency(rec.invoiceRateBilled, currency)}
                         </div>
                         <div className="text-xs font-mono font-semibold text-navy-800 mt-0.5">
                           Total: {formatCurrency(rec.invoiceTotal, currency)}
@@ -582,7 +582,7 @@ export function ThreeWayMatchView() {
         <div className="p-4 space-y-4">
           <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="text-sm font-black text-navy-800 flex items-center gap-2">
                 <Clock className="w-4 h-4 text-amber-400" />
                 <span>Site Material Requisitions & Authorizations</span>
               </h3>
@@ -606,7 +606,7 @@ export function ThreeWayMatchView() {
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-mono font-bold text-amber-400 text-xs">{req.reqNumber}</span>
                     <span className="text-navy-800/40">·</span>
-                    <span className="font-semibold text-white text-xs">{req.itemDescription}</span>
+                    <span className="font-black text-navy-800 text-xs">{req.itemDescription}</span>
                     <span className="text-navy-800/40">·</span>
                     <span className={`px-2 py-0.5 rounded text-xs font-bold border ${
                       req.urgency === "Critical"
@@ -668,7 +668,7 @@ export function ThreeWayMatchView() {
         <div className="p-4 space-y-4">
           <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="text-sm font-black text-navy-800 flex items-center gap-2">
                 <Truck className="w-4 h-4 text-blue-400" />
                 <span>Supplier Price Enquiries & RFQ Comparison</span>
               </h3>
@@ -691,7 +691,7 @@ export function ThreeWayMatchView() {
                 <div className="flex items-center justify-between">
                   <div>
                     <span className="font-mono font-bold text-blue-400 text-xs">{enq.enquiryNumber}</span>
-                    <h4 className="text-xs font-bold text-white mt-0.5">
+                    <h4 className="text-xs font-black text-navy-800 mt-0.5">
                       {enq.itemDescription} ({enq.quantity} {enq.unit})
                     </h4>
                   </div>
@@ -715,7 +715,7 @@ export function ThreeWayMatchView() {
                       </div>
                       <button
                         onClick={() => alert(`Supplier ${quote.name} selected. Converting RFQ to Purchase Order.`)}
-                        className="mt-3 w-full py-1 bg-cream-100 hover:bg-cream-100 text-white rounded text-xs font-semibold transition-colors flex items-center justify-center gap-1"
+                        className="mt-3 w-full py-1 bg-cream-100 hover:bg-navy-800 text-white rounded text-xs font-semibold transition-colors flex items-center justify-center gap-1"
                       >
                         <span>Award & Create PO</span>
                         <ArrowRight className="w-3 h-3 text-emerald-500" />
@@ -734,7 +734,7 @@ export function ThreeWayMatchView() {
         <div className="p-4 space-y-4">
           <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="text-sm font-black text-navy-800 flex items-center gap-2">
                 <Receipt className="w-4 h-4 text-purple-400" />
                 <span>Supplier Invoices, Discrepancies & Credit Notes</span>
               </h3>
@@ -800,7 +800,7 @@ export function ThreeWayMatchView() {
         <div className="p-4 space-y-4">
           <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="text-sm font-black text-navy-800 flex items-center gap-2">
                 <CreditCard className="w-4 h-4 text-emerald-500" />
                 <span>Supplier Disbursement & Payment Trail</span>
               </h3>

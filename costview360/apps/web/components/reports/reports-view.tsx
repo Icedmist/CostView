@@ -300,7 +300,7 @@ export function ReportsView() {
       doc.text("CostView", 30, 13);
       doc.setFontSize(6);
       doc.setTextColor(255, 210, 63);
-      doc.text("PRO  ·  Analyse · Plan · Build Smarter", 30, 18);
+      doc.text("Analyse · Plan · Build Smarter", 30, 18);
       doc.setFontSize(7);
       doc.setTextColor(255, 255, 255);
       doc.text(effectiveTitle.toUpperCase(), pageW - 10, 12, { align: "right" });

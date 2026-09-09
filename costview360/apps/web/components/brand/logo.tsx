@@ -18,8 +18,8 @@ export function Logo({ size = "md", variant = "navy", showWordmark = true }: { s
       </div>
       {showWordmark && (
         <div className="leading-none">
-          <div className={`${wordSize} font-black tracking-tighter text-navy-800 leading-none flex items-baseline gap-1`}>
-            CostView<span className="bg-mustard-400 border-[2px] border-navy-800 px-1.5 py-0.5 text-[9px] font-black tracking-widest uppercase leading-none">PRO</span>
+          <div className={`${wordSize} font-black tracking-tighter text-navy-800 leading-none`}>
+            CostView
           </div>
           <div className="text-[10px] font-bold tracking-[0.18em] text-navy-800/60 uppercase font-mono -mt-[1px]">Analyse · Plan · Build</div>
         </div>

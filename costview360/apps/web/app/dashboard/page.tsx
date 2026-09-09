@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { RoleGuard } from "@/components/auth/role-guard";
 import { canAccess } from "@/lib/auth/permissions";
+import { useSessionExpiry } from "@/lib/auth/session";
 
 export default function DashboardPage() {
   const { activeMode, activeRole } = useApp();
@@ -31,6 +32,8 @@ export default function DashboardPage() {
   const approvedBudget = 301815000;
   const committedCost = 292250000;
   const actualCost = 216400000;
+
+  useSessionExpiry();
 
   // Auto-redirect if current tab not allowed for role
   React.useEffect(() => {
@@ -275,11 +278,19 @@ export default function DashboardPage() {
               )}
 
               {activeTab === "Settings" && (
-                <div className="bg-white border-2 border-navy-800 shadow-brutal p-8 text-center">
-                  <h3 className="text-xs font-black text-navy-800 uppercase">Project Settings</h3>
-                  <p className="text-xs font-bold text-navy-800/60 mt-1 max-w-sm mx-auto">
-                    Manage default currency (₦ NGN), timezone (Africa/Lagos), and notifications.
+                <div className="bg-white border-2 border-navy-800 shadow-brutal p-6 md:p-8">
+                  <h3 className="text-base font-black text-navy-800 uppercase text-center">Project Settings & Account</h3>
+                  <p className="text-xs font-bold text-navy-800/60 mt-1 max-w-md mx-auto text-center">
+                    Manage currency (₦ NGN), timezone, notifications, profile and session.
                   </p>
+                  <div className="mt-5 grid sm:grid-cols-2 gap-3 max-w-md mx-auto">
+                    <button onClick={() => (window.location.href = "/settings")} className="px-4 py-3 bg-navy-800 text-white border-2 border-navy-800 font-black uppercase text-xs shadow-brutal-sm">
+                      Open Settings →
+                    </button>
+                    <button onClick={() => (window.location.href = "/account")} className="px-4 py-3 bg-mustard-400 text-navy-800 border-2 border-navy-800 font-black uppercase text-xs shadow-brutal-sm">
+                      Account Center →
+                    </button>
+                  </div>
                 </div>
               )}
             </>

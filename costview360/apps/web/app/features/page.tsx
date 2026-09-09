@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
+import { MarketingNav } from "@/components/marketing/nav";
 import {
   Calculator,
   ShoppingCart,
@@ -43,22 +44,7 @@ const FEATURES = [
 export default function FeaturesPage() {
   return (
     <div className="min-h-screen bg-[#FFFDF0] text-navy-800 font-sans">
-      <nav className="sticky top-0 z-50 bg-white border-b-[3px] border-navy-800">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 h-[76px] flex items-center justify-between gap-4">
-          <Link href="/"><Logo size="md" /></Link>
-          <div className="hidden lg:flex items-center gap-6 font-black uppercase text-sm tracking-widest">
-            <Link href="/features" className="underline decoration-[4px] underline-offset-4">Features</Link>
-            <Link href="/how-it-works" className="hover:underline decoration-[4px] underline-offset-4">How it Works</Link>
-            <Link href="/pricing" className="hover:underline decoration-[4px] underline-offset-4">Pricing</Link>
-            <Link href="/about" className="hover:underline decoration-[4px] underline-offset-4">About</Link>
-            <Link href="/contact" className="hover:underline decoration-[4px] underline-offset-4">Contact</Link>
-          </div>
-          <div className="flex items-center gap-3">
-            <Link href="/login" className="hidden sm:inline-flex px-5 py-3 bg-white border-[3px] border-navy-800 font-black uppercase text-sm">Sign In</Link>
-            <Link href="/dashboard" className="px-6 py-3 bg-[#FFD23F] border-[3px] border-navy-800 font-black uppercase text-sm shadow-brutal-sm">Launch App →</Link>
-          </div>
-        </div>
-      </nav>
+      <MarketingNav />
 
       <header className="border-b-[3px] border-navy-800 bg-navy-800 text-white">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-10 md:py-14">

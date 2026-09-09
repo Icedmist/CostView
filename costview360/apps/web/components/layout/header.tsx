@@ -2,10 +2,21 @@
 
 import React from "react";
 import { useApp } from "@/app/providers";
-import { Building2, Bell, Menu } from "lucide-react";
+import { Building2, Bell, Menu, LogOut } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
   const { currentProject, currency, setCurrency } = useApp();
+  const router = useRouter();
+  const supabase = createClient();
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    localStorage.removeItem("costview_demo_role");
+    sessionStorage.clear();
+    router.push("/login");
+    router.refresh();
+  };
   return (
     <header className="h-[72px] bg-white border-b-[3px] border-navy-800 px-4 md:px-6 flex items-center justify-between gap-4 shrink-0">
       <div className="flex items-center gap-3 min-w-0">
@@ -56,6 +67,13 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
           <span className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white text-xs font-black border-2 border-navy-800 flex items-center justify-center">
             3
           </span>
+        </button>
+        <button
+          onClick={handleLogout}
+          title="Log out — session clears on tab close or 2h inactivity"
+          className="w-11 h-11 bg-white border-2 border-navy-800 flex items-center justify-center text-navy-800 shadow-brutal-sm hover:bg-cream-100 active:shadow-none active:translate-x-[1px] active:translate-y-[1px] transition-all"
+        >
+          <LogOut className="w-5 h-5" />
         </button>
       </div>
     </header>

@@ -24,6 +24,7 @@ import {
   Home,
   X,
   Lock,
+  LogOut,
 } from "lucide-react";
 import { canAccess } from "@/lib/auth/permissions";
 
@@ -113,8 +114,8 @@ export function Sidebar({
               <span className="font-display tracking-tighter">CV</span>
             </div>
             <div>
-              <div className="font-black text-white text-[16px] leading-none tracking-tighter flex items-baseline gap-1">
-                CostView<span className="bg-mustard-400 text-navy-800 text-[8px] px-1.5 py-0.5 border border-white font-black tracking-widest">PRO</span>
+              <div className="font-black text-white text-[16px] leading-none tracking-tighter">
+                CostView
               </div>
               <div className="text-[11px] font-mono font-bold tracking-[0.16em] text-white/50 uppercase">Analyse · Plan · Build</div>
             </div>
@@ -221,7 +222,20 @@ export function Sidebar({
       </nav>
 
       {/* User Footer Profile */}
-      <div className="p-4 border-t-[3px] border-white/10 bg-navy-900 shrink-0">
+      <div className="p-4 border-t-[3px] border-white/10 bg-navy-900 shrink-0 space-y-3">
+        <button
+          onClick={async () => {
+            const { createClient } = await import("@/lib/supabase/client");
+            const supabase = createClient();
+            await supabase.auth.signOut();
+            localStorage.removeItem("costview_demo_role");
+            sessionStorage.clear();
+            window.location.href = "/login";
+          }}
+          className="w-full py-2.5 bg-white border-2 border-navy-800 font-black uppercase text-xs flex items-center justify-center gap-2 hover:bg-cream-100"
+        >
+          <LogOut className="w-4 h-4" /> Log out — 2h / tab close
+        </button>
         <div className="flex items-center gap-3 bg-white border-2 border-navy-800 p-3 shadow-[3px_3px_0px_0px_#C9A227]">
           <div className="w-10 h-10 bg-navy-800 border-2 border-navy-800 flex items-center justify-center text-sm font-black text-white">
             IM

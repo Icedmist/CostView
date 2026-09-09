@@ -393,7 +393,7 @@ export function SubcontractorView() {
             onClick={() => setSubTab("contracts")}
             className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "contracts"
-                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                ? "bg-navy-800 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/60 hover:text-navy-800"
             }`}
           >
@@ -405,7 +405,7 @@ export function SubcontractorView() {
             onClick={() => setSubTab("claims")}
             className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "claims"
-                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                ? "bg-navy-800 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/60 hover:text-navy-800"
             }`}
           >
@@ -422,7 +422,7 @@ export function SubcontractorView() {
             onClick={() => setSubTab("instructions")}
             className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "instructions"
-                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                ? "bg-navy-800 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/60 hover:text-navy-800"
             }`}
           >
@@ -434,7 +434,7 @@ export function SubcontractorView() {
             onClick={() => setSubTab("variations")}
             className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "variations"
-                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                ? "bg-navy-800 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/60 hover:text-navy-800"
             }`}
           >
@@ -449,7 +449,7 @@ export function SubcontractorView() {
         <div>
           <div className="p-4 border-b border-navy-800 flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="text-sm font-black text-navy-800 flex items-center gap-2">
                 <Briefcase className="w-4 h-4 text-emerald-400" />
                 <span>Subcontractor Packages & Financial Ledger</span>
               </h3>
@@ -537,7 +537,7 @@ export function SubcontractorView() {
         <div className="p-5 space-y-4">
           <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="text-sm font-black text-navy-800 flex items-center gap-2">
                 <Receipt className="w-4 h-4 text-amber-400" />
                 <span>Interim Payment Claims & Valuation Certificates</span>
               </h3>
@@ -604,7 +604,7 @@ export function SubcontractorView() {
         <div className="p-5 space-y-4">
           <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="text-sm font-black text-navy-800 flex items-center gap-2">
                 <ScrollText className="w-4 h-4 text-blue-400" />
                 <span>Site Instructions Register (Architect / Engineer / Client)</span>
               </h3>
@@ -659,7 +659,7 @@ export function SubcontractorView() {
         <div className="p-5 space-y-4">
           <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="text-sm font-black text-navy-800 flex items-center gap-2">
                 <FileSpreadsheet className="w-4 h-4 text-purple-400" />
                 <span>Variation Orders Register & 4-Stage Approval</span>
               </h3>

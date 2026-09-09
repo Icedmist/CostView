@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { RoleName } from "@/lib/supabase/database.types";
+import { AppDataProvider } from "@/lib/store/app-data";
 
 interface AppContextType {
   activeMode: "site" | "commercial";
@@ -67,7 +68,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
           currentProject,
         }}
       >
-        {children}
+        <AppDataProvider>{children}</AppDataProvider>
       </AppContext.Provider>
     </QueryClientProvider>
   );
