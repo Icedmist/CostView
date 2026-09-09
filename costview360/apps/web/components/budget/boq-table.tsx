@@ -655,7 +655,7 @@ export function BOQTable() {
         <div className="p-4 space-y-4">
           <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="text-sm font-black text-navy-800 flex items-center gap-2">
                 <ShieldAlert className="w-4 h-4 text-amber-400" />
                 <span>Cost Control Exceptions & Trending Risks</span>
               </h3>
@@ -738,7 +738,7 @@ export function BOQTable() {
         <div className="p-4 space-y-4">
           <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="text-sm font-black text-navy-800 flex items-center gap-2">
                 <Clock className="w-4 h-4 text-blue-400" />
                 <span>Budget Revisions & Approval Trail</span>
               </h3>
@@ -813,7 +813,7 @@ export function BOQTable() {
         <div className="p-4 space-y-4">
           <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="text-sm font-black text-navy-800 flex items-center gap-2">
                 <FileText className="w-4 h-4 text-purple-400" />
                 <span>Final Account Reconciliation & Audit Notes</span>
               </h3>

@@ -354,7 +354,7 @@ export function SiteDiaryView() {
             onClick={() => setSubTab("diary")}
             className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "diary"
-                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                ? "bg-navy-800 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/60 hover:text-navy-800"
             }`}
           >
@@ -366,7 +366,7 @@ export function SiteDiaryView() {
             onClick={() => setSubTab("photos")}
             className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "photos"
-                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                ? "bg-navy-800 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/60 hover:text-navy-800"
             }`}
           >
@@ -378,7 +378,7 @@ export function SiteDiaryView() {
             onClick={() => setSubTab("inspections")}
             className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "inspections"
-                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                ? "bg-navy-800 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/60 hover:text-navy-800"
             }`}
           >
@@ -390,7 +390,7 @@ export function SiteDiaryView() {
             onClick={() => setSubTab("snags")}
             className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "snags"
-                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                ? "bg-navy-800 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/60 hover:text-navy-800"
             }`}
           >
@@ -407,7 +407,7 @@ export function SiteDiaryView() {
             onClick={() => setSubTab("safety")}
             className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "safety"
-                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                ? "bg-navy-800 text-white border border-navy-800 shadow-sm"
                 : "text-navy-800/60 hover:text-navy-800"
             }`}
           >
@@ -501,15 +501,15 @@ export function SiteDiaryView() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {photos.map((p) => (
-              <div key={p.id} className="bg-cream-100 border border-navy-800 border-2 border-navy-800 overflow-hidden group">
-                <div className="h-36 bg-white flex items-center justify-center border-b border-navy-800 relative">
-                  <Camera className="w-8 h-8 text-zinc-700" />
-                  <span className="absolute top-2 left-2 px-2 py-0.5 rounded text-xs font-bold bg-white/90 text-white border border-navy-800">
+              <div key={p.id} className="bg-white border-2 border-navy-800 shadow-brutal overflow-hidden group">
+                <div className="h-36 bg-cream-100 flex items-center justify-center border-b-2 border-navy-800 relative">
+                  <Camera className="w-8 h-8 text-navy-800" />
+                  <span className="absolute top-2 left-2 px-2 py-0.5 text-xs font-black bg-navy-800 text-white border-2 border-navy-800">
                     {p.category}
                   </span>
                 </div>
-                <div className="p-3">
-                  <h5 className="text-xs font-bold text-white line-clamp-1">{p.title}</h5>
+                <div className="p-3 bg-white">
+                  <h5 className="text-sm font-black text-navy-800 line-clamp-1">{p.title}</h5>
                   <p className="text-sm text-navy-800/60 mt-1">
                     Uploaded by {p.uploadedBy} · {p.timestamp}
                   </p>

@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Logo } from "@/components/brand/logo";
+import { MarketingNav } from "@/components/marketing/nav";
 import {
   ArrowUpRight,
   CheckCircle2,
@@ -18,8 +19,6 @@ import {
   Building2,
   Sparkles,
   ArrowRight,
-  X,
-  Menu,
   AlertTriangle,
   HardHat,
   Eye,
@@ -31,42 +30,11 @@ import {
 } from "lucide-react";
 
 export default function LandingPage() {
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   return (
     <div className="min-h-screen bg-[#FFFDF0] text-navy-800 font-sans selection:bg-[#FFD23F] selection:text-navy-800">
-      {/* NAV */}
-      <nav className="sticky top-0 z-50 bg-white border-b-[3px] border-navy-800">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 h-[76px] flex items-center justify-between gap-4">
-          <Logo size="md" />
-          <div className="hidden lg:flex items-center gap-6 font-black uppercase text-sm tracking-widest">
-            <Link href="/features" className="hover:underline decoration-[4px] underline-offset-4">Features</Link>
-            <Link href="/how-it-works" className="hover:underline decoration-[4px] underline-offset-4">How it Works</Link>
-            <Link href="/pricing" className="hover:underline decoration-[4px] underline-offset-4">Pricing</Link>
-            <Link href="/about" className="hover:underline decoration-[4px] underline-offset-4">About</Link>
-            <Link href="/contact" className="hover:underline decoration-[4px] underline-offset-4">Contact</Link>
-          </div>
-          <div className="hidden sm:flex items-center gap-3">
-            <Link href="/login" className="px-5 py-3 bg-white border-[3px] border-navy-800 font-black uppercase text-sm tracking-wide hover:bg-[#FFF8D6] shadow-brutal-sm active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all">Sign In</Link>
-            <Link href="/dashboard" className="inline-flex items-center gap-2 px-6 py-3 bg-[#FFD23F] border-[3px] border-navy-800 font-black uppercase text-sm tracking-wide shadow-brutal-sm hover:bg-[#FFC11E] active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all">Launch App <ArrowUpRight className="w-5 h-5" /></Link>
-          </div>
-          <button onClick={() => setMobileNavOpen(!mobileNavOpen)} className="lg:hidden w-11 h-11 bg-navy-800 border-[3px] border-navy-800 flex items-center justify-center text-white">
-            {mobileNavOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </div>
-        {mobileNavOpen && (
-          <div className="lg:hidden border-t-[3px] border-navy-800 bg-white p-4 space-y-3">
-            <Link href="/features" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-[#FFFDF0] border-[3px] border-navy-800 font-black uppercase text-sm">Features</Link>
-            <Link href="/how-it-works" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-[#FFFDF0] border-[3px] border-navy-800 font-black uppercase text-sm">How it Works</Link>
-            <Link href="/pricing" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-[#FFFDF0] border-[3px] border-navy-800 font-black uppercase text-sm">Pricing</Link>
-            <Link href="/about" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-[#FFFDF0] border-[3px] border-navy-800 font-black uppercase text-sm">About</Link>
-            <Link href="/contact" onClick={() => setMobileNavOpen(false)} className="block px-4 py-3 bg-[#FFFDF0] border-[3px] border-navy-800 font-black uppercase text-sm">Contact</Link>
-            <Link href="/dashboard" className="block text-center px-4 py-3 bg-[#FFD23F] border-[3px] border-navy-800 font-black uppercase text-sm">Launch App →</Link>
-            <Link href="/login" className="block text-center px-4 py-3 bg-navy-800 text-white border-[3px] border-navy-800 font-black uppercase text-sm">Sign In</Link>
-          </div>
-        )}
-      </nav>
+      <MarketingNav />
 
       {/* HERO — larger */}
       <section className="relative overflow-hidden border-b-[3px] border-navy-800">

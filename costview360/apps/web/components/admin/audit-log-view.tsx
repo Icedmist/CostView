@@ -89,7 +89,7 @@ export function AuditLogView() {
       {/* Header */}
       <div className="p-4 border-b border-navy-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
-          <h3 className="text-sm font-bold text-white flex items-center gap-2">
+          <h3 className="text-sm font-black text-navy-800 flex items-center gap-2">
             <History className="w-4 h-4 text-emerald-400" />
             <span>Searchable Compliance Audit Journal</span>
             <span className="text-xs bg-cream-100 text-navy-800/60 border border-navy-800 px-2 py-0.5 rounded font-mono">
