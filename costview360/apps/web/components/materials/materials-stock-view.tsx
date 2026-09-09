@@ -124,18 +124,18 @@ export function MaterialsStockView() {
   return (
     <div className="space-y-6">
       {/* Header & Quick Action Buttons */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white border-[3px] border-navy-800 shadow-brutal p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-blue-950 text-blue-400 border border-blue-800/60 font-mono">
               Live Stock Gauges
             </span>
-            <span className="text-zinc-500 text-xs">· Site Store Operations</span>
+            <span className="text-navy-800/40 text-xs">· Site Store Operations</span>
           </div>
-          <h2 className="text-lg font-bold text-white tracking-tight">
+          <h2 className="text-lg font-bold text-navy-800 tracking-tight">
             Materials Inventory & Stock Control
           </h2>
-          <p className="text-xs text-zinc-400 mt-0.5">
+          <p className="text-xs text-navy-800/60 mt-0.5">
             Real-time on-hand, reserved, and consumed inventory tied to procurement GRNs.
           </p>
         </div>
@@ -146,7 +146,7 @@ export function MaterialsStockView() {
               setSelectedItem(stock[0]);
               setIsTransferModalOpen(true);
             }}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded-lg text-xs font-semibold border border-zinc-700 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-cream-100 hover:bg-zinc-700 text-navy-800 border-[2px] border-navy-800 text-xs font-semibold border border-navy-800 transition-colors"
           >
             <ArrowRightLeft className="w-3.5 h-3.5 text-blue-400" />
             <span>Create Transfer</span>
@@ -156,7 +156,7 @@ export function MaterialsStockView() {
               setSelectedItem(stock[0]);
               setIsConsumptionModalOpen(true);
             }}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-[2px] border-navy-800 text-xs font-semibold shadow-sm transition-colors"
           >
             <MinusCircle className="w-3.5 h-3.5" />
             <span>Record Site Consumption</span>
@@ -175,12 +175,12 @@ export function MaterialsStockView() {
           return (
             <div
               key={item.id}
-              className={`bg-zinc-900 border rounded-xl p-4 shadow-sm relative overflow-hidden transition-all ${
-                isLow ? "border-amber-700/80 bg-amber-950/10" : "border-zinc-800"
+              className={`bg-white border border-[3px] border-navy-800 p-4 shadow-sm relative overflow-hidden transition-all ${
+                isLow ? "border-amber-700/80 bg-amber-950/10" : "border-navy-800"
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono font-bold text-zinc-400">
+                <span className="text-[10px] font-mono font-bold text-navy-800/60">
                   {item.sku}
                 </span>
                 <span
@@ -199,20 +199,20 @@ export function MaterialsStockView() {
               </h3>
 
               {/* Gauges */}
-              <div className="mt-3 pt-3 border-t border-zinc-800/80 space-y-1.5 text-xs">
-                <div className="flex items-center justify-between text-zinc-300 font-mono">
+              <div className="mt-3 pt-3 border-t border-navy-800/80 space-y-1.5 text-xs">
+                <div className="flex items-center justify-between text-navy-800 font-mono">
                   <span>Available:</span>
-                  <span className="font-bold text-white">
+                  <span className="font-bold text-navy-800">
                     {available} {item.unit}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-zinc-400 text-[11px] font-mono">
+                <div className="flex items-center justify-between text-navy-800/60 text-[11px] font-mono">
                   <span>Reserved:</span>
                   <span>
                     {item.qtyReserved} {item.unit}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-zinc-400 text-[11px] font-mono">
+                <div className="flex items-center justify-between text-navy-800/60 text-[11px] font-mono">
                   <span>Consumed:</span>
                   <span>
                     {item.qtyConsumed} {item.unit} ({percentUsed}%)
@@ -220,14 +220,14 @@ export function MaterialsStockView() {
                 </div>
 
                 {/* Progress Bar */}
-                <div className="w-full bg-zinc-950 rounded-full h-1.5 mt-2 overflow-hidden border border-zinc-800">
+                <div className="w-full bg-cream-100 rounded-full h-1.5 mt-2 overflow-hidden border border-navy-800">
                   <div
                     className={`h-full ${isLow ? "bg-amber-500" : "bg-emerald-500"}`}
                     style={{ width: `${Math.min(100, percentUsed)}%` }}
                   ></div>
                 </div>
 
-                <div className="flex items-center justify-between text-[10px] text-zinc-500 pt-1">
+                <div className="flex items-center justify-between text-[10px] text-navy-800/40 pt-1">
                   <span>Store: {item.location}</span>
                   <span>Min: {item.minReorderLevel}</span>
                 </div>
@@ -240,13 +240,13 @@ export function MaterialsStockView() {
       {/* Record Consumption Modal */}
       {isConsumptionModalOpen && selectedItem && (
         <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-          <div className="bg-zinc-900 border border-zinc-700 rounded-xl max-w-md w-full p-5 shadow-2xl">
-            <h3 className="text-sm font-bold text-white">Record Material Issue / Consumption</h3>
-            <p className="text-xs text-zinc-400 mt-0.5">{selectedItem.name}</p>
+          <div className="bg-white border-2 border-navy-800 border-navy-800 max-w-md w-full p-5 shadow-2xl">
+            <h3 className="text-sm font-bold text-navy-800">Record Material Issue / Consumption</h3>
+            <p className="text-xs text-navy-800/60 mt-0.5">{selectedItem.name}</p>
 
             <form onSubmit={handleRecordConsumption} className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Issue Quantity ({selectedItem.unit})</label>
+                <label className="block text-xs text-navy-800 mb-1">Issue Quantity ({selectedItem.unit})</label>
                 <input
                   type="number"
                   required
@@ -254,18 +254,18 @@ export function MaterialsStockView() {
                   max={selectedItem.qtyOnHand}
                   value={consumptionQty}
                   onChange={(e) => setConsumptionQty(Number(e.target.value))}
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-navy-800 font-mono focus:outline-none focus:border-emerald-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Issued to Work Location / Grid</label>
+                <label className="block text-xs text-navy-800 mb-1">Issued to Work Location / Grid</label>
                 <input
                   type="text"
                   required
                   value={consumptionLocation}
                   onChange={(e) => setConsumptionLocation(e.target.value)}
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
                 />
               </div>
 
@@ -273,7 +273,7 @@ export function MaterialsStockView() {
                 <button
                   type="button"
                   onClick={() => setIsConsumptionModalOpen(false)}
-                  className="px-3 py-1.5 bg-zinc-800 text-zinc-300 rounded text-xs font-semibold"
+                  className="px-3 py-1.5 bg-cream-100 text-navy-800 rounded text-xs font-semibold"
                 >
                   Cancel
                 </button>
@@ -292,24 +292,24 @@ export function MaterialsStockView() {
       {/* Create Transfer Modal */}
       {isTransferModalOpen && selectedItem && (
         <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-          <div className="bg-zinc-900 border border-zinc-700 rounded-xl max-w-md w-full p-5 shadow-2xl">
-            <h3 className="text-sm font-bold text-white">Create Inter-Site Material Transfer</h3>
-            <p className="text-xs text-zinc-400 mt-0.5">{selectedItem.name}</p>
+          <div className="bg-white border-2 border-navy-800 border-navy-800 max-w-md w-full p-5 shadow-2xl">
+            <h3 className="text-sm font-bold text-navy-800">Create Inter-Site Material Transfer</h3>
+            <p className="text-xs text-navy-800/60 mt-0.5">{selectedItem.name}</p>
 
             <form onSubmit={handleCreateTransfer} className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Destination Project / Store</label>
+                <label className="block text-xs text-navy-800 mb-1">Destination Project / Store</label>
                 <input
                   type="text"
                   required
                   value={transferToSite}
                   onChange={(e) => setTransferToSite(e.target.value)}
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Transfer Quantity ({selectedItem.unit})</label>
+                <label className="block text-xs text-navy-800 mb-1">Transfer Quantity ({selectedItem.unit})</label>
                 <input
                   type="number"
                   required
@@ -317,7 +317,7 @@ export function MaterialsStockView() {
                   max={selectedItem.qtyOnHand}
                   value={transferQty}
                   onChange={(e) => setTransferQty(Number(e.target.value))}
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-navy-800 font-mono focus:outline-none focus:border-emerald-500"
                 />
               </div>
 
@@ -325,7 +325,7 @@ export function MaterialsStockView() {
                 <button
                   type="button"
                   onClick={() => setIsTransferModalOpen(false)}
-                  className="px-3 py-1.5 bg-zinc-800 text-zinc-300 rounded text-xs font-semibold"
+                  className="px-3 py-1.5 bg-cream-100 text-navy-800 rounded text-xs font-semibold"
                 >
                   Cancel
                 </button>

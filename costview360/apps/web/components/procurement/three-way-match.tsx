@@ -362,16 +362,16 @@ export function ThreeWayMatchView() {
   };
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden shadow-sm space-y-4">
+    <div className="bg-white border-[3px] border-navy-800 shadow-brutal overflow-hidden shadow-sm space-y-4">
       {/* Subnavigation Bar */}
-      <div className="p-3 bg-zinc-950 border-b border-zinc-800 flex items-center justify-between overflow-x-auto gap-2">
+      <div className="p-3 bg-navy-800 border-b-[3px] border-navy-800 flex items-center justify-between overflow-x-auto gap-2">
         <div className="flex items-center gap-1.5">
           <button
             onClick={() => setSubTab("match")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border-[2px] border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "match"
-                ? "bg-zinc-800 text-white border border-zinc-700 shadow-sm"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                : "text-navy-800/70 hover:text-navy-800"
             }`}
           >
             <BadgeCheck className="w-3.5 h-3.5 text-emerald-400" />
@@ -380,16 +380,16 @@ export function ThreeWayMatchView() {
 
           <button
             onClick={() => setSubTab("requisitions")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border-[2px] border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "requisitions"
-                ? "bg-zinc-800 text-white border border-zinc-700 shadow-sm"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                : "text-navy-800/70 hover:text-navy-800"
             }`}
           >
             <Clock className="w-3.5 h-3.5 text-amber-400" />
             <span>2.2 Requisitions</span>
             {requisitions.filter((r) => r.status === "Pending Approval").length > 0 && (
-              <span className="text-[10px] bg-amber-950 text-amber-300 px-1.5 rounded-full font-mono">
+              <span className="text-xs bg-amber-950 text-amber-300 px-1.5 rounded-full font-mono">
                 {requisitions.filter((r) => r.status === "Pending Approval").length}
               </span>
             )}
@@ -397,10 +397,10 @@ export function ThreeWayMatchView() {
 
           <button
             onClick={() => setSubTab("enquiries")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border-[2px] border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "enquiries"
-                ? "bg-zinc-800 text-white border border-zinc-700 shadow-sm"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                : "text-navy-800/70 hover:text-navy-800"
             }`}
           >
             <Truck className="w-3.5 h-3.5 text-blue-400" />
@@ -409,10 +409,10 @@ export function ThreeWayMatchView() {
 
           <button
             onClick={() => setSubTab("invoices")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border-[2px] border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "invoices"
-                ? "bg-zinc-800 text-white border border-zinc-700 shadow-sm"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                : "text-navy-800/70 hover:text-navy-800"
             }`}
           >
             <Receipt className="w-3.5 h-3.5 text-purple-400" />
@@ -421,10 +421,10 @@ export function ThreeWayMatchView() {
 
           <button
             onClick={() => setSubTab("payments")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border-[2px] border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "payments"
-                ? "bg-zinc-800 text-white border border-zinc-700 shadow-sm"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                : "text-navy-800/70 hover:text-navy-800"
             }`}
           >
             <CreditCard className="w-3.5 h-3.5 text-emerald-400" />
@@ -436,21 +436,21 @@ export function ThreeWayMatchView() {
       {/* SUBTAB 1: 3-WAY MATCH MATRIX */}
       {subTab === "match" && (
         <div>
-          <div className="p-4 border-b border-zinc-800 flex items-center justify-between">
+          <div className="p-4 border-b border-navy-800 flex items-center justify-between">
             <div>
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
                 <span>Three-Way Financial Match Engine</span>
-                <span className="text-[10px] bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded border border-emerald-800 font-mono">
+                <span className="text-xs bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded border border-emerald-800 font-mono">
                   PO ⇄ GRN ⇄ Invoice
                 </span>
               </h3>
-              <p className="text-xs text-zinc-400 mt-0.5">
+              <p className="text-xs text-navy-800/70 mt-0.5">
                 Automated quantity and unit rate cross-validation per PRD Section 2.
               </p>
             </div>
             <button
               onClick={() => setIsNewInvoiceOpen(true)}
-              className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-[2px] border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Log Supplier Invoice</span>
@@ -459,69 +459,69 @@ export function ThreeWayMatchView() {
 
           <div className="divide-y divide-zinc-800/60">
             {records.map((rec) => (
-              <div key={rec.id} className="p-4 hover:bg-zinc-800/30 transition-colors">
+              <div key={rec.id} className="p-4 hover:bg-cream-100/30 transition-colors">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="font-mono font-bold text-emerald-400 text-xs">
                         {rec.poNumber}
                       </span>
-                      <span className="text-zinc-500">·</span>
+                      <span className="text-navy-800/40">·</span>
                       <span className="font-semibold text-white text-xs">{rec.supplierName}</span>
-                      <span className="text-zinc-500">·</span>
-                      <span className="text-xs text-zinc-400">{rec.itemDescription}</span>
-                      <span className="text-zinc-500">·</span>
-                      <span className="text-[10px] text-zinc-400 bg-zinc-800 px-2 py-0.5 rounded font-mono">
+                      <span className="text-navy-800/40">·</span>
+                      <span className="text-xs text-navy-800/70">{rec.itemDescription}</span>
+                      <span className="text-navy-800/40">·</span>
+                      <span className="text-xs text-navy-800/70 bg-cream-100 px-2 py-0.5 rounded font-mono">
                         Terms: {rec.paymentTerms}
                       </span>
                     </div>
 
                     {/* 3 Steps Matrix */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3 bg-zinc-950/60 p-3 rounded-lg border border-zinc-800/80">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3 bg-zinc-950/60 p-3 border-[2px] border-navy-800 border border-navy-800/80">
                       {/* Step 1: PO */}
                       <div>
-                        <div className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider mb-1">
+                        <div className="text-xs font-semibold text-navy-800/40 uppercase tracking-wider mb-1">
                           1. Purchase Order
                         </div>
-                        <div className="text-xs font-mono text-zinc-200">
+                        <div className="text-xs font-mono text-navy-800">
                           Qty: <span className="font-bold text-white">{rec.poQty}</span> @ {formatCurrency(rec.poRate, currency)}
                         </div>
-                        <div className="text-xs font-mono font-semibold text-zinc-300 mt-0.5">
+                        <div className="text-xs font-mono font-semibold text-navy-800 mt-0.5">
                           Total: {formatCurrency(rec.poTotal, currency)}
                         </div>
                       </div>
 
                       {/* Step 2: GRN */}
                       <div>
-                        <div className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider mb-1 flex items-center justify-between">
+                        <div className="text-xs font-semibold text-navy-800/40 uppercase tracking-wider mb-1 flex items-center justify-between">
                           <span>2. Delivery ({rec.grnNumber})</span>
                           <button
                             onClick={() => handleOpenRateDelivery(rec)}
-                            className="text-[10px] text-amber-400 hover:underline flex items-center gap-0.5"
+                            className="text-xs text-amber-400 hover:underline flex items-center gap-0.5"
                           >
                             <Star className="w-2.5 h-2.5 fill-amber-400" />
                             <span>{rec.deliveryQualityScore ? `${rec.deliveryQualityScore}★` : "Rate"}</span>
                           </button>
                         </div>
-                        <div className="text-xs font-mono text-zinc-200">
+                        <div className="text-xs font-mono text-navy-800">
                           Received: <span className={`font-bold ${rec.grnQtyReceived !== rec.poQty ? "text-amber-400" : "text-emerald-400"}`}>
                             {rec.grnQtyReceived}
                           </span>
                         </div>
-                        <div className="text-xs text-zinc-400 mt-0.5">
+                        <div className="text-xs text-navy-800/70 mt-0.5">
                           {rec.grnQtyReceived === rec.poQty ? "100% Fulfilled" : `${rec.poQty - rec.grnQtyReceived} Units Shortfall`}
                         </div>
                       </div>
 
                       {/* Step 3: Invoice */}
                       <div>
-                        <div className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider mb-1">
+                        <div className="text-xs font-semibold text-navy-800/40 uppercase tracking-wider mb-1">
                           3. Supplier Invoice ({rec.invoiceNumber})
                         </div>
-                        <div className="text-xs font-mono text-zinc-200">
+                        <div className="text-xs font-mono text-navy-800">
                           Billed: <span className="font-bold text-white">{rec.invoiceQtyBilled}</span> @ {formatCurrency(rec.invoiceRateBilled, currency)}
                         </div>
-                        <div className="text-xs font-mono font-semibold text-zinc-300 mt-0.5">
+                        <div className="text-xs font-mono font-semibold text-navy-800 mt-0.5">
                           Total: {formatCurrency(rec.invoiceTotal, currency)}
                         </div>
                       </div>
@@ -539,12 +539,12 @@ export function ThreeWayMatchView() {
                   {/* Status and Actions */}
                   <div className="flex flex-wrap items-center gap-2 lg:self-center">
                     {rec.paymentLocked ? (
-                      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-950/80 border border-red-800 text-red-300 text-xs font-semibold">
+                      <div className="flex items-center gap-1.5 px-3 py-1.5 border-[2px] border-navy-800 bg-red-950/80 border border-red-800 text-red-300 text-xs font-semibold">
                         <Lock className="w-3.5 h-3.5 text-red-400" />
                         <span>Payment Locked</span>
                       </div>
                     ) : (
-                      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-950/80 border border-emerald-800 text-emerald-300 text-xs font-semibold">
+                      <div className="flex items-center gap-1.5 px-3 py-1.5 border-[2px] border-navy-800 bg-emerald-950/80 border border-emerald-800 text-emerald-300 text-xs font-semibold">
                         <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
                         <span>{rec.matchStatus}</span>
                       </div>
@@ -553,7 +553,7 @@ export function ThreeWayMatchView() {
                     {rec.paymentLocked && (
                       <button
                         onClick={() => handleResolveDiscrepancy(rec.id)}
-                        className="flex items-center gap-1 px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded-lg text-xs font-semibold transition-colors"
+                        className="flex items-center gap-1 px-3 py-1.5 bg-cream-100 hover:bg-zinc-700 text-navy-800 border-[2px] border-navy-800 text-xs font-semibold transition-colors"
                       >
                         <Unlock className="w-3.5 h-3.5 text-emerald-400" />
                         <span>Adjust Credit & Unlock</span>
@@ -563,7 +563,7 @@ export function ThreeWayMatchView() {
                     {!rec.paymentLocked && rec.matchStatus !== "Paid" && (
                       <button
                         onClick={() => handleOpenProcessPayment(rec)}
-                        className="flex items-center gap-1 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors"
+                        className="flex items-center gap-1 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-[2px] border-navy-800 text-xs font-semibold shadow-sm transition-colors"
                       >
                         <CreditCard className="w-3.5 h-3.5" />
                         <span>Process Payment</span>
@@ -580,19 +580,19 @@ export function ThreeWayMatchView() {
       {/* SUBTAB 2: REQUISITIONS (PRD Item 5) */}
       {subTab === "requisitions" && (
         <div className="p-5 space-y-4">
-          <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+          <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
                 <Clock className="w-4 h-4 text-amber-400" />
                 <span>Site Material Requisitions & Authorizations</span>
               </h3>
-              <p className="text-xs text-zinc-400 mt-0.5">
+              <p className="text-xs text-navy-800/70 mt-0.5">
                 Site Engineer manual orders or low-stock automated triggers (PRD Section 2.2).
               </p>
             </div>
             <button
               onClick={() => setIsNewReqOpen(true)}
-              className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-[2px] border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>New Requisition</span>
@@ -601,25 +601,25 @@ export function ThreeWayMatchView() {
 
           <div className="divide-y divide-zinc-800/60">
             {requisitions.map((req) => (
-              <div key={req.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-zinc-800/20 px-2 rounded-lg transition-colors">
+              <div key={req.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/20 px-2 border-[2px] border-navy-800 transition-colors">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-mono font-bold text-amber-400 text-xs">{req.reqNumber}</span>
-                    <span className="text-zinc-500">·</span>
+                    <span className="text-navy-800/40">·</span>
                     <span className="font-semibold text-white text-xs">{req.itemDescription}</span>
-                    <span className="text-zinc-500">·</span>
-                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
+                    <span className="text-navy-800/40">·</span>
+                    <span className={`px-2 py-0.5 rounded text-xs font-bold border ${
                       req.urgency === "Critical"
                         ? "bg-red-950 text-red-300 border-red-800"
                         : req.urgency === "High"
                         ? "bg-amber-950 text-amber-300 border-amber-800"
-                        : "bg-zinc-800 text-zinc-400 border-zinc-700"
+                        : "bg-cream-100 text-navy-800/70 border-navy-800"
                     }`}>
                       {req.urgency} Urgency
                     </span>
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-zinc-400">
-                    <span>Qty: <strong className="text-zinc-200">{req.quantity} {req.unit}</strong></span>
+                  <div className="flex items-center gap-3 text-xs text-navy-800/70">
+                    <span>Qty: <strong className="text-navy-800">{req.quantity} {req.unit}</strong></span>
                     <span>·</span>
                     <span>Est. Cost: <strong className="text-emerald-400 font-mono">{formatCurrency(req.estimatedCost, currency)}</strong></span>
                     <span>·</span>
@@ -666,19 +666,19 @@ export function ThreeWayMatchView() {
       {/* SUBTAB 3: ENQUIRIES & QUOTES (PRD Item 6) */}
       {subTab === "enquiries" && (
         <div className="p-5 space-y-4">
-          <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+          <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
                 <Truck className="w-4 h-4 text-blue-400" />
                 <span>Supplier Price Enquiries & RFQ Comparison</span>
               </h3>
-              <p className="text-xs text-zinc-400 mt-0.5">
+              <p className="text-xs text-navy-800/70 mt-0.5">
                 Side-by-side competitive bidding before purchase order conversion (PRD Section 2.3).
               </p>
             </div>
             <button
               onClick={() => setIsNewEnquiryOpen(true)}
-              className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white border-[2px] border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>New Enquiry</span>
@@ -687,7 +687,7 @@ export function ThreeWayMatchView() {
 
           <div className="space-y-4">
             {enquiries.map((enq) => (
-              <div key={enq.id} className="bg-zinc-950 p-4 rounded-xl border border-zinc-800 space-y-3">
+              <div key={enq.id} className="bg-zinc-950 p-4 border-[3px] border-navy-800 border border-navy-800 space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
                     <span className="font-mono font-bold text-blue-400 text-xs">{enq.enquiryNumber}</span>
@@ -695,7 +695,7 @@ export function ThreeWayMatchView() {
                       {enq.itemDescription} ({enq.quantity} {enq.unit})
                     </h4>
                   </div>
-                  <span className="text-[10px] bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded font-mono font-semibold">
+                  <span className="text-xs bg-cream-100 text-navy-800 px-2 py-0.5 rounded font-mono font-semibold">
                     {enq.status}
                   </span>
                 </div>
@@ -703,19 +703,19 @@ export function ThreeWayMatchView() {
                 {/* Side-by-side Quote Comparison */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   {enq.suppliersQuoted.map((quote, idx) => (
-                    <div key={idx} className="p-3 rounded-lg bg-zinc-900 border border-zinc-800 flex flex-col justify-between">
+                    <div key={idx} className="p-3 border-[2px] border-navy-800 bg-white border border-navy-800 flex flex-col justify-between">
                       <div>
-                        <div className="text-xs font-bold text-zinc-200">{quote.name}</div>
+                        <div className="text-xs font-bold text-navy-800">{quote.name}</div>
                         <div className="text-xs font-mono text-emerald-400 font-semibold mt-1">
                           {formatCurrency(quote.quoteRate, currency)} / {enq.unit}
                         </div>
-                        <div className="text-[11px] text-zinc-400 mt-0.5">
+                        <div className="text-xs text-navy-800/70 mt-0.5">
                           Delivery: {quote.leadDays} Days Lead
                         </div>
                       </div>
                       <button
                         onClick={() => alert(`Supplier ${quote.name} selected. Converting RFQ to Purchase Order.`)}
-                        className="mt-3 w-full py-1 bg-zinc-800 hover:bg-zinc-700 text-white rounded text-xs font-semibold transition-colors flex items-center justify-center gap-1"
+                        className="mt-3 w-full py-1 bg-cream-100 hover:bg-zinc-700 text-white rounded text-xs font-semibold transition-colors flex items-center justify-center gap-1"
                       >
                         <span>Award & Create PO</span>
                         <ArrowRight className="w-3 h-3 text-emerald-400" />
@@ -732,19 +732,19 @@ export function ThreeWayMatchView() {
       {/* SUBTAB 4: INVOICES & CREDIT NOTES (PRD Item 9) */}
       {subTab === "invoices" && (
         <div className="p-5 space-y-4">
-          <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+          <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
                 <Receipt className="w-4 h-4 text-purple-400" />
                 <span>Supplier Invoices, Discrepancies & Credit Notes</span>
               </h3>
-              <p className="text-xs text-zinc-400 mt-0.5">
+              <p className="text-xs text-navy-800/70 mt-0.5">
                 Log invoices, flag shortfalls, and request formal credit notes (PRD Section 2.6).
               </p>
             </div>
             <button
               onClick={() => setIsNewInvoiceOpen(true)}
-              className="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white border-[2px] border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Log New Invoice</span>
@@ -753,22 +753,22 @@ export function ThreeWayMatchView() {
 
           <div className="divide-y divide-zinc-800/60">
             {records.map((r) => (
-              <div key={r.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-zinc-800/20 px-2 rounded-lg transition-colors">
+              <div key={r.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/20 px-2 border-[2px] border-navy-800 transition-colors">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-mono font-bold text-purple-400 text-xs">{r.invoiceNumber}</span>
-                    <span className="text-zinc-500">·</span>
+                    <span className="text-navy-800/40">·</span>
                     <span className="font-semibold text-white text-xs">{r.supplierName}</span>
-                    <span className="text-zinc-500">·</span>
+                    <span className="text-navy-800/40">·</span>
                     <span className="font-mono text-emerald-400 text-xs font-bold">
                       {formatCurrency(r.invoiceTotal, currency)}
                     </span>
                   </div>
-                  <div className="text-xs text-zinc-400">
-                    Linked PO: <strong className="text-zinc-300">{r.poNumber}</strong> · GRN: <strong className="text-zinc-300">{r.grnNumber}</strong>
+                  <div className="text-xs text-navy-800/70">
+                    Linked PO: <strong className="text-navy-800">{r.poNumber}</strong> · GRN: <strong className="text-navy-800">{r.grnNumber}</strong>
                   </div>
                   {r.discrepancyReason && (
-                    <div className="text-[11px] text-red-400 mt-1 flex items-center gap-1">
+                    <div className="text-xs text-red-400 mt-1 flex items-center gap-1">
                       <AlertTriangle className="w-3 h-3" />
                       <span>{r.discrepancyReason}</span>
                     </div>
@@ -779,12 +779,12 @@ export function ThreeWayMatchView() {
                   {r.discrepancyReason ? (
                     <button
                       onClick={() => alert(`Credit note request issued to ${r.supplierName} for discrepancy on ${r.invoiceNumber}`)}
-                      className="px-3 py-1.5 bg-amber-950 hover:bg-amber-900 text-amber-300 border border-amber-800 rounded-lg text-xs font-semibold transition-colors"
+                      className="px-3 py-1.5 bg-amber-950 hover:bg-amber-900 text-amber-300 border border-amber-800 border-[2px] border-navy-800 text-xs font-semibold transition-colors"
                     >
                       Request Credit Note
                     </button>
                   ) : (
-                    <span className="px-2.5 py-1 rounded bg-zinc-800 text-zinc-300 text-xs font-semibold">
+                    <span className="px-2.5 py-1 rounded bg-cream-100 text-navy-800 text-xs font-semibold">
                       Verified & Cleared
                     </span>
                   )}
@@ -798,13 +798,13 @@ export function ThreeWayMatchView() {
       {/* SUBTAB 5: PAYMENTS LEDGER (PRD Item 10) */}
       {subTab === "payments" && (
         <div className="p-5 space-y-4">
-          <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+          <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
                 <CreditCard className="w-4 h-4 text-emerald-400" />
                 <span>Supplier Disbursement & Payment Trail</span>
               </h3>
-              <p className="text-xs text-zinc-400 mt-0.5">
+              <p className="text-xs text-navy-800/70 mt-0.5">
                 Audit records of completed bank wires and payments held for investigation (PRD Section 2.7).
               </p>
             </div>
@@ -812,26 +812,26 @@ export function ThreeWayMatchView() {
 
           <div className="divide-y divide-zinc-800/60">
             {records.map((r) => (
-              <div key={r.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-zinc-800/20 px-2 rounded-lg transition-colors">
+              <div key={r.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/20 px-2 border-[2px] border-navy-800 transition-colors">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-mono font-bold text-white text-xs">{r.supplierName}</span>
-                    <span className="text-zinc-500">·</span>
+                    <span className="text-navy-800/40">·</span>
                     <span className="font-mono text-emerald-400 text-xs font-bold">
                       {formatCurrency(r.invoiceTotal, currency)}
                     </span>
-                    <span className="text-zinc-500">·</span>
-                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
+                    <span className="text-navy-800/40">·</span>
+                    <span className={`px-2 py-0.5 rounded text-xs font-bold border ${
                       r.matchStatus === "Paid"
                         ? "bg-emerald-950 text-emerald-300 border-emerald-800"
                         : r.paymentLocked
                         ? "bg-red-950 text-red-300 border-red-800"
-                        : "bg-zinc-800 text-zinc-400 border-zinc-700"
+                        : "bg-cream-100 text-navy-800/70 border-navy-800"
                     }`}>
                       {r.matchStatus}
                     </span>
                   </div>
-                  <div className="text-xs text-zinc-400">
+                  <div className="text-xs text-navy-800/70">
                     Ref: {r.invoiceNumber} · PO: {r.poNumber}
                     {r.paidAt && ` · Paid on ${r.paidAt} via ${r.paymentMethod}`}
                   </div>
@@ -842,14 +842,14 @@ export function ThreeWayMatchView() {
                     <>
                       <button
                         onClick={() => handleHoldPayment(r.id)}
-                        className="px-2.5 py-1.5 bg-red-950/80 hover:bg-red-900 text-red-300 border border-red-800 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1"
+                        className="px-2.5 py-1.5 bg-red-950/80 hover:bg-red-900 text-red-300 border border-red-800 border-[2px] border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1"
                       >
                         <Ban className="w-3 h-3" />
                         <span>Hold Payment</span>
                       </button>
                       <button
                         onClick={() => handleOpenProcessPayment(r)}
-                        className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors flex items-center gap-1"
+                        className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-[2px] border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1"
                       >
                         <CreditCard className="w-3 h-3" />
                         <span>Process</span>
@@ -866,61 +866,61 @@ export function ThreeWayMatchView() {
       {/* Modal: New Requisition (PRD #5) */}
       {isNewReqOpen && (
         <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-          <div className="bg-zinc-900 border border-zinc-700 rounded-xl max-w-md w-full p-5 shadow-2xl">
+          <div className="bg-white border border-navy-800 border-[3px] border-navy-800 max-w-md w-full p-5 shadow-2xl">
             <h3 className="text-sm font-bold text-white">Raise New Material Requisition</h3>
             <form onSubmit={handleCreateRequisition} className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Item Description</label>
+                <label className="block text-xs text-navy-800 mb-1">Item Description</label>
                 <input
                   type="text"
                   required
                   value={reqDesc}
                   onChange={(e) => setReqDesc(e.target.value)}
                   placeholder="e.g. 100 bags rapid setting cement"
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-xs text-zinc-300 mb-1">Quantity</label>
+                  <label className="block text-xs text-navy-800 mb-1">Quantity</label>
                   <input
                     type="number"
                     required
                     value={reqQty}
                     onChange={(e) => setReqQty(Number(e.target.value))}
-                    className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-zinc-300 mb-1">Unit</label>
+                  <label className="block text-xs text-navy-800 mb-1">Unit</label>
                   <input
                     type="text"
                     required
                     value={reqUnit}
                     onChange={(e) => setReqUnit(e.target.value)}
-                    className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-xs text-zinc-300 mb-1">Estimated Cost (₦)</label>
+                  <label className="block text-xs text-navy-800 mb-1">Estimated Cost (₦)</label>
                   <input
                     type="number"
                     required
                     value={reqEstCost}
                     onChange={(e) => setReqEstCost(Number(e.target.value))}
-                    className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-zinc-300 mb-1">Urgency</label>
+                  <label className="block text-xs text-navy-800 mb-1">Urgency</label>
                   <select
                     value={reqUrgency}
                     onChange={(e) => setReqUrgency(e.target.value as Requisition["urgency"])}
-                    className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
                   >
                     <option value="Normal">Normal</option>
                     <option value="High">High</option>
@@ -933,7 +933,7 @@ export function ThreeWayMatchView() {
                 <button
                   type="button"
                   onClick={() => setIsNewReqOpen(false)}
-                  className="px-3 py-1.5 bg-zinc-800 text-zinc-300 rounded text-xs font-semibold"
+                  className="px-3 py-1.5 bg-cream-100 text-navy-800 rounded text-xs font-semibold"
                 >
                   Cancel
                 </button>
@@ -952,40 +952,40 @@ export function ThreeWayMatchView() {
       {/* Modal: New Enquiry (PRD #6) */}
       {isNewEnquiryOpen && (
         <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-          <div className="bg-zinc-900 border border-zinc-700 rounded-xl max-w-md w-full p-5 shadow-2xl">
+          <div className="bg-white border border-navy-800 border-[3px] border-navy-800 max-w-md w-full p-5 shadow-2xl">
             <h3 className="text-sm font-bold text-white">Create Supplier Price Enquiry (RFQ)</h3>
             <form onSubmit={handleCreateEnquiry} className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Item Description</label>
+                <label className="block text-xs text-navy-800 mb-1">Item Description</label>
                 <input
                   type="text"
                   required
                   value={enqDesc}
                   onChange={(e) => setEnqDesc(e.target.value)}
                   placeholder="e.g. 20mm aggregate gravel"
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                  className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-xs text-zinc-300 mb-1">Quantity</label>
+                  <label className="block text-xs text-navy-800 mb-1">Quantity</label>
                   <input
                     type="number"
                     required
                     value={enqQty}
                     onChange={(e) => setEnqQty(Number(e.target.value))}
-                    className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-blue-500"
+                    className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-blue-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-zinc-300 mb-1">Unit</label>
+                  <label className="block text-xs text-navy-800 mb-1">Unit</label>
                   <input
                     type="text"
                     required
                     value={enqUnit}
                     onChange={(e) => setEnqUnit(e.target.value)}
-                    className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                    className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500"
                   />
                 </div>
               </div>
@@ -994,7 +994,7 @@ export function ThreeWayMatchView() {
                 <button
                   type="button"
                   onClick={() => setIsNewEnquiryOpen(false)}
-                  className="px-3 py-1.5 bg-zinc-800 text-zinc-300 rounded text-xs font-semibold"
+                  className="px-3 py-1.5 bg-cream-100 text-navy-800 rounded text-xs font-semibold"
                 >
                   Cancel
                 </button>
@@ -1013,41 +1013,41 @@ export function ThreeWayMatchView() {
       {/* Modal: New Invoice (PRD #9) */}
       {isNewInvoiceOpen && (
         <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-          <div className="bg-zinc-900 border border-zinc-700 rounded-xl max-w-md w-full p-5 shadow-2xl">
+          <div className="bg-white border border-navy-800 border-[3px] border-navy-800 max-w-md w-full p-5 shadow-2xl">
             <h3 className="text-sm font-bold text-white">Log Supplier Invoice</h3>
             <form onSubmit={handleCreateInvoice} className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Invoice Number</label>
+                <label className="block text-xs text-navy-800 mb-1">Invoice Number</label>
                 <input
                   type="text"
                   required
                   value={invNumber}
                   onChange={(e) => setInvNumber(e.target.value)}
                   placeholder="e.g. INV-SUPP-9021"
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-purple-500"
+                  className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-purple-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Supplier Name</label>
+                <label className="block text-xs text-navy-800 mb-1">Supplier Name</label>
                 <input
                   type="text"
                   required
                   value={invSupplier}
                   onChange={(e) => setInvSupplier(e.target.value)}
                   placeholder="e.g. Dangote Cement Plc"
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-purple-500"
+                  className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-purple-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Total Invoiced Amount (₦)</label>
+                <label className="block text-xs text-navy-800 mb-1">Total Invoiced Amount (₦)</label>
                 <input
                   type="number"
                   required
                   value={invAmount}
                   onChange={(e) => setInvAmount(Number(e.target.value))}
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-purple-500"
+                  className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-purple-500"
                 />
               </div>
 
@@ -1055,7 +1055,7 @@ export function ThreeWayMatchView() {
                 <button
                   type="button"
                   onClick={() => setIsNewInvoiceOpen(false)}
-                  className="px-3 py-1.5 bg-zinc-800 text-zinc-300 rounded text-xs font-semibold"
+                  className="px-3 py-1.5 bg-cream-100 text-navy-800 rounded text-xs font-semibold"
                 >
                   Cancel
                 </button>
@@ -1074,19 +1074,19 @@ export function ThreeWayMatchView() {
       {/* Modal: Process Payment (PRD #10) */}
       {isProcessPaymentOpen && selectedRecord && (
         <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-          <div className="bg-zinc-900 border border-zinc-700 rounded-xl max-w-md w-full p-5 shadow-2xl">
+          <div className="bg-white border border-navy-800 border-[3px] border-navy-800 max-w-md w-full p-5 shadow-2xl">
             <h3 className="text-sm font-bold text-white">Process Supplier Disbursement</h3>
-            <p className="text-xs text-zinc-400 mt-1">
+            <p className="text-xs text-navy-800/70 mt-1">
               Disbursing <strong className="text-emerald-400 font-mono">{formatCurrency(selectedRecord.invoiceTotal, currency)}</strong> to {selectedRecord.supplierName}.
             </p>
 
             <form onSubmit={handleConfirmPayment} className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Payment Method / Bank Account</label>
+                <label className="block text-xs text-navy-800 mb-1">Payment Method / Bank Account</label>
                 <select
                   value={paymentMethod}
                   onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
                 >
                   <option value="Bank Transfer (Zenith Bank NGN)">Zenith Bank Project Operations Account</option>
                   <option value="Bank Transfer (Access Bank NGN)">Access Bank Corporate Escrow</option>
@@ -1095,12 +1095,12 @@ export function ThreeWayMatchView() {
               </div>
 
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Payment Reference / Transaction ID</label>
+                <label className="block text-xs text-navy-800 mb-1">Payment Reference / Transaction ID</label>
                 <input
                   type="text"
                   required
                   defaultValue={`TXN-${Date.now().toString().slice(-6)}`}
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500"
                 />
               </div>
 
@@ -1108,7 +1108,7 @@ export function ThreeWayMatchView() {
                 <button
                   type="button"
                   onClick={() => setIsProcessPaymentOpen(false)}
-                  className="px-3 py-1.5 bg-zinc-800 text-zinc-300 rounded text-xs font-semibold"
+                  className="px-3 py-1.5 bg-cream-100 text-navy-800 rounded text-xs font-semibold"
                 >
                   Cancel
                 </button>
@@ -1127,25 +1127,25 @@ export function ThreeWayMatchView() {
       {/* Modal: Rate Delivery (PRD #11) */}
       {isRateDeliveryOpen && selectedRecord && (
         <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-          <div className="bg-zinc-900 border border-zinc-700 rounded-xl max-w-md w-full p-5 shadow-2xl">
+          <div className="bg-white border border-navy-800 border-[3px] border-navy-800 max-w-md w-full p-5 shadow-2xl">
             <h3 className="text-sm font-bold text-white">Rate This Delivery Quality</h3>
-            <p className="text-xs text-zinc-400 mt-1">
+            <p className="text-xs text-navy-800/70 mt-1">
               Goods received under {selectedRecord.grnNumber} from {selectedRecord.supplierName}.
             </p>
 
             <form onSubmit={handleSaveDeliveryRating} className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Quality Assessment (1 - 5 Stars)</label>
+                <label className="block text-xs text-navy-800 mb-1">Quality Assessment (1 - 5 Stars)</label>
                 <div className="flex items-center gap-2">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
                       key={star}
                       type="button"
                       onClick={() => setRatingScore(star)}
-                      className={`p-2 rounded-lg border flex items-center gap-1 ${
+                      className={`p-2 border-[2px] border-navy-800 border flex items-center gap-1 ${
                         ratingScore >= star
                           ? "bg-amber-950 text-amber-300 border-amber-800"
-                          : "bg-zinc-950 text-zinc-500 border-zinc-800"
+                          : "bg-zinc-950 text-navy-800/40 border-navy-800"
                       }`}
                     >
                       <Star className={`w-4 h-4 ${ratingScore >= star ? "fill-amber-400 text-amber-400" : ""}`} />
@@ -1156,13 +1156,13 @@ export function ThreeWayMatchView() {
               </div>
 
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Inspector Note / Site Observation</label>
+                <label className="block text-xs text-navy-800 mb-1">Inspector Note / Site Observation</label>
                 <textarea
                   rows={3}
                   value={ratingNote}
                   onChange={(e) => setRatingNote(e.target.value)}
                   placeholder="e.g. Clean delivery, certificates of conformity verified on arrival..."
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500"
+                  className="w-full bg-zinc-950 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500"
                 />
               </div>
 
@@ -1170,7 +1170,7 @@ export function ThreeWayMatchView() {
                 <button
                   type="button"
                   onClick={() => setIsRateDeliveryOpen(false)}
-                  className="px-3 py-1.5 bg-zinc-800 text-zinc-300 rounded text-xs font-semibold"
+                  className="px-3 py-1.5 bg-cream-100 text-navy-800 rounded text-xs font-semibold"
                 >
                   Cancel
                 </button>

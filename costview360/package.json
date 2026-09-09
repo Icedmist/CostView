@@ -8,9 +8,13 @@
     "dev": "npm run dev --workspace=apps/web",
     "build": "npm run build --workspace=apps/web",
     "start": "npm run start --workspace=apps/web",
-    "lint": "npm run lint --workspace=apps/web"
+    "lint": "npm run lint --workspace=apps/web",
+    "seed:users": "tsx scripts/seed-users.ts"
   },
   "overrides": {
     "postcss": "^8.5.28"
+  },
+  "dependencies": {
+    "ws": "^8.21.3"
   }
 }

@@ -5,59 +5,47 @@ import { useApp } from "@/app/providers";
 import { formatCurrency } from "@/lib/utils";
 import {
   TrendingUp,
-  PieChart,
-  Landmark,
   Building,
+  Landmark,
   DollarSign,
-  Receipt,
-  Percent,
-  ChevronRight,
-  ShieldCheck,
 } from "lucide-react";
 
 export function CommercialView() {
   const { currency, currentProject } = useApp();
 
   const metrics = {
-    grossDevelopmentValue: 1200000000, // ₦1.2B
-    totalDevelopmentCost: 780000000,   // ₦780M
-    projectedMargin: 420000000,        // ₦420M
+    grossDevelopmentValue: 1200000000,
+    totalDevelopmentCost: 780000000,
+    projectedMargin: 420000000,
     marginPercent: 35,
-    equityDrawn: 250000000,
     debtFacility: 530000000,
     debtDrawn: 310000000,
     salesCollected: 480000000,
-    salesTarget: 1200000000,
   };
 
   return (
     <div className="space-y-6">
-      {/* Commercial Header Banner */}
-      <div className="bg-gradient-to-r from-zinc-900 via-zinc-900 to-zinc-950 border border-zinc-800 rounded-xl p-5 shadow-sm">
+      {/* Commercial Header Banner - Brutalist */}
+      <div className="bg-navy-800 border-[3px] border-navy-800 shadow-brutal p-5 text-white">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800/60 font-mono">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-[11px] uppercase font-black tracking-widest px-3 py-1 bg-mustard-400 text-navy-800 border-[2px] border-navy-800 font-mono">
                 Commercial Mode Active
               </span>
-              <span className="text-zinc-500 text-xs">· Developer & Investor View</span>
+              <span className="text-white/60 text-xs font-bold">· Developer & Investor View</span>
             </div>
-            <h2 className="text-lg font-bold text-white tracking-tight">
-              Project Margin & Capital Stack Command Center
+            <h2 className="text-xl font-black tracking-tighter uppercase">
+              Project Margin & Capital Stack
             </h2>
-            <p className="text-xs text-zinc-400 mt-0.5">
-              Live feasibility yield, debt drawdowns, and real-time receivables for {currentProject.name}.
+            <p className="text-xs font-bold text-white/70 mt-1">
+              Live feasibility yield, debt drawdowns, and receivables for {currentProject.name}.
             </p>
           </div>
-
-          <div className="flex items-center gap-3">
-            <div className="text-right">
-              <div className="text-[10px] text-zinc-400 uppercase font-semibold">
-                Target Margin
-              </div>
-              <div className="text-xl font-black text-emerald-400 font-mono">
-                {metrics.marginPercent}% (₦420M)
-              </div>
+          <div className="bg-white border-[3px] border-navy-800 px-5 py-3 shadow-[4px_4px_0px_0px_#FFD23F] text-center">
+            <div className="text-[11px] font-black uppercase tracking-widest text-navy-800/60">Target Margin</div>
+            <div className="text-2xl font-black font-mono text-navy-800">
+              {metrics.marginPercent}% (₦420M)
             </div>
           </div>
         </div>
@@ -65,62 +53,65 @@ export function CommercialView() {
 
       {/* Commercial KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Gross Development Value (GDV) */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-          <div className="flex items-center justify-between text-zinc-400 text-xs font-semibold">
-            <span>Gross Development Value (GDV)</span>
-            <Building className="w-4 h-4 text-emerald-400" />
+        <div className="bg-white border-[3px] border-navy-800 shadow-brutal p-4">
+          <div className="flex items-center justify-between text-navy-800/60 text-xs font-black uppercase tracking-widest">
+            <span>Gross Development Value</span>
+            <span className="w-8 h-8 bg-navy-800 text-mustard-400 border-[2px] border-navy-800 flex items-center justify-center">
+              <Building className="w-4 h-4" />
+            </span>
           </div>
-          <div className="mt-2 text-xl font-bold text-white font-mono">
+          <div className="mt-3 text-xl font-black text-navy-800 font-mono">
             {formatCurrency(metrics.grossDevelopmentValue, currency)}
           </div>
-          <div className="mt-2 flex items-center justify-between text-xs text-zinc-400 border-t border-zinc-800/80 pt-2">
-            <span>Total Units Value</span>
-            <span className="text-zinc-200 font-medium">48 Luxury Apartments</span>
+          <div className="mt-3 flex items-center justify-between text-xs font-bold border-t-[3px] border-navy-800 pt-2">
+            <span className="text-navy-800/60">Total Units Value</span>
+            <span className="bg-mustard-400 px-2 py-1 border border-navy-800">48 Luxury Units</span>
           </div>
         </div>
 
-        {/* Capital Stack & Debt Drawdown */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-          <div className="flex items-center justify-between text-zinc-400 text-xs font-semibold">
+        <div className="bg-mustard-400 border-[3px] border-navy-800 shadow-brutal p-4">
+          <div className="flex items-center justify-between text-navy-800 text-xs font-black uppercase tracking-widest">
             <span>Debt Facility Drawdown</span>
-            <Landmark className="w-4 h-4 text-blue-400" />
+            <span className="w-8 h-8 bg-navy-800 text-white border-[2px] border-navy-800 flex items-center justify-center">
+              <Landmark className="w-4 h-4" />
+            </span>
           </div>
-          <div className="mt-2 text-xl font-bold text-white font-mono">
+          <div className="mt-3 text-xl font-black text-navy-800 font-mono">
             {formatCurrency(metrics.debtDrawn, currency)}
           </div>
-          <div className="mt-2 flex items-center justify-between text-xs text-zinc-400 border-t border-zinc-800/80 pt-2">
-            <span>Facility Limit: {formatCurrency(metrics.debtFacility, currency)}</span>
-            <span className="text-blue-400 font-semibold font-mono">58% Drawn</span>
+          <div className="mt-3 flex items-center justify-between text-xs font-bold border-t-[3px] border-navy-800 pt-2">
+            <span>Limit: {formatCurrency(metrics.debtFacility, currency)}</span>
+            <span className="bg-navy-800 text-white px-2 py-1 font-mono">58% Drawn</span>
           </div>
         </div>
 
-        {/* Off-Plan Sales & Receivables */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-          <div className="flex items-center justify-between text-zinc-400 text-xs font-semibold">
-            <span>Collections & Receivables</span>
-            <DollarSign className="w-4 h-4 text-purple-400" />
+        <div className="bg-white border-[3px] border-navy-800 shadow-brutal p-4">
+          <div className="flex items-center justify-between text-navy-800/60 text-xs font-black uppercase tracking-widest">
+            <span>Collections</span>
+            <span className="w-8 h-8 bg-white border-[3px] border-navy-800 flex items-center justify-center text-navy-800">
+              <DollarSign className="w-4 h-4" />
+            </span>
           </div>
-          <div className="mt-2 text-xl font-bold text-white font-mono">
+          <div className="mt-3 text-xl font-black text-navy-800 font-mono">
             {formatCurrency(metrics.salesCollected, currency)}
           </div>
-          <div className="mt-2 flex items-center justify-between text-xs text-zinc-400 border-t border-zinc-800/80 pt-2">
-            <span>Off-Plan Sold: 24/48 Units</span>
-            <span className="text-purple-400 font-semibold font-mono">40% Realized</span>
+          <div className="mt-3 flex items-center justify-between text-xs font-bold border-t-[3px] border-navy-800 pt-2">
+            <span className="text-navy-800/60">Sold: 24/48 Units</span>
+            <span className="bg-navy-800 text-white px-2 py-1">40% Realized</span>
           </div>
         </div>
       </div>
 
-      {/* Feasibility & Lifecycle Stages Table */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden shadow-sm">
-        <div className="p-4 border-b border-zinc-800">
-          <h3 className="text-sm font-bold text-white">Commercial Lifecycle Tracker</h3>
-          <p className="text-xs text-zinc-400 mt-0.5">
-            18-stage developer and contractor governance pipeline (PRD Section 5.2).
+      {/* Lifecycle Tracker */}
+      <div className="bg-white border-[3px] border-navy-800 shadow-brutal overflow-hidden">
+        <div className="p-4 border-b-[3px] border-navy-800 bg-cream-100">
+          <h3 className="text-sm font-black uppercase tracking-tight text-navy-800">Commercial Lifecycle Tracker</h3>
+          <p className="text-xs font-bold text-navy-800/60 mt-1">
+            18-stage developer and contractor governance pipeline.
           </p>
         </div>
 
-        <div className="divide-y divide-zinc-800/60 text-xs">
+        <div className="divide-y-[3px] divide-navy-800/10 text-xs">
           {[
             { stage: "1. Feasibility & Land Acquisition", status: "Completed", amount: 150000000, responsible: "Investment Director" },
             { stage: "2. Tender & Estimating (Main Works)", status: "Completed", amount: 450000000, responsible: "Senior QS" },
@@ -129,27 +120,27 @@ export function CommercialView() {
             { stage: "5. Sales Milestone Collections (Phase 1)", status: "Active", amount: 480000000, responsible: "Commercial Mgr" },
             { stage: "6. Project Margin Reconciliation", status: "Projected", amount: 420000000, responsible: "Finance Partner" },
           ].map((row, i) => (
-            <div key={i} className="p-3.5 flex items-center justify-between hover:bg-zinc-800/40 transition-colors">
+            <div key={i} className="p-4 flex items-center justify-between hover:bg-cream-100 transition-colors">
               <div className="flex items-center gap-3">
-                <span className="w-6 h-6 rounded-full bg-zinc-800 flex items-center justify-center text-[11px] font-mono text-zinc-300 font-bold">
+                <span className="w-8 h-8 bg-navy-800 text-white border-[2px] border-navy-800 flex items-center justify-center text-xs font-mono font-black">
                   {i + 1}
                 </span>
                 <div>
-                  <div className="font-semibold text-zinc-100">{row.stage}</div>
-                  <div className="text-[10px] text-zinc-500">Lead: {row.responsible}</div>
+                  <div className="font-black text-navy-800 uppercase tracking-tight text-xs">{row.stage}</div>
+                  <div className="text-[10px] font-bold text-navy-800/60 uppercase">Lead: {row.responsible}</div>
                 </div>
               </div>
 
               <div className="flex items-center gap-4">
-                <div className="text-right font-mono">
-                  <div className="font-bold text-zinc-200">{formatCurrency(row.amount, currency)}</div>
+                <div className="text-right font-mono font-black text-navy-800 hidden sm:block">
+                  {formatCurrency(row.amount, currency)}
                 </div>
-                <span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${
+                <span className={`px-3 py-1 text-[11px] font-black uppercase border-[2px] border-navy-800 ${
                   row.status === "Completed"
-                    ? "bg-emerald-950 text-emerald-300 border-emerald-800"
+                    ? "bg-navy-800 text-white"
                     : row.status === "Active"
-                    ? "bg-blue-950 text-blue-300 border-blue-800"
-                    : "bg-amber-950 text-amber-300 border-amber-800"
+                    ? "bg-mustard-400 text-navy-800"
+                    : "bg-white text-navy-800"
                 }`}>
                   {row.status}
                 </span>

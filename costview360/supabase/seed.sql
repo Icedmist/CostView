@@ -61,7 +61,47 @@ VALUES
   ('11111111-1111-1111-1111-111111111111', 'Site Engineer', 'Subcontractors', false),
   ('11111111-1111-1111-1111-111111111111', 'Site Engineer', 'Variations', false),
   ('11111111-1111-1111-1111-111111111111', 'Site Engineer', 'Reports', false),
-  ('11111111-1111-1111-1111-111111111111', 'Site Engineer', 'Admin', false)
+  ('11111111-1111-1111-1111-111111111111', 'Site Engineer', 'Admin', false),
+  -- Architect
+  ('11111111-1111-1111-1111-111111111111', 'Architect', 'Budget', false),
+  ('11111111-1111-1111-1111-111111111111', 'Architect', 'Procurement', false),
+  ('11111111-1111-1111-1111-111111111111', 'Architect', 'Materials', false),
+  ('11111111-1111-1111-1111-111111111111', 'Architect', 'Labour', false),
+  ('11111111-1111-1111-1111-111111111111', 'Architect', 'Progress', true),
+  ('11111111-1111-1111-1111-111111111111', 'Architect', 'Subcontractors', true),
+  ('11111111-1111-1111-1111-111111111111', 'Architect', 'Variations', true),
+  ('11111111-1111-1111-1111-111111111111', 'Architect', 'Reports', true),
+  ('11111111-1111-1111-1111-111111111111', 'Architect', 'Admin', false),
+  -- Procurement Officer
+  ('11111111-1111-1111-1111-111111111111', 'Procurement Officer', 'Budget', false),
+  ('11111111-1111-1111-1111-111111111111', 'Procurement Officer', 'Procurement', true),
+  ('11111111-1111-1111-1111-111111111111', 'Procurement Officer', 'Materials', true),
+  ('11111111-1111-1111-1111-111111111111', 'Procurement Officer', 'Labour', false),
+  ('11111111-1111-1111-1111-111111111111', 'Procurement Officer', 'Progress', false),
+  ('11111111-1111-1111-1111-111111111111', 'Procurement Officer', 'Subcontractors', true),
+  ('11111111-1111-1111-1111-111111111111', 'Procurement Officer', 'Variations', false),
+  ('11111111-1111-1111-1111-111111111111', 'Procurement Officer', 'Reports', false),
+  ('11111111-1111-1111-1111-111111111111', 'Procurement Officer', 'Admin', false),
+  -- Accountant
+  ('11111111-1111-1111-1111-111111111111', 'Accountant', 'Budget', true),
+  ('11111111-1111-1111-1111-111111111111', 'Accountant', 'Procurement', true),
+  ('11111111-1111-1111-1111-111111111111', 'Accountant', 'Materials', false),
+  ('11111111-1111-1111-1111-111111111111', 'Accountant', 'Labour', false),
+  ('11111111-1111-1111-1111-111111111111', 'Accountant', 'Progress', false),
+  ('11111111-1111-1111-1111-111111111111', 'Accountant', 'Subcontractors', false),
+  ('11111111-1111-1111-1111-111111111111', 'Accountant', 'Variations', false),
+  ('11111111-1111-1111-1111-111111111111', 'Accountant', 'Reports', true),
+  ('11111111-1111-1111-1111-111111111111', 'Accountant', 'Admin', false),
+  -- Storekeeper
+  ('11111111-1111-1111-1111-111111111111', 'Storekeeper', 'Budget', false),
+  ('11111111-1111-1111-1111-111111111111', 'Storekeeper', 'Procurement', false),
+  ('11111111-1111-1111-1111-111111111111', 'Storekeeper', 'Materials', true),
+  ('11111111-1111-1111-1111-111111111111', 'Storekeeper', 'Labour', false),
+  ('11111111-1111-1111-1111-111111111111', 'Storekeeper', 'Progress', false),
+  ('11111111-1111-1111-1111-111111111111', 'Storekeeper', 'Subcontractors', false),
+  ('11111111-1111-1111-1111-111111111111', 'Storekeeper', 'Variations', false),
+  ('11111111-1111-1111-1111-111111111111', 'Storekeeper', 'Reports', false),
+  ('11111111-1111-1111-1111-111111111111', 'Storekeeper', 'Admin', false)
 ON CONFLICT (workspace_id, role, permission_key) DO NOTHING;
 
 -- Seed Sample BOQ Items
@@ -78,4 +118,43 @@ VALUES
 INSERT INTO suppliers (workspace_id, name, contact_person, email, phone)
 VALUES
   ('11111111-1111-1111-1111-111111111111', 'Dangote Cement Plc', 'Alhaji Sanusi', 'sales@dangote.com', '+2348030000001'),
-  ('11111111-1111-1111-1111-111111111111', 'Pulkit Steels & Alloys Ltd', 'Mr. Rajesh', 'orders@pulkit.ng', '+2348030000002');
+  ('11111111-1111-1111-1111-111111111111', 'Pulkit Steels & Alloys Ltd', 'Mr. Rajesh', 'orders@pulkit.ng', '+2348030000002'),
+  ('11111111-1111-1111-1111-111111111111', 'Lafarge ReadyMix Nigeria', 'Mrs. Ada', 'mix@lafarge.ng', '+2348030000003'),
+  ('11111111-1111-1111-1111-111111111111', 'Julius Berger Quarry', 'Engr. Musa', 'quarry@juliusberger.ng', '+2348030000004')
+ON CONFLICT DO NOTHING;
+
+-- Seed Additional Project: Lekki Commercial Complex (for inter-site transfer demo)
+INSERT INTO projects (id, workspace_id, name, code, description, project_type, location, budget_total, currency, status)
+VALUES (
+  '33333333-3333-3333-3333-333333333333',
+  '11111111-1111-1111-1111-111111111111',
+  'Lekki Commercial Complex',
+  'CV-LCC-2026',
+  'Mixed-use commercial precinct with retail podium and office tower',
+  'developer',
+  'Lekki Phase 1, Lagos',
+  780000000.00,
+  'NGN',
+  'Planning'
+) ON CONFLICT (id) DO NOTHING;
+
+-- Inventory + Stock (for Materials module)
+INSERT INTO inventory_items (id, workspace_id, sku, name, unit, min_reorder_level)
+VALUES
+  ('aaaa0001-0000-0000-0000-000000000001', '11111111-1111-1111-1111-111111111111', 'MAT-CEM-01', 'Dangote Portland Cement 42.5R (50kg)', 'Bags', 300),
+  ('aaaa0002-0000-0000-0000-000000000002', '11111111-1111-1111-1111-111111111111', 'MAT-STL-16', '16mm High-Yield TMT Rebar', 'Tons', 10),
+  ('aaaa0003-0000-0000-0000-000000000003', '11111111-1111-1111-1111-111111111111', 'MAT-BLK-225', '225mm Hollow Sandcrete Blocks', 'Pcs', 800),
+  ('aaaa0004-0000-0000-0000-000000000004', '11111111-1111-1111-1111-111111111111', 'MAT-AGG-20', '20mm Crushed Granite Aggregate', 'Tons', 50)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO stock_balances (project_id, item_id, qty_on_hand, qty_reserved, qty_consumed)
+VALUES
+  ('22222222-2222-2222-2222-222222222222', 'aaaa0001-0000-0000-0000-000000000001', 840, 200, 1200),
+  ('22222222-2222-2222-2222-222222222222', 'aaaa0002-0000-0000-0000-000000000002', 22, 15, 45),
+  ('22222222-2222-2222-2222-222222222222', 'aaaa0003-0000-0000-0000-000000000003', 450, 400, 4200),
+  ('22222222-2222-2222-2222-222222222222', 'aaaa0004-0000-0000-0000-000000000004', 180, 60, 320)
+ON CONFLICT (project_id, item_id) DO NOTHING;
+
+-- Demo Users Guidance (run scripts/seed-users.ts to create auth.users)
+-- Password for all demo accounts: DemoPass2026!
+-- 8 roles: admin@costview.ng, pm@costview.ng, qs@costview.ng, site@costview.ng, procure@costview.ng, acct@costview.ng, store@costview.ng, arch@costview.ng

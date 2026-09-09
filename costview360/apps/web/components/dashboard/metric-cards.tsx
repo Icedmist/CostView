@@ -18,92 +18,86 @@ export function MetricCards({ approvedBudget, committedCost, actualCost }: Metri
   const actualPercentage = Math.round((actualCost / (approvedBudget || 1)) * 100);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
       {/* Approved Budget */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 shadow-sm relative overflow-hidden">
-        <div className="flex items-center justify-between">
-          <span className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
+      <div className="bg-white border-[3px] border-navy-800 shadow-brutal p-6 relative overflow-hidden min-h-[160px] flex flex-col justify-between">
+        <div className="flex items-start justify-between gap-3">
+          <span className="text-sm font-black uppercase tracking-widest text-navy-800/60 leading-tight">
             Approved Budget
           </span>
-          <div className="p-1.5 rounded-md bg-emerald-950/80 text-emerald-400 border border-emerald-800/40">
-            <DollarSign className="w-4 h-4" />
+          <div className="w-11 h-11 bg-navy-800 border-[3px] border-navy-800 flex items-center justify-center text-mustard-400 shrink-0">
+            <DollarSign className="w-6 h-6" />
           </div>
         </div>
-        <div className="mt-2 text-xl font-bold text-white tracking-tight">
+        <div className="mt-4 text-[28px] font-black tracking-tighter text-navy-800 font-mono leading-none">
           {formatCurrency(approvedBudget, currency)}
         </div>
-        <div className="mt-2 flex items-center gap-1.5 text-xs text-zinc-400">
-          <span className="text-emerald-400 font-medium">100% Baseline</span>
-          <span>· BOQ Master</span>
+        <div className="mt-3 flex items-center gap-2 text-sm font-black">
+          <span className="bg-navy-800 text-white px-3 py-1 text-xs uppercase tracking-wide">100% Baseline</span>
+          <span className="text-navy-800/60 font-bold text-xs">· BOQ Master</span>
         </div>
+        <div className="absolute bottom-0 left-0 right-0 h-2 bg-navy-800" />
       </div>
 
       {/* Committed Spend */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 shadow-sm relative overflow-hidden">
-        <div className="flex items-center justify-between">
-          <span className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
-            Committed (POs Issued)
+      <div className="bg-white border-[3px] border-navy-800 shadow-brutal p-6 relative overflow-hidden min-h-[160px] flex flex-col justify-between">
+        <div className="flex items-start justify-between gap-3">
+          <span className="text-sm font-black uppercase tracking-widest text-navy-800/60 leading-tight">
+            Committed (POs)
           </span>
-          <div className="p-1.5 rounded-md bg-blue-950/80 text-blue-400 border border-blue-800/40">
-            <FileSpreadsheet className="w-4 h-4" />
+          <div className="w-11 h-11 bg-mustard-400 border-[3px] border-navy-800 flex items-center justify-center text-navy-800 shrink-0">
+            <FileSpreadsheet className="w-6 h-6" />
           </div>
         </div>
-        <div className="mt-2 text-xl font-bold text-white tracking-tight">
+        <div className="mt-4 text-[28px] font-black tracking-tighter text-navy-800 font-mono leading-none">
           {formatCurrency(committedCost, currency)}
         </div>
-        <div className="mt-2 flex items-center gap-1.5 text-xs text-zinc-400">
-          <span className="text-blue-400 font-semibold">{committedPercentage}%</span>
-          <span>of total budget committed</span>
+        <div className="mt-3 flex items-center gap-2 text-sm font-bold">
+          <span className="bg-mustard-400 border-[2px] border-navy-800 px-3 py-1 text-navy-800 font-black text-sm">{committedPercentage}%</span>
+          <span className="text-navy-800/60 text-xs font-bold">of total committed</span>
         </div>
+        <div className="absolute bottom-0 left-0 h-2 bg-mustard-400" style={{ width: `${Math.min(100, committedPercentage)}%` }} />
+        <div className="absolute bottom-0 right-0 left-0 h-2 bg-navy-800/10 -z-0" />
       </div>
 
       {/* Actual Spend */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 shadow-sm relative overflow-hidden">
-        <div className="flex items-center justify-between">
-          <span className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
-            Actual Cost (Certified)
+      <div className="bg-white border-[3px] border-navy-800 shadow-brutal p-6 relative overflow-hidden min-h-[160px] flex flex-col justify-between">
+        <div className="flex items-start justify-between gap-3">
+          <span className="text-sm font-black uppercase tracking-widest text-navy-800/60 leading-tight">
+            Actual (Certified)
           </span>
-          <div className="p-1.5 rounded-md bg-purple-950/80 text-purple-400 border border-purple-800/40">
-            <CheckCircle2 className="w-4 h-4" />
+          <div className="w-11 h-11 bg-white border-[3px] border-navy-800 flex items-center justify-center text-navy-800 shrink-0">
+            <CheckCircle2 className="w-6 h-6" />
           </div>
         </div>
-        <div className="mt-2 text-xl font-bold text-white tracking-tight">
+        <div className="mt-4 text-[28px] font-black tracking-tighter text-navy-800 font-mono leading-none">
           {formatCurrency(actualCost, currency)}
         </div>
-        <div className="mt-2 flex items-center gap-1.5 text-xs text-zinc-400">
-          <span className="text-purple-400 font-semibold">{actualPercentage}%</span>
-          <span>disbursed & certified</span>
+        <div className="mt-3 flex items-center gap-2 text-sm font-bold">
+          <span className="bg-navy-800 text-white px-3 py-1 font-black text-sm">{actualPercentage}%</span>
+          <span className="text-navy-800/60 text-xs">disbursed & certified</span>
         </div>
+        <div className="absolute bottom-0 left-0 h-2 bg-navy-800" style={{ width: `${Math.min(100, actualPercentage)}%` }} />
       </div>
 
-      {/* Remaining Uncommitted Balance */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 shadow-sm relative overflow-hidden">
-        <div className="flex items-center justify-between">
-          <span className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
-            Uncommitted Contingency
+      {/* Remaining */}
+      <div className={`border-[3px] border-navy-800 shadow-brutal p-6 relative overflow-hidden min-h-[160px] flex flex-col justify-between ${uncommittedBalance >= 0 ? "bg-mustard-400" : "bg-red-500"}`}>
+        <div className="flex items-start justify-between gap-3">
+          <span className="text-sm font-black uppercase tracking-widest text-navy-800 leading-tight">
+            Uncommitted<br />Contingency
           </span>
-          <div className={`p-1.5 rounded-md border ${
-            uncommittedBalance >= 0
-              ? "bg-emerald-950/80 text-emerald-400 border-emerald-800/40"
-              : "bg-red-950/80 text-red-400 border-red-800/40"
-          }`}>
-            {uncommittedBalance >= 0 ? (
-              <TrendingDown className="w-4 h-4" />
-            ) : (
-              <AlertTriangle className="w-4 h-4" />
-            )}
+          <div className={`w-11 h-11 border-[3px] border-navy-800 flex items-center justify-center shrink-0 ${uncommittedBalance >= 0 ? "bg-white text-navy-800" : "bg-navy-800 text-white"}`}>
+            {uncommittedBalance >= 0 ? <TrendingDown className="w-6 h-6" /> : <AlertTriangle className="w-6 h-6" />}
           </div>
         </div>
-        <div className={`mt-2 text-xl font-bold tracking-tight ${
-          uncommittedBalance >= 0 ? "text-emerald-400" : "text-red-400"
-        }`}>
+        <div className={`mt-4 text-[28px] font-black tracking-tighter font-mono leading-none ${uncommittedBalance >= 0 ? "text-navy-800" : "text-white"}`}>
           {formatCurrency(uncommittedBalance, currency)}
         </div>
-        <div className="mt-2 flex items-center gap-1.5 text-xs text-zinc-400">
-          <span className={uncommittedBalance >= 0 ? "text-emerald-400 font-semibold" : "text-red-400 font-semibold"}>
+        <div className="mt-3 flex items-center gap-2 text-sm font-black">
+          <span className="bg-navy-800 text-white px-3 py-1 text-sm">
             {Math.max(0, 100 - committedPercentage)}%
           </span>
-          <span>headroom remaining</span>
+          <span className={uncommittedBalance >= 0 ? "text-navy-800/70 text-xs font-bold" : "text-white font-bold text-xs"}>headroom remaining</span>
         </div>
       </div>
     </div>

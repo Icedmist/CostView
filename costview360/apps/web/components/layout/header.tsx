@@ -2,69 +2,58 @@
 
 import React from "react";
 import { useApp } from "@/app/providers";
-import { Building2, Bell, RefreshCw, ShieldAlert } from "lucide-react";
+import { Building2, Bell, Menu } from "lucide-react";
 
-export function Header() {
-  const { currentProject, currency, setCurrency, activeRole } = useApp();
-
+export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
+  const { currentProject, currency, setCurrency } = useApp();
   return (
-    <header className="h-14 bg-zinc-950 border-b border-zinc-800 px-6 flex items-center justify-between">
-      {/* Current Project Info */}
-      <div className="flex items-center gap-3">
-        <div className="p-1.5 bg-zinc-900 border border-zinc-800 rounded-md text-emerald-400">
-          <Building2 className="w-4 h-4" />
+    <header className="h-[72px] bg-white border-b-[3px] border-navy-800 px-4 md:px-6 flex items-center justify-between gap-4 shrink-0">
+      <div className="flex items-center gap-3 min-w-0">
+        <button onClick={onMenuClick} className="lg:hidden w-11 h-11 bg-navy-800 border-[3px] border-navy-800 flex items-center justify-center text-white shadow-brutal-sm">
+          <Menu className="w-5 h-5" />
+        </button>
+        <div className="w-11 h-11 bg-navy-800 border-[3px] border-navy-800 hidden sm:flex items-center justify-center text-mustard-400 shadow-brutal-sm shrink-0">
+          <Building2 className="w-6 h-6" />
         </div>
-        <div>
-          <div className="flex items-center gap-2">
-            <h2 className="text-xs font-bold text-zinc-100 tracking-tight">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <h2 className="text-base md:text-lg font-black text-navy-800 tracking-tighter uppercase truncate">
               {currentProject.name}
             </h2>
-            <span className="text-[10px] bg-zinc-800 text-zinc-400 px-1.5 py-0.5 rounded font-mono border border-zinc-700">
+            <span className="text-xs bg-mustard-400 text-navy-800 px-2.5 py-1 border-[2px] border-navy-800 font-mono font-black">
               {currentProject.code}
             </span>
           </div>
-          <p className="text-[10px] text-zinc-400">{currentProject.location}</p>
+          <p className="text-xs font-bold text-navy-800/60 truncate hidden sm:block">{currentProject.location} · Africa/Lagos · ₦ NGN</p>
         </div>
       </div>
 
-      {/* Right Controls */}
-      <div className="flex items-center gap-3">
-        {/* Currency Switcher (PRD: Currency-first, Naira default) */}
-        <div className="flex items-center gap-1.5 bg-zinc-900 border border-zinc-800 rounded-md px-2 py-1">
-          <span className="text-[10px] text-zinc-400 font-semibold">Currency:</span>
+      <div className="flex items-center gap-2 md:gap-3 shrink-0">
+        <div className="hidden lg:flex items-center gap-2 bg-cream-100 border-[3px] border-navy-800 px-3 py-2 shadow-brutal-sm">
+          <span className="text-xs font-black uppercase tracking-widest text-navy-800">Currency:</span>
           <select
             value={currency}
             onChange={(e) => setCurrency(e.target.value)}
-            className="bg-transparent text-xs text-zinc-200 font-medium focus:outline-none cursor-pointer"
+            className="bg-white border-[2px] border-navy-800 text-sm font-black text-navy-800 px-3 py-1 focus:outline-none cursor-pointer"
           >
-            <option value="NGN" className="bg-zinc-900 text-zinc-200">
-              ₦ NGN (Naira)
-            </option>
-            <option value="USD" className="bg-zinc-900 text-zinc-200">
-              $ USD (Dollar)
-            </option>
-            <option value="GBP" className="bg-zinc-900 text-zinc-200">
-              £ GBP (Pound)
-            </option>
-            <option value="EUR" className="bg-zinc-900 text-zinc-200">
-              € EUR (Euro)
-            </option>
+            <option value="NGN">₦ NGN</option>
+            <option value="USD">$ USD</option>
+            <option value="GBP">£ GBP</option>
+            <option value="EUR">€ EUR</option>
           </select>
         </div>
 
-        {/* Realtime Connection Indicator */}
-        <div className="flex items-center gap-1.5 text-[11px] text-zinc-400 bg-zinc-900 border border-zinc-800 px-2.5 py-1 rounded-md">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span className="text-zinc-300 font-medium">Supabase Live</span>
+        <div className="hidden md:flex items-center gap-2 bg-navy-800 text-white border-[3px] border-navy-800 px-4 py-2.5 shadow-brutal-sm">
+          <span className="w-2.5 h-2.5 bg-green-400 border-2 border-white rounded-full animate-pulse" />
+          <span className="text-xs font-black uppercase tracking-wide">Live</span>
         </div>
 
-        {/* Notifications & Pending Approvals */}
         <button
           title="3 Pending Approval Actions"
-          className="relative p-1.5 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900 rounded-md border border-zinc-800 transition-colors"
+          className="relative w-11 h-11 md:w-12 md:h-12 bg-mustard-400 border-[3px] border-navy-800 flex items-center justify-center text-navy-800 shadow-brutal-sm hover:bg-mustard-500 active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all"
         >
-          <Bell className="w-4 h-4" />
-          <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-amber-500 text-zinc-950 text-[9px] font-black rounded-full flex items-center justify-center">
+          <Bell className="w-5 h-5 md:w-6 md:h-6" />
+          <span className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white text-xs font-black border-[2px] border-navy-800 flex items-center justify-center">
             3
           </span>
         </button>

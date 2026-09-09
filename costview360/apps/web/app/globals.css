@@ -1,9 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body { margin: 0; color: #1b1b1b; }
-ul { list-style: none; padding: 0; }
-li { padding: 8px 6px; border-radius: 6px; cursor: pointer; }
-li:hover { background: #f5f5f5; }
-button { border: none; border-radius: 6px; padding: 7px 6px; font-size: 12px; font-weight: 600; cursor: pointer; }
+@layer base {
+  html {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    font-size: 15px;
+  }
+  body {
+    margin: 0;
+    background: #FFFDF0;
+    color: #0A1931;
+    line-height: 1.5;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #0A1931 #FFFDF0;
+  }
+}
+
+@layer components {
+  .brutal-card {
+    @apply bg-white border-2 border-navy-800 shadow-brutal;
+  }
+  .brutal-card-mustard {
+    @apply bg-mustard-400 border-2 border-navy-800 shadow-brutal;
+  }
+  .brutal-btn {
+    @apply border-2 border-navy-800 font-bold uppercase tracking-wide shadow-brutal-sm active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all;
+  }
+  .brutal-input {
+    @apply border-2 border-navy-800 bg-white font-medium focus:outline-none focus:shadow-brutal-sm transition-shadow;
+  }
+}
+
+/* Softened neo-brutalism */
+.brutal-shadow {
+  box-shadow: 4px 4px 0px 0px #0A1931;
+}
+.brutal-shadow-sm {
+  box-shadow: 3px 3px 0px 0px #0A1931;
+}
+.brutal-shadow-lg {
+  box-shadow: 6px 6px 0px 0px #0A1931;
+}
+
+@media (max-width: 768px) {
+  html { font-size: 14px; }
+  .brutal-card, .shadow-brutal { box-shadow: 3px 3px 0px 0px #0A1931; }
+}

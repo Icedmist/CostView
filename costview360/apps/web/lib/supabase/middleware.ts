@@ -32,7 +32,8 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   // Route protection: When live Supabase credentials are provided, redirect unauthenticated users to /login
-  const isAuthPage =
+  const isPublicPage =
+    request.nextUrl.pathname === "/" ||
     request.nextUrl.pathname.startsWith("/login") ||
     request.nextUrl.pathname.startsWith("/register") ||
     request.nextUrl.pathname.startsWith("/auth");
@@ -43,7 +44,7 @@ export async function updateSession(request: NextRequest) {
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY !== "placeholder-anon-key"
   );
 
-  if (isLiveSupabase && !user && !isAuthPage) {
+  if (isLiveSupabase && !user && !isPublicPage) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);

@@ -346,16 +346,16 @@ export function SiteDiaryView() {
   };
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden shadow-sm space-y-4">
+    <div className="bg-white border-2 border-navy-800 shadow-brutal overflow-hidden space-y-4">
       {/* Sub-Navigation Header */}
-      <div className="p-3 bg-zinc-950 border-b border-zinc-800 flex items-center justify-between overflow-x-auto gap-2">
+      <div className="p-3 bg-navy-800 border-b-[3px] border-navy-800 flex items-center justify-between overflow-x-auto gap-2">
         <div className="flex items-center gap-1.5">
           <button
             onClick={() => setSubTab("diary")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border-[2px] border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "diary"
-                ? "bg-zinc-800 text-white border border-zinc-700 shadow-sm"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                : "text-navy-800/60 hover:text-navy-800"
             }`}
           >
             <Calendar className="w-3.5 h-3.5 text-emerald-400" />
@@ -364,10 +364,10 @@ export function SiteDiaryView() {
 
           <button
             onClick={() => setSubTab("photos")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border-[2px] border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "photos"
-                ? "bg-zinc-800 text-white border border-zinc-700 shadow-sm"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                : "text-navy-800/60 hover:text-navy-800"
             }`}
           >
             <ImageIcon className="w-3.5 h-3.5 text-blue-400" />
@@ -376,10 +376,10 @@ export function SiteDiaryView() {
 
           <button
             onClick={() => setSubTab("inspections")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border-[2px] border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "inspections"
-                ? "bg-zinc-800 text-white border border-zinc-700 shadow-sm"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                : "text-navy-800/60 hover:text-navy-800"
             }`}
           >
             <FileCheck2 className="w-3.5 h-3.5 text-purple-400" />
@@ -388,10 +388,10 @@ export function SiteDiaryView() {
 
           <button
             onClick={() => setSubTab("snags")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border-[2px] border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "snags"
-                ? "bg-zinc-800 text-white border border-zinc-700 shadow-sm"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                : "text-navy-800/60 hover:text-navy-800"
             }`}
           >
             <AlertCircle className="w-3.5 h-3.5 text-amber-400" />
@@ -405,10 +405,10 @@ export function SiteDiaryView() {
 
           <button
             onClick={() => setSubTab("safety")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border-[2px] border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "safety"
-                ? "bg-zinc-800 text-white border border-zinc-700 shadow-sm"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "bg-cream-100 text-white border border-navy-800 shadow-sm"
+                : "text-navy-800/60 hover:text-navy-800"
             }`}
           >
             <HardHat className="w-3.5 h-3.5 text-red-400" />
@@ -420,19 +420,19 @@ export function SiteDiaryView() {
       {/* SUBTAB 1: DAILY DIARY (PRD Item 15) */}
       {subTab === "diary" && (
         <div className="p-5 space-y-5">
-          <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+          <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-emerald-400" />
                 <span>Cloud-Based Site Journal & Daily Shifts</span>
               </h3>
-              <p className="text-xs text-zinc-400 mt-0.5">
+              <p className="text-xs text-navy-800/60 mt-0.5">
                 Never lost on a stolen laptop: live weather stamps, muster headcount, and shift summaries (PRD Section 5.1).
               </p>
             </div>
             <button
               onClick={() => setIsNewLogOpen(true)}
-              className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-[2px] border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>New Daily Entry</span>
@@ -441,32 +441,32 @@ export function SiteDiaryView() {
 
           <div className="space-y-4">
             {logs.map((log) => (
-              <div key={log.id} className="bg-zinc-950 border border-zinc-800 rounded-xl p-5 space-y-3">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-zinc-800 pb-3">
+              <div key={log.id} className="bg-cream-100 border border-navy-800 border-[3px] border-navy-800 p-5 space-y-3">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-navy-800 pb-3">
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-mono text-emerald-400 font-bold">
                         LOG #{log.logNumber}
                       </span>
-                      <span className="text-zinc-500">·</span>
-                      <span className="text-xs text-zinc-300 font-semibold">{log.date}</span>
+                      <span className="text-navy-800/40">·</span>
+                      <span className="text-xs text-navy-800 font-semibold">{log.date}</span>
                     </div>
                     <h4 className="text-sm font-bold text-white mt-1">{log.title}</h4>
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-1.5 bg-zinc-900 border border-zinc-800 rounded-lg px-2.5 py-1 text-xs text-zinc-300">
+                    <div className="flex items-center gap-1.5 bg-white border border-navy-800 border-[2px] border-navy-800 px-2.5 py-1 text-xs text-navy-800">
                       <Sun className="w-3.5 h-3.5 text-amber-400" />
                       <span>{log.weather} ({log.delayHours} hr delay)</span>
                     </div>
-                    <div className="flex items-center gap-1.5 bg-zinc-900 border border-zinc-800 rounded-lg px-2.5 py-1 text-xs text-zinc-300">
+                    <div className="flex items-center gap-1.5 bg-white border border-navy-800 border-[2px] border-navy-800 px-2.5 py-1 text-xs text-navy-800">
                       <Users className="w-3.5 h-3.5 text-emerald-400" />
-                      <span className="font-bold text-white font-mono">{log.workerHeadcount} Workers</span>
+                      <span className="font-bold text-navy-800 font-mono">{log.workerHeadcount} Workers</span>
                     </div>
                   </div>
                 </div>
 
-                <ul className="list-disc list-inside space-y-1 text-xs text-zinc-300">
+                <ul className="list-disc list-inside space-y-1 text-xs text-navy-800">
                   {log.summary.map((point, i) => (
                     <li key={i}>{point}</li>
                   ))}
@@ -480,19 +480,19 @@ export function SiteDiaryView() {
       {/* SUBTAB 2: PHOTO GALLERY (PRD Item 16) */}
       {subTab === "photos" && (
         <div className="p-5 space-y-4">
-          <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+          <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
                 <ImageIcon className="w-4 h-4 text-blue-400" />
                 <span>Site Progress Photo Documentation</span>
               </h3>
-              <p className="text-xs text-zinc-400 mt-0.5">
+              <p className="text-xs text-navy-800/60 mt-0.5">
                 Geo-stamped visual audit trail for quality assurance and executive reporting (PRD Section 5.2).
               </p>
             </div>
             <button
               onClick={() => setIsUploadPhotoOpen(true)}
-              className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white border-[2px] border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
             >
               <Upload className="w-3.5 h-3.5" />
               <span>Upload Photo</span>
@@ -501,16 +501,16 @@ export function SiteDiaryView() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {photos.map((p) => (
-              <div key={p.id} className="bg-zinc-950 border border-zinc-800 rounded-xl overflow-hidden group">
-                <div className="h-36 bg-zinc-900 flex items-center justify-center border-b border-zinc-800 relative">
+              <div key={p.id} className="bg-cream-100 border border-navy-800 border-[3px] border-navy-800 overflow-hidden group">
+                <div className="h-36 bg-white flex items-center justify-center border-b border-navy-800 relative">
                   <Camera className="w-8 h-8 text-zinc-700" />
-                  <span className="absolute top-2 left-2 px-2 py-0.5 rounded text-[10px] font-bold bg-zinc-900/90 text-white border border-zinc-700">
+                  <span className="absolute top-2 left-2 px-2 py-0.5 rounded text-[10px] font-bold bg-white/90 text-white border border-navy-800">
                     {p.category}
                   </span>
                 </div>
                 <div className="p-3">
                   <h5 className="text-xs font-bold text-white line-clamp-1">{p.title}</h5>
-                  <p className="text-[11px] text-zinc-400 mt-1">
+                  <p className="text-[11px] text-navy-800/60 mt-1">
                     Uploaded by {p.uploadedBy} · {p.timestamp}
                   </p>
                 </div>
@@ -523,36 +523,36 @@ export function SiteDiaryView() {
       {/* SUBTAB 3: INSPECTIONS (PRD Item 17) */}
       {subTab === "inspections" && (
         <div className="p-5 space-y-4">
-          <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+          <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
                 <FileCheck2 className="w-4 h-4 text-purple-400" />
                 <span>Quality & Pre-Pour Sign-Off Inspections</span>
               </h3>
-              <p className="text-xs text-zinc-400 mt-0.5">
+              <p className="text-xs text-navy-800/60 mt-0.5">
                 Defects in failed inspections automatically route directly into the Snag Register (PRD Section 5.3).
               </p>
             </div>
             <button
               onClick={() => setIsNewInspectionOpen(true)}
-              className="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white border-[2px] border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Inspection</span>
             </button>
           </div>
 
-          <div className="divide-y divide-zinc-800/60">
+          <div className="divide-y divide-navy-800/10">
             {inspections.map((insp) => (
-              <div key={insp.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-zinc-800/20 px-2 rounded-lg transition-colors">
+              <div key={insp.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/20 px-2 border-[2px] border-navy-800 transition-colors">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-semibold text-white text-xs">{insp.title}</span>
-                    <span className="text-zinc-500">·</span>
-                    <span className="text-zinc-400 text-xs">Element: <strong className="text-zinc-200">{insp.element}</strong></span>
+                    <span className="text-navy-800/40">·</span>
+                    <span className="text-navy-800/60 text-xs">Element: <strong className="text-navy-800">{insp.element}</strong></span>
                   </div>
-                  <p className="text-xs text-zinc-300">{insp.notes}</p>
-                  <p className="text-[11px] text-zinc-500 mt-1">
+                  <p className="text-xs text-navy-800">{insp.notes}</p>
+                  <p className="text-[11px] text-navy-800/40 mt-1">
                     Inspector: {insp.inspector} · {insp.date}
                   </p>
                 </div>
@@ -575,21 +575,21 @@ export function SiteDiaryView() {
       {/* SUBTAB 4: SNAGS & NCR REGISTER */}
       {subTab === "snags" && (
         <div className="p-5 space-y-4">
-          <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+          <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 text-amber-400" />
                 <span>Defects, Snags & Non-Conformance Reports (NCR)</span>
               </h3>
-              <p className="text-xs text-zinc-400 mt-0.5">
+              <p className="text-xs text-navy-800/60 mt-0.5">
                 Visual remediation workflow from discovery to contractor sign-off.
               </p>
             </div>
           </div>
 
-          <div className="divide-y divide-zinc-800/60">
+          <div className="divide-y divide-navy-800/10">
             {snags.map((snag) => (
-              <div key={snag.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-zinc-800/20 px-2 rounded-lg transition-colors">
+              <div key={snag.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/20 px-2 border-[2px] border-navy-800 transition-colors">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
@@ -597,14 +597,14 @@ export function SiteDiaryView() {
                         ? "bg-red-950 text-red-300 border-red-800"
                         : snag.severity === "High"
                         ? "bg-amber-950 text-amber-300 border-amber-800"
-                        : "bg-zinc-800 text-zinc-300 border-zinc-700"
+                        : "bg-cream-100 text-navy-800 border-navy-800"
                     }`}>
                       {snag.severity}
                     </span>
                     <span className="font-semibold text-white text-xs">{snag.title}</span>
                   </div>
-                  <div className="text-xs text-zinc-400">
-                    Location: <strong className="text-zinc-200">{snag.location}</strong> · Assigned: <strong className="text-zinc-200">{snag.assignedTo}</strong> · Raised by: {snag.raisedBy}
+                  <div className="text-xs text-navy-800/60">
+                    Location: <strong className="text-navy-800">{snag.location}</strong> · Assigned: <strong className="text-navy-800">{snag.assignedTo}</strong> · Raised by: {snag.raisedBy}
                   </div>
                 </div>
 
@@ -612,7 +612,7 @@ export function SiteDiaryView() {
                   <select
                     value={snag.status}
                     onChange={(e) => handleUpdateSnagStatus(snag.id, e.target.value as SnagRecord["status"])}
-                    className="bg-zinc-950 border border-zinc-700 rounded px-2 py-1 text-xs text-zinc-200 focus:outline-none"
+                    className="bg-cream-100 border border-navy-800 rounded px-2 py-1 text-xs text-navy-800 focus:outline-none"
                   >
                     <option value="Open">Open</option>
                     <option value="In Progress">In Progress</option>
@@ -629,28 +629,28 @@ export function SiteDiaryView() {
       {/* SUBTAB 5: SAFETY (PRD Item 18) */}
       {subTab === "safety" && (
         <div className="p-5 space-y-4">
-          <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+          <div className="flex items-center justify-between border-b border-navy-800 pb-3">
             <div>
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
                 <HardHat className="w-4 h-4 text-red-400" />
                 <span>Site Safety Observations & Lost-Time Incidents</span>
               </h3>
-              <p className="text-xs text-zinc-400 mt-0.5">
+              <p className="text-xs text-navy-800/60 mt-0.5">
                 Log near-misses, PPE compliance, and zero lost-time streak tracking (PRD Section 5.5).
               </p>
             </div>
             <button
               onClick={() => setIsNewSafetyOpen(true)}
-              className="px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white border-[2px] border-navy-800 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Log Observation / Incident</span>
             </button>
           </div>
 
-          <div className="divide-y divide-zinc-800/60">
+          <div className="divide-y divide-navy-800/10">
             {safetyLogs.map((s) => (
-              <div key={s.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-zinc-800/20 px-2 rounded-lg transition-colors">
+              <div key={s.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/20 px-2 border-[2px] border-navy-800 transition-colors">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
@@ -664,12 +664,12 @@ export function SiteDiaryView() {
                     </span>
                     <span className="font-semibold text-white text-xs">{s.description}</span>
                   </div>
-                  <div className="text-xs text-zinc-400">
-                    Location: <strong className="text-zinc-200">{s.location}</strong> · Reported by: {s.reportedBy} · {s.timestamp}
+                  <div className="text-xs text-navy-800/60">
+                    Location: <strong className="text-navy-800">{s.location}</strong> · Reported by: {s.reportedBy} · {s.timestamp}
                   </div>
                 </div>
 
-                <span className="px-2.5 py-1 rounded bg-zinc-800 text-zinc-300 text-xs font-semibold">
+                <span className="px-2.5 py-1 rounded bg-cream-100 text-navy-800 text-xs font-semibold">
                   {s.status}
                 </span>
               </div>
@@ -681,53 +681,53 @@ export function SiteDiaryView() {
       {/* Modal: New Daily Entry (PRD #15) */}
       {isNewLogOpen && (
         <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-          <div className="bg-zinc-900 border border-zinc-700 rounded-xl max-w-md w-full p-5 shadow-2xl">
-            <h3 className="text-sm font-bold text-white">Create New Site Daily Log Entry</h3>
+          <div className="bg-white border-2 border-navy-800 border-navy-800 max-w-md w-full p-5 shadow-2xl">
+            <h3 className="text-sm font-bold text-navy-800">Create New Site Daily Log Entry</h3>
             <form onSubmit={handleCreateDailyLog} className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Log Title / Shift Focus</label>
+                <label className="block text-xs text-navy-800 mb-1">Log Title / Shift Focus</label>
                 <input
                   type="text"
                   required
                   value={logTitle}
                   onChange={(e) => setLogTitle(e.target.value)}
                   placeholder="e.g. Ground Floor Raft Slab Concrete Pouring"
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-xs text-zinc-300 mb-1">Weather Condition</label>
+                  <label className="block text-xs text-navy-800 mb-1">Weather Condition</label>
                   <input
                     type="text"
                     required
                     value={logWeather}
                     onChange={(e) => setLogWeather(e.target.value)}
-                    className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-zinc-300 mb-1">Worker Headcount</label>
+                  <label className="block text-xs text-navy-800 mb-1">Worker Headcount</label>
                   <input
                     type="number"
                     required
                     value={logWorkers}
                     onChange={(e) => setLogWorkers(Number(e.target.value))}
-                    className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-navy-800 font-mono focus:outline-none focus:border-emerald-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Work Accomplished (1 point per line)</label>
+                <label className="block text-xs text-navy-800 mb-1">Work Accomplished (1 point per line)</label>
                 <textarea
                   rows={4}
                   required
                   value={logPoints}
                   onChange={(e) => setLogPoints(e.target.value)}
                   placeholder="Cast 60m3 of grade 30 concrete...&#10;Erected 120m2 formwork..."
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
                 />
               </div>
 
@@ -735,7 +735,7 @@ export function SiteDiaryView() {
                 <button
                   type="button"
                   onClick={() => setIsNewLogOpen(false)}
-                  className="px-3 py-1.5 bg-zinc-800 text-zinc-300 rounded text-xs font-semibold"
+                  className="px-3 py-1.5 bg-cream-100 text-navy-800 rounded text-xs font-semibold"
                 >
                   Cancel
                 </button>
@@ -754,27 +754,27 @@ export function SiteDiaryView() {
       {/* Modal: Upload Photo (PRD #16) */}
       {isUploadPhotoOpen && (
         <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-          <div className="bg-zinc-900 border border-zinc-700 rounded-xl max-w-md w-full p-5 shadow-2xl">
-            <h3 className="text-sm font-bold text-white">Upload Site Progress Photo</h3>
+          <div className="bg-white border-2 border-navy-800 border-navy-800 max-w-md w-full p-5 shadow-2xl">
+            <h3 className="text-sm font-bold text-navy-800">Upload Site Progress Photo</h3>
             <form onSubmit={handleUploadPhoto} className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Photo Description / Milestone</label>
+                <label className="block text-xs text-navy-800 mb-1">Photo Description / Milestone</label>
                 <input
                   type="text"
                   required
                   value={photoTitle}
                   onChange={(e) => setPhotoTitle(e.target.value)}
                   placeholder="e.g. Completed shear wall reinforcement"
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Category</label>
+                <label className="block text-xs text-navy-800 mb-1">Category</label>
                 <select
                   value={photoCategory}
                   onChange={(e) => setPhotoCategory(e.target.value as SitePhoto["category"])}
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500"
                 >
                   <option value="Structure">Structure</option>
                   <option value="Finishing">Finishing</option>
@@ -783,17 +783,17 @@ export function SiteDiaryView() {
                 </select>
               </div>
 
-              <div className="p-6 border-2 border-dashed border-zinc-700 rounded-xl text-center bg-zinc-950">
-                <Upload className="w-8 h-8 text-zinc-500 mx-auto mb-2" />
-                <p className="text-xs text-zinc-300 font-medium">Click or drag photo file here</p>
-                <p className="text-[11px] text-zinc-500 mt-1">PNG, JPG, HEIC up to 10MB</p>
+              <div className="p-6 border-2 border-dashed border-navy-800 border-[3px] border-navy-800 text-center bg-cream-100">
+                <Upload className="w-8 h-8 text-navy-800/40 mx-auto mb-2" />
+                <p className="text-xs text-navy-800 font-medium">Click or drag photo file here</p>
+                <p className="text-[11px] text-navy-800/40 mt-1">PNG, JPG, HEIC up to 10MB</p>
               </div>
 
               <div className="pt-2 flex items-center justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setIsUploadPhotoOpen(false)}
-                  className="px-3 py-1.5 bg-zinc-800 text-zinc-300 rounded text-xs font-semibold"
+                  className="px-3 py-1.5 bg-cream-100 text-navy-800 rounded text-xs font-semibold"
                 >
                   Cancel
                 </button>
@@ -812,39 +812,39 @@ export function SiteDiaryView() {
       {/* Modal: Add Inspection (PRD #17) */}
       {isNewInspectionOpen && (
         <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-          <div className="bg-zinc-900 border border-zinc-700 rounded-xl max-w-md w-full p-5 shadow-2xl">
-            <h3 className="text-sm font-bold text-white">Record Site Inspection</h3>
+          <div className="bg-white border-2 border-navy-800 border-navy-800 max-w-md w-full p-5 shadow-2xl">
+            <h3 className="text-sm font-bold text-navy-800">Record Site Inspection</h3>
             <form onSubmit={handleCreateInspection} className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Inspection Scope</label>
+                <label className="block text-xs text-navy-800 mb-1">Inspection Scope</label>
                 <input
                   type="text"
                   required
                   value={inspTitle}
                   onChange={(e) => setInspTitle(e.target.value)}
                   placeholder="e.g. Plinth beam rebar spacing verification"
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-purple-500"
+                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-purple-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-xs text-zinc-300 mb-1">Element / Location</label>
+                  <label className="block text-xs text-navy-800 mb-1">Element / Location</label>
                   <input
                     type="text"
                     required
                     value={inspElement}
                     onChange={(e) => setInspElement(e.target.value)}
                     placeholder="e.g. Block B Floor 1"
-                    className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-purple-500"
+                    className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-purple-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-zinc-300 mb-1">Result Status</label>
+                  <label className="block text-xs text-navy-800 mb-1">Result Status</label>
                   <select
                     value={inspStatus}
                     onChange={(e) => setInspStatus(e.target.value as Inspection["status"])}
-                    className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-purple-500"
+                    className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-purple-500"
                   >
                     <option value="Passed">Passed</option>
                     <option value="Failed">Failed (Auto-raises Snag)</option>
@@ -853,14 +853,14 @@ export function SiteDiaryView() {
               </div>
 
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Inspector Notes</label>
+                <label className="block text-xs text-navy-800 mb-1">Inspector Notes</label>
                 <textarea
                   rows={3}
                   required
                   value={inspNotes}
                   onChange={(e) => setInspNotes(e.target.value)}
                   placeholder="Notes on tolerance, surface quality, bar spacing..."
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-purple-500"
+                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-purple-500"
                 />
               </div>
 
@@ -868,7 +868,7 @@ export function SiteDiaryView() {
                 <button
                   type="button"
                   onClick={() => setIsNewInspectionOpen(false)}
-                  className="px-3 py-1.5 bg-zinc-800 text-zinc-300 rounded text-xs font-semibold"
+                  className="px-3 py-1.5 bg-cream-100 text-navy-800 rounded text-xs font-semibold"
                 >
                   Cancel
                 </button>
@@ -887,16 +887,16 @@ export function SiteDiaryView() {
       {/* Modal: Add Safety Observation (PRD #18) */}
       {isNewSafetyOpen && (
         <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-          <div className="bg-zinc-900 border border-zinc-700 rounded-xl max-w-md w-full p-5 shadow-2xl">
-            <h3 className="text-sm font-bold text-white">Log Safety Observation / Incident</h3>
+          <div className="bg-white border-2 border-navy-800 border-navy-800 max-w-md w-full p-5 shadow-2xl">
+            <h3 className="text-sm font-bold text-navy-800">Log Safety Observation / Incident</h3>
             <form onSubmit={handleCreateSafetyLog} className="mt-4 space-y-3">
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-xs text-zinc-300 mb-1">Observation Type</label>
+                  <label className="block text-xs text-navy-800 mb-1">Observation Type</label>
                   <select
                     value={safetyType}
                     onChange={(e) => setSafetyType(e.target.value as SafetyObservation["type"])}
-                    className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-red-500"
+                    className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-red-500"
                   >
                     <option value="Unsafe Act">Unsafe Act</option>
                     <option value="Near Miss">Near Miss</option>
@@ -905,11 +905,11 @@ export function SiteDiaryView() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs text-zinc-300 mb-1">Severity</label>
+                  <label className="block text-xs text-navy-800 mb-1">Severity</label>
                   <select
                     value={safetySev}
                     onChange={(e) => setSafetySev(e.target.value as SafetyObservation["severity"])}
-                    className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-red-500"
+                    className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-red-500"
                   >
                     <option value="Low">Low</option>
                     <option value="Medium">Medium</option>
@@ -920,26 +920,26 @@ export function SiteDiaryView() {
               </div>
 
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Observation Description</label>
+                <label className="block text-xs text-navy-800 mb-1">Observation Description</label>
                 <textarea
                   rows={3}
                   required
                   value={safetyDesc}
                   onChange={(e) => setSafetyDesc(e.target.value)}
                   placeholder="Detail the safety hazard or proactive measure observed..."
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-red-500"
+                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-red-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-zinc-300 mb-1">Specific Location</label>
+                <label className="block text-xs text-navy-800 mb-1">Specific Location</label>
                 <input
                   type="text"
                   required
                   value={safetyLoc}
                   onChange={(e) => setSafetyLoc(e.target.value)}
                   placeholder="e.g. Scaffolding elevation north side"
-                  className="w-full bg-zinc-950 border border-zinc-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-red-500"
+                  className="w-full bg-cream-100 border border-navy-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-red-500"
                 />
               </div>
 
@@ -947,7 +947,7 @@ export function SiteDiaryView() {
                 <button
                   type="button"
                   onClick={() => setIsNewSafetyOpen(false)}
-                  className="px-3 py-1.5 bg-zinc-800 text-zinc-300 rounded text-xs font-semibold"
+                  className="px-3 py-1.5 bg-cream-100 text-navy-800 rounded text-xs font-semibold"
                 >
                   Cancel
                 </button>

@@ -85,38 +85,38 @@ export function AuditLogView() {
   }, [logs, search, moduleFilter]);
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden shadow-sm">
+    <div className="bg-white border-2 border-navy-800 shadow-brutal overflow-hidden">
       {/* Header */}
-      <div className="p-4 border-b border-zinc-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
+      <div className="p-4 border-b border-navy-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
           <h3 className="text-sm font-bold text-white flex items-center gap-2">
             <History className="w-4 h-4 text-emerald-400" />
             <span>Searchable Compliance Audit Journal</span>
-            <span className="text-[10px] bg-zinc-800 text-zinc-400 border border-zinc-700 px-2 py-0.5 rounded font-mono">
+            <span className="text-[10px] bg-cream-100 text-navy-800/60 border border-navy-800 px-2 py-0.5 rounded font-mono">
               Immutable Ledger
             </span>
           </h3>
-          <p className="text-xs text-zinc-400 mt-0.5">
+          <p className="text-xs text-navy-800/60 mt-0.5">
             Every approval-chain action and state mutation timestamped with actor attribution (PRD Section 9).
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <div className="relative w-64">
-            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-navy-800/60" />
             <input
               type="text"
               placeholder="Search actor, entity, or change..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 bg-zinc-950 border border-zinc-700 rounded-lg text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500"
+              className="w-full pl-9 pr-3 py-1.5 bg-cream-100 border border-navy-800 border-[2px] border-navy-800 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500"
             />
           </div>
 
           <select
             value={moduleFilter}
             onChange={(e) => setModuleFilter(e.target.value)}
-            className="bg-zinc-950 border border-zinc-700 rounded-lg px-2 py-1.5 text-xs text-zinc-300 focus:outline-none cursor-pointer"
+            className="bg-cream-100 border border-navy-800 border-[2px] border-navy-800 px-2 py-1.5 text-xs text-navy-800 focus:outline-none cursor-pointer"
           >
             <option value="All">All Modules</option>
             <option value="Budget">Budget</option>
@@ -132,7 +132,7 @@ export function AuditLogView() {
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs">
-          <thead className="bg-zinc-950/60 text-zinc-400 uppercase text-[10px] font-semibold border-b border-zinc-800">
+          <thead className="bg-navy-800 text-white uppercase text-[10px] font-semibold border-b border-navy-800">
             <tr>
               <th className="py-3 px-4">Timestamp</th>
               <th className="py-3 px-4">Actor</th>
@@ -142,28 +142,28 @@ export function AuditLogView() {
               <th className="py-3 px-4">Change Delta / Record</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-zinc-800/60 text-zinc-200">
+          <tbody className="divide-y divide-navy-800/10 text-navy-800">
             {filteredLogs.map((log) => (
-              <tr key={log.id} className="hover:bg-zinc-800/30 transition-colors">
-                <td className="py-3 px-4 font-mono text-zinc-400 whitespace-nowrap">
+              <tr key={log.id} className="hover:bg-cream-100/30 transition-colors">
+                <td className="py-3 px-4 font-mono text-navy-800/60 whitespace-nowrap">
                   {log.timestamp}
                 </td>
                 <td className="py-3 px-4">
-                  <div className="font-bold text-white">{log.actor}</div>
-                  <div className="text-[10px] text-zinc-500">{log.role}</div>
+                  <div className="font-bold text-navy-800">{log.actor}</div>
+                  <div className="text-[10px] text-navy-800/40">{log.role}</div>
                 </td>
                 <td className="py-3 px-3">
-                  <span className="px-2 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-[10px] font-medium text-zinc-300">
+                  <span className="px-2 py-0.5 rounded bg-cream-100 border border-navy-800 text-[10px] font-medium text-navy-800">
                     {log.module}
                   </span>
                 </td>
                 <td className="py-3 px-4 font-semibold text-emerald-300">
                   {log.action}
                 </td>
-                <td className="py-3 px-3 font-mono font-bold text-zinc-300">
+                <td className="py-3 px-3 font-mono font-bold text-navy-800">
                   {log.entity}
                 </td>
-                <td className="py-3 px-4 text-zinc-300 max-w-sm">
+                <td className="py-3 px-4 text-navy-800 max-w-sm">
                   {log.delta}
                 </td>
               </tr>
