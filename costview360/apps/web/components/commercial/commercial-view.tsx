@@ -25,26 +25,26 @@ export function CommercialView() {
 
   return (
     <div className="space-y-6">
-      {/* Commercial Header Banner - Radiant Glass */}
-      <div className="glass-hero p-5 text-white rounded-xl shadow-glass">
+      {/* Commercial Header Banner - Smooth Pearl Glass */}
+      <div className="smooth-pearl-hero p-5 text-slate-900 rounded-2xl shadow-pearl border border-sky-200/80">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs font-bold tracking-wider px-3 py-1 bg-white/15 text-white border border-white/25 rounded-full font-mono">
+              <span className="text-xs font-bold tracking-wider px-3 py-1 bg-sky-100 text-[#0067c0] border border-sky-200 rounded-full font-mono">
                 Commercial Mode Active
               </span>
-              <span className="text-white/80 text-xs font-medium">· Developer &amp; Investor View</span>
+              <span className="text-slate-500 text-xs font-medium">· Developer &amp; Investor View</span>
             </div>
-            <h2 className="text-xl font-bold tracking-tight text-white">
+            <h2 className="text-xl font-bold tracking-tight text-slate-900">
               Project Margin &amp; Capital Stack
             </h2>
-            <p className="text-xs text-white/80 mt-1">
+            <p className="text-xs text-slate-600 mt-1">
               Live feasibility yield, debt drawdowns, and receivables for {currentProject.name}.
             </p>
           </div>
-          <div className="bg-white/15 backdrop-blur-md border border-white/30 px-5 py-3 rounded-xl shadow-sm text-center text-white">
-            <div className="text-xs font-medium uppercase tracking-wider text-white/80">Target Margin</div>
-            <div className="text-2xl font-bold font-mono text-white">
+          <div className="bg-white/80 backdrop-blur-md border border-sky-200/80 px-5 py-3 rounded-xl shadow-xs text-center text-slate-900">
+            <div className="text-xs font-medium uppercase tracking-wider text-slate-500">Target Margin</div>
+            <div className="text-2xl font-bold font-mono text-[#0067c0]">
               {metrics.marginPercent}% (₦420M)
             </div>
           </div>

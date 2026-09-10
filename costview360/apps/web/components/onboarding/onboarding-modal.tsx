@@ -93,7 +93,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
     style D fill:#e6f0fa,stroke:#0067c0,stroke-width:2px
     style E fill:#10B981,color:#fff,stroke:#0067c0,stroke-width:2px
     style F fill:#DC2626,color:#fff,stroke:#0067c0,stroke-width:2px
-    style G fill:#0A1931,color:#fff,stroke:#0067c0,stroke-width:2px
+    style G fill:#0067c0,color:#fff,stroke:#005ba1,stroke-width:2px
     style H fill:#D97706,color:#fff,stroke:#0067c0,stroke-width:2px`;
 
   const mermaidRetention = `flowchart LR
@@ -108,7 +108,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
     style C fill:#9333EA,color:#fff,stroke:#0067c0,stroke-width:2px
     style D fill:#e6f0fa,stroke:#0067c0,stroke-width:2px
     style E fill:#10B981,color:#fff,stroke:#0067c0,stroke-width:2px
-    style F fill:#0A1931,color:#fff,stroke:#0067c0,stroke-width:2px`;
+    style F fill:#0067c0,color:#fff,stroke:#005ba1,stroke-width:2px`;
 
   const mermaidVariations = `flowchart TD
     S1["Stage 1: Site Instruction (SI)\\nArchitect / Consultant issues change notice"] --> S2["Stage 2: QS Valuation\\nQS calculates cost delta (₦) & time impact (days)"]

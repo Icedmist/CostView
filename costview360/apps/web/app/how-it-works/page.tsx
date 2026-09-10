@@ -114,23 +114,24 @@ export default function HowItWorksPage() {
 
       {/* CTA */}
       <section className="max-w-7xl mx-auto px-4 md:px-6 py-14 md:py-20 text-center">
-        <div className="glass-hero p-8 md:p-12 text-white rounded-3xl relative overflow-hidden max-w-4xl mx-auto shadow-glass">
-          <h3 className="text-2xl md:text-3xl font-extrabold tracking-tight">
-            Ready to streamline your site operations?
+        <div className="smooth-pearl-hero p-8 md:p-12 text-slate-900 rounded-3xl relative overflow-hidden max-w-4xl mx-auto shadow-pearl border border-sky-200/80">
+          <div className="pointer-events-none absolute -right-16 -bottom-16 w-64 h-64 bg-gradient-to-br from-sky-400/20 via-blue-500/10 to-indigo-500/10 rounded-full blur-3xl animate-float" />
+          <h3 className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900">
+            Ready to <span className="bg-gradient-to-r from-[#0067c0] to-[#0284c7] bg-clip-text text-transparent">streamline your site operations?</span>
           </h3>
-          <p className="text-sm text-white/80 mt-2 max-w-xl mx-auto">
+          <p className="text-sm text-slate-600 mt-2 max-w-xl mx-auto">
             Get started in under two minutes with pre-loaded demo data or import your existing project BOQ directly.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/register"
-              className="px-6 py-3 bg-white text-[#0067c0] hover:bg-slate-100 rounded-xl font-bold text-xs shadow-md transition-all active:scale-[0.98]"
+              className="px-6 py-3 bg-gradient-to-r from-[#0067c0] to-[#0284c7] hover:from-[#005ba1] hover:to-[#0275b0] text-white rounded-xl font-bold text-xs shadow-md shadow-blue-600/25 transition-all active:scale-[0.98]"
             >
               Create Free Workspace
             </Link>
             <Link
               href="/dashboard"
-              className="px-6 py-3 bg-white/15 hover:bg-white/25 text-white border border-white/30 rounded-xl font-semibold text-xs backdrop-blur-sm transition-all"
+              className="px-6 py-3 bg-white hover:bg-slate-50 text-slate-800 border border-slate-200/90 rounded-xl font-semibold text-xs shadow-xs backdrop-blur-sm transition-all"
             >
               Explore Demo Project →
             </Link>

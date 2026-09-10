@@ -30,42 +30,54 @@ export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f0f7ff]/40 via-white to-[#f8fafc] text-slate-900 font-sans selection:bg-[#0067c0] selection:text-white">
+    <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans selection:bg-[#0067c0] selection:text-white relative overflow-x-hidden">
+      {/* Radiant ambient atmospheric depth */}
+      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        <div className="absolute -top-32 left-1/4 w-[550px] h-[550px] bg-gradient-to-br from-sky-400/15 via-blue-500/10 to-indigo-400/10 rounded-full blur-3xl animate-float" />
+        <div className="absolute top-1/3 -right-32 w-[500px] h-[500px] bg-gradient-to-br from-indigo-300/15 via-sky-200/20 to-blue-400/10 rounded-full blur-3xl animate-pulse-slow" />
+        <div className="absolute bottom-20 -left-20 w-[450px] h-[450px] bg-gradient-to-br from-cyan-400/10 to-blue-600/10 rounded-full blur-3xl" />
+      </div>
+
       <MarketingNav />
 
       {/* HERO — Luminous Radiant Glass Canvas */}
-      <section className="relative overflow-hidden border-b border-slate-200/80 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(0,103,192,0.14),rgba(255,255,255,0))]">
+      <section className="relative overflow-hidden border-b border-slate-200/80 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(0,103,192,0.12),rgba(255,255,255,0))]">
         <div className="relative max-w-7xl mx-auto px-4 md:px-6 py-14 md:py-24">
           <div className="grid xl:grid-cols-2 gap-12 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 bg-blue-50/90 text-[#0067c0] border border-blue-200/80 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide mb-6 shadow-xs backdrop-blur-md">
-                <Sparkles className="w-4 h-4 text-[#0067c0]" /> Construction Cost Intelligence — v2.0
+              <div className="inline-flex items-center gap-2.5 bg-white/80 backdrop-blur-xl text-sky-800 border border-sky-200/80 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide mb-6 shadow-xs hover:border-sky-300 transition-all">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#0067c0]" />
+                </span>
+                <Sparkles className="w-3.5 h-3.5 text-[#0067c0]" />
+                <span>Construction Cost Intelligence — v2.0</span>
               </div>
-              <h1 className="text-[44px] md:text-[58px] lg:text-[66px] font-extrabold leading-[1.05] tracking-tight text-slate-900">
+              <h1 className="text-[44px] md:text-[60px] lg:text-[68px] font-extrabold leading-[1.04] tracking-tight text-slate-900">
                 Analyse. Plan.<br />
                 <span className="bg-gradient-to-r from-[#0067c0] via-[#0284c7] to-[#38bdf8] bg-clip-text text-transparent">
                   Build Smarter.
                 </span>
               </h1>
               <p className="mt-6 text-base md:text-lg font-normal leading-relaxed text-slate-600 max-w-xl">
-                The unified intelligent system of record for <span className="font-semibold text-slate-900">budget, procurement, site progress</span> and project margins. Eliminate spreadsheet drift — command every naira from BOQ master to final account with audit trails the QS can defend.
+                The unified intelligent system of record for <span className="font-semibold text-slate-900">budget, procurement, site progress</span>, and project margins. Eliminate spreadsheet drift — command every naira from BOQ master to final account with audit trails the QS can defend.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Link
                   href="/dashboard"
-                  className="px-7 py-3.5 bg-gradient-to-r from-[#0067c0] to-[#0284c7] hover:from-[#005ba1] hover:to-[#0275b0] text-white rounded-xl font-semibold text-sm shadow-lg shadow-blue-600/25 flex items-center gap-2 transition-all active:scale-[0.98]"
+                  className="group px-7 py-3.5 bg-gradient-to-r from-[#0067c0] to-[#0284c7] hover:from-[#005ba1] hover:to-[#0275b0] text-white rounded-xl font-semibold text-sm shadow-lg shadow-blue-600/25 flex items-center gap-2 transition-all active:scale-[0.98] hover:shadow-xl hover:shadow-blue-600/30"
                 >
-                  Start Building Free <ArrowRight className="w-4 h-4" />
+                  Start Building Free <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </Link>
                 <Link
                   href="/register"
-                  className="px-7 py-3.5 bg-white/90 hover:bg-white text-slate-800 border border-slate-200/90 rounded-xl font-semibold text-sm shadow-xs backdrop-blur-md transition-all hover:border-slate-300"
+                  className="px-7 py-3.5 bg-white/90 hover:bg-white text-slate-800 border border-slate-200/90 rounded-xl font-semibold text-sm shadow-xs backdrop-blur-md transition-all hover:border-slate-300 hover:shadow-card"
                 >
                   Create Workspace
                 </Link>
               </div>
               <div className="mt-8 flex flex-wrap items-center gap-4 text-xs font-medium text-slate-500">
-                <span className="flex items-center gap-1.5 text-slate-600">
+                <span className="flex items-center gap-1.5 text-slate-700">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" /> No credit card required
                 </span>
                 <span className="w-1.5 h-1.5 bg-slate-300 rounded-full" />
@@ -75,19 +87,19 @@ export default function LandingPage() {
                 <span className="w-1.5 h-1.5 bg-slate-300 rounded-full" />
                 <span>Audit Trail RLS</span>
               </div>
-              <div className="mt-6 flex items-center gap-4 p-3.5 bg-white/80 backdrop-blur-xl border border-slate-200/80 rounded-2xl shadow-card max-w-lg">
+              <div className="mt-6 flex items-center gap-4 p-3.5 bg-white/80 backdrop-blur-xl border border-slate-200/80 rounded-2xl shadow-pearl max-w-lg hover:border-sky-200 transition-all">
                 <div className="flex -space-x-2">
                   {["PM", "QS", "SE", "AC"].map((initial, i) => (
                     <div
                       key={initial}
                       className={`w-9 h-9 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-bold text-white shadow-xs ${
                         i === 0
-                          ? "bg-[#0067c0]"
+                          ? "bg-gradient-to-br from-[#0067c0] to-[#0284c7]"
                           : i === 1
-                          ? "bg-[#0284c7]"
+                          ? "bg-gradient-to-br from-sky-500 to-cyan-600"
                           : i === 2
-                          ? "bg-slate-700"
-                          : "bg-emerald-600"
+                          ? "bg-gradient-to-br from-indigo-500 to-slate-700"
+                          : "bg-gradient-to-br from-emerald-500 to-teal-600"
                       }`}
                     >
                       {initial}
@@ -102,8 +114,8 @@ export default function LandingPage() {
             </div>
 
             {/* Interactive Crystalline Preview Card */}
-            <div className="relative">
-              <div className="bg-white/90 backdrop-blur-2xl border border-white/80 rounded-3xl shadow-glass overflow-hidden transition-all duration-300 hover:shadow-glass-hover">
+            <div className="relative group">
+              <div className="bg-white/95 backdrop-blur-2xl border border-sky-100 rounded-3xl shadow-pearl overflow-hidden transition-all duration-300 group-hover:shadow-glass-hover group-hover:-translate-y-0.5">
                 <div className="h-11 bg-slate-50/90 border-b border-slate-200/70 flex items-center justify-between px-4">
                   <div className="flex items-center gap-2">
                     <span className="w-3 h-3 bg-rose-400 rounded-full" />
@@ -113,7 +125,11 @@ export default function LandingPage() {
                       COSTVIEW 360 · HORIZON TOWERS
                     </span>
                   </div>
-                  <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/80">
+                  <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/80">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                    </span>
                     Live System Active
                   </span>
                 </div>
@@ -124,10 +140,10 @@ export default function LandingPage() {
                       <div className="text-lg font-bold font-mono text-slate-900 mt-1">₦301.8M</div>
                       <div className="h-1.5 bg-[#0067c0] rounded-full mt-2" />
                     </div>
-                    <div className="glass-hero rounded-2xl p-4 shadow-card text-white">
-                      <div className="text-[11px] font-semibold text-white/70 uppercase tracking-wider">Committed POs</div>
-                      <div className="text-lg font-bold font-mono mt-1">₦292.2M</div>
-                      <div className="h-1.5 bg-white/40 rounded-full mt-2" />
+                    <div className="bg-gradient-to-br from-sky-50 to-blue-50/80 border border-sky-200/80 rounded-2xl p-4 shadow-card">
+                      <div className="text-[11px] font-semibold text-sky-700 uppercase tracking-wider">Committed POs</div>
+                      <div className="text-lg font-bold font-mono text-slate-900 mt-1">₦292.2M</div>
+                      <div className="h-1.5 bg-[#0067c0] rounded-full mt-2" />
                     </div>
                     <div className="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-card">
                       <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Actual Certified</div>
@@ -178,10 +194,10 @@ export default function LandingPage() {
                   </div>
                 </div>
               </div>
-              <div className="absolute -bottom-3 -left-3 bg-white/95 backdrop-blur-md border border-slate-200/80 px-4 py-2 rounded-xl shadow-glass text-xs font-semibold text-slate-800 hidden md:block">
-                Immutable RLS Audit Trail
+              <div className="absolute -bottom-3 -left-3 bg-white/95 backdrop-blur-md border border-slate-200/80 px-4 py-2 rounded-xl shadow-pearl text-xs font-semibold text-slate-800 hidden md:flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Immutable RLS Audit Trail
               </div>
-              <div className="absolute -top-3 -right-3 bg-white/95 backdrop-blur-md border border-slate-200/80 px-4 py-2 rounded-xl shadow-glass text-xs font-semibold text-[#0067c0] font-mono hidden md:block">
+              <div className="absolute -top-3 -right-3 bg-white/95 backdrop-blur-md border border-sky-200/80 px-4 py-2 rounded-xl shadow-pearl text-xs font-bold text-[#0067c0] font-mono hidden md:block">
                 ZERO SPREADSHEET DRIFT
               </div>
             </div>
@@ -517,27 +533,29 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className="glass-hero p-8 md:p-12 text-white rounded-3xl relative overflow-hidden shadow-glass">
+          <div className="smooth-pearl-hero p-8 md:p-12 text-slate-900 rounded-3xl relative overflow-hidden shadow-pearl border border-sky-200/80">
+            <div className="pointer-events-none absolute -right-16 -bottom-16 w-72 h-72 bg-gradient-to-br from-sky-400/20 via-blue-500/10 to-indigo-500/10 rounded-full blur-3xl animate-float" />
+            <div className="pointer-events-none absolute -left-10 -top-10 w-56 h-56 bg-gradient-to-br from-indigo-300/20 to-sky-200/20 rounded-full blur-2xl" />
             <div className="relative z-10 space-y-6">
-              <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-white/15 border border-white/25">
-                Ready to transform your site execution?
+              <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold bg-sky-100/80 text-[#0067c0] border border-sky-200/80 backdrop-blur-sm">
+                <Sparkles className="w-3.5 h-3.5 text-[#0067c0]" /> Ready to transform your site execution?
               </span>
-              <h3 className="text-2xl md:text-4xl font-extrabold tracking-tight leading-tight">
-                Empower your construction team with verified numbers today.
+              <h3 className="text-2xl md:text-4xl font-extrabold tracking-tight leading-tight text-slate-900">
+                Empower your construction team with <span className="bg-gradient-to-r from-[#0067c0] via-[#0284c7] to-[#38bdf8] bg-clip-text text-transparent">verified numbers</span> today.
               </h3>
-              <p className="text-sm text-white/80 leading-relaxed max-w-lg">
+              <p className="text-sm md:text-base text-slate-600 leading-relaxed max-w-lg">
                 Join forward-thinking builders managing over ₦450M in project budgets with zero spreadsheet drift.
               </p>
               <div className="pt-2 flex flex-wrap gap-4">
                 <Link
                   href="/register"
-                  className="px-6 py-3.5 bg-white text-[#0067c0] hover:bg-slate-100 rounded-xl font-bold text-sm shadow-md transition-all active:scale-[0.98]"
+                  className="px-6 py-3.5 bg-gradient-to-r from-[#0067c0] to-[#0284c7] hover:from-[#005ba1] hover:to-[#0275b0] text-white rounded-xl font-bold text-sm shadow-md shadow-blue-600/25 transition-all active:scale-[0.98] flex items-center gap-2"
                 >
-                  Create Free Workspace
+                  Create Free Workspace <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   href="/dashboard"
-                  className="px-6 py-3.5 bg-white/15 hover:bg-white/25 text-white border border-white/30 rounded-xl font-semibold text-sm backdrop-blur-sm transition-all"
+                  className="px-6 py-3.5 bg-white hover:bg-slate-50 text-slate-800 border border-slate-200/90 rounded-xl font-semibold text-sm shadow-xs backdrop-blur-sm transition-all hover:border-slate-300"
                 >
                   Explore Demo Project →
                 </Link>

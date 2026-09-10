@@ -69,20 +69,21 @@ export default function DashboardPage() {
             <>
               {activeTab === "Dashboard" && (
                 <div className="space-y-6">
-                  {/* Radiant Sapphire Glass Hero Banner */}
-                  <div className="glass-hero p-6 md:p-8 relative overflow-hidden shadow-glass">
+                  {/* Smooth Pearl Glass Hero Banner */}
+                  <div className="smooth-pearl-hero p-6 md:p-8 relative overflow-hidden shadow-pearl border border-sky-200/80 text-slate-900">
+                    <div className="pointer-events-none absolute -right-16 -bottom-16 w-64 h-64 bg-gradient-to-br from-sky-400/15 via-blue-500/10 to-indigo-500/10 rounded-full blur-3xl animate-float" />
                     <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
                       <div>
                         <div className="flex flex-wrap items-center gap-2.5 mb-3">
-                          <span className="text-xs font-bold px-3 py-1 bg-white/20 text-white rounded-full border border-white/30 backdrop-blur-md shadow-xs">
+                          <span className="text-xs font-bold px-3 py-1 bg-sky-100 text-[#0067c0] rounded-full border border-sky-200 backdrop-blur-md shadow-xs">
                             Site Operations Command
                           </span>
-                          <span className="text-white/80 text-xs font-medium">· Active Role: {activeRole}</span>
+                          <span className="text-slate-500 text-xs font-medium">· Active Role: {activeRole}</span>
                         </div>
-                        <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white leading-tight">
-                          Project Cost &amp; Execution Intelligence
+                        <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900 leading-tight">
+                          Project Cost &amp; Execution <span className="bg-gradient-to-r from-[#0067c0] via-[#0284c7] to-[#38bdf8] bg-clip-text text-transparent">Intelligence</span>
                         </h1>
-                        <p className="text-xs text-white/85 mt-2 max-w-2xl leading-relaxed font-normal">
+                        <p className="text-xs text-slate-600 mt-2 max-w-2xl leading-relaxed font-normal">
                           Consolidated baseline budget allocation, committed vendor purchase orders, certified subcontractor valuations, and live shift progress records.
                         </p>
                       </div>
@@ -90,14 +91,14 @@ export default function DashboardPage() {
                       <div className="flex flex-wrap items-center gap-3">
                         <button
                           onClick={() => setActiveTab("Budget & BOQ")}
-                          className="px-4 py-2.5 bg-white text-[#0067c0] hover:bg-slate-100 rounded-xl text-xs font-bold flex items-center gap-2 shadow-md transition-all active:scale-[0.98]"
+                          className="px-4 py-2.5 bg-gradient-to-r from-[#0067c0] to-[#0284c7] hover:from-[#005ba1] hover:to-[#0275b0] text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-md shadow-blue-600/20 transition-all active:scale-[0.98]"
                         >
                           <span>Manage BOQ Master</span>
                           <ArrowUpRight className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => setActiveTab("Procurement")}
-                          className="px-4 py-2.5 bg-white/15 hover:bg-white/25 text-white border border-white/30 rounded-xl text-xs font-semibold backdrop-blur-md transition-all"
+                          className="px-4 py-2.5 bg-white hover:bg-slate-50 text-slate-800 border border-slate-200/90 rounded-xl text-xs font-semibold backdrop-blur-md transition-all shadow-xs"
                         >
                           Verify 3-Way Match
                         </button>
@@ -105,20 +106,20 @@ export default function DashboardPage() {
                     </div>
 
                     {/* Quick Telemetry Strip */}
-                    <div className="mt-6 pt-5 border-t border-white/15 flex flex-wrap gap-6 text-xs text-white/90">
+                    <div className="mt-6 pt-5 border-t border-slate-200/80 flex flex-wrap gap-6 text-xs text-slate-700">
                       <div>
-                        <div className="text-[10px] uppercase tracking-wider text-white/60 font-semibold">Execution Progress</div>
-                        <div className="text-base font-extrabold text-white mt-0.5">62% Complete</div>
+                        <div className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">Execution Progress</div>
+                        <div className="text-base font-extrabold text-slate-900 mt-0.5">62% Complete</div>
                       </div>
-                      <div className="h-8 w-[1px] bg-white/15 hidden sm:block" />
+                      <div className="h-8 w-[1px] bg-slate-200 hidden sm:block" />
                       <div>
-                        <div className="text-[10px] uppercase tracking-wider text-white/60 font-semibold">Financial Health</div>
-                        <div className="text-base font-extrabold text-emerald-200 mt-0.5">Healthy (1.04 CPI)</div>
+                        <div className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">Financial Health</div>
+                        <div className="text-base font-extrabold text-emerald-600 mt-0.5">Healthy (1.04 CPI)</div>
                       </div>
-                      <div className="h-8 w-[1px] bg-white/15 hidden sm:block" />
+                      <div className="h-8 w-[1px] bg-slate-200 hidden sm:block" />
                       <div>
-                        <div className="text-[10px] uppercase tracking-wider text-white/60 font-semibold">Active Worksite</div>
-                        <div className="text-base font-extrabold text-white mt-0.5">Shift #142 · 48 Active Crew</div>
+                        <div className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">Active Worksite</div>
+                        <div className="text-base font-extrabold text-slate-900 mt-0.5">Shift #142 · 48 Active Crew</div>
                       </div>
                     </div>
                   </div>
