@@ -17,16 +17,16 @@ export function RoleGuard({
   if (canAccess(activeRole, permission)) return <>{children}</>;
   if (fallback) return <>{fallback}</>;
   return (
-    <div className="bg-cream-100 border-2 border-navy-800 shadow-brutal p-8 text-center">
-      <div className="w-14 h-14 bg-navy-800 border-2 border-navy-800 flex items-center justify-center mx-auto">
-        <Lock className="w-7 h-7 text-mustard-500" />
+    <div className="bg-white/80 backdrop-blur-md border border-[#e5e5e5] rounded-xl shadow-card p-8 text-center">
+      <div className="w-12 h-12 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center mx-auto border border-amber-200">
+        <Lock className="w-6 h-6" />
       </div>
-      <h3 className="mt-4 text-lg font-black text-navy-800">Restricted — {activeRole} lacks {permission}</h3>
-      <p className="text-sm font-bold text-navy-800/60 mt-2 max-w-md mx-auto">
-        Your role cannot view this module. Contact Admin to update <span className="font-mono bg-white border border-navy-800 px-1">role_access</span> or switch role via sidebar.
+      <h3 className="mt-4 text-base font-semibold text-[#1b1b1b]">Restricted — {activeRole} lacks {permission}</h3>
+      <p className="text-xs text-[#5c5c5c] mt-2 max-w-md mx-auto">
+        Your role cannot view this module. Contact Admin to update <span className="font-mono bg-slate-100 border border-[#e5e5e5] px-1 rounded">role_access</span> or switch role via sidebar.
       </p>
-      <div className="mt-4 inline-flex items-center gap-2 bg-white border-2 border-navy-800 px-3 py-2 text-xs font-black">
-        <ShieldAlert className="w-4 h-4" /> Ask Admin for access
+      <div className="mt-4 inline-flex items-center gap-2 bg-white border border-[#e5e5e5] rounded-md px-3 py-1.5 text-xs font-medium text-[#1b1b1b] shadow-xs">
+        <ShieldAlert className="w-4 h-4 text-amber-600" /> Ask Admin for access
       </div>
     </div>
   );

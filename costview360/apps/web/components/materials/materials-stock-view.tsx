@@ -124,18 +124,18 @@ export function MaterialsStockView() {
   return (
     <div className="space-y-6">
       {/* Header & Quick Action Buttons */}
-      <div className="bg-white border-2 border-navy-800 shadow-brutal p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white/90 backdrop-blur-md border border-[#e5e5e5] rounded-xl shadow-card p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs uppercase font-bold tracking-wider px-2 py-0.5 bg-navy-100 text-navy-800 border border-navy-800 font-mono">
+            <span className="text-xs uppercase font-bold tracking-wider px-2 py-0.5 bg-blue-50 text-[#0067c0] border border-blue-200 rounded font-mono">
               Live Stock Gauges
             </span>
-            <span className="text-navy-800/60 text-xs">· Site Store Operations</span>
+            <span className="text-[#1b1b1b]/60 text-xs">· Site Store Operations</span>
           </div>
-          <h2 className="text-lg font-bold text-navy-800 tracking-tight">
+          <h2 className="text-lg font-bold text-[#1b1b1b] tracking-tight">
             Materials Inventory & Stock Control
           </h2>
-          <p className="text-xs text-navy-800/60 mt-0.5">
+          <p className="text-xs text-[#1b1b1b]/60 mt-0.5">
             Real-time on-hand, reserved, and consumed inventory tied to procurement GRNs.
           </p>
         </div>
@@ -146,9 +146,9 @@ export function MaterialsStockView() {
               setSelectedItem(stock[0]);
               setIsTransferModalOpen(true);
             }}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-cream-100 hover:bg-cream-200 text-navy-800 border-2 border-navy-800 text-xs font-semibold shadow-brutal-sm transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-[#f5f5f5] text-[#1b1b1b] border border-[#e5e5e5] rounded-md text-xs font-medium shadow-xs transition-all"
           >
-            <ArrowRightLeft className="w-3.5 h-3.5 text-navy-800" />
+            <ArrowRightLeft className="w-3.5 h-3.5 text-[#1b1b1b]" />
             <span>Create Transfer</span>
           </button>
           <button
@@ -156,7 +156,7 @@ export function MaterialsStockView() {
               setSelectedItem(stock[0]);
               setIsConsumptionModalOpen(true);
             }}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-brutal-sm transition-colors"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 bg-[#0067c0] hover:bg-[#005ba1] text-white rounded-md text-xs font-semibold shadow-xs transition-all"
           >
             <MinusCircle className="w-3.5 h-3.5" />
             <span>Record Site Consumption</span>
@@ -175,44 +175,44 @@ export function MaterialsStockView() {
           return (
             <div
               key={item.id}
-              className={`bg-white border-2 border-navy-800 p-4 shadow-brutal relative transition-all ${
+              className={`bg-white border border-[#e5e5e5] rounded-xl p-4 shadow-card relative transition-all ${
                 isLow ? "bg-amber-50" : "bg-white"
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-navy-800/60">
+                <span className="text-xs font-mono font-bold text-[#1b1b1b]/60">
                   {item.sku}
                 </span>
                 <span
-                  className={`px-2 py-0.5 text-xs font-bold border-2 border-navy-800 ${
+                  className={`px-2 py-0.5 text-xs font-bold border border-[#e5e5e5] rounded-xl ${
                     isLow
-                      ? "bg-amber-200 text-amber-900"
-                      : "bg-emerald-200 text-emerald-900"
+                      ? "bg-amber-50 text-amber-700 border border-amber-200 rounded-md"
+                      : "bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-md"
                   }`}
                 >
                   {isLow ? "Low Stock Alert" : "Healthy"}
                 </span>
               </div>
 
-              <h3 className="text-xs font-bold text-navy-800 mt-2 line-clamp-2 h-8">
+              <h3 className="text-xs font-bold text-[#1b1b1b] mt-2 line-clamp-2 h-8">
                 {item.name}
               </h3>
 
               {/* Gauges */}
-              <div className="mt-3 pt-3 border-t border-navy-800/40 space-y-1.5 text-xs">
-                <div className="flex items-center justify-between text-navy-800 font-mono">
+              <div className="mt-3 pt-3 border-t border-[#e5e5e5] space-y-1.5 text-xs">
+                <div className="flex items-center justify-between text-[#1b1b1b] font-mono">
                   <span>Available:</span>
-                  <span className="font-bold text-navy-800">
+                  <span className="font-bold text-[#1b1b1b]">
                     {Math.max(0, item.qtyOnHand - item.qtyReserved)} {item.unit}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-navy-800/60 text-xs font-mono">
+                <div className="flex items-center justify-between text-[#1b1b1b]/60 text-xs font-mono">
                   <span>Reserved:</span>
                   <span>
                     {item.qtyReserved} {item.unit}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-navy-800/60 text-xs font-mono">
+                <div className="flex items-center justify-between text-[#1b1b1b]/60 text-xs font-mono">
                   <span>Consumed:</span>
                   <span>
                     {item.qtyConsumed} {item.unit} ({percentUsed}%)
@@ -220,14 +220,14 @@ export function MaterialsStockView() {
                 </div>
 
                 {/* Progress Bar (Straight brutalist edges) */}
-                <div className="w-full bg-cream-200 h-2 mt-2 overflow-hidden border border-navy-800">
+                <div className="w-full bg-[#f5f5f5] h-2 mt-2 overflow-hidden border border-[#e5e5e5]">
                   <div
                     className={`h-full ${isLow ? "bg-amber-500" : "bg-emerald-600"}`}
                     style={{ width: `${Math.min(100, percentUsed)}%` }}
                   ></div>
                 </div>
 
-                <div className="flex items-center justify-between text-xs text-navy-800/60 pt-1">
+                <div className="flex items-center justify-between text-xs text-[#1b1b1b]/60 pt-1">
                   <span>Store: {item.location}</span>
                   <span>Min: {item.minReorderLevel}</span>
                 </div>
@@ -240,13 +240,13 @@ export function MaterialsStockView() {
       {/* Record Consumption Modal */}
       {isConsumptionModalOpen && selectedItem && (
         <div className="fixed inset-0 z-50 bg-navy-950/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-cream-50 border-2 border-navy-800 max-w-md w-full p-6 shadow-brutal">
-            <h3 className="text-sm font-bold text-navy-800 uppercase tracking-wide">Record Material Issue / Consumption</h3>
-            <p className="text-xs text-navy-800/70 mt-0.5 font-medium">{selectedItem.name}</p>
+          <div className="bg-[#fbfbfb] border border-[#e5e5e5] rounded-xl max-w-md w-full p-6 shadow-card">
+            <h3 className="text-sm font-bold text-[#1b1b1b] uppercase tracking-wide">Record Material Issue / Consumption</h3>
+            <p className="text-xs text-[#1b1b1b]/70 mt-0.5 font-medium">{selectedItem.name}</p>
 
             <form onSubmit={handleRecordConsumption} className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs font-bold text-navy-800 mb-1">Issue Quantity ({selectedItem.unit})</label>
+                <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Issue Quantity ({selectedItem.unit})</label>
                 <input
                   type="number"
                   required
@@ -254,18 +254,18 @@ export function MaterialsStockView() {
                   max={selectedItem.qtyOnHand}
                   value={consumptionQty}
                   onChange={(e) => setConsumptionQty(Number(e.target.value))}
-                  className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 font-mono focus:outline-none focus:ring-2 focus:ring-navy-800"
+                  className="w-full bg-white border border-[#e5e5e5] rounded-xl px-3 py-2 text-xs text-[#1b1b1b] font-mono focus:outline-none focus:ring-2 focus:ring-navy-800"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-navy-800 mb-1">Issued to Work Location / Grid</label>
+                <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Issued to Work Location / Grid</label>
                 <input
                   type="text"
                   required
                   value={consumptionLocation}
                   onChange={(e) => setConsumptionLocation(e.target.value)}
-                  className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 focus:outline-none focus:ring-2 focus:ring-navy-800"
+                  className="w-full bg-white border border-[#e5e5e5] rounded-xl px-3 py-2 text-xs text-[#1b1b1b] focus:outline-none focus:ring-2 focus:ring-navy-800"
                 />
               </div>
 
@@ -273,13 +273,13 @@ export function MaterialsStockView() {
                 <button
                   type="button"
                   onClick={() => setIsConsumptionModalOpen(false)}
-                  className="px-3 py-1.5 bg-cream-100 hover:bg-cream-200 border-2 border-navy-800 text-navy-800 text-xs font-bold transition-colors"
+                  className="px-3 py-1.5 bg-[#fbfbfb] hover:bg-[#f5f5f5] border border-[#e5e5e5] rounded-xl text-[#1b1b1b] text-xs font-bold transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 shadow-brutal-sm text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white border border-[#e5e5e5] rounded-xl shadow-xs text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
                 >
                   Confirm Issue
                 </button>
@@ -292,24 +292,24 @@ export function MaterialsStockView() {
       {/* Create Transfer Modal */}
       {isTransferModalOpen && selectedItem && (
         <div className="fixed inset-0 z-50 bg-navy-950/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-cream-50 border-2 border-navy-800 max-w-md w-full p-6 shadow-brutal">
-            <h3 className="text-sm font-bold text-navy-800 uppercase tracking-wide">Create Inter-Site Material Transfer</h3>
-            <p className="text-xs text-navy-800/70 mt-0.5 font-medium">{selectedItem.name}</p>
+          <div className="bg-[#fbfbfb] border border-[#e5e5e5] rounded-xl max-w-md w-full p-6 shadow-card">
+            <h3 className="text-sm font-bold text-[#1b1b1b] uppercase tracking-wide">Create Inter-Site Material Transfer</h3>
+            <p className="text-xs text-[#1b1b1b]/70 mt-0.5 font-medium">{selectedItem.name}</p>
 
             <form onSubmit={handleCreateTransfer} className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs font-bold text-navy-800 mb-1">Destination Project / Store</label>
+                <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Destination Project / Store</label>
                 <input
                   type="text"
                   required
                   value={transferToSite}
                   onChange={(e) => setTransferToSite(e.target.value)}
-                  className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 focus:outline-none focus:ring-2 focus:ring-navy-800"
+                  className="w-full bg-white border border-[#e5e5e5] rounded-xl px-3 py-2 text-xs text-[#1b1b1b] focus:outline-none focus:ring-2 focus:ring-navy-800"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-navy-800 mb-1">Transfer Quantity ({selectedItem.unit})</label>
+                <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Transfer Quantity ({selectedItem.unit})</label>
                 <input
                   type="number"
                   required
@@ -317,7 +317,7 @@ export function MaterialsStockView() {
                   max={selectedItem.qtyOnHand}
                   value={transferQty}
                   onChange={(e) => setTransferQty(Number(e.target.value))}
-                  className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 font-mono focus:outline-none focus:ring-2 focus:ring-navy-800"
+                  className="w-full bg-white border border-[#e5e5e5] rounded-xl px-3 py-2 text-xs text-[#1b1b1b] font-mono focus:outline-none focus:ring-2 focus:ring-navy-800"
                 />
               </div>
 
@@ -325,13 +325,13 @@ export function MaterialsStockView() {
                 <button
                   type="button"
                   onClick={() => setIsTransferModalOpen(false)}
-                  className="px-3 py-1.5 bg-cream-100 hover:bg-cream-200 border-2 border-navy-800 text-navy-800 text-xs font-bold transition-colors"
+                  className="px-3 py-1.5 bg-[#fbfbfb] hover:bg-[#f5f5f5] border border-[#e5e5e5] rounded-xl text-[#1b1b1b] text-xs font-bold transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white border-2 border-navy-800 shadow-brutal-sm text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white border border-[#e5e5e5] rounded-xl shadow-xs text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
                 >
                   Dispatch Transfer
                 </button>

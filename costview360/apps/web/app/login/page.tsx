@@ -64,72 +64,72 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-cream-100 flex flex-col font-sans">
-      <div className="h-[64px] bg-white border-b-[3px] border-navy-800 flex items-center justify-between px-6">
+    <div className="min-h-screen bg-gradient-to-br from-[#0d1b34] via-[#14213d] to-[#1b3a6b] flex flex-col font-sans">
+      <div className="h-[60px] bg-white/10 backdrop-blur-md border-b border-white/10 flex items-center justify-between px-6">
         <Link href="/"><Logo size="sm" /></Link>
-        <Link href="/" className="text-xs font-black uppercase tracking-widest border-[3px] border-navy-800 px-4 py-2 hover:bg-cream-100">← Back to Landing</Link>
+        <Link href="/" className="text-xs font-semibold text-white/80 hover:text-white border border-white/20 hover:border-white/40 px-3.5 py-1.5 rounded-md transition-all">← Back to Landing</Link>
       </div>
 
       <div className="flex-1 flex items-center justify-center p-6">
-        <div className="w-full max-w-[560px]">
-          <div className="bg-white border-[3px] border-navy-800 shadow-brutal p-8">
+        <div className="w-full max-w-[540px]">
+          <div className="bg-white/95 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-8">
             <div className="text-center mb-6">
-              <div className="inline-flex items-center justify-center w-14 h-14 bg-mustard-400 border-[3px] border-navy-800 font-black text-navy-800 text-xl shadow-brutal-sm mb-3">CV</div>
-              <h2 className="text-2xl font-black tracking-tighter uppercase text-navy-800">Welcome Back</h2>
-              <p className="text-xs font-bold text-navy-800/60 mt-1">Sign in to your CostView workspace</p>
+              <div className="inline-flex items-center justify-center w-12 h-12 bg-[#0067c0] rounded-xl text-white font-bold text-lg shadow-sm mb-3">CV</div>
+              <h2 className="text-2xl font-bold tracking-tight text-[#1b1b1b]">Welcome Back</h2>
+              <p className="text-xs text-[#5c5c5c] mt-1">Sign in to your CostView 360 workspace</p>
             </div>
 
             <form className="space-y-4" onSubmit={handleLogin}>
-              {errorMsg && <div className="p-3 bg-red-500 border-[3px] border-navy-800 text-white text-xs font-black">{errorMsg}</div>}
+              {errorMsg && <div className="p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-xs font-medium">{errorMsg}</div>}
 
               <div>
-                <label className="block text-xs font-black uppercase tracking-widest text-navy-800 mb-1.5">Work Email</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-[#1b1b1b] mb-1.5">Work Email</label>
                 <div className="relative">
-                  <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-navy-800" />
+                  <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#5c5c5c]" />
                   <input type="email" required placeholder="name@firm.ng" value={email} onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-10 pr-3 py-3 bg-white border-[3px] border-navy-800 text-sm font-bold text-navy-800 placeholder:text-navy-800/40 focus:outline-none focus:shadow-brutal-sm" />
+                    className="w-full pl-10 pr-3 py-2.5 bg-white border border-[#e5e5e5] rounded-lg text-sm text-[#1b1b1b] placeholder:text-[#8b8b8b] focus:outline-none focus:border-[#0067c0] focus:ring-1 focus:ring-[#0067c0] transition-all" />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-black uppercase tracking-widest text-navy-800 mb-1.5">Password</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-[#1b1b1b] mb-1.5">Password</label>
                 <div className="relative">
-                  <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-navy-800" />
+                  <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#5c5c5c]" />
                   <input type="password" required placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-10 pr-3 py-3 bg-white border-[3px] border-navy-800 text-sm font-mono font-bold text-navy-800 placeholder:text-navy-800/40 focus:outline-none focus:shadow-brutal-sm" />
+                    className="w-full pl-10 pr-3 py-2.5 bg-white border border-[#e5e5e5] rounded-lg text-sm font-mono text-[#1b1b1b] placeholder:text-[#8b8b8b] focus:outline-none focus:border-[#0067c0] focus:ring-1 focus:ring-[#0067c0] transition-all" />
                 </div>
-                <p className="text-[11px] font-bold text-navy-800/50 mt-1">Demo password for all accounts: <span className="font-mono font-black text-navy-800 bg-mustard-400 px-1 border border-navy-800">DemoPass2026!</span></p>
+                <p className="text-[11px] text-[#5c5c5c] mt-1.5">Demo password for all accounts: <span className="font-mono font-semibold text-[#0067c0] bg-blue-50 border border-blue-200 px-1.5 py-0.5 rounded">DemoPass2026!</span></p>
               </div>
 
               <button type="submit" disabled={loading}
-                className="w-full mt-2 flex items-center justify-center gap-2 py-3.5 bg-navy-800 text-white border-[3px] border-navy-800 font-black uppercase text-sm tracking-wide shadow-brutal hover:bg-navy-700 active:shadow-none active:translate-x-[3px] active:translate-y-[3px] transition-all">
-                {loading ? "Signing in..." : "Sign in to Workspace"} <ArrowRight className="w-4 h-4 text-mustard-400" />
+                className="w-full mt-2 flex items-center justify-center gap-2 py-3 bg-[#0067c0] hover:bg-[#005ba1] text-white rounded-lg font-semibold text-sm shadow-md transition-all active:scale-[0.98]">
+                {loading ? "Signing in..." : "Sign in to Workspace"} <ArrowRight className="w-4 h-4" />
               </button>
             </form>
 
-            <div className="mt-6 pt-5 border-t-[3px] border-navy-800">
-              <div className="text-[11px] font-black uppercase tracking-widest text-navy-800 mb-3 flex items-center justify-between">
-                <span>Quick Test Access — 1 Click (8 roles)</span><span className="bg-mustard-400 border border-navy-800 px-2 py-1">Sandbox Ready</span>
+            <div className="mt-6 pt-5 border-t border-[#e5e5e5]">
+              <div className="text-[11px] font-semibold uppercase tracking-wider text-[#5c5c5c] mb-3 flex items-center justify-between">
+                <span>Quick Test Access — 1 Click (8 roles)</span><span className="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded text-[10px] font-medium">Sandbox Ready</span>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {DEMO_ACCOUNTS.map((b) => (
                   <button key={b.email} type="button" onClick={() => handleDemoLogin(b.email)} disabled={loading}
-                    className="p-3 bg-cream-100 border-[3px] border-navy-800 text-left hover:bg-mustard-400 hover:shadow-brutal-sm transition-all disabled:opacity-50">
-                    <div className="text-xs font-black text-navy-800">{b.label}</div>
-                    <div className="text-[10px] font-bold text-navy-800/60 truncate">{b.sub}</div>
-                    <div className="text-[9px] font-mono text-navy-800/40 truncate">{b.email}</div>
+                    className="p-2.5 bg-[#f8f9fa] border border-[#e5e5e5] rounded-lg text-left hover:bg-blue-50 hover:border-[#0067c0] hover:shadow-xs transition-all disabled:opacity-50 group">
+                    <div className="text-xs font-semibold text-[#1b1b1b] group-hover:text-[#0067c0]">{b.label}</div>
+                    <div className="text-[10px] text-[#5c5c5c] truncate">{b.sub}</div>
+                    <div className="text-[9px] font-mono text-[#8b8b8b] truncate">{b.email}</div>
                   </button>
                 ))}
               </div>
-              <p className="text-[10px] font-bold text-navy-800/50 mt-2 text-center">Click any card to sign in instantly — no typing needed</p>
+              <p className="text-[11px] text-[#8b8b8b] mt-2 text-center">Click any card to sign in instantly — no typing needed</p>
             </div>
 
-            <div className="mt-6 text-center text-xs font-bold">
-              <span className="text-navy-800/60">New company? </span>
-              <Link href="/register" className="font-black text-navy-800 underline decoration-[3px] decoration-mustard-400">Register Workspace →</Link>
+            <div className="mt-6 text-center text-xs">
+              <span className="text-[#5c5c5c]">New company? </span>
+              <Link href="/register" className="font-semibold text-[#0067c0] hover:underline">Register Workspace →</Link>
             </div>
           </div>
-          <div className="mt-4 text-center text-[10px] font-mono font-bold text-navy-800/40 uppercase tracking-widest">© 2026 CostView · Navy Brutalist Edition · All demo logins seeded</div>
+          <div className="mt-4 text-center text-[11px] font-mono text-white/50 tracking-wider">© 2026 CostView 360 · Fluent Glassmorphism Edition</div>
         </div>
       </div>
     </div>

@@ -111,24 +111,24 @@ export function BOQImportModal({ isOpen, onClose, onImportConfirmed }: BOQImport
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-      <div className="bg-white border-2 border-navy-800 max-w-2xl w-full p-6 shadow-brutal overflow-hidden flex flex-col max-h-[85vh]">
+    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="bg-white/95 backdrop-blur-xl border border-[#e5e5e5] rounded-xl max-w-2xl w-full p-6 shadow-xl overflow-hidden flex flex-col max-h-[85vh]">
         {/* Header */}
-        <div className="flex items-center justify-between border-b-2 border-navy-800 pb-4">
+        <div className="flex items-center justify-between border-b border-[#e5e5e5] pb-4">
           <div>
-            <h3 className="text-base font-black text-navy-800 flex items-center gap-2">
+            <h3 className="text-base font-black text-[#1b1b1b] flex items-center gap-2">
               <span>Import Bill of Quantities (BOQ)</span>
-              <span className="text-xs bg-emerald-950 text-emerald-400 border-2 border-emerald-800 px-2 py-0.5 font-mono font-bold">
+              <span className="text-xs bg-blue-50 text-[#0067c0] border border-blue-200 rounded px-2 py-0.5 font-mono font-medium">
                 AI / CSV Parser
               </span>
             </h3>
-            <p className="text-xs font-bold text-navy-800/60 mt-0.5">
+            <p className="text-xs font-bold text-[#1b1b1b]/60 mt-0.5">
               Review extracted line items before committing to project budget (PRD Section 1.2).
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-navy-800/60 hover:text-navy-800 border-2 border-transparent hover:border-navy-800 hover:bg-cream-100"
+            className="p-1.5 text-[#1b1b1b]/60 hover:text-[#1b1b1b] border-2 border-transparent hover:border-[#e5e5e5] hover:bg-[#fbfbfb]"
           >
             <X className="w-4 h-4" />
           </button>
@@ -137,15 +137,15 @@ export function BOQImportModal({ isOpen, onClose, onImportConfirmed }: BOQImport
         {/* Content */}
         <div className="flex-1 overflow-y-auto py-4">
           {step === "upload" ? (
-            <div className="border-2 border-dashed border-navy-800 hover:border-emerald-500/60 p-8 text-center transition-colors bg-cream-100/40">
+            <div className="border-2 border-dashed border-[#e5e5e5] hover:border-[#0067c0] rounded-xl p-8 text-center transition-colors bg-[#fbfbfb]">
               <UploadCloud className="w-10 h-10 text-emerald-500 mx-auto mb-3" />
-              <h4 className="text-sm font-black text-navy-800">
+              <h4 className="text-sm font-black text-[#1b1b1b]">
                 Upload BOQ Spreadsheet or CSV
               </h4>
-              <p className="text-xs font-bold text-navy-800/60 mt-1 max-w-sm mx-auto">
+              <p className="text-xs font-bold text-[#1b1b1b]/60 mt-1 max-w-sm mx-auto">
                 Select an Excel, CSV, or exported rate sheet. The parser extracts Cost Code, Description, Category, Qty, and Rate.
               </p>
-              <label className="inline-block mt-4 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-black uppercase tracking-wider cursor-pointer shadow-brutal-sm transition-all active:translate-x-[2px] active:translate-y-[2px]">
+              <label className="inline-block mt-4 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white border border-[#e5e5e5] text-xs font-black uppercase tracking-wider cursor-pointer shadow-xs transition-all active:translate-x-[2px] active:translate-y-[2px]">
                 <span>Browse Local Files</span>
                 <input
                   type="file"
@@ -157,11 +157,11 @@ export function BOQImportModal({ isOpen, onClose, onImportConfirmed }: BOQImport
             </div>
           ) : (
             <div className="space-y-4">
-              <div className="flex items-center justify-between bg-cream-100 p-3 border-2 border-navy-800 text-xs">
-                <div className="flex items-center gap-2 text-navy-800">
+              <div className="flex items-center justify-between bg-[#fbfbfb] p-3 border border-[#e5e5e5] text-xs">
+                <div className="flex items-center gap-2 text-[#1b1b1b]">
                   <FileText className="w-4 h-4 text-emerald-600" />
                   <span className="font-black">{fileName || "Uploaded File"}</span>
-                  <span className="text-navy-800/60 font-bold">· {parsedItems.length} lines parsed</span>
+                  <span className="text-[#1b1b1b]/60 font-bold">· {parsedItems.length} lines parsed</span>
                 </div>
                 <div className="font-mono text-emerald-600 font-black">
                   Total: {formatCurrency(
@@ -172,9 +172,9 @@ export function BOQImportModal({ isOpen, onClose, onImportConfirmed }: BOQImport
               </div>
 
               {/* Review Table */}
-              <div className="border-2 border-navy-800 overflow-hidden max-h-72 overflow-y-auto">
+              <div className="border border-[#e5e5e5] overflow-hidden max-h-72 overflow-y-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-cream-100 text-navy-800/70 uppercase text-xs font-black sticky top-0 border-b-2 border-navy-800">
+                  <thead className="bg-[#fbfbfb] text-[#1b1b1b]/70 uppercase text-xs font-black sticky top-0 border-b border-[#e5e5e5]">
                     <tr>
                       <th className="py-2.5 px-3">Code</th>
                       <th className="py-2.5 px-3">Description</th>
@@ -184,18 +184,18 @@ export function BOQImportModal({ isOpen, onClose, onImportConfirmed }: BOQImport
                       <th className="py-2.5 px-2 text-center"></th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y-2 divide-navy-800/20 text-navy-800">
+                  <tbody className="divide-y-2 divide-navy-800/20 text-[#1b1b1b]">
                     {parsedItems.map((item) => (
-                      <tr key={item.id} className="hover:bg-cream-100/50">
+                      <tr key={item.id} className="hover:bg-[#f5f5f5]">
                         <td className="py-2 px-3 font-mono font-black text-emerald-600">{item.code}</td>
-                        <td className="py-2 px-3 text-navy-800 font-bold truncate max-w-xs">{item.description}</td>
+                        <td className="py-2 px-3 text-[#1b1b1b] font-bold truncate max-w-xs">{item.description}</td>
                         <td className="py-2 px-2 font-mono font-bold">{item.quantity} {item.unit}</td>
                         <td className="py-2 px-2 font-mono font-bold">{formatCurrency(item.rate, currency)}</td>
                         <td className="py-2 px-3 text-right font-mono font-black">{formatCurrency(item.budgetAmount, currency)}</td>
                         <td className="py-2 px-2 text-center">
                           <button
                             onClick={() => handleRemoveRow(item.id)}
-                            className="text-navy-800/40 hover:text-red-500 p-1"
+                            className="text-[#1b1b1b]/40 hover:text-red-500 p-1"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -210,11 +210,11 @@ export function BOQImportModal({ isOpen, onClose, onImportConfirmed }: BOQImport
         </div>
 
         {/* Footer Actions */}
-        <div className="pt-4 border-t-2 border-navy-800 flex items-center justify-end gap-3">
+        <div className="pt-4 border-t border-[#e5e5e5] flex items-center justify-end gap-3">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 bg-white hover:bg-cream-100 text-navy-800 border-2 border-navy-800 text-xs font-black uppercase tracking-wider shadow-brutal-sm active:translate-x-[1px] active:translate-y-[1px]"
+            className="px-4 py-2 bg-white hover:bg-[#fbfbfb] text-[#1b1b1b] border border-[#e5e5e5] text-xs font-black uppercase tracking-wider shadow-xs active:translate-x-[1px] active:translate-y-[1px]"
           >
             Cancel
           </button>
@@ -222,7 +222,7 @@ export function BOQImportModal({ isOpen, onClose, onImportConfirmed }: BOQImport
             <button
               type="button"
               onClick={handleConfirm}
-              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-black uppercase tracking-wider shadow-brutal-sm transition-all active:translate-x-[2px] active:translate-y-[2px] flex items-center gap-1.5"
+              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white border border-[#e5e5e5] text-xs font-black uppercase tracking-wider shadow-xs transition-all active:translate-x-[2px] active:translate-y-[2px] flex items-center gap-1.5"
             >
               <CheckCircle2 className="w-4 h-4" />
               <span>Confirm &amp; Commit to Budget</span>

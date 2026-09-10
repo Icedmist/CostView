@@ -10,8 +10,10 @@ import { OnboardingModal } from "@/components/onboarding/onboarding-modal";
 export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
   const { currentProject, currency, setCurrency } = useApp();
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
   const router = useRouter();
   const supabase = createClient();
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     localStorage.removeItem("costview_demo_role");
@@ -19,35 +21,38 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
     router.push("/login");
     router.refresh();
   };
+
   return (
-    <header className="h-[72px] bg-white border-b-[3px] border-navy-800 px-4 md:px-6 flex items-center justify-between gap-4 shrink-0">
+    <header className="h-[60px] bg-white/85 backdrop-blur-xl border-b border-[#e5e5e5] px-4 md:px-6 flex items-center justify-between gap-4 shrink-0 shadow-[0_1px_4px_rgba(0,0,0,0.02)] z-20">
       <div className="flex items-center gap-3 min-w-0">
-        <button onClick={onMenuClick} className="lg:hidden w-11 h-11 bg-navy-800 border-2 border-navy-800 flex items-center justify-center text-white shadow-brutal-sm">
+        <button
+          onClick={onMenuClick}
+          className="lg:hidden w-9 h-9 bg-white border border-[#e5e5e5] rounded-lg flex items-center justify-center text-[#5c5c5c] hover:text-[#1b1b1b] shadow-sm"
+        >
           <Menu className="w-5 h-5" />
         </button>
-        <div className="w-11 h-11 bg-navy-800 border-2 border-navy-800 hidden sm:flex items-center justify-center text-mustard-400 shadow-brutal-sm shrink-0">
-          <Building2 className="w-6 h-6" />
-        </div>
-        <div className="min-w-0">
-          <div className="flex flex-wrap items-center gap-2">
-            <h2 className="text-base md:text-lg font-black text-navy-800 tracking-tighter uppercase truncate">
-              {currentProject.name}
-            </h2>
-            <span className="text-xs bg-mustard-400 text-navy-800 px-2.5 py-1 border-2 border-navy-800 font-mono font-black">
-              {currentProject.code}
-            </span>
+
+        {/* Project Switcher Pill */}
+        <div className="flex items-center gap-2.5">
+          <div className="inline-flex items-center gap-2 bg-[#f0f1f3] hover:bg-[#e6e7ea] border border-[#e5e5e5] px-3.5 py-1.5 rounded-full text-xs font-semibold text-[#1b1b1b] transition-all cursor-pointer shadow-sm">
+            <Building2 className="w-3.5 h-3.5 text-[#0067c0]" />
+            <span className="truncate max-w-[200px] md:max-w-none">{currentProject.name}</span>
+            <span className="text-[10px] text-[#5c5c5c] font-normal">({currentProject.code})</span>
           </div>
-          <p className="text-xs font-bold text-navy-800/60 truncate hidden sm:block">{currentProject.location} · Africa/Lagos · ₦ NGN</p>
+          <span className="text-xs text-[#5c5c5c] hidden xl:inline">
+            {currentProject.location} · ₦ NGN
+          </span>
         </div>
       </div>
 
       <div className="flex items-center gap-2 md:gap-3 shrink-0">
-        <div className="hidden lg:flex items-center gap-2 bg-cream-100 border-2 border-navy-800 px-3 py-2 shadow-brutal-sm">
-          <span className="text-xs font-black uppercase tracking-widest text-navy-800">Currency:</span>
+        {/* Currency Pill */}
+        <div className="hidden sm:flex items-center gap-1.5 bg-[#f8f9fa] border border-[#e5e5e5] rounded-lg px-2.5 py-1 text-xs font-semibold text-[#5c5c5c]">
+          <span>Currency:</span>
           <select
             value={currency}
             onChange={(e) => setCurrency(e.target.value)}
-            className="bg-white border-2 border-navy-800 text-sm font-black text-navy-800 px-3 py-1 focus:outline-none cursor-pointer"
+            className="bg-transparent text-xs font-semibold text-[#1b1b1b] focus:outline-none cursor-pointer"
           >
             <option value="NGN">₦ NGN</option>
             <option value="USD">$ USD</option>
@@ -56,35 +61,65 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
           </select>
         </div>
 
+        {/* User Guide Hub */}
         <button
           onClick={() => setIsOnboardingOpen(true)}
           title="Open User Guide & Onboarding Hub"
-          className="flex items-center gap-1.5 px-3 py-2 bg-cream-100 hover:bg-cream-200 border-2 border-navy-800 text-navy-800 shadow-brutal-sm font-black text-xs uppercase transition-transform active:translate-x-0.5 active:translate-y-0.5"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-[#f5f5f5] border border-[#d5d5d5] text-[#1b1b1b] rounded-lg font-semibold text-xs shadow-sm transition-all"
         >
-          <BookOpen className="w-4 h-4 text-navy-800" />
-          <span className="hidden sm:inline">Guide & Manual</span>
+          <BookOpen className="w-3.5 h-3.5 text-[#0067c0]" />
+          <span className="hidden md:inline">User Guide</span>
         </button>
 
-        <div className="hidden md:flex items-center gap-2 bg-navy-800 text-white border-2 border-navy-800 px-4 py-2.5 shadow-brutal-sm">
-          <span className="w-2.5 h-2.5 bg-green-400 border-2 border-white rounded-full animate-pulse" />
-          <span className="text-xs font-black uppercase tracking-wide">Live</span>
+        {/* Live Status Pill */}
+        <div className="hidden md:flex items-center gap-2 bg-[#eef2fb] text-[#0067c0] border border-[#0067c0]/20 px-2.5 py-1 rounded-full text-xs font-semibold">
+          <span className="w-2 h-2 bg-[#0f7b3f] rounded-full animate-pulse" />
+          <span>System Live</span>
         </div>
 
-        <button
-          title="3 Pending Approval Actions"
-          className="relative w-11 h-11 md:w-12 md:h-12 bg-mustard-400 border-2 border-navy-800 flex items-center justify-center text-navy-800 shadow-brutal-sm hover:bg-mustard-500 active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all"
-        >
-          <Bell className="w-5 h-5 md:w-6 md:h-6" />
-          <span className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white text-xs font-black border-2 border-navy-800 flex items-center justify-center">
-            3
-          </span>
-        </button>
+        {/* Notification Bell with Menu */}
+        <div className="relative">
+          <button
+            onClick={() => setNotifOpen((v) => !v)}
+            title="Attention Alerts"
+            className="relative w-9 h-9 rounded-lg border border-[#e5e5e5] bg-white hover:bg-[#f5f5f5] flex items-center justify-center text-[#5c5c5c] hover:text-[#1b1b1b] transition-all shadow-sm"
+          >
+            <Bell className="w-4 h-4" />
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#c42b1c] text-white text-[9.5px] font-bold rounded-full flex items-center justify-center">
+              3
+            </span>
+          </button>
+
+          {notifOpen && (
+            <div className="absolute right-0 top-full mt-2 w-80 bg-white/95 backdrop-blur-2xl border border-[#e5e5e5] rounded-xl shadow-[0_16px_40px_rgba(0,0,0,0.16)] p-3 z-50 animate-in fade-in zoom-in-95">
+              <div className="text-[11.5px] font-bold uppercase tracking-wider text-[#5c5c5c] pb-2 border-b border-[#e5e5e5]">
+                Attention Required
+              </div>
+              <div className="py-2 space-y-2 text-xs">
+                <div className="p-2 rounded-lg bg-[#fbe4e2] text-[#c42b1c] border border-[#c42b1c]/15">
+                  <div className="font-bold">Procurement Commitment Alert</div>
+                  <div className="text-[11px] text-[#1b1b1b]/80 mt-0.5">POs tracking ₦18.4M above baseline allocation.</div>
+                </div>
+                <div className="p-2 rounded-lg bg-[#fdf0dd] text-[#a15c00] border border-[#a15c00]/15">
+                  <div className="font-bold">BOQ Rate Variance</div>
+                  <div className="text-[11px] text-[#1b1b1b]/80 mt-0.5">Blockwork item running 3% over approved unit rate.</div>
+                </div>
+                <div className="p-2 rounded-lg bg-[#eef2fb] text-[#0067c0] border border-[#0067c0]/15">
+                  <div className="font-bold">Site Progress</div>
+                  <div className="text-[11px] text-[#1b1b1b]/80 mt-0.5">Daily muster recorded 96% attendance today.</div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Sign Out Button */}
         <button
           onClick={handleLogout}
-          title="Log out — session clears on tab close or 2h inactivity"
-          className="w-11 h-11 bg-white border-2 border-navy-800 flex items-center justify-center text-navy-800 shadow-brutal-sm hover:bg-cream-100 active:shadow-none active:translate-x-[1px] active:translate-y-[1px] transition-all"
+          title="Sign out of workspace"
+          className="w-9 h-9 rounded-lg border border-[#e5e5e5] bg-white hover:bg-[#f5f5f5] flex items-center justify-center text-[#5c5c5c] hover:text-[#c42b1c] transition-all shadow-sm"
         >
-          <LogOut className="w-5 h-5" />
+          <LogOut className="w-4 h-4" />
         </button>
       </div>
 

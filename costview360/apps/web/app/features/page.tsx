@@ -43,13 +43,13 @@ const FEATURES = [
 
 export default function FeaturesPage() {
   return (
-    <div className="min-h-screen bg-[#FFFDF0] text-navy-800 font-sans">
+    <div className="min-h-screen bg-[#fbfbfb] text-[#1b1b1b] font-sans">
       <MarketingNav />
 
-      <header className="border-b-[3px] border-navy-800 bg-navy-800 text-white">
+      <header className="border-b border-[#e5e5e5] glass-hero text-white">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-10 md:py-14">
-          <div className="inline-block bg-[#FFD23F] text-navy-800 border-[3px] border-navy-800 px-4 py-2 font-black uppercase text-sm shadow-brutal-sm">Platform</div>
-          <h1 className="mt-4 text-4xl md:text-5xl font-black tracking-tighter leading-none">Every Module.<br /><span className="text-mustard-400">One System.</span></h1>
+          <div className="inline-block bg-blue-50 text-[#0067c0] border-blue-200 text-[#1b1b1b] border border-[#e5e5e5] px-4 py-2 font-semibold text-sm shadow-xs">Platform</div>
+          <h1 className="mt-4 text-4xl md:text-5xl font-black tracking-tighter leading-none">Every Module.<br /><span className="text-[#0067c0]">One System.</span></h1>
           <p className="mt-4 text-base font-bold text-white/70 max-w-2xl">Per PRD §5 — 7 operations modules, 10 reports, 18 commercial stages. Let the system calculate what it can; people only type what it can’t know.</p>
         </div>
       </header>
@@ -57,13 +57,13 @@ export default function FeaturesPage() {
       <section className="max-w-7xl mx-auto px-4 md:px-6 py-10 md:py-14">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {FEATURES.map((f) => (
-            <div key={f.title} className="bg-white border-[3px] border-navy-800 shadow-brutal p-6">
-              <div className="w-14 h-14 bg-navy-800 border-[3px] border-navy-800 flex items-center justify-center text-white mb-4"><f.icon className="w-7 h-7" /></div>
-              <h3 className="font-black uppercase tracking-tight text-lg">{f.title}</h3>
-              <p className="text-sm font-bold text-navy-800/60 mt-2 leading-relaxed">{f.desc}</p>
+            <div key={f.title} className="bg-white/90 backdrop-blur-md border border-[#e5e5e5] rounded-xl shadow-card p-6">
+              <div className="w-12 h-12 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-center text-[#0067c0] mb-4"><f.icon className="w-7 h-7" /></div>
+              <h3 className="font-semibold tracking-tight text-lg">{f.title}</h3>
+              <p className="text-sm font-bold text-[#5c5c5c] mt-2 leading-relaxed">{f.desc}</p>
               <ul className="mt-4 space-y-1.5">
                 {f.bullets.map((b) => (
-                  <li key={b} className="flex items-start gap-2 text-xs font-bold"><CheckCircle2 className="w-4 h-4 text-navy-800 shrink-0 mt-0.5" />{b}</li>
+                  <li key={b} className="flex items-start gap-2 text-xs font-bold"><CheckCircle2 className="w-4 h-4 text-[#0067c0] shrink-0 mt-0.5" />{b}</li>
                 ))}
               </ul>
             </div>
@@ -71,32 +71,32 @@ export default function FeaturesPage() {
         </div>
       </section>
 
-      <section className="bg-white border-y-[3px] border-navy-800">
+      <section className="bg-white border-y border-[#e5e5e5]">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-10">
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-[#FFFDF0] border-[3px] border-navy-800 p-6 shadow-brutal">
+            <div className="bg-[#fbfbfb] border border-[#e5e5e5] p-6 shadow-card">
               <Zap className="w-8 h-8 mb-3" />
-              <h4 className="font-black uppercase">Fast</h4>
-              <p className="text-sm font-bold text-navy-800/60 mt-2">Less typing — numbers entered once in Budget automatically show downstream in Procurement, Materials, Labour.</p>
+              <h4 className="font-semibold">Fast</h4>
+              <p className="text-sm font-bold text-[#5c5c5c] mt-2">Less typing — numbers entered once in Budget automatically show downstream in Procurement, Materials, Labour.</p>
             </div>
-            <div className="bg-[#FFD23F] border-[3px] border-navy-800 p-6 shadow-brutal">
+            <div className="bg-blue-50 text-[#0067c0] border-blue-200 border border-[#e5e5e5] p-6 shadow-card">
               <Eye className="w-8 h-8 mb-3" />
-              <h4 className="font-black uppercase">Efficient</h4>
+              <h4 className="font-semibold">Efficient</h4>
               <p className="text-sm font-bold mt-2">Right person, right module, right time — role views + threshold approvals, no chasing.</p>
             </div>
-            <div className="bg-navy-800 text-white border-[3px] border-navy-800 p-6 shadow-brutal">
-              <ShieldCheck className="w-8 h-8 mb-3 text-mustard-400" />
-              <h4 className="font-black uppercase">Auditable</h4>
+            <div className="glass-hero text-white rounded-xl p-6 shadow-card">
+              <ShieldCheck className="w-8 h-8 mb-3 text-[#0067c0]" />
+              <h4 className="font-semibold">Auditable</h4>
               <p className="text-sm font-bold text-white/70 mt-2">Every approval (revision, PO, claim, variation) logged with actor + timestamp per PRD §7.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <footer className="bg-[#FFFDF0] border-t-[3px] border-navy-800">
+      <footer className="bg-[#fbfbfb] border-t border-[#e5e5e5]">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <Link href="/"><Logo size="sm" /></Link>
-          <div className="flex gap-4 text-sm font-black uppercase">
+          <div className="flex gap-4 text-sm font-semibold">
             <Link href="/how-it-works" className="hover:underline">How it Works</Link>
             <Link href="/pricing" className="hover:underline">Pricing</Link>
             <Link href="/contact" className="hover:underline">Contact</Link>

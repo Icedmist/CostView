@@ -385,16 +385,16 @@ export function SubcontractorView() {
   };
 
   return (
-    <div className="bg-white border-2 border-navy-800 shadow-brutal overflow-hidden space-y-4">
+    <div className="bg-white/90 backdrop-blur-md border border-[#e5e5e5] rounded-xl shadow-xs overflow-hidden space-y-4">
       {/* Subnavigation Bar */}
-      <div className="p-3 bg-navy-800 border-b-[3px] border-navy-800 flex items-center justify-between overflow-x-auto gap-2">
+      <div className="p-2.5 bg-[#f8f9fa] border-b border-[#e5e5e5] flex items-center justify-between overflow-x-auto gap-2">
         <div className="flex items-center gap-1.5">
           <button
             onClick={() => setSubTab("contracts")}
-            className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border border-[#e5e5e5] text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "contracts"
-                ? "bg-navy-800 text-white border border-navy-800 shadow-sm"
-                : "text-navy-800/60 hover:text-navy-800"
+                ? "bg-white text-[#0067c0] border border-[#e5e5e5] shadow-xs rounded-md"
+                : "text-[#5c5c5c] hover:text-[#1b1b1b] hover:bg-black/5 rounded-md border border-transparent"
             }`}
           >
             <Briefcase className="w-3.5 h-3.5 text-emerald-400" />
@@ -403,10 +403,10 @@ export function SubcontractorView() {
 
           <button
             onClick={() => setSubTab("claims")}
-            className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border border-[#e5e5e5] text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "claims"
-                ? "bg-navy-800 text-white border border-navy-800 shadow-sm"
-                : "text-navy-800/60 hover:text-navy-800"
+                ? "bg-white text-[#0067c0] border border-[#e5e5e5] shadow-xs rounded-md"
+                : "text-[#5c5c5c] hover:text-[#1b1b1b] hover:bg-black/5 rounded-md border border-transparent"
             }`}
           >
             <Receipt className="w-3.5 h-3.5 text-amber-400" />
@@ -420,10 +420,10 @@ export function SubcontractorView() {
 
           <button
             onClick={() => setSubTab("instructions")}
-            className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border border-[#e5e5e5] text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "instructions"
-                ? "bg-navy-800 text-white border border-navy-800 shadow-sm"
-                : "text-navy-800/60 hover:text-navy-800"
+                ? "bg-white text-[#0067c0] border border-[#e5e5e5] shadow-xs rounded-md"
+                : "text-[#5c5c5c] hover:text-[#1b1b1b] hover:bg-black/5 rounded-md border border-transparent"
             }`}
           >
             <ScrollText className="w-3.5 h-3.5 text-blue-400" />
@@ -432,10 +432,10 @@ export function SubcontractorView() {
 
           <button
             onClick={() => setSubTab("variations")}
-            className={`px-3 py-1.5 border-2 border-navy-800 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border border-[#e5e5e5] text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "variations"
-                ? "bg-navy-800 text-white border border-navy-800 shadow-sm"
-                : "text-navy-800/60 hover:text-navy-800"
+                ? "bg-white text-[#0067c0] border border-[#e5e5e5] shadow-xs rounded-md"
+                : "text-[#5c5c5c] hover:text-[#1b1b1b] hover:bg-black/5 rounded-md border border-transparent"
             }`}
           >
             <FileSpreadsheet className="w-3.5 h-3.5 text-purple-400" />
@@ -447,19 +447,19 @@ export function SubcontractorView() {
       {/* SUBTAB 1: SUBCONTRACTOR PACKAGES & RETENTION (PRD Item 19) */}
       {subTab === "contracts" && (
         <div>
-          <div className="p-4 border-b border-navy-800 flex items-center justify-between">
+          <div className="p-4 border-b border-[#e5e5e5] flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-black text-navy-800 flex items-center gap-2">
+              <h3 className="text-sm font-black text-[#1b1b1b] flex items-center gap-2">
                 <Briefcase className="w-4 h-4 text-emerald-400" />
                 <span>Subcontractor Packages & Financial Ledger</span>
               </h3>
-              <p className="text-xs text-navy-800/60 mt-0.5">
+              <p className="text-xs text-[#1b1b1b]/60 mt-0.5">
                 Contract sums, certified work to date, and 10% statutory retention fund held (PRD Section 6).
               </p>
             </div>
             <button
               onClick={() => setIsAddSubOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-brutal-sm transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border border-[#e5e5e5] text-xs font-semibold shadow-xs transition-colors"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Subcontractor</span>
@@ -468,7 +468,7 @@ export function SubcontractorView() {
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-navy-800 text-white uppercase text-xs font-semibold border-b border-navy-800">
+              <thead className="bg-navy-800 text-white uppercase text-xs font-semibold border-b border-[#e5e5e5]">
                 <tr>
                   <th className="py-3 px-4">Subcontractor</th>
                   <th className="py-3 px-4">Trade Scope</th>
@@ -480,17 +480,17 @@ export function SubcontractorView() {
                   <th className="py-3 px-4 text-center">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-navy-800/10 text-navy-800">
+              <tbody className="divide-y divide-navy-800/10 text-[#1b1b1b]">
                 {subs.map((s) => {
                   const avgScore = ((s.scoreQuality + s.scoreSchedule + s.scoreSafety + s.scoreResponse) / 4).toFixed(1);
                   return (
-                    <tr key={s.id} className="hover:bg-cream-100/30 transition-colors">
-                      <td className="py-3 px-4 font-bold text-navy-800">{s.name}</td>
-                      <td className="py-3 px-4 text-navy-800">{s.trade}</td>
-                      <td className="py-3 px-4 text-right font-mono font-bold text-navy-800">
+                    <tr key={s.id} className="hover:bg-[#fbfbfb]/30 transition-colors">
+                      <td className="py-3 px-4 font-bold text-[#1b1b1b]">{s.name}</td>
+                      <td className="py-3 px-4 text-[#1b1b1b]">{s.trade}</td>
+                      <td className="py-3 px-4 text-right font-mono font-bold text-[#1b1b1b]">
                         {formatCurrency(s.contractSum, currency)}
                       </td>
-                      <td className="py-3 px-4 text-right font-mono text-navy-800">
+                      <td className="py-3 px-4 text-right font-mono text-[#1b1b1b]">
                         {formatCurrency(s.certifiedAmount, currency)}
                       </td>
                       <td className="py-3 px-4 text-right font-mono text-amber-600 font-bold">
@@ -500,7 +500,7 @@ export function SubcontractorView() {
                         {formatCurrency(s.paidAmount, currency)}
                       </td>
                       <td className="py-3 px-4 text-center">
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-navy-800 text-amber-600 text-sm font-bold bg-cream-100">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-[#e5e5e5] text-amber-600 text-sm font-bold bg-[#fbfbfb]">
                           <Star className="w-3 h-3 fill-amber-500" />
                           {avgScore}
                         </span>
@@ -510,16 +510,16 @@ export function SubcontractorView() {
                           <button
                             onClick={() => handleOpenSubDetail(s)}
                             title="View Financial Statement"
-                            className="p-1 text-navy-800 hover:bg-cream-200 border border-navy-800 transition-colors"
+                            className="p-1 text-[#1b1b1b] hover:bg-[#f5f5f5] border border-[#e5e5e5] transition-colors"
                           >
-                            <Eye className="w-3.5 h-3.5 text-navy-800" />
+                            <Eye className="w-3.5 h-3.5 text-[#1b1b1b]" />
                           </button>
                           <button
                             onClick={() => handleOpenGradeSub(s)}
                             title="Grade Subcontractor"
-                            className="p-1 text-navy-800 hover:bg-cream-200 border border-navy-800 transition-colors"
+                            className="p-1 text-[#1b1b1b] hover:bg-[#f5f5f5] border border-[#e5e5e5] transition-colors"
                           >
-                            <Award className="w-3.5 h-3.5 text-navy-800" />
+                            <Award className="w-3.5 h-3.5 text-[#1b1b1b]" />
                           </button>
                         </div>
                       </td>
@@ -535,19 +535,19 @@ export function SubcontractorView() {
       {/* SUBTAB 2: INTERIM CLAIMS & CERTIFICATES (PRD Item 20) */}
       {subTab === "claims" && (
         <div className="p-5 space-y-4">
-          <div className="flex items-center justify-between border-b border-navy-800 pb-3">
+          <div className="flex items-center justify-between border-b border-[#e5e5e5] pb-3">
             <div>
-              <h3 className="text-sm font-black text-navy-800 flex items-center gap-2">
+              <h3 className="text-sm font-black text-[#1b1b1b] flex items-center gap-2">
                 <Receipt className="w-4 h-4 text-amber-400" />
                 <span>Interim Payment Claims & Valuation Certificates</span>
               </h3>
-              <p className="text-xs text-navy-800/60 mt-0.5">
+              <p className="text-xs text-[#1b1b1b]/60 mt-0.5">
                 Subcontractor claims validated against contract terms with automatic 10% retention holding (PRD Section 6.2).
               </p>
             </div>
             <button
               onClick={() => setIsAddClaimOpen(true)}
-              className="px-3 py-1.5 bg-amber-600 hover:bg-amber-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-brutal-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-amber-600 hover:bg-amber-500 text-white border border-[#e5e5e5] text-xs font-semibold shadow-xs transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Interim Claim</span>
@@ -556,18 +556,18 @@ export function SubcontractorView() {
 
           <div className="divide-y divide-navy-800/10">
             {claims.map((c) => (
-              <div key={c.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/20 px-2 border-2 border-navy-800 transition-colors">
+              <div key={c.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-[#fbfbfb]/20 px-2 border border-[#e5e5e5] transition-colors">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-mono font-bold text-amber-600 text-xs">{c.claimNumber}</span>
-                    <span className="text-navy-800/40">·</span>
-                    <span className="font-semibold text-navy-800 text-xs">{c.subcontractorName}</span>
-                    <span className="text-navy-800/40">·</span>
-                    <span className="text-xs text-navy-800/60">{c.claimPeriod}</span>
+                    <span className="text-[#1b1b1b]/40">·</span>
+                    <span className="font-semibold text-[#1b1b1b] text-xs">{c.subcontractorName}</span>
+                    <span className="text-[#1b1b1b]/40">·</span>
+                    <span className="text-xs text-[#1b1b1b]/60">{c.claimPeriod}</span>
                   </div>
-                  <div className="text-xs text-navy-800">{c.workDescription}</div>
-                  <div className="text-xs text-navy-800/60 mt-1 flex items-center gap-2 font-mono">
-                    <span>Claimed: <strong className="text-navy-800">{formatCurrency(c.claimedAmount, currency)}</strong></span>
+                  <div className="text-xs text-[#1b1b1b]">{c.workDescription}</div>
+                  <div className="text-xs text-[#1b1b1b]/60 mt-1 flex items-center gap-2 font-mono">
+                    <span>Claimed: <strong className="text-[#1b1b1b]">{formatCurrency(c.claimedAmount, currency)}</strong></span>
                     {c.retentionDeduction && (
                       <span>· Retention Withheld (10%): <strong className="text-amber-600">{formatCurrency(c.retentionDeduction, currency)}</strong></span>
                     )}
@@ -575,7 +575,7 @@ export function SubcontractorView() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className={`px-2.5 py-1 text-xs font-bold border-2 border-navy-800 ${
+                  <span className={`px-2.5 py-1 text-xs font-bold border border-[#e5e5e5] ${
                     c.status === "Certified"
                       ? "bg-emerald-100 text-emerald-800"
                       : "bg-amber-100 text-amber-800"
@@ -586,7 +586,7 @@ export function SubcontractorView() {
                   {c.status === "Submitted" && (
                     <button
                       onClick={() => handleCertifyClaim(c.id)}
-                      className="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-brutal-sm transition-colors flex items-center gap-1"
+                      className="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white border border-[#e5e5e5] text-xs font-semibold shadow-xs transition-colors flex items-center gap-1"
                     >
                       <Check className="w-3.5 h-3.5" />
                       <span>Certify & Apply 10%</span>
@@ -602,19 +602,19 @@ export function SubcontractorView() {
       {/* SUBTAB 3: SITE INSTRUCTIONS (PRD Item 22) */}
       {subTab === "instructions" && (
         <div className="p-5 space-y-4">
-          <div className="flex items-center justify-between border-b border-navy-800 pb-3">
+          <div className="flex items-center justify-between border-b border-[#e5e5e5] pb-3">
             <div>
-              <h3 className="text-sm font-black text-navy-800 flex items-center gap-2">
+              <h3 className="text-sm font-black text-[#1b1b1b] flex items-center gap-2">
                 <ScrollText className="w-4 h-4 text-blue-600" />
                 <span>Site Instructions Register (Architect / Engineer / Client)</span>
               </h3>
-              <p className="text-xs text-navy-800/60 mt-0.5">
+              <p className="text-xs text-[#1b1b1b]/60 mt-0.5">
                 Master record of formal site instructions that trigger variation orders (PRD Section 7.1).
               </p>
             </div>
             <button
               onClick={() => setIsAddInstructionOpen(true)}
-              className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-brutal-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white border border-[#e5e5e5] text-xs font-semibold shadow-xs transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Instruction</span>
@@ -623,27 +623,27 @@ export function SubcontractorView() {
 
           <div className="divide-y divide-navy-800/10">
             {instructions.map((instr) => (
-              <div key={instr.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/20 px-2 border-2 border-navy-800 transition-colors">
+              <div key={instr.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-[#fbfbfb]/20 px-2 border border-[#e5e5e5] transition-colors">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-mono font-bold text-blue-600 text-xs">{instr.instructionNumber}</span>
-                    <span className="text-navy-800/40">·</span>
-                    <span className="font-semibold text-navy-800 text-xs">{instr.subject}</span>
-                    <span className="text-navy-800/40">·</span>
-                    <span className="text-xs bg-cream-100 text-navy-800 px-2 py-0.5 border border-navy-800 font-mono">
+                    <span className="text-[#1b1b1b]/40">·</span>
+                    <span className="font-semibold text-[#1b1b1b] text-xs">{instr.subject}</span>
+                    <span className="text-[#1b1b1b]/40">·</span>
+                    <span className="text-xs bg-[#fbfbfb] text-[#1b1b1b] px-2 py-0.5 border border-[#e5e5e5] font-mono">
                       Issued by: {instr.issuedBy} ({instr.issueDate})
                     </span>
                   </div>
-                  <p className="text-xs text-navy-800">{instr.description}</p>
+                  <p className="text-xs text-[#1b1b1b]">{instr.description}</p>
                 </div>
 
                 <div>
                   {instr.linkedVoNumber ? (
-                    <span className="px-2.5 py-1 bg-emerald-100 text-emerald-800 border-2 border-navy-800 text-xs font-mono font-bold">
+                    <span className="px-2.5 py-1 bg-emerald-100 text-emerald-800 border border-[#e5e5e5] text-xs font-mono font-bold">
                       Linked: {instr.linkedVoNumber}
                     </span>
                   ) : (
-                    <span className="px-2.5 py-1 bg-cream-100 text-navy-800/60 border border-navy-800 text-xs">
+                    <span className="px-2.5 py-1 bg-[#fbfbfb] text-[#1b1b1b]/60 border border-[#e5e5e5] text-xs">
                       Pending VO
                     </span>
                   )}
@@ -657,19 +657,19 @@ export function SubcontractorView() {
       {/* SUBTAB 4: VARIATIONS REGISTER (PRD Items 23 & 24) */}
       {subTab === "variations" && (
         <div className="p-5 space-y-4">
-          <div className="flex items-center justify-between border-b border-navy-800 pb-3">
+          <div className="flex items-center justify-between border-b border-[#e5e5e5] pb-3">
             <div>
-              <h3 className="text-sm font-black text-navy-800 flex items-center gap-2">
+              <h3 className="text-sm font-black text-[#1b1b1b] flex items-center gap-2">
                 <FileSpreadsheet className="w-4 h-4 text-purple-600" />
                 <span>Variation Orders Register & 4-Stage Approval</span>
               </h3>
-              <p className="text-xs text-navy-800/60 mt-0.5">
+              <p className="text-xs text-[#1b1b1b]/60 mt-0.5">
                 Draft → QS Valuation → PM Review → Approved. Approved variations auto-update budget baseline (PRD Section 7.3).
               </p>
             </div>
             <button
               onClick={() => setIsAddVoOpen(true)}
-              className="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white border-2 border-navy-800 text-xs font-semibold shadow-brutal-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white border border-[#e5e5e5] text-xs font-semibold shadow-xs transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Raise Variation</span>
@@ -678,35 +678,35 @@ export function SubcontractorView() {
 
           <div className="divide-y divide-navy-800/10">
             {variations.map((vo) => (
-              <div key={vo.id} className="p-4 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-cream-100/30 transition-colors">
+              <div key={vo.id} className="p-4 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-[#fbfbfb]/30 transition-colors">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-mono font-bold text-purple-600 text-xs">{vo.voNumber}</span>
-                    <span className="text-navy-800/40">·</span>
-                    <span className="font-bold text-navy-800 text-xs">{vo.title}</span>
-                    <span className="text-navy-800/40">·</span>
-                    <span className="text-xs bg-cream-100 text-emerald-700 px-1.5 py-0.5 border border-navy-800 font-mono">
+                    <span className="text-[#1b1b1b]/40">·</span>
+                    <span className="font-bold text-[#1b1b1b] text-xs">{vo.title}</span>
+                    <span className="text-[#1b1b1b]/40">·</span>
+                    <span className="text-xs bg-[#fbfbfb] text-emerald-700 px-1.5 py-0.5 border border-[#e5e5e5] font-mono">
                       Affects BOQ: {vo.linkedBOQItem}
                     </span>
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-navy-800/60">
+                  <div className="flex items-center gap-3 text-xs text-[#1b1b1b]/60">
                     <span>Cost Impact: <strong className="font-mono text-emerald-600">{formatCurrency(vo.costImpact, currency)}</strong></span>
                     <span>·</span>
-                    <span>Time Delta: <strong className="text-navy-800">{vo.timeImpactDays} Days</strong></span>
+                    <span>Time Delta: <strong className="text-[#1b1b1b]">{vo.timeImpactDays} Days</strong></span>
                     <span>·</span>
                     <span>Raised by: {vo.raisedBy}</span>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <span className={`px-2.5 py-1 text-xs font-semibold border-2 border-navy-800 ${
+                  <span className={`px-2.5 py-1 text-xs font-semibold border border-[#e5e5e5] ${
                     vo.stage === "Approved"
                       ? "bg-emerald-100 text-emerald-800"
                       : vo.stage === "PM Review"
                       ? "bg-purple-100 text-purple-800"
                       : vo.stage === "QS Valuation"
                       ? "bg-blue-100 text-blue-800"
-                      : "bg-cream-100 text-navy-800"
+                      : "bg-[#fbfbfb] text-[#1b1b1b]"
                   }`}>
                     {vo.stage}
                   </span>
@@ -714,7 +714,7 @@ export function SubcontractorView() {
                   {vo.stage !== "Approved" && (
                     <button
                       onClick={() => handleAdvanceVoStage(vo.id)}
-                      className="flex items-center gap-1 px-3 py-1.5 bg-cream-100 hover:bg-cream-200 text-navy-800 text-xs font-semibold border-2 border-navy-800 shadow-brutal-sm transition-colors"
+                      className="flex items-center gap-1 px-3 py-1.5 bg-[#fbfbfb] hover:bg-[#f5f5f5] text-[#1b1b1b] text-xs font-semibold border border-[#e5e5e5] shadow-xs transition-colors"
                     >
                       <span>Advance Stage</span>
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -730,52 +730,52 @@ export function SubcontractorView() {
       {/* Modal: Add Subcontractor (PRD #19) */}
       {isAddSubOpen && (
         <div className="fixed inset-0 z-50 bg-navy-950/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-cream-50 border-2 border-navy-800 max-w-md w-full p-6 shadow-brutal">
-            <h3 className="text-sm font-bold text-navy-800 uppercase tracking-wide">Add Subcontractor Package</h3>
+          <div className="bg-[#fbfbfb] border border-[#e5e5e5] max-w-md w-full p-6 shadow-card">
+            <h3 className="text-sm font-bold text-[#1b1b1b] uppercase tracking-wide">Add Subcontractor Package</h3>
             <form onSubmit={handleAddSub} className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs font-bold text-navy-800 mb-1">Company Name</label>
+                <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Company Name</label>
                 <input
                   type="text"
                   required
                   value={subName}
                   onChange={(e) => setSubName(e.target.value)}
                   placeholder="e.g. Zenith Piling Works Ltd"
-                  className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 focus:outline-none focus:ring-2 focus:ring-navy-800"
+                  className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] focus:outline-none focus:ring-2 focus:ring-navy-800"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-navy-800 mb-1">Trade Scope</label>
+                <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Trade Scope</label>
                 <input
                   type="text"
                   required
                   value={subTrade}
                   onChange={(e) => setSubTrade(e.target.value)}
                   placeholder="Piling, Waterproofing, HVAC"
-                  className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 focus:outline-none focus:ring-2 focus:ring-navy-800"
+                  className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] focus:outline-none focus:ring-2 focus:ring-navy-800"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-navy-800 mb-1">Contract Sum (₦)</label>
+                <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Contract Sum (₦)</label>
                 <input
                   type="number"
                   required
                   value={subSum}
                   onChange={(e) => setSubSum(Number(e.target.value))}
-                  className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 font-mono focus:outline-none focus:ring-2 focus:ring-navy-800"
+                  className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] font-mono focus:outline-none focus:ring-2 focus:ring-navy-800"
                 />
               </div>
               <div className="pt-2 flex items-center justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setIsAddSubOpen(false)}
-                  className="px-3 py-1.5 bg-cream-100 hover:bg-cream-200 border-2 border-navy-800 text-navy-800 text-xs font-bold transition-colors"
+                  className="px-3 py-1.5 bg-[#fbfbfb] hover:bg-[#f5f5f5] border border-[#e5e5e5] text-[#1b1b1b] text-xs font-bold transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-navy-800 shadow-brutal-sm text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white border border-[#e5e5e5] shadow-xs text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
                 >
                   Save Package
                 </button>
@@ -788,31 +788,31 @@ export function SubcontractorView() {
       {/* Modal: Subcontractor Financial Detail (PRD #19) */}
       {isDetailSubOpen && selectedSub && (
         <div className="fixed inset-0 z-50 bg-navy-950/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-cream-50 border-2 border-navy-800 max-w-md w-full p-6 shadow-brutal space-y-4">
-            <div className="border-b-2 border-navy-800 pb-3">
-              <h3 className="text-sm font-bold text-navy-800 uppercase tracking-wide">{selectedSub.name}</h3>
-              <p className="text-xs text-navy-800/70 font-mono mt-0.5">Scope: {selectedSub.trade}</p>
+          <div className="bg-[#fbfbfb] border border-[#e5e5e5] max-w-md w-full p-6 shadow-card space-y-4">
+            <div className="border-b border-[#e5e5e5] pb-3">
+              <h3 className="text-sm font-bold text-[#1b1b1b] uppercase tracking-wide">{selectedSub.name}</h3>
+              <p className="text-xs text-[#1b1b1b]/70 font-mono mt-0.5">Scope: {selectedSub.trade}</p>
             </div>
 
             <div className="space-y-2 text-xs">
-              <div className="flex justify-between py-1.5 border-b border-navy-800/20">
-                <span className="text-navy-800/70 font-medium">Agreed Contract Sum:</span>
-                <span className="font-mono font-bold text-navy-800">{formatCurrency(selectedSub.contractSum, currency)}</span>
+              <div className="flex justify-between py-1.5 border-b border-[#e5e5e5]">
+                <span className="text-[#1b1b1b]/70 font-medium">Agreed Contract Sum:</span>
+                <span className="font-mono font-bold text-[#1b1b1b]">{formatCurrency(selectedSub.contractSum, currency)}</span>
               </div>
-              <div className="flex justify-between py-1.5 border-b border-navy-800/20">
-                <span className="text-navy-800/70 font-medium">Total Certified to Date:</span>
+              <div className="flex justify-between py-1.5 border-b border-[#e5e5e5]">
+                <span className="text-[#1b1b1b]/70 font-medium">Total Certified to Date:</span>
                 <span className="font-mono font-bold text-emerald-700">{formatCurrency(selectedSub.certifiedAmount, currency)}</span>
               </div>
-              <div className="flex justify-between py-1.5 border-b border-navy-800/20">
-                <span className="text-navy-800/70 font-medium">Retention Fund Held (10%):</span>
+              <div className="flex justify-between py-1.5 border-b border-[#e5e5e5]">
+                <span className="text-[#1b1b1b]/70 font-medium">Retention Fund Held (10%):</span>
                 <span className="font-mono font-bold text-amber-700">{formatCurrency(selectedSub.retentionHeld, currency)}</span>
               </div>
-              <div className="flex justify-between py-1.5 border-b border-navy-800/20">
-                <span className="text-navy-800/70 font-medium">Net Disbursed / Paid:</span>
+              <div className="flex justify-between py-1.5 border-b border-[#e5e5e5]">
+                <span className="text-[#1b1b1b]/70 font-medium">Net Disbursed / Paid:</span>
                 <span className="font-mono font-bold text-blue-700">{formatCurrency(selectedSub.paidAmount, currency)}</span>
               </div>
-              <div className="flex justify-between py-1.5 font-bold pt-2 border-t-2 border-navy-800">
-                <span className="text-navy-800 uppercase tracking-wider">Remaining Balance:</span>
+              <div className="flex justify-between py-1.5 font-bold pt-2 border-t border-[#e5e5e5]">
+                <span className="text-[#1b1b1b] uppercase tracking-wider">Remaining Balance:</span>
                 <span className="font-mono text-emerald-700">
                   {formatCurrency(selectedSub.contractSum - selectedSub.certifiedAmount, currency)}
                 </span>
@@ -822,7 +822,7 @@ export function SubcontractorView() {
             <div className="pt-2 flex justify-end">
               <button
                 onClick={() => setIsDetailSubOpen(false)}
-                className="px-4 py-2 bg-navy-800 hover:bg-navy-900 text-white border-2 border-navy-800 shadow-brutal-sm text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
+                className="px-4 py-2 bg-navy-800 hover:bg-navy-900 text-white border border-[#e5e5e5] shadow-xs text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
               >
                 Close Statement
               </button>
@@ -834,15 +834,15 @@ export function SubcontractorView() {
       {/* Modal: Grade Subcontractor Across 4 Categories (PRD #21) */}
       {isGradeSubOpen && selectedSub && (
         <div className="fixed inset-0 z-50 bg-navy-950/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-cream-50 border-2 border-navy-800 max-w-md w-full p-6 shadow-brutal">
-            <h3 className="text-sm font-bold text-navy-800 uppercase tracking-wide">Performance Evaluation · {selectedSub.name}</h3>
-            <p className="text-xs text-navy-800/70 mt-1">
+          <div className="bg-[#fbfbfb] border border-[#e5e5e5] max-w-md w-full p-6 shadow-card">
+            <h3 className="text-sm font-bold text-[#1b1b1b] uppercase tracking-wide">Performance Evaluation · {selectedSub.name}</h3>
+            <p className="text-xs text-[#1b1b1b]/70 mt-1">
               Grade across the 4 key categories to update dynamic contractor rating (PRD Section 6.5).
             </p>
 
             <form onSubmit={handleSaveSubGrading} className="mt-4 space-y-3">
               <div>
-                <div className="flex justify-between text-xs text-navy-800 mb-1">
+                <div className="flex justify-between text-xs text-[#1b1b1b] mb-1">
                   <span className="font-bold">1. Quality of Workmanship:</span>
                   <span className="font-mono font-bold text-amber-600">{scoreQual.toFixed(1)} / 5.0</span>
                 </div>
@@ -858,7 +858,7 @@ export function SubcontractorView() {
               </div>
 
               <div>
-                <div className="flex justify-between text-xs text-navy-800 mb-1">
+                <div className="flex justify-between text-xs text-[#1b1b1b] mb-1">
                   <span className="font-bold">2. Schedule & Milestone Adherence:</span>
                   <span className="font-mono font-bold text-amber-600">{scoreSched.toFixed(1)} / 5.0</span>
                 </div>
@@ -874,7 +874,7 @@ export function SubcontractorView() {
               </div>
 
               <div>
-                <div className="flex justify-between text-xs text-navy-800 mb-1">
+                <div className="flex justify-between text-xs text-[#1b1b1b] mb-1">
                   <span className="font-bold">3. Site Safety & PPE Compliance:</span>
                   <span className="font-mono font-bold text-amber-600">{scoreSafe.toFixed(1)} / 5.0</span>
                 </div>
@@ -890,7 +890,7 @@ export function SubcontractorView() {
               </div>
 
               <div>
-                <div className="flex justify-between text-xs text-navy-800 mb-1">
+                <div className="flex justify-between text-xs text-[#1b1b1b] mb-1">
                   <span className="font-bold">4. Responsiveness & Site Presence:</span>
                   <span className="font-mono font-bold text-amber-600">{scoreResp.toFixed(1)} / 5.0</span>
                 </div>
@@ -909,13 +909,13 @@ export function SubcontractorView() {
                 <button
                   type="button"
                   onClick={() => setIsGradeSubOpen(false)}
-                  className="px-3 py-1.5 bg-cream-100 hover:bg-cream-200 border-2 border-navy-800 text-navy-800 text-xs font-bold transition-colors"
+                  className="px-3 py-1.5 bg-[#fbfbfb] hover:bg-[#f5f5f5] border border-[#e5e5e5] text-[#1b1b1b] text-xs font-bold transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white border-2 border-navy-800 shadow-brutal-sm text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
+                  className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white border border-[#e5e5e5] shadow-xs text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
                 >
                   Save Evaluation
                 </button>
@@ -928,15 +928,15 @@ export function SubcontractorView() {
       {/* Modal: Add Claim (PRD #20) */}
       {isAddClaimOpen && (
         <div className="fixed inset-0 z-50 bg-navy-950/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-cream-50 border-2 border-navy-800 max-w-md w-full p-6 shadow-brutal">
-            <h3 className="text-sm font-bold text-navy-800 uppercase tracking-wide">Log Subcontractor Interim Claim</h3>
+          <div className="bg-[#fbfbfb] border border-[#e5e5e5] max-w-md w-full p-6 shadow-card">
+            <h3 className="text-sm font-bold text-[#1b1b1b] uppercase tracking-wide">Log Subcontractor Interim Claim</h3>
             <form onSubmit={handleCreateClaim} className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs font-bold text-navy-800 mb-1">Subcontractor</label>
+                <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Subcontractor</label>
                 <select
                   value={claimSubId}
                   onChange={(e) => setClaimSubId(e.target.value)}
-                  className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 focus:outline-none focus:ring-2 focus:ring-navy-800"
+                  className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] focus:outline-none focus:ring-2 focus:ring-navy-800"
                 >
                   {subs.map((s) => (
                     <option key={s.id} value={s.id}>{s.name} ({s.trade})</option>
@@ -946,37 +946,37 @@ export function SubcontractorView() {
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-xs font-bold text-navy-800 mb-1">Claim Period</label>
+                  <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Claim Period</label>
                   <input
                     type="text"
                     required
                     value={claimPeriod}
                     onChange={(e) => setClaimPeriod(e.target.value)}
                     placeholder="e.g. September 2026"
-                    className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 focus:outline-none focus:ring-2 focus:ring-navy-800"
+                    className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] focus:outline-none focus:ring-2 focus:ring-navy-800"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-navy-800 mb-1">Claimed Amount (₦)</label>
+                  <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Claimed Amount (₦)</label>
                   <input
                     type="number"
                     required
                     value={claimAmount}
                     onChange={(e) => setClaimAmount(Number(e.target.value))}
-                    className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 font-mono focus:outline-none focus:ring-2 focus:ring-navy-800"
+                    className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] font-mono focus:outline-none focus:ring-2 focus:ring-navy-800"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-navy-800 mb-1">Work Accomplished Description</label>
+                <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Work Accomplished Description</label>
                 <textarea
                   rows={3}
                   required
                   value={claimDesc}
                   onChange={(e) => setClaimDesc(e.target.value)}
                   placeholder="Detail work done for this valuation period..."
-                  className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 focus:outline-none focus:ring-2 focus:ring-navy-800"
+                  className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] focus:outline-none focus:ring-2 focus:ring-navy-800"
                 />
               </div>
 
@@ -984,13 +984,13 @@ export function SubcontractorView() {
                 <button
                   type="button"
                   onClick={() => setIsAddClaimOpen(false)}
-                  className="px-3 py-1.5 bg-cream-100 hover:bg-cream-200 border-2 border-navy-800 text-navy-800 text-xs font-bold transition-colors"
+                  className="px-3 py-1.5 bg-[#fbfbfb] hover:bg-[#f5f5f5] border border-[#e5e5e5] text-[#1b1b1b] text-xs font-bold transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white border-2 border-navy-800 shadow-brutal-sm text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
+                  className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white border border-[#e5e5e5] shadow-xs text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
                 >
                   Submit Claim
                 </button>
@@ -1003,42 +1003,42 @@ export function SubcontractorView() {
       {/* Modal: Add Instruction (PRD #22) */}
       {isAddInstructionOpen && (
         <div className="fixed inset-0 z-50 bg-navy-950/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-cream-50 border-2 border-navy-800 max-w-md w-full p-6 shadow-brutal">
-            <h3 className="text-sm font-bold text-navy-800 uppercase tracking-wide">Log Site Instruction</h3>
+          <div className="bg-[#fbfbfb] border border-[#e5e5e5] max-w-md w-full p-6 shadow-card">
+            <h3 className="text-sm font-bold text-[#1b1b1b] uppercase tracking-wide">Log Site Instruction</h3>
             <form onSubmit={handleCreateInstruction} className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs font-bold text-navy-800 mb-1">Issued By</label>
+                <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Issued By</label>
                 <input
                   type="text"
                   required
                   value={instrIssuedBy}
                   onChange={(e) => setInstrIssuedBy(e.target.value)}
                   placeholder="e.g. Architect David / Consultant Structural Eng"
-                  className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 focus:outline-none focus:ring-2 focus:ring-navy-800"
+                  className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] focus:outline-none focus:ring-2 focus:ring-navy-800"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-navy-800 mb-1">Subject / Header</label>
+                <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Subject / Header</label>
                 <input
                   type="text"
                   required
                   value={instrSubject}
                   onChange={(e) => setInstrSubject(e.target.value)}
                   placeholder="e.g. Relocate water tank plinth"
-                  className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 focus:outline-none focus:ring-2 focus:ring-navy-800"
+                  className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] focus:outline-none focus:ring-2 focus:ring-navy-800"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-navy-800 mb-1">Instruction Text</label>
+                <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Instruction Text</label>
                 <textarea
                   rows={3}
                   required
                   value={instrDesc}
                   onChange={(e) => setInstrDesc(e.target.value)}
                   placeholder="Exact description of instruction given on site..."
-                  className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 focus:outline-none focus:ring-2 focus:ring-navy-800"
+                  className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] focus:outline-none focus:ring-2 focus:ring-navy-800"
                 />
               </div>
 
@@ -1046,13 +1046,13 @@ export function SubcontractorView() {
                 <button
                   type="button"
                   onClick={() => setIsAddInstructionOpen(false)}
-                  className="px-3 py-1.5 bg-cream-100 hover:bg-cream-200 border-2 border-navy-800 text-navy-800 text-xs font-bold transition-colors"
+                  className="px-3 py-1.5 bg-[#fbfbfb] hover:bg-[#f5f5f5] border border-[#e5e5e5] text-[#1b1b1b] text-xs font-bold transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white border-2 border-navy-800 shadow-brutal-sm text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white border border-[#e5e5e5] shadow-xs text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
                 >
                   Log Instruction
                 </button>
@@ -1065,41 +1065,41 @@ export function SubcontractorView() {
       {/* Modal: Add VO (PRD #23) */}
       {isAddVoOpen && (
         <div className="fixed inset-0 z-50 bg-navy-950/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-cream-50 border-2 border-navy-800 max-w-md w-full p-6 shadow-brutal">
-            <h3 className="text-sm font-bold text-navy-800 uppercase tracking-wide">Raise Variation Order</h3>
+          <div className="bg-[#fbfbfb] border border-[#e5e5e5] max-w-md w-full p-6 shadow-card">
+            <h3 className="text-sm font-bold text-[#1b1b1b] uppercase tracking-wide">Raise Variation Order</h3>
             <form onSubmit={handleAddVo} className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs font-bold text-navy-800 mb-1">Variation Title / Scope Change</label>
+                <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Variation Title / Scope Change</label>
                 <input
                   type="text"
                   required
                   value={voTitle}
                   onChange={(e) => setVoTitle(e.target.value)}
                   placeholder="e.g. Additional security bollards along perimeter"
-                  className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 focus:outline-none focus:ring-2 focus:ring-navy-800"
+                  className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] focus:outline-none focus:ring-2 focus:ring-navy-800"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-xs font-bold text-navy-800 mb-1">Estimated Cost Impact (₦)</label>
+                  <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Estimated Cost Impact (₦)</label>
                   <input
                     type="number"
                     required
                     value={voCost}
                     onChange={(e) => setVoCost(Number(e.target.value))}
-                    className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 font-mono focus:outline-none focus:ring-2 focus:ring-navy-800"
+                    className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] font-mono focus:outline-none focus:ring-2 focus:ring-navy-800"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-navy-800 mb-1">Affected BOQ Cost Code</label>
+                  <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Affected BOQ Cost Code</label>
                   <input
                     type="text"
                     required
                     value={voBoqCode}
                     onChange={(e) => setVoBoqCode(e.target.value)}
                     placeholder="e.g. CON-02.01"
-                    className="w-full bg-white border-2 border-navy-800 px-3 py-2 text-xs text-navy-800 font-mono focus:outline-none focus:ring-2 focus:ring-navy-800"
+                    className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] font-mono focus:outline-none focus:ring-2 focus:ring-navy-800"
                   />
                 </div>
               </div>
@@ -1108,13 +1108,13 @@ export function SubcontractorView() {
                 <button
                   type="button"
                   onClick={() => setIsAddVoOpen(false)}
-                  className="px-3 py-1.5 bg-cream-100 hover:bg-cream-200 border-2 border-navy-800 text-navy-800 text-xs font-bold transition-colors"
+                  className="px-3 py-1.5 bg-[#fbfbfb] hover:bg-[#f5f5f5] border border-[#e5e5e5] text-[#1b1b1b] text-xs font-bold transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white border-2 border-navy-800 shadow-brutal-sm text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
+                  className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white border border-[#e5e5e5] shadow-xs text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
                 >
                   Submit Variation
                 </button>
