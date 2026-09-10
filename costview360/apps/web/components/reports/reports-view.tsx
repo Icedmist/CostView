@@ -450,33 +450,33 @@ export function ReportsView() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white/90 backdrop-blur-md border border-[#e5e5e5] rounded-xl shadow-card p-6 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+      <div className="bg-white/90 backdrop-blur-md border border-slate-200/80 rounded-xl shadow-card p-6 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
         <div>
           <div className="flex flex-wrap items-center gap-2 mb-2">
-            <span className="text-xs uppercase font-black tracking-widest px-3 py-1 bg-navy-800 text-white border border-[#e5e5e5] font-mono">Report Studio</span>
-            <span className="text-sm font-bold text-[#1b1b1b]/60">· Financial & Site Reconciliation</span>
-            <span className={`text-xs font-black px-2 py-1 border border-[#e5e5e5] ${isLive ? "bg-emerald-500 text-white" : "bg-blue-50 text-[#0067c0] border-blue-200 text-[#1b1b1b]"}`}>{isLive ? "LIVE DATA" : "DEMO DATA"}</span>
-            <span className="text-xs font-mono bg-[#fbfbfb] border border-[#e5e5e5] rounded-lg px-2 py-1">{REPORTS.length} reports</span>
+            <span className="text-xs uppercase font-bold tracking-widest px-3 py-1 bg-slate-900 text-white border border-slate-200/80 font-mono">Report Studio</span>
+            <span className="text-sm font-bold text-slate-900/60">· Financial & Site Reconciliation</span>
+            <span className={`text-xs font-bold px-2 py-1 border border-slate-200/80 ${isLive ? "bg-emerald-500 text-white" : "bg-blue-50 text-[#0067c0] border-blue-200 text-slate-900"}`}>{isLive ? "LIVE DATA" : "DEMO DATA"}</span>
+            <span className="text-xs font-mono bg-white border border-slate-200/80 rounded-lg px-2 py-1">{REPORTS.length} reports</span>
           </div>
-          <h2 className="text-xl md:text-2xl font-black text-[#1b1b1b] tracking-tight">Commercial & Cost Control Reports</h2>
-          <p className="text-sm font-bold text-[#1b1b1b]/60 mt-1">Expanded per PRD §8 — 10 reports, project picker, financial & site numbers, PDF/CSV (not just print).</p>
+          <h2 className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight">Commercial & Cost Control Reports</h2>
+          <p className="text-sm font-bold text-slate-900/60 mt-1">Expanded per PRD §8 — 10 reports, project picker, financial & site numbers, PDF/CSV (not just print).</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center gap-2 bg-[#fbfbfb] border border-[#e5e5e5] rounded-lg px-3 py-2 shadow-xs">
-            <Building className="w-4 h-4 text-[#1b1b1b]" />
-            <select value={reportProject} onChange={(e) => setReportProject(e.target.value)} className="bg-transparent text-sm font-bold text-[#1b1b1b] focus:outline-none cursor-pointer">
+          <div className="flex items-center gap-2 bg-white border border-slate-200/80 rounded-lg px-3 py-2 shadow-xs rounded-xl">
+            <Building className="w-4 h-4 text-slate-900" />
+            <select value={reportProject} onChange={(e) => setReportProject(e.target.value)} className="bg-transparent text-sm font-bold text-slate-900 focus:outline-none cursor-pointer">
               <option value="Eko Atlantic Horizon Towers">Eko Atlantic Horizon Towers</option>
               <option value="All Projects Combined">All Projects Combined</option>
               <option value="Lekki Commercial Complex">Lekki Commercial Complex</option>
             </select>
           </div>
-          <button onClick={() => setShowCustomize(!showCustomize)} className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#e5e5e5] text-sm font-black shadow-xs">
+          <button onClick={() => setShowCustomize(!showCustomize)} className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200/80 text-sm font-bold shadow-xs rounded-xl">
             <Settings2 className="w-4 h-4" /> {showCustomize ? "Hide Customize" : "Customize"}
           </button>
-          <button onClick={handleExportCSV} className="flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-[#fbfbfb] text-[#1b1b1b] border border-[#e5e5e5] text-sm font-black shadow-xs">
+          <button onClick={handleExportCSV} className="flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-white text-slate-900 border border-slate-200/80 text-sm font-bold shadow-xs rounded-xl">
             <Download className="w-4 h-4" /> CSV
           </button>
-          <button onClick={handleExportPDF} disabled={isGenerating} className="flex items-center gap-2 px-5 py-2.5 bg-navy-800 hover:bg-navy-700 text-white border border-[#e5e5e5] text-sm font-black shadow-card disabled:opacity-50">
+          <button onClick={handleExportPDF} disabled={isGenerating} className="flex items-center gap-2 px-5 py-2.5 bg-slate-900 hover:bg-navy-700 text-white border border-slate-200/80 text-sm font-bold shadow-card disabled:opacity-50">
             <FileDown className="w-4 h-4 text-[#0067c0]" /> {isGenerating ? "Generating…" : "Export PDF"}
           </button>
         </div>
@@ -484,84 +484,84 @@ export function ReportsView() {
 
       {/* Customization Panel */}
       {showCustomize && (
-        <div className="bg-[#fbfbfb] border border-[#e5e5e5] rounded-lg shadow-card p-5 space-y-4">
+        <div className="bg-white border border-slate-200/80 rounded-lg shadow-card p-5 space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="font-black uppercase text-sm tracking-wide flex items-center gap-2"><Settings2 className="w-4 h-4" /> Customize Report</h3>
+            <h3 className="font-bold tracking-wide text-sm tracking-wide flex items-center gap-2"><Settings2 className="w-4 h-4" /> Customize Report</h3>
             <div className="flex gap-2">
-              <button onClick={savePreset} className="px-3 py-1.5 bg-navy-800 text-white border border-[#e5e5e5] text-xs font-black flex items-center gap-1"><Save className="w-3 h-3" /> Save</button>
-              <button onClick={resetPreset} className="px-3 py-1.5 bg-white border border-[#e5e5e5] text-xs font-black flex items-center gap-1"><RotateCcw className="w-3 h-3" /> Reset</button>
+              <button onClick={savePreset} className="px-3 py-1.5 bg-slate-900 text-white border border-slate-200/80 text-xs font-bold flex items-center gap-1"><Save className="w-3 h-3" /> Save</button>
+              <button onClick={resetPreset} className="px-3 py-1.5 bg-white border border-slate-200/80 text-xs font-bold flex items-center gap-1"><RotateCcw className="w-3 h-3" /> Reset</button>
             </div>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
-              <label className="block text-xs font-black uppercase tracking-widest mb-1">Custom Title</label>
-              <input value={customTitle} onChange={(e) => setCustomTitle(e.target.value)} placeholder={selectedReport} className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-sm font-bold" />
+              <label className="block text-xs font-bold tracking-wide tracking-widest mb-1">Custom Title</label>
+              <input value={customTitle} onChange={(e) => setCustomTitle(e.target.value)} placeholder={selectedReport} className="w-full bg-white border border-slate-200/80 px-3 py-2 text-sm font-bold" />
             </div>
             <div>
-              <label className="block text-xs font-black uppercase tracking-widest mb-1">Custom Subtitle</label>
-              <input value={customSubtitle} onChange={(e) => setCustomSubtitle(e.target.value)} placeholder="Project subtitle" className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-sm font-bold" />
+              <label className="block text-xs font-bold tracking-wide tracking-widest mb-1">Custom Subtitle</label>
+              <input value={customSubtitle} onChange={(e) => setCustomSubtitle(e.target.value)} placeholder="Project subtitle" className="w-full bg-white border border-slate-200/80 px-3 py-2 text-sm font-bold" />
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-xs font-black uppercase tracking-widest mb-1">From</label>
-                <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} className="w-full bg-white border border-[#e5e5e5] px-2 py-2 text-sm font-bold" />
+                <label className="block text-xs font-bold tracking-wide tracking-widest mb-1">From</label>
+                <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} className="w-full bg-white border border-slate-200/80 px-2 py-2 text-sm font-bold" />
               </div>
               <div>
-                <label className="block text-xs font-black uppercase tracking-widest mb-1">To</label>
-                <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} className="w-full bg-white border border-[#e5e5e5] px-2 py-2 text-sm font-bold" />
+                <label className="block text-xs font-bold tracking-wide tracking-widest mb-1">To</label>
+                <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} className="w-full bg-white border border-slate-200/80 px-2 py-2 text-sm font-bold" />
               </div>
             </div>
             <div className="grid grid-cols-3 gap-2">
               <div>
-                <label className="block text-xs font-black uppercase tracking-widest mb-1">Currency</label>
-                <select value={currency} onChange={(e) => setCurrency(e.target.value)} className="w-full bg-white border border-[#e5e5e5] px-2 py-2 text-sm font-black">
+                <label className="block text-xs font-bold tracking-wide tracking-widest mb-1">Currency</label>
+                <select value={currency} onChange={(e) => setCurrency(e.target.value)} className="w-full bg-white border border-slate-200/80 px-2 py-2 text-sm font-bold">
                   <option value="NGN">₦ NGN</option><option value="USD">$ USD</option><option value="GBP">£ GBP</option><option value="EUR">€ EUR</option>
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-black uppercase tracking-widest mb-1">Orientation</label>
-                <select value={orientation} onChange={(e) => setOrientation(e.target.value as any)} className="w-full bg-white border border-[#e5e5e5] px-2 py-2 text-sm font-black">
+                <label className="block text-xs font-bold tracking-wide tracking-widest mb-1">Orientation</label>
+                <select value={orientation} onChange={(e) => setOrientation(e.target.value as any)} className="w-full bg-white border border-slate-200/80 px-2 py-2 text-sm font-bold">
                   <option value="portrait">Portrait</option><option value="landscape">Landscape</option>
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-black uppercase tracking-widest mb-1">Group By</label>
-                <select value={groupBy} onChange={(e) => setGroupBy(e.target.value)} className="w-full bg-white border border-[#e5e5e5] px-2 py-2 text-sm font-black">
+                <label className="block text-xs font-bold tracking-wide tracking-widest mb-1">Group By</label>
+                <select value={groupBy} onChange={(e) => setGroupBy(e.target.value)} className="w-full bg-white border border-slate-200/80 px-2 py-2 text-sm font-bold">
                   <option value="none">None</option><option value="category">Category</option><option value="status">Status</option>
                 </select>
               </div>
             </div>
           </div>
           <div>
-            <div className="text-xs font-black uppercase tracking-widest mb-2">Columns for: <span className="bg-navy-800 text-white px-2 py-1">{selectedReport}</span></div>
+            <div className="text-xs font-bold tracking-wide tracking-widest mb-2">Columns for: <span className="bg-slate-900 text-white px-2 py-1">{selectedReport}</span></div>
             <div className="flex flex-wrap gap-2">
               {currentColumns.map((col) => (
-                <label key={col.key} className={`flex items-center gap-2 px-3 py-1.5 border border-[#e5e5e5] text-xs font-black cursor-pointer ${isColVisible(selectedReport, col.key) ? "bg-navy-800 text-white" : "bg-white text-[#1b1b1b]"}`}>
+                <label key={col.key} className={`flex items-center gap-2 px-3 py-1.5 border border-slate-200/80 text-xs font-bold cursor-pointer ${isColVisible(selectedReport, col.key) ? "bg-slate-900 text-white" : "bg-white text-slate-900"}`}>
                   <input type="checkbox" checked={isColVisible(selectedReport, col.key)} onChange={() => toggleColumn(selectedReport, col.key)} className="accent-navy-800" />
                   {col.label}
                 </label>
               ))}
             </div>
           </div>
-          <div className="flex items-center gap-3 pt-2 border-t border-[#e5e5e5]">
-            <label className="flex items-center gap-2 text-sm font-black cursor-pointer">
+          <div className="flex items-center gap-3 pt-2 border-t border-slate-200/80">
+            <label className="flex items-center gap-2 text-sm font-bold cursor-pointer">
               <input type="checkbox" checked={includeCharts} onChange={(e) => setIncludeCharts(e.target.checked)} className="w-4 h-4 accent-navy-800" />
               Include charts
             </label>
-            <span className="text-xs font-bold text-[#1b1b1b]/60">Preview and PDF/CSV respect these settings. Saved to localStorage per report.</span>
+            <span className="text-xs font-bold text-slate-900/60">Preview and PDF/CSV respect these settings. Saved to localStorage per report.</span>
           </div>
         </div>
       )}
 
       {/* Report Selector */}
-      <div className="flex items-center gap-2 border-b border-[#e5e5e5] pb-3 overflow-x-auto">
+      <div className="flex items-center gap-2 border-b border-slate-200/80 pb-3 overflow-x-auto">
         {REPORTS.map((tab) => {
           const Icon = tab.icon;
           return (
             <button
               key={tab.id}
               onClick={() => setSelectedReport(tab.id)}
-              className={`px-4 py-2.5 border border-[#e5e5e5] text-sm font-black whitespace-nowrap transition-all flex items-center gap-2 ${selectedReport === tab.id ? "bg-navy-800 text-white shadow-xs" : "bg-white text-[#1b1b1b] hover:bg-[#fbfbfb]"}`}
+              className={`px-4 py-2.5 border border-slate-200/80 text-sm font-bold whitespace-nowrap transition-all flex items-center gap-2 ${selectedReport === tab.id ? "bg-slate-900 text-white shadow-xs rounded-xl" : "bg-white text-slate-900 hover:bg-white"}`}
               title={tab.desc}
             >
               <Icon className="w-4 h-4" /> {tab.id}
@@ -571,22 +571,22 @@ export function ReportsView() {
       </div>
 
       {/* Preview Sheet */}
-      <div className="bg-white/90 backdrop-blur-md border border-[#e5e5e5] rounded-xl shadow-card p-6 md:p-8 space-y-6">
-        <div className="flex flex-col md:flex-row items-start justify-between gap-4 border-b border-[#e5e5e5] pb-5">
+      <div className="bg-white/90 backdrop-blur-md border border-slate-200/80 rounded-xl shadow-card p-6 md:p-8 space-y-6">
+        <div className="flex flex-col md:flex-row items-start justify-between gap-4 border-b border-slate-200/80 pb-5">
           <div>
-            <h3 className="text-lg md:text-xl font-black text-[#1b1b1b] flex items-center gap-2">
-              <FileText className="w-5 h-5 text-[#1b1b1b]" /> {effectiveTitle}
+            <h3 className="text-lg md:text-xl font-bold text-slate-900 flex items-center gap-2">
+              <FileText className="w-5 h-5 text-slate-900" /> {effectiveTitle}
             </h3>
-            <p className="text-sm font-bold text-[#1b1b1b]/60 mt-1">
-              Project: <strong className="text-[#1b1b1b]">{reportProject}</strong> · {dateFrom} → {dateTo} · {currency} {customSubtitle ? `· ${customSubtitle}` : ""}
+            <p className="text-sm font-bold text-slate-900/60 mt-1">
+              Project: <strong className="text-slate-900">{reportProject}</strong> · {dateFrom} → {dateTo} · {currency} {customSubtitle ? `· ${customSubtitle}` : ""}
             </p>
-            <p className="text-xs font-bold text-[#1b1b1b]/50 mt-1 flex items-center gap-2">
+            <p className="text-xs font-bold text-slate-900/50 mt-1 flex items-center gap-2">
               <Eye className="w-3 h-3" /> Preview respects customization — {visibleCols[selectedReport].length}/{columnDefs[selectedReport].length} columns visible {includeCharts ? "· charts on" : "· charts off"} {groupBy !== "none" ? `· grouped by ${groupBy}` : ""} · {orientation}
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono font-black text-[#1b1b1b] bg-blue-50 text-[#0067c0] border-blue-200 border border-[#e5e5e5] px-3 py-1">Status: Reconciled</span>
-            <span className="text-xs font-mono text-white bg-navy-800 border border-[#e5e5e5] px-3 py-1">{isLive ? "LIVE" : "DEMO"}</span>
+            <span className="text-xs font-mono font-bold text-slate-900 bg-blue-50 text-[#0067c0] border-blue-200 border border-slate-200/80 px-3 py-1">Status: Reconciled</span>
+            <span className="text-xs font-mono text-white bg-slate-900 border border-slate-200/80 px-3 py-1">{isLive ? "LIVE" : "DEMO"}</span>
           </div>
         </div>
 
@@ -594,23 +594,23 @@ export function ReportsView() {
         {selectedReport === "Cost Control Summary" && (
           <>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-[#fbfbfb] p-5 border border-[#e5e5e5] shadow-xs"><div className="text-xs font-black uppercase tracking-widest text-[#1b1b1b]/60">Original Base Budget</div><div className="text-xl font-black font-mono text-[#1b1b1b] mt-2">{formatCurrency(reportData.originalBudget, currency)}</div><div className="text-xs font-bold text-[#1b1b1b]/50 mt-1">6 master BOQ categories</div></div>
-              <div className="bg-white p-5 border border-[#e5e5e5] shadow-xs"><div className="text-xs font-black uppercase tracking-widest text-[#1b1b1b]/60">Approved Variations (Net)</div><div className="text-xl font-black font-mono text-[#1b1b1b] mt-2">+{formatCurrency(reportData.approvedVariations, currency)}</div><div className="text-xs font-bold text-[#1b1b1b]/50 mt-1">2 VO orders executed</div></div>
-              <div className="bg-blue-50 text-[#0067c0] border-blue-200 p-5 border border-[#e5e5e5] shadow-xs"><div className="text-xs font-black uppercase tracking-widest text-[#1b1b1b]">Revised Working Budget</div><div className="text-xl font-black font-mono text-[#1b1b1b] mt-2">{formatCurrency(reportData.revisedBudget, currency)}</div><div className="text-xs font-bold text-[#1b1b1b]/70 mt-1">Current live ceiling</div></div>
+              <div className="bg-white p-5 border border-slate-200/80 shadow-xs rounded-xl"><div className="text-xs font-bold tracking-wide tracking-widest text-slate-900/60">Original Base Budget</div><div className="text-xl font-bold font-mono text-slate-900 mt-2">{formatCurrency(reportData.originalBudget, currency)}</div><div className="text-xs font-bold text-slate-900/50 mt-1">6 master BOQ categories</div></div>
+              <div className="bg-white p-5 border border-slate-200/80 shadow-xs rounded-xl"><div className="text-xs font-bold tracking-wide tracking-widest text-slate-900/60">Approved Variations (Net)</div><div className="text-xl font-bold font-mono text-slate-900 mt-2">+{formatCurrency(reportData.approvedVariations, currency)}</div><div className="text-xs font-bold text-slate-900/50 mt-1">2 VO orders executed</div></div>
+              <div className="bg-blue-50 text-[#0067c0] border-blue-200 p-5 border border-slate-200/80 shadow-xs rounded-xl"><div className="text-xs font-bold tracking-wide tracking-widest text-slate-900">Revised Working Budget</div><div className="text-xl font-bold font-mono text-slate-900 mt-2">{formatCurrency(reportData.revisedBudget, currency)}</div><div className="text-xs font-bold text-slate-900/70 mt-1">Current live ceiling</div></div>
             </div>
-            <div className="border border-[#e5e5e5] overflow-hidden">
+            <div className="border border-slate-200/80 overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
-                  <thead className="bg-navy-800 text-white uppercase text-xs font-black tracking-widest"><tr>{columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key)).map((c) => (<th key={c.key} className="py-3 px-4">{c.label}</th>))}</tr></thead>
-                  <tbody className="divide-y-2 divide-navy-800/10 text-[#1b1b1b] bg-white">
+                  <thead className="bg-slate-900 text-white uppercase text-xs font-bold tracking-widest"><tr>{columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key)).map((c) => (<th key={c.key} className="py-3 px-4">{c.label}</th>))}</tr></thead>
+                  <tbody className="divide-y-2 divide-navy-800/10 text-slate-900 bg-white">
                     {[
                       { element: "Committed Orders (POs Issued)", amount: formatCurrency(reportData.committedPOs, currency), percent: "93.2%", status: "Verified" },
                       { element: "Certified Work Done (Actuals)", amount: formatCurrency(reportData.certifiedActuals, currency), percent: "69.0%", status: "QS Certified" },
                       { element: "Uncommitted Contingency Buffer", amount: formatCurrency(reportData.uncommittedHeadroom, currency), percent: "6.8%", status: "Available" },
                     ].map((r, idx) => (
-                      <tr key={idx} className="hover:bg-[#fbfbfb]">
+                      <tr key={idx} className="hover:bg-white">
                         {columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key)).map((c) => (
-                          <td key={c.key} className="py-4 px-4 font-black">{(r as any)[c.key]}</td>
+                          <td key={c.key} className="py-4 px-4 font-bold">{(r as any)[c.key]}</td>
                         ))}
                       </tr>
                     ))}
@@ -622,17 +622,17 @@ export function ReportsView() {
         )}
 
         {selectedReport === "Budget vs Actual Variance" && (
-          <div className="border border-[#e5e5e5] overflow-hidden">
+          <div className="border border-slate-200/80 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
-                <thead className="bg-navy-800 text-white uppercase text-xs font-black tracking-widest"><tr>{columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key)).map((c) => (<th key={c.key} className="py-3 px-4">{c.label}</th>))}</tr></thead>
+                <thead className="bg-slate-900 text-white uppercase text-xs font-bold tracking-widest"><tr>{columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key)).map((c) => (<th key={c.key} className="py-3 px-4">{c.label}</th>))}</tr></thead>
                 <tbody className="divide-y-2 divide-navy-800/10 bg-white">
                   {[
                     { code: "SUB-01.01", desc: "Excavation & earthwork", budget: formatCurrency(23125000, currency), committed: formatCurrency(21500000, currency), actual: formatCurrency(19800000, currency), variance: formatCurrency(1625000, currency), status: "On Budget" },
                     { code: "CON-02.01", desc: "Grade 30 concrete raft", budget: formatCurrency(93600000, currency), committed: formatCurrency(94000000, currency), actual: formatCurrency(62000000, currency), variance: formatCurrency(-400000, currency), status: "Over Budget" },
                     { code: "STL-02.03", desc: "Rebar 12/16/20mm", budget: formatCurrency(94250000, currency), committed: formatCurrency(94250000, currency), actual: formatCurrency(85000000, currency), variance: formatCurrency(0, currency), status: "On Budget" },
                   ].map((r, idx) => (
-                    <tr key={idx} className="hover:bg-[#fbfbfb]">
+                    <tr key={idx} className="hover:bg-white">
                       {columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key)).map((c) => (
                         <td key={c.key} className="py-3 px-4 font-bold">{(r as any)[c.key]}</td>
                       ))}
@@ -645,16 +645,16 @@ export function ReportsView() {
         )}
 
         {selectedReport === "Forecast & EAC/ETC" && (
-          <div className="border border-[#e5e5e5] overflow-hidden">
+          <div className="border border-slate-200/80 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
-                <thead className="bg-navy-800 text-white uppercase text-xs font-black tracking-widest"><tr>{columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key)).map((c) => (<th key={c.key} className="py-3 px-4">{c.label}</th>))}</tr></thead>
+                <thead className="bg-slate-900 text-white uppercase text-xs font-bold tracking-widest"><tr>{columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key)).map((c) => (<th key={c.key} className="py-3 px-4">{c.label}</th>))}</tr></thead>
                 <tbody className="divide-y-2 divide-navy-800/10 bg-white">
                   {[
                     { item: "SUB-01.01", budget: formatCurrency(23125000, currency), actual: formatCurrency(19800000, currency), etc: formatCurrency(3200000, currency), eac: formatCurrency(23000000, currency), variance: formatCurrency(-125000, currency) },
                     { item: "CON-02.01", budget: formatCurrency(93600000, currency), actual: formatCurrency(62000000, currency), etc: formatCurrency(34000000, currency), eac: formatCurrency(96000000, currency), variance: formatCurrency(2400000, currency) },
                   ].map((r, idx) => (
-                    <tr key={idx} className="hover:bg-[#fbfbfb]">
+                    <tr key={idx} className="hover:bg-white">
                       {columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key)).map((c) => (
                         <td key={c.key} className="py-3 px-4 font-mono font-bold">{(r as any)[c.key]}</td>
                       ))}
@@ -663,17 +663,17 @@ export function ReportsView() {
                 </tbody>
               </table>
             </div>
-            {includeCharts && <div className="p-3 bg-[#fbfbfb] border-t border-[#e5e5e5] text-xs font-bold text-[#1b1b1b]/60">Chart: EAC vs Budget (preview) — included in PDF when toggled on</div>}
+            {includeCharts && <div className="p-3 bg-white border-t border-slate-200/80 text-xs font-bold text-slate-900/60">Chart: EAC vs Budget (preview) — included in PDF when toggled on</div>}
           </div>
         )}
 
         {(selectedReport === "Procurement Funnel & 3-Way Match" || selectedReport === "Supplier Performance" || selectedReport === "Inventory & Stock Movement" || selectedReport === "Labour Productivity & Payroll" || selectedReport === "Site Diary & Quality Progress" || selectedReport === "Subcontractor Ledger" || selectedReport === "Variation Orders Impact") && (
-          <div className="border border-[#e5e5e5] overflow-hidden">
+          <div className="border border-slate-200/80 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
-                <thead className="bg-navy-800 text-white uppercase text-xs font-black tracking-widest"><tr>{columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key)).map((c) => (<th key={c.key} className="py-3 px-4">{c.label}</th>))}</tr></thead>
+                <thead className="bg-slate-900 text-white uppercase text-xs font-bold tracking-widest"><tr>{columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key)).map((c) => (<th key={c.key} className="py-3 px-4">{c.label}</th>))}</tr></thead>
                 <tbody className="divide-y-2 divide-navy-800/10 bg-white">
-                  <tr><td colSpan={columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key)).length} className="py-8 text-center text-sm font-bold text-[#1b1b1b]/60">Preview table for {selectedReport} — {visibleCols[selectedReport].length} columns · PDF will render full data with selected columns.</td></tr>
+                  <tr><td colSpan={columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key)).length} className="py-8 text-center text-sm font-bold text-slate-900/60">Preview table for {selectedReport} — {visibleCols[selectedReport].length} columns · PDF will render full data with selected columns.</td></tr>
                 </tbody>
               </table>
             </div>
@@ -681,11 +681,11 @@ export function ReportsView() {
         )}
 
         <div className="flex flex-wrap gap-3">
-          <button onClick={handleExportCSV} className="px-5 py-3 bg-white border border-[#e5e5e5] font-black uppercase text-sm hover:bg-[#fbfbfb]">Download CSV</button>
-          <button onClick={handleExportPDF} disabled={isGenerating} className="px-6 py-3 bg-navy-800 text-white border border-[#e5e5e5] font-black uppercase text-sm shadow-card disabled:opacity-50">
+          <button onClick={handleExportCSV} className="px-5 py-3 bg-white border border-slate-200/80 font-bold tracking-wide text-sm hover:bg-white">Download CSV</button>
+          <button onClick={handleExportPDF} disabled={isGenerating} className="px-6 py-3 bg-slate-900 text-white border border-slate-200/80 font-bold tracking-wide text-sm shadow-card disabled:opacity-50">
             {isGenerating ? "Generating PDF…" : `Export Branded PDF (${orientation})`}
           </button>
-          <span className="text-xs font-bold text-[#1b1b1b]/50 self-center">Custom title, {visibleCols[selectedReport].length} cols, {dateFrom}→{dateTo}, {currency} — all respected in PDF</span>
+          <span className="text-xs font-bold text-slate-900/50 self-center">Custom title, {visibleCols[selectedReport].length} cols, {dateFrom}→{dateTo}, {currency} — all respected in PDF</span>
         </div>
       </div>
     </div>

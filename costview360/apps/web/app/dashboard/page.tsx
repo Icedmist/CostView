@@ -19,6 +19,7 @@ import {
   AlertTriangle,
   CheckCircle2,
   Clock,
+  Sparkles,
 } from "lucide-react";
 import { RoleGuard } from "@/components/auth/role-guard";
 import { canAccess } from "@/lib/auth/permissions";
@@ -55,69 +56,69 @@ export default function DashboardPage() {
   }, [activeRole, activeTab]);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#fbfbfb] font-sans">
+    <div className="flex h-screen overflow-hidden bg-gradient-to-br from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0]/40 font-sans text-slate-900">
       <Sidebar activeTab={activeTab} onSelectTab={setActiveTab} open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <Header onMenuClick={() => setSidebarOpen((v) => !v)} />
 
-        <main className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 bg-[#fbfbfb]">
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
           {activeMode === "commercial" ? (
             <CommercialView />
           ) : (
             <>
               {activeTab === "Dashboard" && (
                 <div className="space-y-6">
-                  {/* Executive Glass Hero Banner */}
-                  <div className="glass-hero p-6 md:p-8 relative overflow-hidden">
+                  {/* Radiant Sapphire Glass Hero Banner */}
+                  <div className="glass-hero p-6 md:p-8 relative overflow-hidden shadow-glass">
                     <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
                       <div>
                         <div className="flex flex-wrap items-center gap-2.5 mb-3">
-                          <span className="text-xs font-semibold px-3 py-1 bg-white/10 text-white rounded-full border border-white/20 backdrop-blur-sm">
-                            Site Operations Command Center
+                          <span className="text-xs font-bold px-3 py-1 bg-white/20 text-white rounded-full border border-white/30 backdrop-blur-md shadow-xs">
+                            Site Operations Command
                           </span>
-                          <span className="text-white/60 text-xs font-medium">· Role: {activeRole}</span>
+                          <span className="text-white/80 text-xs font-medium">· Active Role: {activeRole}</span>
                         </div>
-                        <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-white leading-tight">
-                          Project Cost &amp; Execution Command Center
+                        <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white leading-tight">
+                          Project Cost &amp; Execution Intelligence
                         </h1>
-                        <p className="text-xs text-white/75 mt-2 max-w-2xl leading-relaxed">
-                          Consolidated budget allocation, committed purchase orders, certified subcontractor valuations, and real-time site execution status.
+                        <p className="text-xs text-white/85 mt-2 max-w-2xl leading-relaxed font-normal">
+                          Consolidated baseline budget allocation, committed vendor purchase orders, certified subcontractor valuations, and live shift progress records.
                         </p>
                       </div>
 
                       <div className="flex flex-wrap items-center gap-3">
                         <button
                           onClick={() => setActiveTab("Budget & BOQ")}
-                          className="px-4 py-2.5 bg-[#0067c0] hover:bg-[#005ba1] text-white rounded-lg text-xs font-semibold flex items-center gap-2 shadow-sm transition-all active:scale-[0.98]"
+                          className="px-4 py-2.5 bg-white text-[#0067c0] hover:bg-slate-100 rounded-xl text-xs font-bold flex items-center gap-2 shadow-md transition-all active:scale-[0.98]"
                         >
-                          <span>Manage BOQ</span>
+                          <span>Manage BOQ Master</span>
                           <ArrowUpRight className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => setActiveTab("Procurement")}
-                          className="px-4 py-2.5 bg-white/15 hover:bg-white/25 text-white border border-white/20 rounded-lg text-xs font-semibold backdrop-blur-sm transition-all"
+                          className="px-4 py-2.5 bg-white/15 hover:bg-white/25 text-white border border-white/30 rounded-xl text-xs font-semibold backdrop-blur-md transition-all"
                         >
-                          View 3-Way Match
+                          Verify 3-Way Match
                         </button>
                       </div>
                     </div>
 
-                    {/* Quick Summary Strip */}
-                    <div className="mt-6 pt-5 border-t border-white/10 flex flex-wrap gap-6 text-xs text-white/80">
+                    {/* Quick Telemetry Strip */}
+                    <div className="mt-6 pt-5 border-t border-white/15 flex flex-wrap gap-6 text-xs text-white/90">
                       <div>
-                        <div className="text-[10.5px] uppercase tracking-wider text-white/50">Execution Progress</div>
-                        <div className="text-base font-bold text-white mt-0.5">62% Complete</div>
+                        <div className="text-[10px] uppercase tracking-wider text-white/60 font-semibold">Execution Progress</div>
+                        <div className="text-base font-extrabold text-white mt-0.5">62% Complete</div>
                       </div>
-                      <div className="h-8 w-[1px] bg-white/10 hidden sm:block" />
+                      <div className="h-8 w-[1px] bg-white/15 hidden sm:block" />
                       <div>
-                        <div className="text-[10.5px] uppercase tracking-wider text-white/50">Financial Health</div>
-                        <div className="text-base font-bold text-[#8fe0ac] mt-0.5">Healthy (1.04 CPI)</div>
+                        <div className="text-[10px] uppercase tracking-wider text-white/60 font-semibold">Financial Health</div>
+                        <div className="text-base font-extrabold text-emerald-200 mt-0.5">Healthy (1.04 CPI)</div>
                       </div>
-                      <div className="h-8 w-[1px] bg-white/10 hidden sm:block" />
+                      <div className="h-8 w-[1px] bg-white/15 hidden sm:block" />
                       <div>
-                        <div className="text-[10.5px] uppercase tracking-wider text-white/50">Active Worksite</div>
-                        <div className="text-base font-bold text-white mt-0.5">Shift #142 · 48 Active Crew</div>
+                        <div className="text-[10px] uppercase tracking-wider text-white/60 font-semibold">Active Worksite</div>
+                        <div className="text-base font-extrabold text-white mt-0.5">Shift #142 · 48 Active Crew</div>
                       </div>
                     </div>
                   </div>
@@ -128,88 +129,95 @@ export default function DashboardPage() {
                     actualCost={actualCost}
                   />
 
-                  {/* Attention Cards - Glassmorphic */}
+                  {/* Attention Cards - Luminous Glassmorphism */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div
                       onClick={() => setActiveTab("Procurement")}
-                      className="cursor-pointer glass-card p-4 hover:-translate-y-0.5 transition-all min-h-[120px]"
+                      className="cursor-pointer bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-2xl p-5 shadow-card hover:shadow-glass hover:border-rose-300 hover:-translate-y-0.5 transition-all min-h-[130px] flex flex-col justify-between"
                     >
-                      <div className="flex items-center justify-between mb-2.5">
-                        <span className="text-xs font-semibold flex items-center gap-2 text-[#1b1b1b]">
-                          <span className="w-7 h-7 bg-[#fbe4e2] text-[#c42b1c] rounded-md flex items-center justify-center">
-                            <AlertTriangle className="w-4 h-4" />
+                      <div>
+                        <div className="flex items-center justify-between mb-2.5">
+                          <span className="text-xs font-bold flex items-center gap-2 text-slate-900">
+                            <span className="w-7 h-7 bg-rose-50 text-rose-600 rounded-lg flex items-center justify-center border border-rose-200/60">
+                              <AlertTriangle className="w-4 h-4" />
+                            </span>
+                            Invoice Discrepancy
                           </span>
-                          1 Invoice Discrepancy
-                        </span>
-                        <span className="text-[10px] bg-[#fbe4e2] text-[#c42b1c] px-2 py-0.5 rounded-full font-bold uppercase">
-                          Action Needed
-                        </span>
+                          <span className="text-[10px] bg-rose-50 text-rose-700 border border-rose-200/80 px-2 py-0.5 rounded-full font-bold uppercase">
+                            Action Needed
+                          </span>
+                        </div>
+                        <p className="text-xs font-bold text-slate-800">
+                          Pulkit Steels &amp; Alloys (PO-2026-092)
+                        </p>
+                        <p className="text-xs text-slate-500 mt-1 leading-relaxed font-normal">
+                          Invoiced for 30 Tons, but GRN receipts confirm only 27 Tons delivered. Payment locked automatically.
+                        </p>
                       </div>
-                      <p className="text-xs font-bold text-[#1b1b1b]">
-                        Pulkit Steels &amp; Alloys (PO-2026-092)
-                      </p>
-                      <p className="text-xs text-[#5c5c5c] mt-1 leading-relaxed">
-                        Invoiced for 30 Tons, but GRN shows only 27 Tons delivered. Payment locked.
-                      </p>
                     </div>
 
                     <div
                       onClick={() => setActiveTab("Budget & BOQ")}
-                      className="cursor-pointer glass-card p-4 hover:-translate-y-0.5 transition-all min-h-[120px]"
+                      className="cursor-pointer bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-2xl p-5 shadow-card hover:shadow-glass hover:border-amber-300 hover:-translate-y-0.5 transition-all min-h-[130px] flex flex-col justify-between"
                     >
-                      <div className="flex items-center justify-between mb-2.5">
-                        <span className="text-xs font-semibold flex items-center gap-2 text-[#1b1b1b]">
-                          <span className="w-7 h-7 bg-[#fdf0dd] text-[#a15c00] rounded-md flex items-center justify-center">
-                            <Clock className="w-4 h-4" />
+                      <div>
+                        <div className="flex items-center justify-between mb-2.5">
+                          <span className="text-xs font-bold flex items-center gap-2 text-slate-900">
+                            <span className="w-7 h-7 bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center border border-amber-200/60">
+                              <Clock className="w-4 h-4" />
+                            </span>
+                            Pending Revision
                           </span>
-                          Pending Revision
-                        </span>
-                        <span className="text-[10px] bg-[#eef2fb] text-[#0067c0] px-2 py-0.5 rounded-full font-bold uppercase">
-                          QS Valuation
-                        </span>
+                          <span className="text-[10px] bg-amber-50 text-amber-700 border border-amber-200/80 px-2 py-0.5 rounded-full font-bold uppercase">
+                            QS Valuation
+                          </span>
+                        </div>
+                        <p className="text-xs font-bold text-slate-800">
+                          CON-02.01 Grade 30 ReadyMix
+                        </p>
+                        <p className="text-xs text-slate-500 mt-1 leading-relaxed font-normal">
+                          +₦4,000,000 delta requested due to diesel pump price adjustment awaiting approval.
+                        </p>
                       </div>
-                      <p className="text-xs font-bold text-[#1b1b1b]">
-                        CON-02.01 Grade 30 ReadyMix
-                      </p>
-                      <p className="text-xs text-[#5c5c5c] mt-1 leading-relaxed">
-                        +₦4,000,000 delta requested due to diesel pump price adjustment.
-                      </p>
                     </div>
 
                     <div
                       onClick={() => setActiveTab("Site Progress & Diary")}
-                      className="cursor-pointer glass-card p-4 hover:-translate-y-0.5 transition-all min-h-[120px]"
+                      className="cursor-pointer bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-2xl p-5 shadow-card hover:shadow-glass hover:border-emerald-300 hover:-translate-y-0.5 transition-all min-h-[130px] flex flex-col justify-between"
                     >
-                      <div className="flex items-center justify-between mb-2.5">
-                        <span className="text-xs font-semibold flex items-center gap-2 text-[#1b1b1b]">
-                          <span className="w-7 h-7 bg-[#e3f6ea] text-[#0f7b3f] rounded-md flex items-center justify-center">
-                            <CheckCircle2 className="w-4 h-4" />
+                      <div>
+                        <div className="flex items-center justify-between mb-2.5">
+                          <span className="text-xs font-bold flex items-center gap-2 text-slate-900">
+                            <span className="w-7 h-7 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center border border-emerald-200/60">
+                              <CheckCircle2 className="w-4 h-4" />
+                            </span>
+                            Site Execution Sync
                           </span>
-                          Site Execution Sync
-                        </span>
-                        <span className="text-[10px] bg-[#e3f6ea] text-[#0f7b3f] px-2 py-0.5 rounded-full font-bold uppercase">
-                          Today
-                        </span>
+                          <span className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200/80 px-2 py-0.5 rounded-full font-bold uppercase">
+                            Today
+                          </span>
+                        </div>
+                        <p className="text-xs font-bold text-slate-800">
+                          48 Workers · Shift #142 Active
+                        </p>
+                        <p className="text-xs text-slate-500 mt-1 leading-relaxed font-normal">
+                          2 active snags logged on Block B. 0 safety incidents recorded across 142 consecutive shifts.
+                        </p>
                       </div>
-                      <p className="text-xs font-bold text-[#1b1b1b]">
-                        48 Workers · Shift #142
-                      </p>
-                      <p className="text-xs text-[#5c5c5c] mt-1 leading-relaxed">
-                        2 active snags logged on Block B. 0 safety incidents recorded.
-                      </p>
                     </div>
                   </div>
 
                   <div>
                     <div className="flex items-center justify-between mb-3">
-                      <h2 className="text-xs font-bold text-[#5c5c5c] tracking-wide uppercase">
-                        Bill of Quantities — Variances &amp; Commitments
+                      <h2 className="text-xs font-bold text-slate-500 tracking-wide uppercase">
+                        Bill of Quantities — Master Register &amp; Variances
                       </h2>
                       <button
                         onClick={() => setActiveTab("Budget & BOQ")}
-                        className="text-xs font-semibold text-[#0067c0] hover:underline"
+                        className="text-xs font-semibold text-[#0067c0] hover:underline flex items-center gap-1"
                       >
-                        View Full BOQ Register →
+                        <span>Open Full BOQ Register</span>
+                        <ArrowUpRight className="w-3.5 h-3.5" />
                       </button>
                     </div>
                     <BOQTable />
@@ -220,12 +228,12 @@ export default function DashboardPage() {
               {activeTab === "Budget & BOQ" && (
                 <RoleGuard permission="Budget">
                   <div className="space-y-4">
-                    <div className="glass-card p-4">
-                      <h2 className="text-base font-bold text-[#1b1b1b] tracking-tight">
-                        Budget Management &amp; Bill of Quantities
+                    <div className="bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-2xl p-5 shadow-card">
+                      <h2 className="text-lg font-bold text-slate-900 tracking-tight">
+                        Budget Master &amp; Bill of Quantities
                       </h2>
-                      <p className="text-xs text-[#5c5c5c] mt-0.5">
-                        Line-item budget vs committed purchase orders vs certified actuals, with complete revision audit trails.
+                      <p className="text-xs text-slate-500 mt-1 font-normal">
+                        Line-item budget baseline vs committed purchase orders vs certified actuals, with complete revision audit trails.
                       </p>
                     </div>
                     <BOQTable />
@@ -236,12 +244,12 @@ export default function DashboardPage() {
               {activeTab === "Procurement" && (
                 <RoleGuard permission="Procurement">
                   <div className="space-y-4">
-                    <div className="glass-card p-4">
-                      <h2 className="text-base font-bold text-[#1b1b1b] tracking-tight">
-                        Procurement Lifecycle &amp; Invoice Validation
+                    <div className="bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-2xl p-5 shadow-card">
+                      <h2 className="text-lg font-bold text-slate-900 tracking-tight">
+                        Procurement Lifecycle &amp; Three-Way Match
                       </h2>
-                      <p className="text-xs text-[#5c5c5c] mt-0.5">
-                        Automated Requisitions, Purchase Orders, and Automated Three-Way Matching gatekeeper.
+                      <p className="text-xs text-slate-500 mt-1 font-normal">
+                        Automated Requisitions, Purchase Orders, and Automated Three-Way Matching gatekeeper holding unauthorized disbursements.
                       </p>
                     </div>
                     <ThreeWayMatchView />
@@ -249,15 +257,47 @@ export default function DashboardPage() {
                 </RoleGuard>
               )}
 
+              {activeTab === "Materials & Stock" && (
+                <RoleGuard permission="Materials">
+                  <div className="space-y-4">
+                    <div className="bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-2xl p-5 shadow-card">
+                      <h2 className="text-lg font-bold text-slate-900 tracking-tight">
+                        Materials Inventory &amp; Stock Ledger
+                      </h2>
+                      <p className="text-xs text-slate-500 mt-1 font-normal">
+                        Warehouse on-hand, reserved, and consumed stock levels with storekeeper gate-pass transfer records.
+                      </p>
+                    </div>
+                    <MaterialsStockView />
+                  </div>
+                </RoleGuard>
+              )}
+
+              {activeTab === "Labour & Muster" && (
+                <RoleGuard permission="Labour">
+                  <div className="space-y-4">
+                    <div className="bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-2xl p-5 shadow-card">
+                      <h2 className="text-lg font-bold text-slate-900 tracking-tight">
+                        Labour Headcount &amp; Shift Muster Roll
+                      </h2>
+                      <p className="text-xs text-slate-500 mt-1 font-normal">
+                        Trade and gang rosters, overtime calculations, and productivity yield linked directly to BOQ work items.
+                      </p>
+                    </div>
+                    <LabourView />
+                  </div>
+                </RoleGuard>
+              )}
+
               {activeTab === "Site Progress & Diary" && (
                 <RoleGuard permission="Progress">
                   <div className="space-y-4">
-                    <div className="glass-card p-4">
-                      <h2 className="text-base font-bold text-[#1b1b1b] tracking-tight">
-                        Site Execution, Daily Diary &amp; Snagging
+                    <div className="bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-2xl p-5 shadow-card">
+                      <h2 className="text-lg font-bold text-slate-900 tracking-tight">
+                        Digital Site Diary, Snags &amp; Safety
                       </h2>
-                      <p className="text-xs text-[#5c5c5c] mt-0.5">
-                        Weather-stamped daily logs, workforce muster, photographic records, and snag remediation.
+                      <p className="text-xs text-slate-500 mt-1 font-normal">
+                        Daily shift logs, weather conditions stamps, photo proof documentation, and NCR remediation workflows.
                       </p>
                     </div>
                     <SiteDiaryView />
@@ -265,55 +305,91 @@ export default function DashboardPage() {
                 </RoleGuard>
               )}
 
-              {activeTab === "Materials & Stock" && (
-                <RoleGuard permission="Materials">
-                  <MaterialsStockView />
+              {activeTab === "Subcontractors" && (
+                <RoleGuard permission="Subcontractors">
+                  <div className="space-y-4">
+                    <div className="bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-2xl p-5 shadow-card">
+                      <h2 className="text-lg font-bold text-slate-900 tracking-tight">
+                        Subcontractor Valuations &amp; Performance
+                      </h2>
+                      <p className="text-xs text-slate-500 mt-1 font-normal">
+                        Interim valuations, certified claims, retention deductions, and 4-factor contractor grading scorecard.
+                      </p>
+                    </div>
+                    <SubcontractorView />
+                  </div>
                 </RoleGuard>
               )}
 
-              {activeTab === "Labour & Muster" && (
-                <RoleGuard permission="Labour">
-                  <LabourView />
-                </RoleGuard>
-              )}
-
-              {(activeTab === "Subcontractors" || activeTab === "Variations & Claims") && (
-                <RoleGuard permission={activeTab === "Subcontractors" ? "Subcontractors" : "Variations"}>
-                  <SubcontractorView />
+              {activeTab === "Variations & Claims" && (
+                <RoleGuard permission="Variations">
+                  <div className="space-y-4">
+                    <div className="bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-2xl p-5 shadow-card">
+                      <h2 className="text-lg font-bold text-slate-900 tracking-tight">
+                        Variations Register &amp; Claims Governance
+                      </h2>
+                      <p className="text-xs text-slate-500 mt-1 font-normal">
+                        Architect instructions, QS cost evaluations, and PM approval thresholds updating the live BOQ baseline.
+                      </p>
+                    </div>
+                    <BOQTable />
+                  </div>
                 </RoleGuard>
               )}
 
               {activeTab === "Reports Studio" && (
                 <RoleGuard permission="Reports">
-                  <ReportsView />
+                  <div className="space-y-4">
+                    <div className="bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-2xl p-5 shadow-card">
+                      <h2 className="text-lg font-bold text-slate-900 tracking-tight">
+                        Executive Reports Studio
+                      </h2>
+                      <p className="text-xs text-slate-500 mt-1 font-normal">
+                        10 branded audit-ready PDF and CSV exports for commercial banking, client valuations, and internal audits.
+                      </p>
+                    </div>
+                    <ReportsView />
+                  </div>
                 </RoleGuard>
               )}
 
               {activeTab === "Admin & Roles" && (
                 <RoleGuard permission="Admin">
-                  <AuditLogView />
+                  <div className="space-y-4">
+                    <div className="bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-2xl p-5 shadow-card">
+                      <h2 className="text-lg font-bold text-slate-900 tracking-tight">
+                        System Administration &amp; Immutable Audit Logs
+                      </h2>
+                      <p className="text-xs text-slate-500 mt-1 font-normal">
+                        Real-time Postgres Row-Level Security actor activity trails and user permission matrices.
+                      </p>
+                    </div>
+                    <AuditLogView />
+                  </div>
                 </RoleGuard>
               )}
 
               {activeTab === "Settings" && (
-                <div className="glass-card p-6 md:p-8 max-w-2xl mx-auto text-center space-y-4">
-                  <h3 className="text-lg font-bold text-[#1b1b1b]">Project Settings &amp; Account</h3>
-                  <p className="text-xs text-[#5c5c5c] max-w-md mx-auto">
-                    Manage project currencies, timezones, notification rules, team profiles, and session security.
-                  </p>
-                  <div className="pt-2 flex flex-wrap justify-center gap-3">
-                    <button
-                      onClick={() => (window.location.href = "/settings")}
-                      className="px-4 py-2 bg-[#0067c0] hover:bg-[#005ba1] text-white font-semibold text-xs rounded-lg shadow-sm transition-all"
-                    >
-                      Open Full Settings →
-                    </button>
-                    <button
-                      onClick={() => (window.location.href = "/account")}
-                      className="px-4 py-2 bg-white hover:bg-[#f5f5f5] text-[#1b1b1b] border border-[#d5d5d5] font-semibold text-xs rounded-lg shadow-sm transition-all"
-                    >
-                      Account Center →
-                    </button>
+                <div className="bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-2xl p-6 shadow-card">
+                  <h2 className="text-lg font-bold text-slate-900">Project &amp; Workspace Settings</h2>
+                  <p className="text-xs text-slate-500 mt-1 mb-6">Configure project base currency, timezones, and system defaults.</p>
+                  <div className="max-w-md space-y-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">Project Name</label>
+                      <input defaultValue="Horizon Towers - Eko Atlantic" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-medium focus:outline-none focus:border-[#0067c0]" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">Base Working Currency</label>
+                      <select defaultValue="NGN" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-semibold focus:outline-none focus:border-[#0067c0]">
+                        <option value="NGN">₦ NGN — Nigerian Naira</option>
+                        <option value="USD">$ USD — US Dollar</option>
+                        <option value="GBP">£ GBP — British Pound</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">Variance Alert Threshold</label>
+                      <input defaultValue="±5%" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-medium focus:outline-none focus:border-[#0067c0]" />
+                    </div>
                   </div>
                 </div>
               )}

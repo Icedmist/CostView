@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useApp } from "@/app/providers";
 import type { RoleName } from "@/lib/supabase/database.types";
 import {
-  LayoutDashboard,
   Calculator,
   ShoppingCart,
   Boxes,
@@ -93,7 +92,7 @@ export function Sidebar({
 
   const handleSelect = (tab: string) => {
     onSelectTab(tab);
-    if (onClose) onClose(); // close drawer on mobile
+    if (onClose) onClose();
   };
 
   const handleLogout = async () => {
@@ -110,53 +109,53 @@ export function Sidebar({
       {/* Mobile overlay */}
       {open && (
         <div
-          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-30 lg:hidden"
+          className="fixed inset-0 bg-slate-900/30 backdrop-blur-xs z-30 lg:hidden"
           onClick={onClose}
         />
       )}
 
       <aside
-        className={`fixed lg:static inset-y-0 left-0 z-40 w-[310px] lg:w-[310px] bg-[#f3f3f3]/90 backdrop-blur-xl text-[#1b1b1b] border-r border-[#e5e5e5] flex flex-col h-screen select-none shrink-0 transition-transform duration-300 shadow-[2px_0_12px_rgba(0,0,0,0.03)] ${
+        className={`fixed lg:static inset-y-0 left-0 z-40 w-[300px] lg:w-[300px] bg-white/80 backdrop-blur-2xl text-slate-900 border-r border-slate-200/80 flex flex-col h-screen select-none shrink-0 transition-transform duration-300 shadow-[1px_0_12px_rgba(0,0,0,0.02)] ${
           open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         } overflow-hidden`}
       >
         {/* Frozen Header */}
-        <div className="shrink-0 p-3 pb-0 bg-[#f3f3f3]/95 backdrop-blur-md">
+        <div className="shrink-0 p-3.5 pb-0 bg-white/90 backdrop-blur-md">
           {/* Brand Row */}
-          <div className="flex items-center justify-between px-2 pt-2 pb-3">
+          <div className="flex items-center justify-between px-2 pt-1 pb-2.5">
             <Link href="/" className="group flex items-baseline select-none">
-              <span className="text-[21px] font-bold text-[#1b1b1b] tracking-tight">CostView</span>
-              <span className="text-[21px] font-light text-[#5c5c5c] ml-1.5 tracking-wider">360</span>
+              <span className="text-[22px] font-extrabold text-slate-900 tracking-tight">CostView</span>
+              <span className="text-[22px] font-bold text-[#0067c0] ml-1 tracking-tight">360</span>
             </Link>
             <button
               onClick={onClose}
-              className="lg:hidden w-8 h-8 rounded-md bg-white border border-[#e5e5e5] flex items-center justify-center text-[#5c5c5c] hover:text-[#1b1b1b]"
+              className="lg:hidden w-8 h-8 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-900"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
-          <div className="px-2 -mt-2 mb-3 text-[10.5px] font-semibold text-[#5c5c5c] uppercase tracking-[0.5px]">
+          <div className="px-2 -mt-1.5 mb-3 text-[10.5px] font-semibold text-slate-400 uppercase tracking-wider">
             Construction Cost Intelligence
           </div>
 
           {/* Segmented Mode Toggle */}
-          <div className="flex bg-[#e8e8e8] p-1 rounded-lg mb-3">
+          <div className="flex bg-slate-100/90 p-1 rounded-xl mb-3 border border-slate-200/50">
             <button
               onClick={() => setActiveMode("site")}
-              className={`flex-1 py-1.5 px-3 text-xs font-semibold rounded-md transition-all ${
+              className={`flex-1 py-1.5 px-3 text-xs font-semibold rounded-lg transition-all ${
                 activeMode === "site"
-                  ? "bg-white text-[#1b1b1b] shadow-sm font-bold"
-                  : "text-[#5c5c5c] hover:text-[#1b1b1b]"
+                  ? "bg-white text-[#0067c0] shadow-xs font-bold border border-slate-200/40"
+                  : "text-slate-500 hover:text-slate-900"
               }`}
             >
               Site Operations
             </button>
             <button
               onClick={() => setActiveMode("commercial")}
-              className={`flex-1 py-1.5 px-3 text-xs font-semibold rounded-md transition-all ${
+              className={`flex-1 py-1.5 px-3 text-xs font-semibold rounded-lg transition-all ${
                 activeMode === "commercial"
-                  ? "bg-white text-[#1b1b1b] shadow-sm font-bold"
-                  : "text-[#5c5c5c] hover:text-[#1b1b1b]"
+                  ? "bg-white text-[#0067c0] shadow-xs font-bold border border-slate-200/40"
+                  : "text-slate-500 hover:text-slate-900"
               }`}
             >
               Commercial
@@ -167,18 +166,18 @@ export function Sidebar({
           <div className="px-1">
             <button
               onClick={() => handleSelect(activeMode === "site" ? "Dashboard" : "Command Center")}
-              className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] transition-all relative ${
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                 isHomeActive
-                  ? "bg-[#e3e1e6] font-semibold text-[#1b1b1b] shadow-sm before:content-[''] before:absolute before:left-[-4px] before:top-2 before:bottom-2 before:w-[3px] before:bg-[#0067c0] before:rounded-full"
-                  : "text-[#1b1b1b] hover:bg-[#f5f5f5] hover:-translate-y-[1px]"
+                  ? "bg-blue-50/90 text-[#0067c0] font-bold shadow-xs border border-blue-100/80"
+                  : "text-slate-600 hover:bg-slate-100/70 hover:text-slate-900"
               }`}
             >
-              <Home className="w-4 h-4 text-[#0067c0]" />
-              <span>Home</span>
+              <Home className={`w-4 h-4 ${isHomeActive ? "text-[#0067c0]" : "text-slate-400"}`} />
+              <span>Home Command</span>
             </button>
           </div>
 
-          <div className="h-[1px] bg-[#e5e5e5] mx-1 my-2.5" />
+          <div className="h-[1px] bg-slate-100 mx-1 my-2.5" />
         </div>
 
         {/* Scrollable Region */}
@@ -187,25 +186,25 @@ export function Sidebar({
           <div className="relative">
             <div
               onClick={() => setAccountMenuOpen((v) => !v)}
-              className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#f5f5f5] cursor-pointer transition-all border border-transparent hover:border-[#e5e5e5]"
+              className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-100/70 cursor-pointer transition-all border border-slate-200/70 bg-white/70 shadow-xs"
             >
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#4f6bed] to-[#7b5fe8] flex items-center justify-center text-white font-bold text-sm shadow-sm shrink-0">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#0067c0] to-[#0284c7] flex items-center justify-center text-white font-bold text-xs shadow-xs shrink-0">
                 <span>AA</span>
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-[13px] font-semibold text-[#1b1b1b] truncate">Abubakar Alkali</div>
-                <div className="text-[11.5px] text-[#5c5c5c] truncate">{activeRole}</div>
+                <div className="text-xs font-bold text-slate-900 truncate">Abubakar Alkali</div>
+                <div className="text-[11px] text-slate-500 truncate font-medium">{activeRole}</div>
               </div>
             </div>
 
             {accountMenuOpen && (
-              <div className="absolute top-full left-0 right-0 mt-1 bg-white/95 backdrop-blur-xl border border-[#e5e5e5] rounded-xl shadow-[0_12px_30px_rgba(0,0,0,0.12)] p-1.5 z-50 animate-in fade-in zoom-in-95">
+              <div className="absolute top-full left-0 right-0 mt-1.5 bg-white/95 backdrop-blur-2xl border border-slate-200/90 rounded-2xl shadow-glass p-2 z-50 animate-in fade-in zoom-in-95">
                 <div
                   onClick={() => {
                     setAccountMenuOpen(false);
                     handleSelect("Settings");
                   }}
-                  className="px-3 py-2 rounded-md text-[12.5px] font-semibold text-[#1b1b1b] hover:bg-[#f5f5f5] cursor-pointer"
+                  className="px-3 py-2 rounded-xl text-xs font-semibold text-slate-800 hover:bg-slate-100/80 cursor-pointer"
                 >
                   Settings
                 </div>
@@ -214,17 +213,17 @@ export function Sidebar({
                     setAccountMenuOpen(false);
                     setIsOnboardingOpen(true);
                   }}
-                  className="px-3 py-2 rounded-md text-[12.5px] font-semibold text-[#1b1b1b] hover:bg-[#f5f5f5] cursor-pointer"
+                  className="px-3 py-2 rounded-xl text-xs font-semibold text-slate-800 hover:bg-slate-100/80 cursor-pointer"
                 >
-                  Help & User Guide
+                  Help &amp; User Guide
                 </div>
-                <div className="h-[1px] bg-[#e5e5e5] my-1" />
+                <div className="h-[1px] bg-slate-100 my-1" />
                 <div
                   onClick={() => {
                     setAccountMenuOpen(false);
                     handleLogout();
                   }}
-                  className="px-3 py-2 rounded-md text-[12.5px] font-semibold text-[#c42b1c] hover:bg-red-50 cursor-pointer flex items-center gap-2"
+                  className="px-3 py-2 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 cursor-pointer flex items-center gap-2"
                 >
                   <LogOut className="w-3.5 h-3.5" />
                   Sign Out
@@ -234,15 +233,17 @@ export function Sidebar({
           </div>
 
           {/* Role Simulator Pill */}
-          <div className="bg-white/80 backdrop-blur-md border border-[#e5e5e5] rounded-lg p-2 shadow-sm">
-            <div className="text-[10px] uppercase font-bold tracking-wider text-[#5c5c5c] flex items-center justify-between mb-1.5 px-1">
+          <div className="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-2.5 shadow-xs">
+            <div className="text-[10px] uppercase font-bold tracking-wider text-slate-500 flex items-center justify-between mb-1.5 px-1">
               <span>Simulate Role</span>
-              <span className="text-[#0067c0] bg-[#eef2fb] px-1.5 py-0.5 rounded text-[9.5px]">RBAC</span>
+              <span className="text-[#0067c0] bg-blue-50 px-2 py-0.5 rounded-full text-[9.5px] font-bold border border-blue-200/60">
+                RBAC
+              </span>
             </div>
             <select
               value={activeRole}
               onChange={(e) => setActiveRole(e.target.value as RoleName)}
-              className="w-full bg-[#fafafa] border border-[#d5d5d5] rounded-md px-2.5 py-1.5 text-xs font-semibold text-[#1b1b1b] focus:outline-none focus:border-[#0067c0] cursor-pointer"
+              className="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-[#0067c0] cursor-pointer shadow-xs"
             >
               {ALL_ROLES.map((role) => (
                 <option key={role} value={role}>
@@ -252,94 +253,93 @@ export function Sidebar({
             </select>
           </div>
 
-          {/* Module Navigation List */}
-          <nav className="space-y-0.5 pt-1">
-            <div className="text-[10.5px] font-bold uppercase tracking-[0.6px] text-[#5c5c5c] px-2.5 py-1">
-              {activeMode === "site" ? "Site Operations Modules" : "Commercial Operations"}
+          {/* Navigation Links */}
+          <nav className="space-y-1">
+            <div className="px-2 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              {activeMode === "site" ? "Site Operations Modules" : "Commercial Lifecycle"}
             </div>
+
             {navItems.map((item) => {
-              const Icon = item.icon;
+              const allowed = !item.permission || canAccess(activeRole, item.permission as any);
               const isActive = activeTab === item.name;
-              const hasAccess = !item.permission || canAccess(activeRole, item.permission as any);
+
               return (
                 <button
                   key={item.name}
-                  onClick={() => hasAccess && handleSelect(item.name)}
-                  disabled={!hasAccess}
-                  title={!hasAccess ? `Restricted — ${activeRole} lacks ${item.permission}` : undefined}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-[13px] transition-all relative ${
-                    !hasAccess
-                      ? "opacity-40 cursor-not-allowed text-[#8b8b8b]"
+                  onClick={() => allowed && handleSelect(item.name)}
+                  disabled={!allowed}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+                    !allowed
+                      ? "opacity-40 cursor-not-allowed text-slate-400"
                       : isActive
-                      ? "bg-[#e3e1e6] font-semibold text-[#1b1b1b] shadow-sm before:content-[''] before:absolute before:left-[-4px] before:top-2 before:bottom-2 before:w-[3px] before:bg-[#0067c0] before:rounded-full"
-                      : "text-[#1b1b1b] hover:bg-[#f5f5f5] hover:-translate-y-[1px]"
+                      ? "bg-blue-50/90 text-[#0067c0] font-bold shadow-xs border border-blue-100/80"
+                      : "text-slate-600 hover:bg-slate-100/70 hover:text-slate-900"
                   }`}
                 >
-                  <div className="flex items-center gap-3">
-                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-[#0067c0]" : "text-[#5c5c5c]"}`} />
-                    <span className="tracking-normal text-left">{item.name}</span>
+                  <div className="flex items-center gap-2.5 truncate">
+                    <item.icon className={`w-4 h-4 shrink-0 ${isActive ? "text-[#0067c0]" : "text-slate-400"}`} />
+                    <span className="truncate">{item.name}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    {!hasAccess && <Lock className="w-3.5 h-3.5 text-[#8b8b8b]" />}
-                    {item.badge && hasAccess && (
-                      <span className="text-[10.5px] px-2 py-0.5 rounded-full font-bold bg-[#eef2fb] text-[#0067c0] border border-[#0067c0]/20">
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    {!allowed ? (
+                      <Lock className="w-3 h-3 text-slate-400" />
+                    ) : item.badge ? (
+                      <span className="px-2 py-0.5 text-[10px] font-bold bg-[#0067c0] text-white rounded-full shadow-xs">
                         {item.badge}
                       </span>
-                    )}
+                    ) : null}
                   </div>
                 </button>
               );
             })}
 
-            <div className="h-[1px] bg-[#e5e5e5] mx-1 my-3" />
+            <div className="h-[1px] bg-slate-100 my-2.5 mx-1" />
 
-            <div className="text-[10.5px] font-bold uppercase tracking-[0.6px] text-[#5c5c5c] px-2.5 py-1">
-              Management & Tools
+            <div className="px-2 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              System Governance
             </div>
+
             {BOTTOM_NAV.map((item) => {
-              const Icon = item.icon;
+              const allowed = !item.permission || canAccess(activeRole, item.permission as any);
               const isActive = activeTab === item.name;
-              const hasAccess = !item.permission || canAccess(activeRole, item.permission as any);
+
               return (
                 <button
                   key={item.name}
-                  onClick={() => hasAccess && handleSelect(item.name)}
-                  disabled={!hasAccess}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-[13px] transition-all relative ${
-                    !hasAccess
-                      ? "opacity-40 cursor-not-allowed text-[#8b8b8b]"
+                  onClick={() => allowed && handleSelect(item.name)}
+                  disabled={!allowed}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+                    !allowed
+                      ? "opacity-40 cursor-not-allowed text-slate-400"
                       : isActive
-                      ? "bg-[#e3e1e6] font-semibold text-[#1b1b1b] shadow-sm before:content-[''] before:absolute before:left-[-4px] before:top-2 before:bottom-2 before:w-[3px] before:bg-[#0067c0] before:rounded-full"
-                      : "text-[#1b1b1b] hover:bg-[#f5f5f5] hover:-translate-y-[1px]"
+                      ? "bg-blue-50/90 text-[#0067c0] font-bold shadow-xs border border-blue-100/80"
+                      : "text-slate-600 hover:bg-slate-100/70 hover:text-slate-900"
                   }`}
                 >
-                  <div className="flex items-center gap-3">
-                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-[#0067c0]" : "text-[#5c5c5c]"}`} />
-                    <span>{item.name}</span>
+                  <div className="flex items-center gap-2.5 truncate">
+                    <item.icon className={`w-4 h-4 shrink-0 ${isActive ? "text-[#0067c0]" : "text-slate-400"}`} />
+                    <span className="truncate">{item.name}</span>
                   </div>
-                  {!hasAccess && <Lock className="w-3.5 h-3.5 text-[#8b8b8b]" />}
+                  {!allowed && <Lock className="w-3 h-3 text-slate-400" />}
                 </button>
               );
             })}
           </nav>
         </div>
 
-        {/* User Guide Button Footer */}
-        <div className="p-3 border-t border-[#e5e5e5] bg-[#fafafa]/90 shrink-0">
+        {/* User Guide Hub Trigger */}
+        <div className="p-3 border-t border-slate-200/80 bg-white/90 backdrop-blur-md">
           <button
             onClick={() => setIsOnboardingOpen(true)}
-            className="w-full py-2 px-3 bg-white hover:bg-[#f5f5f5] border border-[#d5d5d5] text-[#1b1b1b] font-semibold text-xs rounded-lg flex items-center justify-center gap-2 shadow-sm transition-all"
+            className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs font-semibold shadow-xs transition-all"
           >
-            <BookOpen className="w-4 h-4 text-[#0067c0]" />
+            <BookOpen className="w-3.5 h-3.5 text-[#0067c0]" />
             <span>Interactive User Guide</span>
           </button>
         </div>
       </aside>
 
-      <OnboardingModal
-        isOpen={isOnboardingOpen}
-        onClose={() => setIsOnboardingOpen(false)}
-      />
+      <OnboardingModal isOpen={isOnboardingOpen} onClose={() => setIsOnboardingOpen(false)} />
     </>
   );
 }

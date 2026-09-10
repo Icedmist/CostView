@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useApp } from "@/app/providers";
-import { Building2, Bell, Menu, LogOut, BookOpen } from "lucide-react";
+import { Building2, Bell, Menu, LogOut, BookOpen, Search, CheckCircle2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { OnboardingModal } from "@/components/onboarding/onboarding-modal";
@@ -23,36 +23,36 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
   };
 
   return (
-    <header className="h-[60px] bg-white/85 backdrop-blur-xl border-b border-[#e5e5e5] px-4 md:px-6 flex items-center justify-between gap-4 shrink-0 shadow-[0_1px_4px_rgba(0,0,0,0.02)] z-20">
+    <header className="h-[64px] bg-white/80 backdrop-blur-2xl border-b border-slate-200/80 px-4 md:px-6 flex items-center justify-between gap-4 shrink-0 shadow-[0_1px_3px_rgba(0,0,0,0.02)] z-20">
       <div className="flex items-center gap-3 min-w-0">
         <button
           onClick={onMenuClick}
-          className="lg:hidden w-9 h-9 bg-white border border-[#e5e5e5] rounded-lg flex items-center justify-center text-[#5c5c5c] hover:text-[#1b1b1b] shadow-sm"
+          className="lg:hidden w-9 h-9 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-center text-slate-600 hover:text-slate-900 shadow-xs"
         >
           <Menu className="w-5 h-5" />
         </button>
 
         {/* Project Switcher Pill */}
-        <div className="flex items-center gap-2.5">
-          <div className="inline-flex items-center gap-2 bg-[#f0f1f3] hover:bg-[#e6e7ea] border border-[#e5e5e5] px-3.5 py-1.5 rounded-full text-xs font-semibold text-[#1b1b1b] transition-all cursor-pointer shadow-sm">
+        <div className="flex items-center gap-3">
+          <div className="inline-flex items-center gap-2 bg-slate-100/80 hover:bg-slate-200/70 border border-slate-200/80 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-800 transition-all cursor-pointer shadow-xs">
             <Building2 className="w-3.5 h-3.5 text-[#0067c0]" />
-            <span className="truncate max-w-[200px] md:max-w-none">{currentProject.name}</span>
-            <span className="text-[10px] text-[#5c5c5c] font-normal">({currentProject.code})</span>
+            <span className="truncate max-w-[180px] sm:max-w-none">{currentProject.name}</span>
+            <span className="text-[10px] text-slate-500 font-mono">({currentProject.code})</span>
           </div>
-          <span className="text-xs text-[#5c5c5c] hidden xl:inline">
-            {currentProject.location} · ₦ NGN
+          <span className="text-xs text-slate-500 hidden xl:inline">
+            {currentProject.location} · ₦ NGN Native
           </span>
         </div>
       </div>
 
       <div className="flex items-center gap-2 md:gap-3 shrink-0">
-        {/* Currency Pill */}
-        <div className="hidden sm:flex items-center gap-1.5 bg-[#f8f9fa] border border-[#e5e5e5] rounded-lg px-2.5 py-1 text-xs font-semibold text-[#5c5c5c]">
+        {/* Currency Switcher */}
+        <div className="hidden sm:flex items-center gap-1.5 bg-slate-50/80 border border-slate-200/80 rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-600 shadow-xs">
           <span>Currency:</span>
           <select
             value={currency}
             onChange={(e) => setCurrency(e.target.value)}
-            className="bg-transparent text-xs font-semibold text-[#1b1b1b] focus:outline-none cursor-pointer"
+            className="bg-transparent text-xs font-bold text-slate-800 focus:outline-none cursor-pointer"
           >
             <option value="NGN">₦ NGN</option>
             <option value="USD">$ USD</option>
@@ -65,68 +65,63 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
         <button
           onClick={() => setIsOnboardingOpen(true)}
           title="Open User Guide & Onboarding Hub"
-          className="flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-[#f5f5f5] border border-[#d5d5d5] text-[#1b1b1b] rounded-lg font-semibold text-xs shadow-sm transition-all"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 rounded-xl font-semibold text-xs shadow-xs transition-all"
         >
           <BookOpen className="w-3.5 h-3.5 text-[#0067c0]" />
           <span className="hidden md:inline">User Guide</span>
         </button>
 
         {/* Live Status Pill */}
-        <div className="hidden md:flex items-center gap-2 bg-[#eef2fb] text-[#0067c0] border border-[#0067c0]/20 px-2.5 py-1 rounded-full text-xs font-semibold">
-          <span className="w-2 h-2 bg-[#0f7b3f] rounded-full animate-pulse" />
+        <div className="hidden md:flex items-center gap-2 bg-emerald-50 text-emerald-700 border border-emerald-200/80 px-3 py-1 rounded-full text-xs font-semibold shadow-xs">
+          <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
           <span>System Live</span>
         </div>
 
-        {/* Notification Bell with Menu */}
+        {/* Notification Bell */}
         <div className="relative">
           <button
             onClick={() => setNotifOpen((v) => !v)}
             title="Attention Alerts"
-            className="relative w-9 h-9 rounded-lg border border-[#e5e5e5] bg-white hover:bg-[#f5f5f5] flex items-center justify-center text-[#5c5c5c] hover:text-[#1b1b1b] transition-all shadow-sm"
+            className="relative w-9 h-9 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 flex items-center justify-center text-slate-600 hover:text-slate-900 transition-all shadow-xs"
           >
             <Bell className="w-4 h-4" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#c42b1c] text-white text-[9.5px] font-bold rounded-full flex items-center justify-center">
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white text-[9.5px] font-bold rounded-full flex items-center justify-center shadow-xs">
               3
             </span>
           </button>
 
           {notifOpen && (
-            <div className="absolute right-0 top-full mt-2 w-80 bg-white/95 backdrop-blur-2xl border border-[#e5e5e5] rounded-xl shadow-[0_16px_40px_rgba(0,0,0,0.16)] p-3 z-50 animate-in fade-in zoom-in-95">
-              <div className="text-[11.5px] font-bold uppercase tracking-wider text-[#5c5c5c] pb-2 border-b border-[#e5e5e5]">
-                Attention Required
+            <div className="absolute right-0 top-full mt-2 w-80 bg-white/95 backdrop-blur-2xl border border-slate-200/90 rounded-2xl shadow-glass p-3 z-50 animate-in fade-in zoom-in-95">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 pb-2 border-b border-slate-100 flex items-center justify-between">
+                <span>Attention Alerts</span>
+                <span className="bg-rose-50 text-rose-600 px-2 py-0.5 rounded-full text-[10px]">3 Active</span>
               </div>
               <div className="py-2 space-y-2 text-xs">
-                <div className="p-2 rounded-lg bg-[#fbe4e2] text-[#c42b1c] border border-[#c42b1c]/15">
-                  <div className="font-bold">Procurement Commitment Alert</div>
-                  <div className="text-[11px] text-[#1b1b1b]/80 mt-0.5">POs tracking ₦18.4M above baseline allocation.</div>
+                <div className="p-2.5 rounded-xl bg-rose-50/80 border border-rose-200/80 text-rose-800">
+                  <div className="font-bold">Procurement Match Discrepancy</div>
+                  <div className="text-[11px] text-rose-700/80 mt-0.5">
+                    Pulkit Steels PO-2026-092 billed 30T vs 27T GRN delivered.
+                  </div>
                 </div>
-                <div className="p-2 rounded-lg bg-[#fdf0dd] text-[#a15c00] border border-[#a15c00]/15">
-                  <div className="font-bold">BOQ Rate Variance</div>
-                  <div className="text-[11px] text-[#1b1b1b]/80 mt-0.5">Blockwork item running 3% over approved unit rate.</div>
+                <div className="p-2.5 rounded-xl bg-amber-50/80 border border-amber-200/80 text-amber-800">
+                  <div className="font-bold">BOQ Revision Pending</div>
+                  <div className="text-[11px] text-amber-700/80 mt-0.5">
+                    CON-02.01 ready-mix +₦4M diesel pump adjustment awaiting QS review.
+                  </div>
                 </div>
-                <div className="p-2 rounded-lg bg-[#eef2fb] text-[#0067c0] border border-[#0067c0]/15">
-                  <div className="font-bold">Site Progress</div>
-                  <div className="text-[11px] text-[#1b1b1b]/80 mt-0.5">Daily muster recorded 96% attendance today.</div>
+                <div className="p-2.5 rounded-xl bg-blue-50/80 border border-blue-200/80 text-blue-800">
+                  <div className="font-bold">Site Execution Sync</div>
+                  <div className="text-[11px] text-blue-700/80 mt-0.5">
+                    Shift #142 closed with 48 crew. 2 non-critical snags logged.
+                  </div>
                 </div>
               </div>
             </div>
           )}
         </div>
-
-        {/* Sign Out Button */}
-        <button
-          onClick={handleLogout}
-          title="Sign out of workspace"
-          className="w-9 h-9 rounded-lg border border-[#e5e5e5] bg-white hover:bg-[#f5f5f5] flex items-center justify-center text-[#5c5c5c] hover:text-[#c42b1c] transition-all shadow-sm"
-        >
-          <LogOut className="w-4 h-4" />
-        </button>
       </div>
 
-      <OnboardingModal
-        isOpen={isOnboardingOpen}
-        onClose={() => setIsOnboardingOpen(false)}
-      />
+      <OnboardingModal isOpen={isOnboardingOpen} onClose={() => setIsOnboardingOpen(false)} />
     </header>
   );
 }

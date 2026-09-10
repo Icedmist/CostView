@@ -77,14 +77,57 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
     setBoqItems((prev) => [item, ...prev]);
     setProcurementCount((n) => n + 1);
     setReportsRefreshKey((k) => k + 1);
+    (async () => {
+      try {
+        const supabase = createClient();
+        await supabase.from("boq_items").insert({
+          project_id: "22222222-2222-2222-2222-222222222222",
+          code: item.code,
+          description: item.description,
+          category: item.category,
+          unit: item.unit,
+          quantity: item.quantity,
+          rate: item.rate,
+          budget_amount: item.budgetAmount,
+          committed_amount: item.committedAmount,
+          actual_amount: item.actualAmount,
+        });
+      } catch (e) {
+        console.warn("Async BOQ add to Supabase failed", e);
+      }
+    })();
   };
   const updateBOQItem = (id: string, patch: Partial<BOQItem>) => {
     setBoqItems((prev) => prev.map((b) => (b.id === id ? { ...b, ...patch } : b)));
     setReportsRefreshKey((k) => k + 1);
+    (async () => {
+      try {
+        const supabase = createClient();
+        const updatePayload: any = {};
+        if (patch.rate !== undefined) updatePayload.rate = patch.rate;
+        if (patch.quantity !== undefined) updatePayload.quantity = patch.quantity;
+        if (patch.budgetAmount !== undefined) updatePayload.budget_amount = patch.budgetAmount;
+        if (patch.committedAmount !== undefined) updatePayload.committed_amount = patch.committedAmount;
+        if (patch.actualAmount !== undefined) updatePayload.actual_amount = patch.actualAmount;
+        if (Object.keys(updatePayload).length > 0) {
+          await supabase.from("boq_items").update(updatePayload).eq("id", id);
+        }
+      } catch (e) {
+        console.warn("Async BOQ update to Supabase failed", e);
+      }
+    })();
   };
   const deleteBOQItem = (id: string) => {
     setBoqItems((prev) => prev.filter((b) => b.id !== id));
     setReportsRefreshKey((k) => k + 1);
+    (async () => {
+      try {
+        const supabase = createClient();
+        await supabase.from("boq_items").delete().eq("id", id);
+      } catch (e) {
+        console.warn("Async BOQ delete from Supabase failed", e);
+      }
+    })();
   };
   const bumpStock = () => setStockRefreshKey((k) => k + 1);
   const bumpReports = () => setReportsRefreshKey((k) => k + 1);

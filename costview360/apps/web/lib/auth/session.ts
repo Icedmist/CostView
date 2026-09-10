@@ -14,9 +14,9 @@ export function useSessionExpiry() {
     // Tab-close expiry: sessionStorage is per-tab, localStorage is persisted
     // If new tab (no sessionStorage flag) but previous session exists, expire
     if (typeof window !== "undefined") {
-      const hasTabFlag = sessionStorage.getItem("costview_tab_active");
-      const hasPrevSession = localStorage.getItem("costview_last_active");
-      if (!hasTabFlag && hasPrevSession) {
+      const lastActive = Number(localStorage.getItem("costview_last_active") || "0");
+      // Only sign out if user has been inactive for longer than the inactivity window
+      if (lastActive > 0 && Date.now() - lastActive > INACTIVITY_MS) {
         supabase.auth.signOut().then(() => {
           localStorage.removeItem("costview_demo_role");
           sessionStorage.clear();
@@ -25,8 +25,9 @@ export function useSessionExpiry() {
         });
         return;
       }
-      if (!hasTabFlag) sessionStorage.setItem("costview_tab_active", "1");
+      sessionStorage.setItem("costview_tab_active", "1");
       sessionStorage.setItem("costview_last_active", Date.now().toString());
+      localStorage.setItem("costview_last_active", Date.now().toString());
     }
 
     const resetTimer = () => {
