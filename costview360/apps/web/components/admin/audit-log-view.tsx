@@ -85,38 +85,38 @@ export function AuditLogView() {
   }, [logs, search, moduleFilter]);
 
   return (
-    <div className="bg-white border-2 border-navy-800 shadow-brutal overflow-hidden">
+    <div className="bg-white/90 backdrop-blur-md border border-[#e5e5e5] rounded-xl shadow-xs overflow-hidden">
       {/* Header */}
-      <div className="p-4 border-b border-navy-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
+      <div className="p-4 border-b border-[#e5e5e5] bg-[#f8f9fa] flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
-          <h3 className="text-sm font-black text-navy-800 flex items-center gap-2">
+          <h3 className="text-sm font-black text-[#1b1b1b] flex items-center gap-2">
             <History className="w-4 h-4 text-emerald-600" />
             <span>Searchable Compliance Audit Journal</span>
-            <span className="text-xs bg-cream-100 text-navy-800 border border-navy-800 px-2 py-0.5 font-mono font-bold">
+            <span className="text-xs bg-slate-100 text-slate-700 border border-slate-200 rounded px-2 py-0.5 font-mono font-medium text-xs">
               Immutable Ledger
             </span>
           </h3>
-          <p className="text-xs text-navy-800/60 mt-0.5">
+          <p className="text-xs text-[#1b1b1b]/60 mt-0.5">
             Every approval-chain action and state mutation timestamped with actor attribution (PRD Section 9).
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <div className="relative w-64">
-            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-navy-800/60" />
+            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-[#1b1b1b]/60" />
             <input
               type="text"
               placeholder="Search actor, entity, or change..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 bg-white border-2 border-navy-800 text-xs text-navy-800 placeholder-navy-800/50 focus:outline-none focus:ring-2 focus:ring-navy-800"
+              className="w-full pl-9 pr-3 py-1.5 bg-white border border-[#e5e5e5] text-xs text-[#1b1b1b] placeholder-navy-800/50 focus:outline-none focus:ring-2 focus:ring-navy-800"
             />
           </div>
 
           <select
             value={moduleFilter}
             onChange={(e) => setModuleFilter(e.target.value)}
-            className="bg-white border-2 border-navy-800 px-2 py-1.5 text-xs text-navy-800 font-bold focus:outline-none cursor-pointer"
+            className="bg-white border border-[#e5e5e5] px-2 py-1.5 text-xs text-[#1b1b1b] font-bold focus:outline-none cursor-pointer"
           >
             <option value="All">All Modules</option>
             <option value="Budget">Budget</option>
@@ -132,7 +132,7 @@ export function AuditLogView() {
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs">
-          <thead className="bg-navy-800 text-white uppercase text-xs font-semibold border-b border-navy-800">
+          <thead className="bg-navy-800 text-white uppercase text-xs font-semibold border-b border-[#e5e5e5]">
             <tr>
               <th className="py-3 px-4">Timestamp</th>
               <th className="py-3 px-4">Actor</th>
@@ -142,28 +142,28 @@ export function AuditLogView() {
               <th className="py-3 px-4">Change Delta / Record</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-navy-800/10 text-navy-800">
+          <tbody className="divide-y divide-navy-800/10 text-[#1b1b1b]">
             {filteredLogs.map((log) => (
-              <tr key={log.id} className="hover:bg-cream-100/30 transition-colors">
-                <td className="py-3 px-4 font-mono text-navy-800/60 whitespace-nowrap">
+              <tr key={log.id} className="hover:bg-[#fbfbfb]/30 transition-colors">
+                <td className="py-3 px-4 font-mono text-[#1b1b1b]/60 whitespace-nowrap">
                   {log.timestamp}
                 </td>
                 <td className="py-3 px-4">
-                  <div className="font-bold text-navy-800">{log.actor}</div>
-                  <div className="text-xs text-navy-800/40">{log.role}</div>
+                  <div className="font-bold text-[#1b1b1b]">{log.actor}</div>
+                  <div className="text-xs text-[#1b1b1b]/40">{log.role}</div>
                 </td>
                 <td className="py-3 px-3">
-                  <span className="px-2 py-0.5 bg-cream-100 border border-navy-800 text-xs font-bold text-navy-800">
+                  <span className="px-2 py-0.5 bg-[#fbfbfb] border border-[#e5e5e5] text-xs font-bold text-[#1b1b1b]">
                     {log.module}
                   </span>
                 </td>
                 <td className="py-3 px-4 font-bold text-emerald-700">
                   {log.action}
                 </td>
-                <td className="py-3 px-3 font-mono font-bold text-navy-800">
+                <td className="py-3 px-3 font-mono font-bold text-[#1b1b1b]">
                   {log.entity}
                 </td>
-                <td className="py-3 px-4 text-navy-800 max-w-sm">
+                <td className="py-3 px-4 text-[#1b1b1b] max-w-sm">
                   {log.delta}
                 </td>
               </tr>

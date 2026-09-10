@@ -13,27 +13,27 @@ const STEPS = [
 
 export default function HowItWorksPage() {
   return (
-    <div className="min-h-screen bg-[#FFFDF0] text-navy-800 font-sans">
+    <div className="min-h-screen bg-[#fbfbfb] text-[#1b1b1b] font-sans">
       <MarketingNav />
 
-      <header className="border-b-[3px] border-navy-800 bg-white">
+      <header className="border-b border-[#e5e5e5] bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-10 md:py-14">
-          <div className="inline-block bg-navy-800 text-white border-[3px] border-navy-800 px-4 py-2 font-black uppercase text-sm">The Flow</div>
-          <h1 className="mt-4 text-4xl md:text-5xl font-black tracking-tighter leading-none">One Flow.<br /><span className="bg-[#FFD23F] border-[3px] border-navy-800 px-2">Not Six Silos.</span></h1>
-          <p className="mt-4 text-base font-bold text-navy-800/60 max-w-2xl">A number entered once in Budget automatically shows downstream in Procurement, Materials, Labour — no re-typing by three people into three spreadsheets.</p>
+          <div className="inline-block glass-hero text-white rounded-xl px-4 py-2 font-semibold text-sm">The Flow</div>
+          <h1 className="mt-4 text-4xl md:text-5xl font-black tracking-tighter leading-none">One Flow.<br /><span className="bg-blue-50 text-[#0067c0] border-blue-200 border border-[#e5e5e5] px-2">Not Six Silos.</span></h1>
+          <p className="mt-4 text-base font-bold text-[#5c5c5c] max-w-2xl">A number entered once in Budget automatically shows downstream in Procurement, Materials, Labour — no re-typing by three people into three spreadsheets.</p>
         </div>
       </header>
 
       <section className="max-w-7xl mx-auto px-4 md:px-6 py-10 md:py-14">
         <div className="grid lg:grid-cols-3 gap-6">
           {STEPS.map((s) => (
-            <div key={s.n} className="bg-white border-[3px] border-navy-800 shadow-brutal p-6">
-              <div className="w-14 h-14 bg-[#FFD23F] border-[3px] border-navy-800 flex items-center justify-center font-black text-lg">{s.n}</div>
-              <h3 className="mt-4 font-black uppercase text-lg leading-none">{s.title}</h3>
-              <p className="text-sm font-bold text-navy-800/60 mt-3 leading-relaxed">{s.desc}</p>
+            <div key={s.n} className="bg-white/90 backdrop-blur-md border border-[#e5e5e5] rounded-xl shadow-card p-6">
+              <div className="w-14 h-14 bg-blue-50 text-[#0067c0] border-blue-200 border border-[#e5e5e5] flex items-center justify-center font-black text-lg">{s.n}</div>
+              <h3 className="mt-4 font-semibold text-lg leading-none">{s.title}</h3>
+              <p className="text-sm font-bold text-[#5c5c5c] mt-3 leading-relaxed">{s.desc}</p>
               <ul className="mt-4 space-y-1.5">
                 {s.bullets.map((b) => (
-                  <li key={b} className="flex items-start gap-2 text-xs font-bold"><CheckCircle2 className="w-4 h-4 text-navy-800 shrink-0 mt-0.5" />{b}</li>
+                  <li key={b} className="flex items-start gap-2 text-xs font-bold"><CheckCircle2 className="w-4 h-4 text-[#0067c0] shrink-0 mt-0.5" />{b}</li>
                 ))}
               </ul>
             </div>
@@ -41,7 +41,7 @@ export default function HowItWorksPage() {
         </div>
       </section>
 
-      <section className="bg-navy-800 text-white border-y-[3px] border-navy-800">
+      <section className="bg-navy-800 text-white border-y border-[#e5e5e5]">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-10">
           <h2 className="text-2xl md:text-3xl font-black tracking-tighter">Roles See Only What’s Theirs</h2>
           <p className="text-sm font-bold text-white/60 mt-2 max-w-2xl">Per PRD §4 — 8 roles, permission matrix editable by Admin. No wading through modules that aren’t yours.</p>
@@ -56,9 +56,9 @@ export default function HowItWorksPage() {
               ["Storekeeper", "Stock · Transfers"],
               ["Architect", "Drawings · Snags"],
             ].map(([role, perms]) => (
-              <div key={role} className="bg-white text-navy-800 border-[3px] border-navy-800 p-4 shadow-brutal">
-                <div className="font-black uppercase text-xs tracking-widest">{role}</div>
-                <div className="text-xs font-bold text-navy-800/60 mt-1">{perms}</div>
+              <div key={role} className="bg-white text-[#1b1b1b] border border-[#e5e5e5] p-4 shadow-card">
+                <div className="font-semibold text-xs tracking-widest">{role}</div>
+                <div className="text-xs font-bold text-[#5c5c5c] mt-1">{perms}</div>
               </div>
             ))}
           </div>
@@ -66,21 +66,21 @@ export default function HowItWorksPage() {
       </section>
 
       <section className="max-w-7xl mx-auto px-4 md:px-6 py-10">
-        <div className="bg-[#FFFDF0] border-[3px] border-navy-800 p-6 md:p-8 shadow-brutal">
-          <h3 className="font-black uppercase text-lg flex items-center gap-2"><Zap className="w-6 h-6" /> Thresholds Decide, Not Phone Calls</h3>
-          <p className="text-sm font-bold text-navy-800/60 mt-2">Variations and payments route by value: Draft → QS Valuation → PM Review → Approved. Budget status flips at ±5% (configurable). No “who do I send this to”.</p>
+        <div className="bg-[#fbfbfb] border border-[#e5e5e5] p-6 md:p-8 shadow-card">
+          <h3 className="font-semibold text-lg flex items-center gap-2"><Zap className="w-6 h-6" /> Thresholds Decide, Not Phone Calls</h3>
+          <p className="text-sm font-bold text-[#5c5c5c] mt-2">Variations and payments route by value: Draft → QS Valuation → PM Review → Approved. Budget status flips at ±5% (configurable). No “who do I send this to”.</p>
           <div className="mt-4 grid md:grid-cols-3 gap-4 text-sm">
-            <div className="bg-white border-2 border-navy-800 p-4"><div className="font-black">On Budget</div><div className="text-xs font-bold text-navy-800/60">Within 5% — green</div></div>
-            <div className="bg-[#FFD23F] border-2 border-navy-800 p-4"><div className="font-black">Under Budget</div><div className="text-xs font-bold">More than 5% under — blue</div></div>
-            <div className="bg-red-500 text-white border-2 border-navy-800 p-4"><div className="font-black">Over Budget</div><div className="text-xs font-bold text-white/80">More than 5% over — red</div></div>
+            <div className="bg-white border border-[#e5e5e5] rounded-xl p-4"><div className="font-black">On Budget</div><div className="text-xs font-bold text-[#5c5c5c]">Within 5% — green</div></div>
+            <div className="bg-blue-50 text-[#0067c0] border-blue-200 border border-[#e5e5e5] p-4"><div className="font-black">Under Budget</div><div className="text-xs font-bold">More than 5% under — blue</div></div>
+            <div className="bg-red-500 text-white border border-[#e5e5e5] p-4"><div className="font-black">Over Budget</div><div className="text-xs font-bold text-white/80">More than 5% over — red</div></div>
           </div>
         </div>
       </section>
 
-      <footer className="bg-[#FFFDF0] border-t-[3px] border-navy-800">
+      <footer className="bg-[#fbfbfb] border-t border-[#e5e5e5]">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <Link href="/"><Logo size="sm" /></Link>
-          <div className="flex gap-4 text-sm font-black uppercase">
+          <div className="flex gap-4 text-sm font-semibold">
             <Link href="/features" className="hover:underline">Features</Link>
             <Link href="/pricing" className="hover:underline">Pricing</Link>
             <Link href="/contact" className="hover:underline">Contact</Link>

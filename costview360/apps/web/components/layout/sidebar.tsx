@@ -38,7 +38,6 @@ interface NavItem {
 }
 
 const SITE_OPS_NAV: NavItem[] = [
-  { name: "Dashboard", icon: LayoutDashboard },
   { name: "Budget & BOQ", icon: Calculator, permission: "Budget" },
   { name: "Procurement", icon: ShoppingCart, permission: "Procurement", badge: "3" },
   { name: "Materials & Stock", icon: Boxes, permission: "Materials" },
@@ -46,13 +45,9 @@ const SITE_OPS_NAV: NavItem[] = [
   { name: "Site Progress & Diary", icon: TrendingUp, permission: "Progress" },
   { name: "Subcontractors", icon: Briefcase, permission: "Subcontractors" },
   { name: "Variations & Claims", icon: FileSpreadsheet, permission: "Variations" },
-  { name: "Reports Studio", icon: ClipboardList, permission: "Reports" },
-  { name: "Admin & Roles", icon: ShieldCheck, permission: "Admin" },
-  { name: "Settings", icon: Settings },
 ];
 
 const COMMERCIAL_NAV: NavItem[] = [
-  { name: "Command Center", icon: LayoutDashboard },
   { name: "Feasibility & Land", icon: Building2 },
   { name: "Development Costs", icon: Calculator },
   { name: "Tender & Estimating", icon: Scale },
@@ -60,6 +55,11 @@ const COMMERCIAL_NAV: NavItem[] = [
   { name: "Claims & EOT", icon: FileCheck },
   { name: "Sales & Receivables", icon: DollarSign },
   { name: "Project Margin", icon: TrendingUp, badge: "LIVE" },
+];
+
+const BOTTOM_NAV: NavItem[] = [
+  { name: "Reports Studio", icon: ClipboardList, permission: "Reports" },
+  { name: "Admin & Roles", icon: ShieldCheck, permission: "Admin" },
   { name: "Settings", icon: Settings },
 ];
 
@@ -87,11 +87,22 @@ export function Sidebar({
 }) {
   const { activeMode, setActiveMode, activeRole, setActiveRole } = useApp();
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const navItems = activeMode === "site" ? SITE_OPS_NAV : COMMERCIAL_NAV;
+  const isHomeActive = activeTab === "Dashboard" || activeTab === "Command Center";
 
   const handleSelect = (tab: string) => {
     onSelectTab(tab);
     if (onClose) onClose(); // close drawer on mobile
+  };
+
+  const handleLogout = async () => {
+    const { createClient } = await import("@/lib/supabase/client");
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    localStorage.removeItem("costview_demo_role");
+    sessionStorage.clear();
+    window.location.href = "/login";
   };
 
   return (
@@ -99,169 +110,236 @@ export function Sidebar({
       {/* Mobile overlay */}
       {open && (
         <div
-          className="fixed inset-0 bg-navy-800/60 backdrop-blur-sm z-30 lg:hidden"
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-30 lg:hidden"
           onClick={onClose}
         />
       )}
 
       <aside
-        className={`fixed lg:static inset-y-0 left-0 z-40 w-[300px] lg:w-[300px] bg-navy-800 text-white border-r-[3px] border-navy-800 flex flex-col h-screen lg:h-screen select-none shrink-0 transition-transform duration-300 ${
+        className={`fixed lg:static inset-y-0 left-0 z-40 w-[310px] lg:w-[310px] bg-[#f3f3f3]/90 backdrop-blur-xl text-[#1b1b1b] border-r border-[#e5e5e5] flex flex-col h-screen select-none shrink-0 transition-transform duration-300 shadow-[2px_0_12px_rgba(0,0,0,0.03)] ${
           open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-        } overflow-y-auto`}
+        } overflow-hidden`}
       >
-      {/* Brand Header - Brutalist */}
-      <div className="p-5 border-b-[3px] border-white/10 shrink-0">
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 bg-mustard-400 border-2 border-white flex items-center justify-center font-black text-navy-800 text-sm shadow-[3px_3px_0px_0px_white] shrink-0">
-              <span className="font-display tracking-tighter">CV</span>
-            </div>
-            <div>
-              <div className="font-black text-white text-[16px] leading-none tracking-tighter">
-                CostView
-              </div>
-              <div className="text-[11px] font-mono font-bold tracking-[0.16em] text-white/50 uppercase">Analyse · Plan · Build</div>
-            </div>
-          </div>
-          <button onClick={onClose} className="lg:hidden w-9 h-9 bg-white/10 border border-white/20 flex items-center justify-center">
-            <X className="w-4 h-4 text-white" />
-          </button>
-        </div>
-        <Link
-          href="/"
-          className="mt-4 flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-mustard-400 hover:text-white border-2 border-mustard-400/30 px-3 py-1.5 w-fit"
-        >
-          <Home className="w-4 h-4" /> Back to Landing
-        </Link>
-      </div>
-
-      {/* Mode Switcher - Brutalist */}
-      <div className="px-4 pt-4 shrink-0">
-        <div className="bg-navy-900 border-2 border-white/20 p-1 flex gap-1">
-          <button
-            onClick={() => setActiveMode("site")}
-            className={`flex-1 py-2.5 px-2 font-black text-xs uppercase tracking-wide border-2 transition-all ${
-              activeMode === "site"
-                ? "bg-mustard-400 text-navy-800 border-navy-800 shadow-[3px_3px_0px_0px_white]"
-                : "bg-transparent text-white/60 border-transparent hover:text-white hover:bg-white/10"
-            }`}
-          >
-            Site Ops
-          </button>
-          <button
-            onClick={() => setActiveMode("commercial")}
-            className={`flex-1 py-2.5 px-2 font-black text-xs uppercase tracking-wide border-2 transition-all ${
-              activeMode === "commercial"
-                ? "bg-mustard-400 text-navy-800 border-navy-800 shadow-[3px_3px_0px_0px_white]"
-                : "bg-transparent text-white/60 border-transparent hover:text-white hover:bg-white/10"
-            }`}
-          >
-            Commercial
-          </button>
-        </div>
-      </div>
-
-      {/* Role Preview Switcher */}
-      <div className="px-4 pt-4 shrink-0">
-        <div className="bg-white border-2 border-navy-800 p-3 shadow-[4px_4px_0px_0px_#C9A227]">
-          <div className="text-xs uppercase font-black tracking-widest text-navy-800 flex items-center justify-between mb-2">
-            <span>Simulate Role</span>
-            <span className="bg-navy-800 text-mustard-400 px-2 py-1 text-[10px]">RBAC ACTIVE</span>
-          </div>
-          <select
-            value={activeRole}
-            onChange={(e) => setActiveRole(e.target.value as RoleName)}
-            className="w-full bg-cream-100 border-2 border-navy-800 px-3 py-2.5 text-sm font-black text-navy-800 focus:outline-none cursor-pointer"
-          >
-            {ALL_ROLES.map((role) => (
-              <option key={role} value={role}>
-                {role}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      {/* Navigation List */}
-      <nav className="flex-1 overflow-y-auto px-4 py-5 space-y-1.5">
-        <div className="text-xs font-black uppercase tracking-[0.14em] text-mustard-400 px-2 py-2 border-l-[4px] border-mustard-400 mb-3">
-          {activeMode === "site" ? "Site Operations" : "Commercial Modules"}
-        </div>
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = activeTab === item.name;
-          const hasAccess = !item.permission || canAccess(activeRole, item.permission as any);
-          return (
+        {/* Frozen Header */}
+        <div className="shrink-0 p-3 pb-0 bg-[#f3f3f3]/95 backdrop-blur-md">
+          {/* Brand Row */}
+          <div className="flex items-center justify-between px-2 pt-2 pb-3">
+            <Link href="/" className="group flex items-baseline select-none">
+              <span className="text-[21px] font-bold text-[#1b1b1b] tracking-tight">CostView</span>
+              <span className="text-[21px] font-light text-[#5c5c5c] ml-1.5 tracking-wider">360</span>
+            </Link>
             <button
-              key={item.name}
-              onClick={() => hasAccess && handleSelect(item.name)}
-              disabled={!hasAccess}
-              title={!hasAccess ? `Restricted — ${activeRole} lacks ${item.permission}` : undefined}
-              className={`w-full flex items-center justify-between px-3 py-3 text-sm font-black uppercase tracking-wide border-2 transition-all ${
-                !hasAccess
-                  ? "bg-white/5 text-white/30 border-transparent cursor-not-allowed"
-                  : isActive
-                  ? "bg-mustard-400 text-navy-800 border-navy-800 shadow-[4px_4px_0px_0px_white]"
-                  : "bg-transparent text-white/70 border-transparent hover:text-white hover:bg-white/10 hover:border-white/20"
+              onClick={onClose}
+              className="lg:hidden w-8 h-8 rounded-md bg-white border border-[#e5e5e5] flex items-center justify-center text-[#5c5c5c] hover:text-[#1b1b1b]"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+          <div className="px-2 -mt-2 mb-3 text-[10.5px] font-semibold text-[#5c5c5c] uppercase tracking-[0.5px]">
+            Construction Cost Intelligence
+          </div>
+
+          {/* Segmented Mode Toggle */}
+          <div className="flex bg-[#e8e8e8] p-1 rounded-lg mb-3">
+            <button
+              onClick={() => setActiveMode("site")}
+              className={`flex-1 py-1.5 px-3 text-xs font-semibold rounded-md transition-all ${
+                activeMode === "site"
+                  ? "bg-white text-[#1b1b1b] shadow-sm font-bold"
+                  : "text-[#5c5c5c] hover:text-[#1b1b1b]"
               }`}
             >
-              <div className="flex items-center gap-3">
-                <span className={`w-8 h-8 border-2 flex items-center justify-center shrink-0 ${!hasAccess ? "bg-white/5 border-white/10 text-white/20" : isActive ? "bg-navy-800 border-navy-800 text-white" : "bg-white/10 border-white/20 text-white"}`}>
-                  {hasAccess ? <Icon className="w-4 h-4" /> : <Lock className="w-3.5 h-3.5" />}
-                </span>
-                <span className="normal-case font-black tracking-tight text-[13px] text-left">{item.name}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                {!hasAccess && <Lock className="w-3 h-3 text-white/20" />}
-                {item.badge && hasAccess && (
-                  <span className={`text-xs px-2 py-1 font-mono font-black border-2 shrink-0 ${isActive ? "bg-navy-800 text-white border-navy-800" : "bg-mustard-400 text-navy-800 border-navy-800"}`}>
-                    {item.badge}
-                  </span>
-                )}
-              </div>
+              Site Operations
             </button>
-          );
-        })}
-      </nav>
+            <button
+              onClick={() => setActiveMode("commercial")}
+              className={`flex-1 py-1.5 px-3 text-xs font-semibold rounded-md transition-all ${
+                activeMode === "commercial"
+                  ? "bg-white text-[#1b1b1b] shadow-sm font-bold"
+                  : "text-[#5c5c5c] hover:text-[#1b1b1b]"
+              }`}
+            >
+              Commercial
+            </button>
+          </div>
 
-      {/* User Footer Profile */}
-      <div className="p-4 border-t-[3px] border-white/10 bg-navy-900 shrink-0 space-y-2.5">
-        <button
-          onClick={() => setIsOnboardingOpen(true)}
-          className="w-full py-2 bg-mustard-400 border-2 border-navy-800 text-navy-800 font-black uppercase text-xs flex items-center justify-center gap-2 hover:bg-mustard-500 shadow-[2px_2px_0px_0px_white] transition-transform active:translate-x-0.5 active:translate-y-0.5"
-        >
-          <BookOpen className="w-4 h-4" /> User Guide & Manual
-        </button>
-        <button
-          onClick={async () => {
-            const { createClient } = await import("@/lib/supabase/client");
-            const supabase = createClient();
-            await supabase.auth.signOut();
-            localStorage.removeItem("costview_demo_role");
-            sessionStorage.clear();
-            window.location.href = "/login";
-          }}
-          className="w-full py-2 bg-white border-2 border-navy-800 font-black uppercase text-xs flex items-center justify-center gap-2 hover:bg-cream-100"
-        >
-          <LogOut className="w-4 h-4" /> Log out — 2h / tab close
-        </button>
-        <div className="flex items-center gap-3 bg-white border-2 border-navy-800 p-3 shadow-[3px_3px_0px_0px_#C9A227]">
-          <div className="w-10 h-10 bg-navy-800 border-2 border-navy-800 flex items-center justify-center text-sm font-black text-white">
-            IM
+          {/* Primary Home Nav Item */}
+          <div className="px-1">
+            <button
+              onClick={() => handleSelect(activeMode === "site" ? "Dashboard" : "Command Center")}
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] transition-all relative ${
+                isHomeActive
+                  ? "bg-[#e3e1e6] font-semibold text-[#1b1b1b] shadow-sm before:content-[''] before:absolute before:left-[-4px] before:top-2 before:bottom-2 before:w-[3px] before:bg-[#0067c0] before:rounded-full"
+                  : "text-[#1b1b1b] hover:bg-[#f5f5f5] hover:-translate-y-[1px]"
+              }`}
+            >
+              <Home className="w-4 h-4 text-[#0067c0]" />
+              <span>Home</span>
+            </button>
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-black text-navy-800 truncate">icedmist</p>
-            <p className="text-xs font-bold text-navy-800/60 truncate uppercase tracking-wide">{activeRole}</p>
-          </div>
-          <div className="w-3 h-3 bg-green-500 border-2 border-navy-800 rounded-full animate-pulse" />
+
+          <div className="h-[1px] bg-[#e5e5e5] mx-1 my-2.5" />
         </div>
-      </div>
-    </aside>
 
-    <OnboardingModal
-      isOpen={isOnboardingOpen}
-      onClose={() => setIsOnboardingOpen(false)}
-    />
+        {/* Scrollable Region */}
+        <div className="flex-1 min-h-0 overflow-y-auto px-3 pb-3 space-y-3">
+          {/* User Account Card with Dropdown */}
+          <div className="relative">
+            <div
+              onClick={() => setAccountMenuOpen((v) => !v)}
+              className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#f5f5f5] cursor-pointer transition-all border border-transparent hover:border-[#e5e5e5]"
+            >
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#4f6bed] to-[#7b5fe8] flex items-center justify-center text-white font-bold text-sm shadow-sm shrink-0">
+                <span>AA</span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-[13px] font-semibold text-[#1b1b1b] truncate">Abubakar Alkali</div>
+                <div className="text-[11.5px] text-[#5c5c5c] truncate">{activeRole}</div>
+              </div>
+            </div>
+
+            {accountMenuOpen && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white/95 backdrop-blur-xl border border-[#e5e5e5] rounded-xl shadow-[0_12px_30px_rgba(0,0,0,0.12)] p-1.5 z-50 animate-in fade-in zoom-in-95">
+                <div
+                  onClick={() => {
+                    setAccountMenuOpen(false);
+                    handleSelect("Settings");
+                  }}
+                  className="px-3 py-2 rounded-md text-[12.5px] font-semibold text-[#1b1b1b] hover:bg-[#f5f5f5] cursor-pointer"
+                >
+                  Settings
+                </div>
+                <div
+                  onClick={() => {
+                    setAccountMenuOpen(false);
+                    setIsOnboardingOpen(true);
+                  }}
+                  className="px-3 py-2 rounded-md text-[12.5px] font-semibold text-[#1b1b1b] hover:bg-[#f5f5f5] cursor-pointer"
+                >
+                  Help & User Guide
+                </div>
+                <div className="h-[1px] bg-[#e5e5e5] my-1" />
+                <div
+                  onClick={() => {
+                    setAccountMenuOpen(false);
+                    handleLogout();
+                  }}
+                  className="px-3 py-2 rounded-md text-[12.5px] font-semibold text-[#c42b1c] hover:bg-red-50 cursor-pointer flex items-center gap-2"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  Sign Out
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Role Simulator Pill */}
+          <div className="bg-white/80 backdrop-blur-md border border-[#e5e5e5] rounded-lg p-2 shadow-sm">
+            <div className="text-[10px] uppercase font-bold tracking-wider text-[#5c5c5c] flex items-center justify-between mb-1.5 px-1">
+              <span>Simulate Role</span>
+              <span className="text-[#0067c0] bg-[#eef2fb] px-1.5 py-0.5 rounded text-[9.5px]">RBAC</span>
+            </div>
+            <select
+              value={activeRole}
+              onChange={(e) => setActiveRole(e.target.value as RoleName)}
+              className="w-full bg-[#fafafa] border border-[#d5d5d5] rounded-md px-2.5 py-1.5 text-xs font-semibold text-[#1b1b1b] focus:outline-none focus:border-[#0067c0] cursor-pointer"
+            >
+              {ALL_ROLES.map((role) => (
+                <option key={role} value={role}>
+                  {role}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Module Navigation List */}
+          <nav className="space-y-0.5 pt-1">
+            <div className="text-[10.5px] font-bold uppercase tracking-[0.6px] text-[#5c5c5c] px-2.5 py-1">
+              {activeMode === "site" ? "Site Operations Modules" : "Commercial Operations"}
+            </div>
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.name;
+              const hasAccess = !item.permission || canAccess(activeRole, item.permission as any);
+              return (
+                <button
+                  key={item.name}
+                  onClick={() => hasAccess && handleSelect(item.name)}
+                  disabled={!hasAccess}
+                  title={!hasAccess ? `Restricted — ${activeRole} lacks ${item.permission}` : undefined}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-[13px] transition-all relative ${
+                    !hasAccess
+                      ? "opacity-40 cursor-not-allowed text-[#8b8b8b]"
+                      : isActive
+                      ? "bg-[#e3e1e6] font-semibold text-[#1b1b1b] shadow-sm before:content-[''] before:absolute before:left-[-4px] before:top-2 before:bottom-2 before:w-[3px] before:bg-[#0067c0] before:rounded-full"
+                      : "text-[#1b1b1b] hover:bg-[#f5f5f5] hover:-translate-y-[1px]"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-[#0067c0]" : "text-[#5c5c5c]"}`} />
+                    <span className="tracking-normal text-left">{item.name}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {!hasAccess && <Lock className="w-3.5 h-3.5 text-[#8b8b8b]" />}
+                    {item.badge && hasAccess && (
+                      <span className="text-[10.5px] px-2 py-0.5 rounded-full font-bold bg-[#eef2fb] text-[#0067c0] border border-[#0067c0]/20">
+                        {item.badge}
+                      </span>
+                    )}
+                  </div>
+                </button>
+              );
+            })}
+
+            <div className="h-[1px] bg-[#e5e5e5] mx-1 my-3" />
+
+            <div className="text-[10.5px] font-bold uppercase tracking-[0.6px] text-[#5c5c5c] px-2.5 py-1">
+              Management & Tools
+            </div>
+            {BOTTOM_NAV.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.name;
+              const hasAccess = !item.permission || canAccess(activeRole, item.permission as any);
+              return (
+                <button
+                  key={item.name}
+                  onClick={() => hasAccess && handleSelect(item.name)}
+                  disabled={!hasAccess}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-[13px] transition-all relative ${
+                    !hasAccess
+                      ? "opacity-40 cursor-not-allowed text-[#8b8b8b]"
+                      : isActive
+                      ? "bg-[#e3e1e6] font-semibold text-[#1b1b1b] shadow-sm before:content-[''] before:absolute before:left-[-4px] before:top-2 before:bottom-2 before:w-[3px] before:bg-[#0067c0] before:rounded-full"
+                      : "text-[#1b1b1b] hover:bg-[#f5f5f5] hover:-translate-y-[1px]"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-[#0067c0]" : "text-[#5c5c5c]"}`} />
+                    <span>{item.name}</span>
+                  </div>
+                  {!hasAccess && <Lock className="w-3.5 h-3.5 text-[#8b8b8b]" />}
+                </button>
+              );
+            })}
+          </nav>
+        </div>
+
+        {/* User Guide Button Footer */}
+        <div className="p-3 border-t border-[#e5e5e5] bg-[#fafafa]/90 shrink-0">
+          <button
+            onClick={() => setIsOnboardingOpen(true)}
+            className="w-full py-2 px-3 bg-white hover:bg-[#f5f5f5] border border-[#d5d5d5] text-[#1b1b1b] font-semibold text-xs rounded-lg flex items-center justify-center gap-2 shadow-sm transition-all"
+          >
+            <BookOpen className="w-4 h-4 text-[#0067c0]" />
+            <span>Interactive User Guide</span>
+          </button>
+        </div>
+      </aside>
+
+      <OnboardingModal
+        isOpen={isOnboardingOpen}
+        onClose={() => setIsOnboardingOpen(false)}
+      />
     </>
   );
 }

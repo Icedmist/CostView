@@ -20,84 +20,92 @@ export function MetricCards({ approvedBudget, committedCost, actualCost }: Metri
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
       {/* Approved Budget */}
-      <div className="bg-white border-2 border-navy-800 shadow-brutal p-4 relative overflow-hidden min-h-[130px] flex flex-col justify-between">
+      <div className="glass-card p-4 relative overflow-hidden min-h-[130px] flex flex-col justify-between">
         <div className="flex items-start justify-between gap-3">
-          <span className="text-xs font-black uppercase tracking-widest text-navy-800/60 leading-tight">
+          <span className="text-xs font-semibold uppercase tracking-wider text-[#5c5c5c]">
             Approved Budget
           </span>
-          <div className="w-9 h-9 bg-navy-800 border-2 border-navy-800 flex items-center justify-center text-mustard-400 shrink-0">
-            <DollarSign className="w-6 h-6" />
+          <div className="w-8 h-8 rounded-lg bg-[#eef2fb] text-[#0067c0] flex items-center justify-center shrink-0">
+            <DollarSign className="w-4 h-4" />
           </div>
         </div>
-        <div className="mt-4 text-xl font-black tracking-tighter text-navy-800 font-mono leading-none">
+        <div className="mt-3 text-xl font-bold tracking-tight text-[#1b1b1b]">
           {formatCurrency(approvedBudget, currency)}
         </div>
-        <div className="mt-3 flex items-center gap-2 text-sm font-black">
-          <span className="bg-navy-800 text-white px-3 py-1 text-xs uppercase tracking-wide">100% Baseline</span>
-          <span className="text-navy-800/60 font-bold text-xs">· BOQ Master</span>
+        <div className="mt-3 flex items-center gap-2 text-xs">
+          <span className="bg-[#eef2fb] text-[#0067c0] font-semibold px-2 py-0.5 rounded-full">100% Baseline</span>
+          <span className="text-[#5c5c5c]">· BOQ Master</span>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-2 bg-navy-800" />
+        <div className="mt-3 h-1.5 w-full bg-[#e5e5e5] rounded-full overflow-hidden">
+          <div className="h-full bg-[#0067c0] rounded-full" style={{ width: "100%" }} />
+        </div>
       </div>
 
       {/* Committed Spend */}
-      <div className="bg-white border-2 border-navy-800 shadow-brutal p-4 relative overflow-hidden min-h-[130px] flex flex-col justify-between">
+      <div className="glass-card p-4 relative overflow-hidden min-h-[130px] flex flex-col justify-between">
         <div className="flex items-start justify-between gap-3">
-          <span className="text-xs font-black uppercase tracking-widest text-navy-800/60 leading-tight">
+          <span className="text-xs font-semibold uppercase tracking-wider text-[#5c5c5c]">
             Committed (POs)
           </span>
-          <div className="w-9 h-9 bg-mustard-400 border-2 border-navy-800 flex items-center justify-center text-navy-800 shrink-0">
-            <FileSpreadsheet className="w-6 h-6" />
+          <div className="w-8 h-8 rounded-lg bg-[#fdf0dd] text-[#a15c00] flex items-center justify-center shrink-0">
+            <FileSpreadsheet className="w-4 h-4" />
           </div>
         </div>
-        <div className="mt-4 text-xl font-black tracking-tighter text-navy-800 font-mono leading-none">
+        <div className="mt-3 text-xl font-bold tracking-tight text-[#1b1b1b]">
           {formatCurrency(committedCost, currency)}
         </div>
-        <div className="mt-3 flex items-center gap-2 text-sm font-bold">
-          <span className="bg-mustard-400 border-2 border-navy-800 px-3 py-1 text-navy-800 font-black text-sm">{committedPercentage}%</span>
-          <span className="text-navy-800/60 text-xs font-bold">of total committed</span>
+        <div className="mt-3 flex items-center gap-2 text-xs">
+          <span className="bg-[#fdf0dd] text-[#a15c00] font-semibold px-2 py-0.5 rounded-full">{committedPercentage}%</span>
+          <span className="text-[#5c5c5c]">of total committed</span>
         </div>
-        <div className="absolute bottom-0 left-0 h-2 bg-mustard-400" style={{ width: `${Math.min(100, committedPercentage)}%` }} />
-        <div className="absolute bottom-0 right-0 left-0 h-2 bg-navy-800/10 -z-0" />
+        <div className="mt-3 h-1.5 w-full bg-[#e5e5e5] rounded-full overflow-hidden">
+          <div className="h-full bg-[#a15c00] rounded-full transition-all" style={{ width: `${Math.min(100, committedPercentage)}%` }} />
+        </div>
       </div>
 
       {/* Actual Spend */}
-      <div className="bg-white border-2 border-navy-800 shadow-brutal p-4 relative overflow-hidden min-h-[130px] flex flex-col justify-between">
+      <div className="glass-card p-4 relative overflow-hidden min-h-[130px] flex flex-col justify-between">
         <div className="flex items-start justify-between gap-3">
-          <span className="text-xs font-black uppercase tracking-widest text-navy-800/60 leading-tight">
+          <span className="text-xs font-semibold uppercase tracking-wider text-[#5c5c5c]">
             Actual (Certified)
           </span>
-          <div className="w-9 h-9 bg-white border-2 border-navy-800 flex items-center justify-center text-navy-800 shrink-0">
-            <CheckCircle2 className="w-6 h-6" />
+          <div className="w-8 h-8 rounded-lg bg-[#e3f6ea] text-[#0f7b3f] flex items-center justify-center shrink-0">
+            <CheckCircle2 className="w-4 h-4" />
           </div>
         </div>
-        <div className="mt-4 text-xl font-black tracking-tighter text-navy-800 font-mono leading-none">
+        <div className="mt-3 text-xl font-bold tracking-tight text-[#1b1b1b]">
           {formatCurrency(actualCost, currency)}
         </div>
-        <div className="mt-3 flex items-center gap-2 text-sm font-bold">
-          <span className="bg-navy-800 text-white px-3 py-1 font-black text-sm">{actualPercentage}%</span>
-          <span className="text-navy-800/60 text-xs">disbursed & certified</span>
+        <div className="mt-3 flex items-center gap-2 text-xs">
+          <span className="bg-[#e3f6ea] text-[#0f7b3f] font-semibold px-2 py-0.5 rounded-full">{actualPercentage}%</span>
+          <span className="text-[#5c5c5c]">disbursed &amp; certified</span>
         </div>
-        <div className="absolute bottom-0 left-0 h-2 bg-navy-800" style={{ width: `${Math.min(100, actualPercentage)}%` }} />
+        <div className="mt-3 h-1.5 w-full bg-[#e5e5e5] rounded-full overflow-hidden">
+          <div className="h-full bg-[#0f7b3f] rounded-full transition-all" style={{ width: `${Math.min(100, actualPercentage)}%` }} />
+        </div>
       </div>
 
       {/* Remaining */}
-      <div className={`border-2 border-navy-800 shadow-brutal p-4 relative overflow-hidden min-h-[130px] flex flex-col justify-between ${uncommittedBalance >= 0 ? "bg-mustard-400" : "bg-red-500"}`}>
+      <div className="glass-card p-4 relative overflow-hidden min-h-[130px] flex flex-col justify-between">
         <div className="flex items-start justify-between gap-3">
-          <span className="text-xs font-black uppercase tracking-widest text-navy-800 leading-tight">
-            Uncommitted<br />Contingency
+          <span className="text-xs font-semibold uppercase tracking-wider text-[#5c5c5c]">
+            Uncommitted Contingency
           </span>
-          <div className={`w-9 h-9 border-2 border-navy-800 flex items-center justify-center shrink-0 ${uncommittedBalance >= 0 ? "bg-white text-navy-800" : "bg-navy-800 text-white"}`}>
-            {uncommittedBalance >= 0 ? <TrendingDown className="w-6 h-6" /> : <AlertTriangle className="w-6 h-6" />}
+          <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${uncommittedBalance >= 0 ? "bg-[#eef2fb] text-[#0067c0]" : "bg-[#fbe4e2] text-[#c42b1c]"}`}>
+            {uncommittedBalance >= 0 ? <TrendingDown className="w-4 h-4" /> : <AlertTriangle className="w-4 h-4" />}
           </div>
         </div>
-        <div className={`mt-4 text-xl font-black tracking-tighter font-mono leading-none ${uncommittedBalance >= 0 ? "text-navy-800" : "text-white"}`}>
+        <div className={`mt-3 text-xl font-bold tracking-tight ${uncommittedBalance >= 0 ? "text-[#1b1b1b]" : "text-[#c42b1c]"}`}>
           {formatCurrency(uncommittedBalance, currency)}
         </div>
-        <div className="mt-3 flex items-center gap-2 text-sm font-black">
-          <span className="bg-navy-800 text-white px-3 py-1 text-sm">
+        <div className="mt-3 flex items-center gap-2 text-xs">
+          <span className={`font-semibold px-2 py-0.5 rounded-full ${uncommittedBalance >= 0 ? "bg-[#eef2fb] text-[#0067c0]" : "bg-[#fbe4e2] text-[#c42b1c]"}`}>
             {Math.max(0, 100 - committedPercentage)}%
           </span>
-          <span className={uncommittedBalance >= 0 ? "text-navy-800/70 text-xs font-bold" : "text-white font-bold text-xs"}>headroom remaining</span>
+          <span className="text-[#5c5c5c]">headroom remaining</span>
+        </div>
+        <div className="mt-3 h-1.5 w-full bg-[#e5e5e5] rounded-full overflow-hidden">
+          <div className={`h-full rounded-full transition-all ${uncommittedBalance >= 0 ? "bg-[#0067c0]" : "bg-[#c42b1c]"}`} style={{ width: `${Math.max(0, 100 - committedPercentage)}%` }} />
         </div>
       </div>
     </div>
