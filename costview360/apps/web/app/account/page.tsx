@@ -119,12 +119,12 @@ export default function AccountPage() {
             </div>
 
             <div className="space-y-6">
-              <div className="glass-hero text-white rounded-xl shadow-glass p-6">
-                <h3 className="font-semibold uppercase tracking-wider text-xs text-white/80 flex items-center gap-2"><Building className="w-4 h-4 text-[#0067c0]" /> Workspace</h3>
-                <p className="text-base font-bold text-white mt-2">CostView Demo Workspace</p>
-                <p className="text-xs font-mono bg-white/10 border border-white/20 rounded px-2 py-1 mt-2 text-white/80">ID: 11111111-1111-1111-1111-111111111111</p>
-                <p className="text-xs text-white/70 mt-3">Currency: ₦ NGN · Projects: 2 (Eko Atlantic, Lekki)</p>
-                <button onClick={() => router.push("/settings")} className="mt-4 w-full py-2.5 bg-[#0067c0] hover:bg-[#005ba1] text-white rounded-lg font-semibold text-xs uppercase tracking-wider shadow-xs rounded-xl transition-all">Go to Settings →</button>
+              <div className="smooth-pearl-hero text-slate-900 rounded-2xl shadow-pearl p-6 border border-sky-200/80">
+                <h3 className="font-semibold uppercase tracking-wider text-xs text-[#0067c0] flex items-center gap-2"><Building className="w-4 h-4 text-[#0067c0]" /> Workspace</h3>
+                <p className="text-base font-bold text-slate-900 mt-2">CostView Demo Workspace</p>
+                <p className="text-xs font-mono bg-sky-50 border border-sky-200/80 rounded-lg px-2.5 py-1 mt-2 text-[#0067c0]">ID: 11111111-1111-1111-1111-111111111111</p>
+                <p className="text-xs text-slate-600 mt-3">Currency: ₦ NGN · Projects: 2 (Eko Atlantic, Lekki)</p>
+                <button onClick={() => router.push("/settings")} className="mt-4 w-full py-2.5 bg-gradient-to-r from-[#0067c0] to-[#0284c7] hover:from-[#005ba1] hover:to-[#0275b0] text-white rounded-xl font-semibold text-xs shadow-md shadow-blue-600/20 transition-all active:scale-[0.98]">Go to Settings →</button>
               </div>
               <div className="bg-white/90 backdrop-blur-md border border-slate-200/80 rounded-xl shadow-card p-6">
                 <h3 className="font-semibold uppercase tracking-wider text-xs text-red-600">Danger Zone</h3>

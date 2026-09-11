@@ -150,9 +150,11 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="glass-hero text-white rounded-3xl p-6 shadow-glass">
-              <h4 className="font-bold text-base mb-1.5">Live BOQ Onboarding</h4>
-              <p className="text-xs text-white/80 leading-relaxed">
+            <div className="smooth-pearl-hero text-slate-900 rounded-3xl p-6 shadow-pearl border border-sky-200/80">
+              <h4 className="font-bold text-base mb-1.5 text-slate-900 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#0067c0]" /> Live BOQ Onboarding
+              </h4>
+              <p className="text-xs text-slate-600 leading-relaxed">
                 Want us to review your actual BOQ format? Attach your bill in your message or email us directly and our quantity surveyors will format it into CostView for your pilot.
               </p>
             </div>
