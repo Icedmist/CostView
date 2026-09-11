@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useApp } from "@/app/providers";
+import { createClient } from "@/lib/supabase/client";
 import {
   Sun,
   CloudRain,
@@ -219,6 +220,73 @@ export function SiteDiaryView() {
   const [snags, setSnags] = useState<SnagRecord[]>(SAMPLE_SNAGS);
   const [safetyLogs, setSafetyLogs] = useState<SafetyObservation[]>(INITIAL_SAFETY);
 
+  // Load live site operations and snags from Supabase
+  useEffect(() => {
+    let isMounted = true;
+    (async () => {
+      try {
+        const supabase = createClient();
+        const { data: diaryData } = await supabase
+          .from("site_diaries")
+          .select("*")
+          .order("log_date", { ascending: false });
+        if (isMounted && diaryData && diaryData.length > 0) {
+          const mappedLogs: DailyLog[] = diaryData.map((d: any, idx: number) => ({
+            id: d.id,
+            logNumber: 142 - idx,
+            date: new Date(d.log_date).toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long", year: "numeric" }),
+            weather: d.weather_condition || "Sunny",
+            temperature: d.temperature || "31°C",
+            delayHours: Number(d.delay_hours || 0),
+            workerHeadcount: Number(d.total_headcount || 48),
+            title: "Superstructure Concrete Pour & Execution Shift",
+            summary: d.work_summary ? d.work_summary.split(". ").filter(Boolean).map((s: string) => s.endsWith(".") ? s : s + ".") : [],
+          }));
+          setLogs(mappedLogs);
+
+          const extractedPhotos: SitePhoto[] = [];
+          diaryData.forEach((d: any) => {
+            if (Array.isArray(d.photos)) {
+              d.photos.forEach((p: any, pIdx: number) => {
+                extractedPhotos.push({
+                  id: `photo-${d.id}-${pIdx}`,
+                  title: p.title || "Site Progress Record",
+                  category: (p.category as any) || "Structure",
+                  timestamp: d.log_date,
+                  uploadedBy: "Site Engineer",
+                  url: p.url || "/images/site-pour.jpg",
+                });
+              });
+            }
+          });
+          if (extractedPhotos.length > 0) {
+            setPhotos(extractedPhotos);
+          }
+        }
+
+        const { data: snagData } = await supabase
+          .from("snags_and_ncrs")
+          .select("*")
+          .order("created_at", { ascending: false });
+        if (isMounted && snagData && snagData.length > 0) {
+          const mappedSnags: SnagRecord[] = snagData.map((s: any) => ({
+            id: s.id,
+            title: s.title,
+            location: s.location || "Site Area",
+            severity: (s.severity as any) || "Medium",
+            status: (s.status as any) || "Open",
+            assignedTo: "Engr. Tayo (Site Eng)",
+            raisedBy: "Mrs. Nkechi (QS)",
+          }));
+          setSnags(mappedSnags);
+        }
+      } catch (err) {
+        console.warn("Failed to load site diary from Supabase", err);
+      }
+    })();
+    return () => { isMounted = false; };
+  }, []);
+
   // Modals
   const [isNewLogOpen, setIsNewLogOpen] = useState(false);
   const [isUploadPhotoOpen, setIsUploadPhotoOpen] = useState(false);
@@ -346,16 +414,16 @@ export function SiteDiaryView() {
   };
 
   return (
-    <div className="bg-white/90 backdrop-blur-md border border-[#e5e5e5] rounded-xl shadow-xs overflow-hidden space-y-4">
+    <div className="bg-white/90 backdrop-blur-md border border-slate-200/80 rounded-xl shadow-xs rounded-xl overflow-hidden space-y-4">
       {/* Sub-Navigation Header */}
-      <div className="p-2.5 bg-[#f8f9fa] border-b border-[#e5e5e5] flex items-center justify-between overflow-x-auto gap-2">
+      <div className="p-2.5 bg-slate-50/80 border-b border-slate-200/80 flex items-center justify-between overflow-x-auto gap-2">
         <div className="flex items-center gap-1.5">
           <button
             onClick={() => setSubTab("diary")}
-            className={`px-3 py-1.5 border border-[#e5e5e5] text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border border-slate-200/80 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "diary"
-                ? "bg-white text-[#0067c0] border border-[#e5e5e5] shadow-xs rounded-md"
-                : "text-[#5c5c5c] hover:text-[#1b1b1b] hover:bg-black/5 rounded-md border border-transparent"
+                ? "bg-white text-[#0067c0] border border-slate-200/80 shadow-xs rounded-xl rounded-md"
+                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 rounded-md border border-transparent"
             }`}
           >
             <Calendar className="w-3.5 h-3.5 text-emerald-500" />
@@ -364,10 +432,10 @@ export function SiteDiaryView() {
 
           <button
             onClick={() => setSubTab("photos")}
-            className={`px-3 py-1.5 border border-[#e5e5e5] text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border border-slate-200/80 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "photos"
-                ? "bg-white text-[#0067c0] border border-[#e5e5e5] shadow-xs rounded-md"
-                : "text-[#5c5c5c] hover:text-[#1b1b1b] hover:bg-black/5 rounded-md border border-transparent"
+                ? "bg-white text-[#0067c0] border border-slate-200/80 shadow-xs rounded-xl rounded-md"
+                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 rounded-md border border-transparent"
             }`}
           >
             <ImageIcon className="w-3.5 h-3.5 text-blue-400" />
@@ -376,10 +444,10 @@ export function SiteDiaryView() {
 
           <button
             onClick={() => setSubTab("inspections")}
-            className={`px-3 py-1.5 border border-[#e5e5e5] text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border border-slate-200/80 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "inspections"
-                ? "bg-white text-[#0067c0] border border-[#e5e5e5] shadow-xs rounded-md"
-                : "text-[#5c5c5c] hover:text-[#1b1b1b] hover:bg-black/5 rounded-md border border-transparent"
+                ? "bg-white text-[#0067c0] border border-slate-200/80 shadow-xs rounded-xl rounded-md"
+                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 rounded-md border border-transparent"
             }`}
           >
             <FileCheck2 className="w-3.5 h-3.5 text-purple-400" />
@@ -388,10 +456,10 @@ export function SiteDiaryView() {
 
           <button
             onClick={() => setSubTab("snags")}
-            className={`px-3 py-1.5 border border-[#e5e5e5] text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border border-slate-200/80 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "snags"
-                ? "bg-white text-[#0067c0] border border-[#e5e5e5] shadow-xs rounded-md"
-                : "text-[#5c5c5c] hover:text-[#1b1b1b] hover:bg-black/5 rounded-md border border-transparent"
+                ? "bg-white text-[#0067c0] border border-slate-200/80 shadow-xs rounded-xl rounded-md"
+                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 rounded-md border border-transparent"
             }`}
           >
             <AlertCircle className="w-3.5 h-3.5 text-amber-400" />
@@ -405,10 +473,10 @@ export function SiteDiaryView() {
 
           <button
             onClick={() => setSubTab("safety")}
-            className={`px-3 py-1.5 border border-[#e5e5e5] text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 border border-slate-200/80 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               subTab === "safety"
-                ? "bg-white text-[#0067c0] border border-[#e5e5e5] shadow-xs rounded-md"
-                : "text-[#5c5c5c] hover:text-[#1b1b1b] hover:bg-black/5 rounded-md border border-transparent"
+                ? "bg-white text-[#0067c0] border border-slate-200/80 shadow-xs rounded-xl rounded-md"
+                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 rounded-md border border-transparent"
             }`}
           >
             <HardHat className="w-3.5 h-3.5 text-red-400" />
@@ -420,19 +488,19 @@ export function SiteDiaryView() {
       {/* SUBTAB 1: DAILY DIARY (PRD Item 15) */}
       {subTab === "diary" && (
         <div className="p-4 space-y-5">
-          <div className="flex items-center justify-between border-b border-[#e5e5e5] pb-3">
+          <div className="flex items-center justify-between border-b border-slate-200/80 pb-3">
             <div>
-              <h3 className="text-sm font-bold text-[#1b1b1b] flex items-center gap-2">
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-emerald-500" />
                 <span>Cloud-Based Site Journal & Daily Shifts</span>
               </h3>
-              <p className="text-xs text-[#1b1b1b]/60 mt-0.5">
+              <p className="text-xs text-slate-900/60 mt-0.5">
                 Never lost on a stolen laptop: live weather stamps, muster headcount, and shift summaries (PRD Section 5.1).
               </p>
             </div>
             <button
               onClick={() => setIsNewLogOpen(true)}
-              className="px-3.5 py-1.5 bg-[#0067c0] hover:bg-[#005ba1] text-white rounded-md text-xs font-semibold uppercase tracking-wider shadow-xs transition-all flex items-center gap-1.5"
+              className="px-3.5 py-1.5 bg-[#0067c0] hover:bg-[#005ba1] text-white rounded-md text-xs font-semibold uppercase tracking-wider shadow-xs rounded-xl transition-all flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>New Daily Entry</span>
@@ -441,32 +509,32 @@ export function SiteDiaryView() {
 
           <div className="space-y-4">
             {logs.map((log) => (
-              <div key={log.id} className="bg-[#fbfbfb] border border-[#e5e5e5] border border-[#e5e5e5] p-4 space-y-3">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-[#e5e5e5] pb-3">
+              <div key={log.id} className="bg-white border border-slate-200/80 border border-slate-200/80 p-4 space-y-3">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-200/80 pb-3">
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-mono text-emerald-500 font-bold">
                         LOG #{log.logNumber}
                       </span>
-                      <span className="text-[#1b1b1b]/40">·</span>
-                      <span className="text-xs text-[#1b1b1b] font-semibold">{log.date}</span>
+                      <span className="text-slate-900/40">·</span>
+                      <span className="text-xs text-slate-900 font-semibold">{log.date}</span>
                     </div>
-                    <h4 className="text-sm font-bold text-[#1b1b1b] mt-1">{log.title}</h4>
+                    <h4 className="text-sm font-bold text-slate-900 mt-1">{log.title}</h4>
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-1.5 bg-white border border-[#e5e5e5] border border-[#e5e5e5] px-2.5 py-1 text-xs text-[#1b1b1b]">
+                    <div className="flex items-center gap-1.5 bg-white border border-slate-200/80 border border-slate-200/80 px-2.5 py-1 text-xs text-slate-900">
                       <Sun className="w-3.5 h-3.5 text-amber-400" />
                       <span>{log.weather} ({log.delayHours} hr delay)</span>
                     </div>
-                    <div className="flex items-center gap-1.5 bg-white border border-[#e5e5e5] border border-[#e5e5e5] px-2.5 py-1 text-xs text-[#1b1b1b]">
+                    <div className="flex items-center gap-1.5 bg-white border border-slate-200/80 border border-slate-200/80 px-2.5 py-1 text-xs text-slate-900">
                       <Users className="w-3.5 h-3.5 text-emerald-500" />
-                      <span className="font-bold text-[#1b1b1b] font-mono">{log.workerHeadcount} Workers</span>
+                      <span className="font-bold text-slate-900 font-mono">{log.workerHeadcount} Workers</span>
                     </div>
                   </div>
                 </div>
 
-                <ul className="list-disc list-inside space-y-1 text-xs text-[#1b1b1b]">
+                <ul className="list-disc list-inside space-y-1 text-xs text-slate-900">
                   {log.summary.map((point, i) => (
                     <li key={i}>{point}</li>
                   ))}
@@ -480,19 +548,19 @@ export function SiteDiaryView() {
       {/* SUBTAB 2: PHOTO GALLERY (PRD Item 16) */}
       {subTab === "photos" && (
         <div className="p-4 space-y-4">
-          <div className="flex items-center justify-between border-b border-[#e5e5e5] pb-3">
+          <div className="flex items-center justify-between border-b border-slate-200/80 pb-3">
             <div>
-              <h3 className="text-sm font-bold text-[#1b1b1b] flex items-center gap-2">
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
                 <ImageIcon className="w-4 h-4 text-blue-400" />
                 <span>Site Progress Photo Documentation</span>
               </h3>
-              <p className="text-xs text-[#1b1b1b]/60 mt-0.5">
+              <p className="text-xs text-slate-900/60 mt-0.5">
                 Geo-stamped visual audit trail for quality assurance and executive reporting (PRD Section 5.2).
               </p>
             </div>
             <button
               onClick={() => setIsUploadPhotoOpen(true)}
-              className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white border border-[#e5e5e5] text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white border border-slate-200/80 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
             >
               <Upload className="w-3.5 h-3.5" />
               <span>Upload Photo</span>
@@ -501,16 +569,16 @@ export function SiteDiaryView() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {photos.map((p) => (
-              <div key={p.id} className="bg-white border border-[#e5e5e5] shadow-card overflow-hidden group">
-                <div className="h-36 bg-[#fbfbfb] flex items-center justify-center border-b border-[#e5e5e5] relative">
-                  <Camera className="w-8 h-8 text-[#1b1b1b]" />
-                  <span className="absolute top-2 left-2 px-2 py-0.5 text-xs font-black bg-navy-800 text-white border border-[#e5e5e5]">
+              <div key={p.id} className="bg-white border border-slate-200/80 shadow-card overflow-hidden group">
+                <div className="h-36 bg-white flex items-center justify-center border-b border-slate-200/80 relative">
+                  <Camera className="w-8 h-8 text-slate-900" />
+                  <span className="absolute top-2 left-2 px-2 py-0.5 text-xs font-bold bg-slate-900 text-white border border-slate-200/80">
                     {p.category}
                   </span>
                 </div>
                 <div className="p-3 bg-white">
-                  <h5 className="text-sm font-black text-[#1b1b1b] line-clamp-1">{p.title}</h5>
-                  <p className="text-sm text-[#1b1b1b]/60 mt-1">
+                  <h5 className="text-sm font-bold text-slate-900 line-clamp-1">{p.title}</h5>
+                  <p className="text-sm text-slate-900/60 mt-1">
                     Uploaded by {p.uploadedBy} · {p.timestamp}
                   </p>
                 </div>
@@ -523,19 +591,19 @@ export function SiteDiaryView() {
       {/* SUBTAB 3: INSPECTIONS (PRD Item 17) */}
       {subTab === "inspections" && (
         <div className="p-4 space-y-4">
-          <div className="flex items-center justify-between border-b border-[#e5e5e5] pb-3">
+          <div className="flex items-center justify-between border-b border-slate-200/80 pb-3">
             <div>
-              <h3 className="text-sm font-bold text-[#1b1b1b] flex items-center gap-2">
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
                 <FileCheck2 className="w-4 h-4 text-purple-400" />
                 <span>Quality & Pre-Pour Sign-Off Inspections</span>
               </h3>
-              <p className="text-xs text-[#1b1b1b]/60 mt-0.5">
+              <p className="text-xs text-slate-900/60 mt-0.5">
                 Defects in failed inspections automatically route directly into the Snag Register (PRD Section 5.3).
               </p>
             </div>
             <button
               onClick={() => setIsNewInspectionOpen(true)}
-              className="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white border border-[#e5e5e5] text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white border border-slate-200/80 text-xs font-semibold shadow-sm transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Inspection</span>
@@ -544,21 +612,21 @@ export function SiteDiaryView() {
 
           <div className="divide-y divide-navy-800/10">
             {inspections.map((insp) => (
-              <div key={insp.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-[#fbfbfb]/20 px-2 border border-[#e5e5e5] transition-colors">
+              <div key={insp.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-white/20 px-2 border border-slate-200/80 transition-colors">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-semibold text-[#1b1b1b] text-xs">{insp.title}</span>
-                    <span className="text-[#1b1b1b]/40">·</span>
-                    <span className="text-[#1b1b1b]/60 text-xs">Element: <strong className="text-[#1b1b1b]">{insp.element}</strong></span>
+                    <span className="font-semibold text-slate-900 text-xs">{insp.title}</span>
+                    <span className="text-slate-900/40">·</span>
+                    <span className="text-slate-900/60 text-xs">Element: <strong className="text-slate-900">{insp.element}</strong></span>
                   </div>
-                  <p className="text-xs text-[#1b1b1b]">{insp.notes}</p>
-                  <p className="text-xs text-[#1b1b1b]/60 mt-1">
+                  <p className="text-xs text-slate-900">{insp.notes}</p>
+                  <p className="text-xs text-slate-900/60 mt-1">
                     Inspector: {insp.inspector} · {insp.date}
                   </p>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className={`px-2.5 py-1 text-xs font-bold border border-[#e5e5e5] ${
+                  <span className={`px-2.5 py-1 text-xs font-bold border border-slate-200/80 ${
                     insp.status === "Passed"
                       ? "bg-emerald-100 text-emerald-800"
                       : "bg-red-100 text-red-800"
@@ -575,13 +643,13 @@ export function SiteDiaryView() {
       {/* SUBTAB 4: SNAGS & NCR REGISTER */}
       {subTab === "snags" && (
         <div className="p-4 space-y-4">
-          <div className="flex items-center justify-between border-b border-[#e5e5e5] pb-3">
+          <div className="flex items-center justify-between border-b border-slate-200/80 pb-3">
             <div>
-              <h3 className="text-sm font-bold text-[#1b1b1b] flex items-center gap-2">
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 text-amber-500" />
                 <span>Defects, Snags & Non-Conformance Reports (NCR)</span>
               </h3>
-              <p className="text-xs text-[#1b1b1b]/60 mt-0.5">
+              <p className="text-xs text-slate-900/60 mt-0.5">
                 Visual remediation workflow from discovery to contractor sign-off.
               </p>
             </div>
@@ -589,22 +657,22 @@ export function SiteDiaryView() {
 
           <div className="divide-y divide-navy-800/10">
             {snags.map((snag) => (
-              <div key={snag.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-[#fbfbfb]/20 px-2 border border-[#e5e5e5] transition-colors">
+              <div key={snag.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-white/20 px-2 border border-slate-200/80 transition-colors">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className={`px-2 py-0.5 text-xs font-bold border border-[#e5e5e5] ${
+                    <span className={`px-2 py-0.5 text-xs font-bold border border-slate-200/80 ${
                       snag.severity === "Critical"
                         ? "bg-red-100 text-red-800"
                         : snag.severity === "High"
                         ? "bg-amber-100 text-amber-800"
-                        : "bg-[#fbfbfb] text-[#1b1b1b]"
+                        : "bg-white text-slate-900"
                     }`}>
                       {snag.severity}
                     </span>
-                    <span className="font-semibold text-[#1b1b1b] text-xs">{snag.title}</span>
+                    <span className="font-semibold text-slate-900 text-xs">{snag.title}</span>
                   </div>
-                  <div className="text-xs text-[#1b1b1b]/60">
-                    Location: <strong className="text-[#1b1b1b]">{snag.location}</strong> · Assigned: <strong className="text-[#1b1b1b]">{snag.assignedTo}</strong> · Raised by: {snag.raisedBy}
+                  <div className="text-xs text-slate-900/60">
+                    Location: <strong className="text-slate-900">{snag.location}</strong> · Assigned: <strong className="text-slate-900">{snag.assignedTo}</strong> · Raised by: {snag.raisedBy}
                   </div>
                 </div>
 
@@ -612,7 +680,7 @@ export function SiteDiaryView() {
                   <select
                     value={snag.status}
                     onChange={(e) => handleUpdateSnagStatus(snag.id, e.target.value as SnagRecord["status"])}
-                    className="bg-white border border-[#e5e5e5] px-2 py-1 text-xs text-[#1b1b1b] font-bold focus:outline-none focus:ring-2 focus:ring-navy-800"
+                    className="bg-white border border-slate-200/80 px-2 py-1 text-xs text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-navy-800"
                   >
                     <option value="Open">Open</option>
                     <option value="In Progress">In Progress</option>
@@ -629,19 +697,19 @@ export function SiteDiaryView() {
       {/* SUBTAB 5: SAFETY (PRD Item 18) */}
       {subTab === "safety" && (
         <div className="p-4 space-y-4">
-          <div className="flex items-center justify-between border-b border-[#e5e5e5] pb-3">
+          <div className="flex items-center justify-between border-b border-slate-200/80 pb-3">
             <div>
-              <h3 className="text-sm font-bold text-[#1b1b1b] flex items-center gap-2">
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
                 <HardHat className="w-4 h-4 text-red-500" />
                 <span>Site Safety Observations & Lost-Time Incidents</span>
               </h3>
-              <p className="text-xs text-[#1b1b1b]/60 mt-0.5">
+              <p className="text-xs text-slate-900/60 mt-0.5">
                 Log near-misses, PPE compliance, and zero lost-time streak tracking (PRD Section 5.5).
               </p>
             </div>
             <button
               onClick={() => setIsNewSafetyOpen(true)}
-              className="px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white border border-[#e5e5e5] text-xs font-semibold shadow-xs transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white border border-slate-200/80 text-xs font-semibold shadow-xs rounded-xl transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Log Observation / Incident</span>
@@ -650,10 +718,10 @@ export function SiteDiaryView() {
 
           <div className="divide-y divide-navy-800/10">
             {safetyLogs.map((s) => (
-              <div key={s.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-[#fbfbfb]/20 px-2 border border-[#e5e5e5] transition-colors">
+              <div key={s.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-white/20 px-2 border border-slate-200/80 transition-colors">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className={`px-2 py-0.5 text-xs font-bold border border-[#e5e5e5] ${
+                    <span className={`px-2 py-0.5 text-xs font-bold border border-slate-200/80 ${
                       s.type === "Incident"
                         ? "bg-red-100 text-red-800"
                         : s.type === "Unsafe Act"
@@ -662,14 +730,14 @@ export function SiteDiaryView() {
                     }`}>
                       {s.type}
                     </span>
-                    <span className="font-semibold text-[#1b1b1b] text-xs">{s.description}</span>
+                    <span className="font-semibold text-slate-900 text-xs">{s.description}</span>
                   </div>
-                  <div className="text-xs text-[#1b1b1b]/60">
-                    Location: <strong className="text-[#1b1b1b]">{s.location}</strong> · Reported by: {s.reportedBy} · {s.timestamp}
+                  <div className="text-xs text-slate-900/60">
+                    Location: <strong className="text-slate-900">{s.location}</strong> · Reported by: {s.reportedBy} · {s.timestamp}
                   </div>
                 </div>
 
-                <span className="px-2.5 py-1 bg-[#fbfbfb] border border-[#e5e5e5] text-[#1b1b1b] text-xs font-semibold">
+                <span className="px-2.5 py-1 bg-white border border-slate-200/80 text-slate-900 text-xs font-semibold">
                   {s.status}
                 </span>
               </div>
@@ -681,53 +749,53 @@ export function SiteDiaryView() {
       {/* Modal: New Daily Entry (PRD #15) */}
       {isNewLogOpen && (
         <div className="fixed inset-0 z-50 bg-navy-950/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-[#fbfbfb] border border-[#e5e5e5] max-w-md w-full p-6 shadow-card">
-            <h3 className="text-sm font-bold text-[#1b1b1b] uppercase tracking-wide">Create New Site Daily Log Entry</h3>
+          <div className="bg-white border border-slate-200/80 max-w-md w-full p-6 shadow-card">
+            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide">Create New Site Daily Log Entry</h3>
             <form onSubmit={handleCreateDailyLog} className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Log Title / Shift Focus</label>
+                <label className="block text-xs font-bold text-slate-900 mb-1">Log Title / Shift Focus</label>
                 <input
                   type="text"
                   required
                   value={logTitle}
                   onChange={(e) => setLogTitle(e.target.value)}
                   placeholder="e.g. Ground Floor Raft Slab Concrete Pouring"
-                  className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] focus:outline-none focus:ring-2 focus:ring-navy-800"
+                  className="w-full bg-white border border-slate-200/80 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-navy-800"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Weather Condition</label>
+                  <label className="block text-xs font-bold text-slate-900 mb-1">Weather Condition</label>
                   <input
                     type="text"
                     required
                     value={logWeather}
                     onChange={(e) => setLogWeather(e.target.value)}
-                    className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] focus:outline-none focus:ring-2 focus:ring-navy-800"
+                    className="w-full bg-white border border-slate-200/80 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-navy-800"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Worker Headcount</label>
+                  <label className="block text-xs font-bold text-slate-900 mb-1">Worker Headcount</label>
                   <input
                     type="number"
                     required
                     value={logWorkers}
                     onChange={(e) => setLogWorkers(Number(e.target.value))}
-                    className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] font-mono focus:outline-none focus:ring-2 focus:ring-navy-800"
+                    className="w-full bg-white border border-slate-200/80 px-3 py-2 text-xs text-slate-900 font-mono focus:outline-none focus:ring-2 focus:ring-navy-800"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Work Accomplished (1 point per line)</label>
+                <label className="block text-xs font-bold text-slate-900 mb-1">Work Accomplished (1 point per line)</label>
                 <textarea
                   rows={4}
                   required
                   value={logPoints}
                   onChange={(e) => setLogPoints(e.target.value)}
                   placeholder="Cast 60m3 of grade 30 concrete...&#10;Erected 120m2 formwork..."
-                  className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] focus:outline-none focus:ring-2 focus:ring-navy-800"
+                  className="w-full bg-white border border-slate-200/80 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-navy-800"
                 />
               </div>
 
@@ -735,13 +803,13 @@ export function SiteDiaryView() {
                 <button
                   type="button"
                   onClick={() => setIsNewLogOpen(false)}
-                  className="px-3 py-1.5 bg-[#fbfbfb] hover:bg-[#f5f5f5] border border-[#e5e5e5] text-[#1b1b1b] text-xs font-bold transition-colors"
+                  className="px-3 py-1.5 bg-white hover:bg-[#f5f5f5] border border-slate-200/80 text-slate-900 text-xs font-bold transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white border border-[#e5e5e5] shadow-xs text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white border border-slate-200/80 shadow-xs rounded-xl text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
                 >
                   Publish Daily Log
                 </button>
@@ -754,27 +822,27 @@ export function SiteDiaryView() {
       {/* Modal: Upload Photo (PRD #16) */}
       {isUploadPhotoOpen && (
         <div className="fixed inset-0 z-50 bg-navy-950/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-[#fbfbfb] border border-[#e5e5e5] max-w-md w-full p-6 shadow-card">
-            <h3 className="text-sm font-bold text-[#1b1b1b] uppercase tracking-wide">Upload Site Progress Photo</h3>
+          <div className="bg-white border border-slate-200/80 max-w-md w-full p-6 shadow-card">
+            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide">Upload Site Progress Photo</h3>
             <form onSubmit={handleUploadPhoto} className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Photo Description / Milestone</label>
+                <label className="block text-xs font-bold text-slate-900 mb-1">Photo Description / Milestone</label>
                 <input
                   type="text"
                   required
                   value={photoTitle}
                   onChange={(e) => setPhotoTitle(e.target.value)}
                   placeholder="e.g. Completed shear wall reinforcement"
-                  className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] focus:outline-none focus:ring-2 focus:ring-navy-800"
+                  className="w-full bg-white border border-slate-200/80 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-navy-800"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Category</label>
+                <label className="block text-xs font-bold text-slate-900 mb-1">Category</label>
                 <select
                   value={photoCategory}
                   onChange={(e) => setPhotoCategory(e.target.value as SitePhoto["category"])}
-                  className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] font-medium focus:outline-none focus:ring-2 focus:ring-navy-800"
+                  className="w-full bg-white border border-slate-200/80 px-3 py-2 text-xs text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-navy-800"
                 >
                   <option value="Structure">Structure</option>
                   <option value="Finishing">Finishing</option>
@@ -783,23 +851,23 @@ export function SiteDiaryView() {
                 </select>
               </div>
 
-              <div className="p-4 border-2 border-dashed border-[#e5e5e5] text-center bg-white shadow-xs">
-                <Upload className="w-8 h-8 text-[#1b1b1b]/40 mx-auto mb-2" />
-                <p className="text-xs text-[#1b1b1b] font-bold">Click or drag photo file here</p>
-                <p className="text-xs text-[#1b1b1b]/60 mt-1">PNG, JPG, HEIC up to 10MB</p>
+              <div className="p-4 border border-dashed border-slate-200/80 text-center bg-white shadow-xs rounded-xl">
+                <Upload className="w-8 h-8 text-slate-900/40 mx-auto mb-2" />
+                <p className="text-xs text-slate-900 font-bold">Click or drag photo file here</p>
+                <p className="text-xs text-slate-900/60 mt-1">PNG, JPG, HEIC up to 10MB</p>
               </div>
 
               <div className="pt-2 flex items-center justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setIsUploadPhotoOpen(false)}
-                  className="px-3 py-1.5 bg-[#fbfbfb] hover:bg-[#f5f5f5] border border-[#e5e5e5] text-[#1b1b1b] text-xs font-bold transition-colors"
+                  className="px-3 py-1.5 bg-white hover:bg-[#f5f5f5] border border-slate-200/80 text-slate-900 text-xs font-bold transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white border border-[#e5e5e5] shadow-xs text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white border border-slate-200/80 shadow-xs rounded-xl text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
                 >
                   Save Photo
                 </button>
@@ -812,39 +880,39 @@ export function SiteDiaryView() {
       {/* Modal: Add Inspection (PRD #17) */}
       {isNewInspectionOpen && (
         <div className="fixed inset-0 z-50 bg-navy-950/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-[#fbfbfb] border border-[#e5e5e5] max-w-md w-full p-6 shadow-card">
-            <h3 className="text-sm font-bold text-[#1b1b1b] uppercase tracking-wide">Record Site Inspection</h3>
+          <div className="bg-white border border-slate-200/80 max-w-md w-full p-6 shadow-card">
+            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide">Record Site Inspection</h3>
             <form onSubmit={handleCreateInspection} className="mt-4 space-y-3">
               <div>
-                <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Inspection Scope</label>
+                <label className="block text-xs font-bold text-slate-900 mb-1">Inspection Scope</label>
                 <input
                   type="text"
                   required
                   value={inspTitle}
                   onChange={(e) => setInspTitle(e.target.value)}
                   placeholder="e.g. Plinth beam rebar spacing verification"
-                  className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] focus:outline-none focus:ring-2 focus:ring-navy-800"
+                  className="w-full bg-white border border-slate-200/80 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-navy-800"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Element / Location</label>
+                  <label className="block text-xs font-bold text-slate-900 mb-1">Element / Location</label>
                   <input
                     type="text"
                     required
                     value={inspElement}
                     onChange={(e) => setInspElement(e.target.value)}
                     placeholder="e.g. Block B Floor 1"
-                    className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] focus:outline-none focus:ring-2 focus:ring-navy-800"
+                    className="w-full bg-white border border-slate-200/80 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-navy-800"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Result Status</label>
+                  <label className="block text-xs font-bold text-slate-900 mb-1">Result Status</label>
                   <select
                     value={inspStatus}
                     onChange={(e) => setInspStatus(e.target.value as Inspection["status"])}
-                    className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] font-medium focus:outline-none focus:ring-2 focus:ring-navy-800"
+                    className="w-full bg-white border border-slate-200/80 px-3 py-2 text-xs text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-navy-800"
                   >
                     <option value="Passed">Passed</option>
                     <option value="Failed">Failed (Auto-raises Snag)</option>
@@ -853,14 +921,14 @@ export function SiteDiaryView() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Inspector Notes</label>
+                <label className="block text-xs font-bold text-slate-900 mb-1">Inspector Notes</label>
                 <textarea
                   rows={3}
                   required
                   value={inspNotes}
                   onChange={(e) => setInspNotes(e.target.value)}
                   placeholder="Notes on tolerance, surface quality, bar spacing..."
-                  className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] focus:outline-none focus:ring-2 focus:ring-navy-800"
+                  className="w-full bg-white border border-slate-200/80 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-navy-800"
                 />
               </div>
 
@@ -868,13 +936,13 @@ export function SiteDiaryView() {
                 <button
                   type="button"
                   onClick={() => setIsNewInspectionOpen(false)}
-                  className="px-3 py-1.5 bg-[#fbfbfb] hover:bg-[#f5f5f5] border border-[#e5e5e5] text-[#1b1b1b] text-xs font-bold transition-colors"
+                  className="px-3 py-1.5 bg-white hover:bg-[#f5f5f5] border border-slate-200/80 text-slate-900 text-xs font-bold transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white border border-[#e5e5e5] shadow-xs text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
+                  className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white border border-slate-200/80 shadow-xs rounded-xl text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
                 >
                   Save Inspection
                 </button>
@@ -887,16 +955,16 @@ export function SiteDiaryView() {
       {/* Modal: Add Safety Observation (PRD #18) */}
       {isNewSafetyOpen && (
         <div className="fixed inset-0 z-50 bg-navy-950/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-[#fbfbfb] border border-[#e5e5e5] max-w-md w-full p-6 shadow-card">
-            <h3 className="text-sm font-bold text-[#1b1b1b] uppercase tracking-wide">Log Safety Observation / Incident</h3>
+          <div className="bg-white border border-slate-200/80 max-w-md w-full p-6 shadow-card">
+            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide">Log Safety Observation / Incident</h3>
             <form onSubmit={handleCreateSafetyLog} className="mt-4 space-y-3">
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Observation Type</label>
+                  <label className="block text-xs font-bold text-slate-900 mb-1">Observation Type</label>
                   <select
                     value={safetyType}
                     onChange={(e) => setSafetyType(e.target.value as SafetyObservation["type"])}
-                    className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] font-medium focus:outline-none focus:ring-2 focus:ring-navy-800"
+                    className="w-full bg-white border border-slate-200/80 px-3 py-2 text-xs text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-navy-800"
                   >
                     <option value="Unsafe Act">Unsafe Act</option>
                     <option value="Near Miss">Near Miss</option>
@@ -905,11 +973,11 @@ export function SiteDiaryView() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Severity</label>
+                  <label className="block text-xs font-bold text-slate-900 mb-1">Severity</label>
                   <select
                     value={safetySev}
                     onChange={(e) => setSafetySev(e.target.value as SafetyObservation["severity"])}
-                    className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] font-medium focus:outline-none focus:ring-2 focus:ring-navy-800"
+                    className="w-full bg-white border border-slate-200/80 px-3 py-2 text-xs text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-navy-800"
                   >
                     <option value="Low">Low</option>
                     <option value="Medium">Medium</option>
@@ -920,26 +988,26 @@ export function SiteDiaryView() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Observation Description</label>
+                <label className="block text-xs font-bold text-slate-900 mb-1">Observation Description</label>
                 <textarea
                   rows={3}
                   required
                   value={safetyDesc}
                   onChange={(e) => setSafetyDesc(e.target.value)}
                   placeholder="Detail the safety hazard or proactive measure observed..."
-                  className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] focus:outline-none focus:ring-2 focus:ring-navy-800"
+                  className="w-full bg-white border border-slate-200/80 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-navy-800"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#1b1b1b] mb-1">Specific Location</label>
+                <label className="block text-xs font-bold text-slate-900 mb-1">Specific Location</label>
                 <input
                   type="text"
                   required
                   value={safetyLoc}
                   onChange={(e) => setSafetyLoc(e.target.value)}
                   placeholder="e.g. Scaffolding elevation north side"
-                  className="w-full bg-white border border-[#e5e5e5] px-3 py-2 text-xs text-[#1b1b1b] focus:outline-none focus:ring-2 focus:ring-navy-800"
+                  className="w-full bg-white border border-slate-200/80 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-navy-800"
                 />
               </div>
 
@@ -947,13 +1015,13 @@ export function SiteDiaryView() {
                 <button
                   type="button"
                   onClick={() => setIsNewSafetyOpen(false)}
-                  className="px-3 py-1.5 bg-[#fbfbfb] hover:bg-[#f5f5f5] border border-[#e5e5e5] text-[#1b1b1b] text-xs font-bold transition-colors"
+                  className="px-3 py-1.5 bg-white hover:bg-[#f5f5f5] border border-slate-200/80 text-slate-900 text-xs font-bold transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-red-600 hover:bg-red-500 text-white border border-[#e5e5e5] shadow-xs text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
+                  className="px-4 py-2 bg-red-600 hover:bg-red-500 text-white border border-slate-200/80 shadow-xs rounded-xl text-xs font-bold transition-transform active:translate-x-0.5 active:translate-y-0.5"
                 >
                   Record Safety Event
                 </button>

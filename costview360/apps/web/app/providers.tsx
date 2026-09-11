@@ -48,11 +48,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const [activeRole, setActiveRole] = useState<RoleName>("Project Manager");
   const [currency, setCurrency] = useState("NGN");
   const [currentProject] = useState({
-    id: "proj-lagos-01",
+    id: "22222222-2222-2222-2222-222222222222",
     name: "Eko Atlantic Horizon Towers",
     code: "CV-EAH-2026",
     location: "Victoria Island, Lagos",
-    budgetTotal: 450000000, // ₦450,000,000
+    budgetTotal: 301815000, // ₦301,815,000 baseline
   });
 
   return (
