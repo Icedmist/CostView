@@ -189,9 +189,37 @@ const INITIAL_REVISIONS: BudgetRevision[] = [
   },
 ];
 
-export function BOQTable() {
+export function BOQTable({
+  initialSubTab = "master",
+  onTabChange,
+}: {
+  initialSubTab?: string;
+  onTabChange?: (tab: string) => void;
+} = {}) {
   const { currency, activeRole } = useApp();
-  const [activeSubTab, setActiveSubTab] = useState<"master" | "risks" | "revisions" | "finalAccount">("master");
+  const normalizedInitial =
+    initialSubTab === "boq" ? "master" : (initialSubTab as any) || "master";
+  const [activeSubTab, setActiveSubTab] = useState<"master" | "risks" | "revisions" | "finalAccount">(
+    normalizedInitial === "import" ? "master" : (["master", "risks", "revisions", "finalAccount"].includes(normalizedInitial) ? normalizedInitial : "master")
+  );
+
+  useEffect(() => {
+    if (initialSubTab) {
+      if (initialSubTab === "import") {
+        setIsImportModalOpen(true);
+        setActiveSubTab("master");
+      } else if (initialSubTab === "boq") {
+        setActiveSubTab("master");
+      } else if (["master", "risks", "revisions", "finalAccount"].includes(initialSubTab)) {
+        setActiveSubTab(initialSubTab as any);
+      }
+    }
+  }, [initialSubTab]);
+
+  const handleSubTabChange = (tab: "master" | "risks" | "revisions" | "finalAccount") => {
+    setActiveSubTab(tab);
+    if (onTabChange) onTabChange(tab === "master" ? "boq" : tab);
+  };
 
   const [items, setItems] = useState<BOQRecord[]>(INITIAL_BOQ);
   const [risks, setRisks] = useState<RiskAlert[]>(INITIAL_RISKS);
@@ -414,74 +442,6 @@ export function BOQTable() {
 
   return (
     <div className="bg-white border-2 border-[#E5E5DE] rounded-2xl shadow-sm overflow-hidden">
-      {/* Sub-Navigation Tabs */}
-      <div className="p-3.5 bg-[#FAF9F5] border-b-2 border-[#E5E5DE] flex items-center justify-between overflow-x-auto gap-2">
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setActiveSubTab("master")}
-            className={`min-h-[44px] px-5 py-2.5 text-sm font-bold tracking-wide transition-all flex items-center gap-2 rounded-xl border-2 ${
-              activeSubTab === "master"
-                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
-                : "bg-white text-[#0A2540]/80 hover:bg-white border-[#E5E5DE]"
-            }`}
-          >
-            <Layers className="w-4 h-4" />
-            <span>2.1 BOQ Master</span>
-          </button>
-
-          <button
-            onClick={() => setActiveSubTab("risks")}
-            className={`min-h-[44px] px-5 py-2.5 text-sm font-bold tracking-wide transition-all flex items-center gap-2 rounded-xl border-2 ${
-              activeSubTab === "risks"
-                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
-                : "bg-white text-[#0A2540]/80 hover:bg-white border-[#E5E5DE]"
-            }`}
-          >
-            <ShieldAlert className="w-4 h-4 text-amber-500" />
-            <span>2.2 Cost Control &amp; Risks</span>
-            {risks.filter((r) => !r.isHandled).length > 0 && (
-              <span className="text-xs bg-amber-100 text-amber-900 px-2 py-0.5 font-mono font-bold rounded-full">
-                {risks.filter((r) => !r.isHandled).length}
-              </span>
-            )}
-          </button>
-
-          <button
-            onClick={() => setActiveSubTab("revisions")}
-            className={`min-h-[44px] px-5 py-2.5 text-sm font-bold tracking-wide transition-all flex items-center gap-2 rounded-xl border-2 ${
-              activeSubTab === "revisions"
-                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
-                : "bg-white text-[#0A2540]/80 hover:bg-white border-[#E5E5DE]"
-            }`}
-          >
-            <Clock className="w-4 h-4" />
-            <span>2.3 Budget Revisions</span>
-            {revisions.filter((r) => r.status === "Pending").length > 0 && (
-              <span className="text-xs bg-rose-100 text-rose-800 px-2 py-0.5 font-mono font-bold rounded-full">
-                {revisions.filter((r) => r.status === "Pending").length}
-              </span>
-            )}
-          </button>
-
-          <button
-            onClick={() => setActiveSubTab("finalAccount")}
-            className={`min-h-[44px] px-5 py-2.5 text-sm font-bold tracking-wide transition-all flex items-center gap-2 rounded-xl border-2 ${
-              activeSubTab === "finalAccount"
-                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
-                : "bg-white text-[#0A2540]/80 hover:bg-white border-[#E5E5DE]"
-            }`}
-          >
-            <FileText className="w-4 h-4" />
-            <span>2.4 Final Account</span>
-          </button>
-        </div>
-
-        {/* Global Threshold Tag */}
-        <div className="hidden md:flex items-center gap-2.5 text-sm font-bold text-[#0A2540] bg-white border-2 border-[#E5E5DE] px-4 py-2 rounded-xl shadow-xs">
-          <span className="uppercase tracking-wider text-[#0A2540]/60 text-xs">Threshold:</span>
-          <span className="text-emerald-700 font-mono font-black">±{thresholdPercent}%</span>
-        </div>
-      </div>
 
       {/* TAB 1: BOQ MASTER */}
       {activeSubTab === "master" && (
@@ -517,6 +477,10 @@ export function BOQTable() {
             </div>
 
             <div className="flex items-center gap-3">
+              <div className="hidden sm:flex items-center gap-2 text-xs font-bold text-[#0A2540] bg-[#FAF9F5] border-2 border-[#E5E5DE] px-3.5 h-11 rounded-xl shadow-xs">
+                <span className="uppercase tracking-wider text-[#0A2540]/60 text-[10px]">Threshold:</span>
+                <span className="text-emerald-700 font-mono font-black">±{thresholdPercent}%</span>
+              </div>
               <button
                 onClick={() => setIsImportModalOpen(true)}
                 className="flex items-center gap-2 bg-[#FAF9F5] hover:bg-[#F2F1EC] text-[#0A2540] border-2 border-[#E5E5DE] rounded-xl px-4 h-11 text-xs font-black uppercase tracking-wider shadow-xs transition-all cursor-pointer"

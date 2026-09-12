@@ -45,12 +45,21 @@ import {
   AlertTriangle,
   FolderSync,
   User,
-  PanelLeftClose,
-  PanelLeftOpen,
   ArrowLeft,
+  ShieldAlert,
+  FileText,
 } from "lucide-react";
 import { canAccess } from "@/lib/auth/permissions";
 import { OnboardingModal } from "@/components/onboarding/onboarding-modal";
+
+export interface SubNavColor {
+  icon: string;
+  iconBg: string;
+  activeBg: string;
+  activeIcon: string;
+  badge: string;
+  hover: string;
+}
 
 export interface SubNavSection {
   id: string;
@@ -58,6 +67,7 @@ export interface SubNavSection {
   code: string;
   icon: React.ElementType;
   badge?: string;
+  color: SubNavColor;
 }
 
 export interface DomainTheme {
@@ -103,9 +113,49 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       dotIndicator: "bg-blue-500",
     },
     subSections: [
-      { id: "telemetry", name: "Telemetry & Executive KPIs", code: "1.1", icon: Activity },
-      { id: "alerts", name: "Attention & Variance Alerts", code: "1.2", icon: AlertTriangle, badge: "3" },
-      { id: "health", name: "Baseline Financial Health", code: "1.3", icon: TrendingUp },
+      {
+        id: "telemetry",
+        name: "Telemetry & Executive KPIs",
+        code: "1.1",
+        icon: Activity,
+        color: {
+          icon: "text-blue-600",
+          iconBg: "bg-blue-50 border border-blue-200",
+          activeBg: "bg-blue-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-blue-100 text-blue-800 border border-blue-200",
+          hover: "hover:bg-blue-50/70",
+        },
+      },
+      {
+        id: "alerts",
+        name: "Attention & Variance Alerts",
+        code: "1.2",
+        icon: AlertTriangle,
+        badge: "3",
+        color: {
+          icon: "text-rose-600",
+          iconBg: "bg-rose-50 border border-rose-200",
+          activeBg: "bg-rose-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-rose-100 text-rose-800 border border-rose-200",
+          hover: "hover:bg-rose-50/70",
+        },
+      },
+      {
+        id: "health",
+        name: "Baseline Financial Health",
+        code: "1.3",
+        icon: TrendingUp,
+        color: {
+          icon: "text-emerald-600",
+          iconBg: "bg-emerald-50 border border-emerald-200",
+          activeBg: "bg-emerald-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-emerald-100 text-emerald-800 border border-emerald-200",
+          hover: "hover:bg-emerald-50/70",
+        },
+      },
     ],
   },
   {
@@ -127,9 +177,76 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       dotIndicator: "bg-emerald-500",
     },
     subSections: [
-      { id: "boq", name: "BOQ Master Register", code: "2.1", icon: Calculator },
-      { id: "revisions", name: "Rate Revisions & Deltas", code: "2.2", icon: FileSpreadsheet },
-      { id: "import", name: "CSV Import & Export", code: "2.3", icon: FolderSync },
+      {
+        id: "boq",
+        name: "BOQ Master Register",
+        code: "2.1",
+        icon: Calculator,
+        color: {
+          icon: "text-emerald-600",
+          iconBg: "bg-emerald-50 border border-emerald-200",
+          activeBg: "bg-emerald-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-emerald-100 text-emerald-800 border border-emerald-200",
+          hover: "hover:bg-emerald-50/70",
+        },
+      },
+      {
+        id: "risks",
+        name: "Cost Control & Risks",
+        code: "2.2",
+        icon: ShieldAlert,
+        color: {
+          icon: "text-amber-600",
+          iconBg: "bg-amber-50 border border-amber-200",
+          activeBg: "bg-amber-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-amber-100 text-amber-900 border border-amber-200",
+          hover: "hover:bg-amber-50/70",
+        },
+      },
+      {
+        id: "revisions",
+        name: "Rate Revisions & Deltas",
+        code: "2.3",
+        icon: FileSpreadsheet,
+        color: {
+          icon: "text-purple-600",
+          iconBg: "bg-purple-50 border border-purple-200",
+          activeBg: "bg-purple-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-purple-100 text-purple-900 border border-purple-200",
+          hover: "hover:bg-purple-50/70",
+        },
+      },
+      {
+        id: "finalAccount",
+        name: "Final Account Closeout",
+        code: "2.4",
+        icon: FileText,
+        color: {
+          icon: "text-teal-600",
+          iconBg: "bg-teal-50 border border-teal-200",
+          activeBg: "bg-teal-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-teal-100 text-teal-900 border border-teal-200",
+          hover: "hover:bg-teal-50/70",
+        },
+      },
+      {
+        id: "import",
+        name: "CSV Import & Export",
+        code: "2.5",
+        icon: FolderSync,
+        color: {
+          icon: "text-blue-600",
+          iconBg: "bg-blue-50 border border-blue-200",
+          activeBg: "bg-blue-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-blue-100 text-blue-900 border border-blue-200",
+          hover: "hover:bg-blue-50/70",
+        },
+      },
     ],
   },
   {
@@ -152,11 +269,77 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       dotIndicator: "bg-amber-500",
     },
     subSections: [
-      { id: "match", name: "Three-Way Match Gate", code: "3.1", icon: BadgeCheck },
-      { id: "requisitions", name: "Material Requisitions", code: "3.2", icon: Clock, badge: "3" },
-      { id: "enquiries", name: "Supplier Enquiries & Quotes", code: "3.3", icon: Truck },
-      { id: "invoices", name: "Invoices & Credits", code: "3.4", icon: Receipt },
-      { id: "payments", name: "Disbursement Ledger", code: "3.5", icon: CreditCard },
+      {
+        id: "match",
+        name: "Three-Way Match Gate",
+        code: "3.1",
+        icon: BadgeCheck,
+        color: {
+          icon: "text-emerald-600",
+          iconBg: "bg-emerald-50 border border-emerald-200",
+          activeBg: "bg-emerald-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-emerald-100 text-emerald-800 border border-emerald-200",
+          hover: "hover:bg-emerald-50/70",
+        },
+      },
+      {
+        id: "requisitions",
+        name: "Material Requisitions",
+        code: "3.2",
+        icon: Clock,
+        badge: "3",
+        color: {
+          icon: "text-amber-600",
+          iconBg: "bg-amber-50 border border-amber-200",
+          activeBg: "bg-amber-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-amber-100 text-amber-900 border border-amber-200",
+          hover: "hover:bg-amber-50/70",
+        },
+      },
+      {
+        id: "enquiries",
+        name: "Supplier Enquiries & Quotes",
+        code: "3.3",
+        icon: Truck,
+        color: {
+          icon: "text-blue-600",
+          iconBg: "bg-blue-50 border border-blue-200",
+          activeBg: "bg-blue-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-blue-100 text-blue-900 border border-blue-200",
+          hover: "hover:bg-blue-50/70",
+        },
+      },
+      {
+        id: "invoices",
+        name: "Invoices & Payments",
+        code: "3.4",
+        icon: Receipt,
+        color: {
+          icon: "text-purple-600",
+          iconBg: "bg-purple-50 border border-purple-200",
+          activeBg: "bg-purple-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-purple-100 text-purple-900 border border-purple-200",
+          hover: "hover:bg-purple-50/70",
+        },
+      },
+      {
+        id: "payments",
+        name: "Disbursement Ledger",
+        code: "3.5",
+        icon: CreditCard,
+        color: {
+          icon: "text-teal-600",
+          iconBg: "bg-teal-50 border border-teal-200",
+          activeBg: "bg-teal-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-teal-100 text-teal-900 border border-teal-200",
+          hover: "hover:bg-teal-50/70",
+        },
+      },
     ],
   },
   {
@@ -178,12 +361,104 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       dotIndicator: "bg-orange-500",
     },
     subSections: [
-      { id: "diary", name: "Daily Site Diary & Log", code: "4.1", icon: Calendar },
-      { id: "stock", name: "Materials & Stock Ledger", code: "4.2", icon: Boxes },
-      { id: "labour", name: "Labour Muster & Productivity", code: "4.3", icon: Users },
-      { id: "photos", name: "Progress Photos & Proof", code: "4.4", icon: ImageIcon },
-      { id: "inspections", name: "QA/QC Inspections & Tests", code: "4.5", icon: FileCheck2 },
-      { id: "safety", name: "HSE Safety Observations", code: "4.6", icon: HardHat },
+      {
+        id: "diary",
+        name: "Daily Site Diary & Log",
+        code: "4.1",
+        icon: Calendar,
+        color: {
+          icon: "text-emerald-600",
+          iconBg: "bg-emerald-50 border border-emerald-200",
+          activeBg: "bg-emerald-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-emerald-100 text-emerald-800 border border-emerald-200",
+          hover: "hover:bg-emerald-50/70",
+        },
+      },
+      {
+        id: "stock",
+        name: "Materials & Stock Ledger",
+        code: "4.2",
+        icon: Boxes,
+        color: {
+          icon: "text-amber-600",
+          iconBg: "bg-amber-50 border border-amber-200",
+          activeBg: "bg-amber-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-amber-100 text-amber-900 border border-amber-200",
+          hover: "hover:bg-amber-50/70",
+        },
+      },
+      {
+        id: "labour",
+        name: "Labour Muster & Productivity",
+        code: "4.3",
+        icon: Users,
+        color: {
+          icon: "text-blue-600",
+          iconBg: "bg-blue-50 border border-blue-200",
+          activeBg: "bg-blue-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-blue-100 text-blue-900 border border-blue-200",
+          hover: "hover:bg-blue-50/70",
+        },
+      },
+      {
+        id: "photos",
+        name: "Progress Photos & Proof",
+        code: "4.4",
+        icon: ImageIcon,
+        color: {
+          icon: "text-sky-600",
+          iconBg: "bg-sky-50 border border-sky-200",
+          activeBg: "bg-sky-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-sky-100 text-sky-900 border border-sky-200",
+          hover: "hover:bg-sky-50/70",
+        },
+      },
+      {
+        id: "inspections",
+        name: "QA/QC Inspections & Tests",
+        code: "4.5",
+        icon: FileCheck2,
+        color: {
+          icon: "text-purple-600",
+          iconBg: "bg-purple-50 border border-purple-200",
+          activeBg: "bg-purple-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-purple-100 text-purple-900 border border-purple-200",
+          hover: "hover:bg-purple-50/70",
+        },
+      },
+      {
+        id: "snags",
+        name: "Snags & NCRs",
+        code: "4.6",
+        icon: AlertCircle,
+        color: {
+          icon: "text-orange-600",
+          iconBg: "bg-orange-50 border border-orange-200",
+          activeBg: "bg-orange-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-orange-100 text-orange-900 border border-orange-200",
+          hover: "hover:bg-orange-50/70",
+        },
+      },
+      {
+        id: "safety",
+        name: "HSE Safety Observations",
+        code: "4.7",
+        icon: HardHat,
+        color: {
+          icon: "text-rose-600",
+          iconBg: "bg-rose-50 border border-rose-200",
+          activeBg: "bg-rose-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-rose-100 text-rose-900 border border-rose-200",
+          hover: "hover:bg-rose-50/70",
+        },
+      },
     ],
   },
   {
@@ -205,9 +480,62 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       dotIndicator: "bg-purple-500",
     },
     subSections: [
-      { id: "contracts", name: "Subcontractor Ledger", code: "5.1", icon: Briefcase },
-      { id: "claims", name: "10% Retention Escrow & Certs", code: "5.2", icon: Receipt },
-      { id: "instructions", name: "Site Instructions Register", code: "5.3", icon: ScrollText },
+      {
+        id: "contracts",
+        name: "Subcontractor Ledger & Retention",
+        code: "5.1",
+        icon: Briefcase,
+        color: {
+          icon: "text-emerald-600",
+          iconBg: "bg-emerald-50 border border-emerald-200",
+          activeBg: "bg-emerald-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-emerald-100 text-emerald-800 border border-emerald-200",
+          hover: "hover:bg-emerald-50/70",
+        },
+      },
+      {
+        id: "claims",
+        name: "Interim Claims & Certs",
+        code: "5.2",
+        icon: Receipt,
+        color: {
+          icon: "text-amber-600",
+          iconBg: "bg-amber-50 border border-amber-200",
+          activeBg: "bg-amber-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-amber-100 text-amber-900 border border-amber-200",
+          hover: "hover:bg-amber-50/70",
+        },
+      },
+      {
+        id: "instructions",
+        name: "Site Instructions Register",
+        code: "5.3",
+        icon: ScrollText,
+        color: {
+          icon: "text-blue-600",
+          iconBg: "bg-blue-50 border border-blue-200",
+          activeBg: "bg-blue-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-blue-100 text-blue-900 border border-blue-200",
+          hover: "hover:bg-blue-50/70",
+        },
+      },
+      {
+        id: "variations",
+        name: "Variation Orders Register",
+        code: "5.4",
+        icon: FileSpreadsheet,
+        color: {
+          icon: "text-purple-600",
+          iconBg: "bg-purple-50 border border-purple-200",
+          activeBg: "bg-purple-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-purple-100 text-purple-900 border border-purple-200",
+          hover: "hover:bg-purple-50/70",
+        },
+      },
     ],
   },
   {
@@ -229,10 +557,62 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       dotIndicator: "bg-teal-500",
     },
     subSections: [
-      { id: "users", name: "User & Role Customization", code: "6.1", icon: UserCheck },
-      { id: "matrix", name: "Role Permissions Matrix", code: "6.2", icon: Sliders },
-      { id: "audit", name: "Immutable Audit Trail", code: "6.3", icon: History },
-      { id: "settings", name: "Workspace & Project Config", code: "6.4", icon: Settings },
+      {
+        id: "users",
+        name: "User & Role Customization",
+        code: "6.1",
+        icon: UserCheck,
+        color: {
+          icon: "text-blue-600",
+          iconBg: "bg-blue-50 border border-blue-200",
+          activeBg: "bg-blue-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-blue-100 text-blue-900 border border-blue-200",
+          hover: "hover:bg-blue-50/70",
+        },
+      },
+      {
+        id: "matrix",
+        name: "Role Permissions Matrix",
+        code: "6.2",
+        icon: Sliders,
+        color: {
+          icon: "text-purple-600",
+          iconBg: "bg-purple-50 border border-purple-200",
+          activeBg: "bg-purple-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-purple-100 text-purple-900 border border-purple-200",
+          hover: "hover:bg-purple-50/70",
+        },
+      },
+      {
+        id: "audit",
+        name: "Immutable Audit Trail",
+        code: "6.3",
+        icon: History,
+        color: {
+          icon: "text-amber-600",
+          iconBg: "bg-amber-50 border border-amber-200",
+          activeBg: "bg-amber-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-amber-100 text-amber-900 border border-amber-200",
+          hover: "hover:bg-amber-50/70",
+        },
+      },
+      {
+        id: "settings",
+        name: "Workspace & Project Config",
+        code: "6.4",
+        icon: Settings,
+        color: {
+          icon: "text-teal-600",
+          iconBg: "bg-teal-50 border border-teal-200",
+          activeBg: "bg-teal-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-teal-100 text-teal-900 border border-teal-200",
+          hover: "hover:bg-teal-50/70",
+        },
+      },
     ],
   },
 ];
@@ -274,12 +654,15 @@ export function Sidebar({
   const [userEmail, setUserEmail] = useState<string>("user@costview.ng");
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [subPanelCollapsed, setSubPanelCollapsed] = useState(false);
-  const [mobileNavView, setMobileNavView] = useState<"main" | "sub">("sub");
+
+  // navView can be "main" (showing all 6 modules) or "sub" (showing active module's sub-navigation)
+  const [navView, setNavView] = useState<"main" | "sub">("sub");
   const router = useRouter();
 
   // Handle compatibility mapping
   const currentSection = activeSection || "Command Center";
-  const activePrimary = NAVIGATION_SECTIONS.find((s) => s.id === currentSection) || NAVIGATION_SECTIONS[0];
+  const activePrimary =
+    NAVIGATION_SECTIONS.find((s) => s.id === currentSection) || NAVIGATION_SECTIONS[0];
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -323,6 +706,7 @@ export function Sidebar({
     } else if (onSelectTab) {
       onSelectTab(sectionId);
     }
+    setNavView("sub");
     if (subPanelCollapsed) {
       setSubPanelCollapsed(false);
     }
@@ -368,18 +752,18 @@ export function Sidebar({
       )}
 
       {/* ========================================================= */}
-      {/* 1. SIMPLIFIED MOBILE NAVIGATION DRAWER (lg:hidden)         */}
-      {/* Single-panel drill-down with clear "Original Nav" toggle  */}
+      {/* 1. MOBILE NAVIGATION DRAWER (lg:hidden)                     */}
+      {/* Sub-nav removes main nav; return component is an ICON       */}
       {/* ========================================================= */}
       <aside
         className={`fixed top-0 bottom-0 left-0 z-50 w-full max-w-[340px] bg-[#FAF9F5] flex flex-col justify-between transform transition-transform duration-200 ease-in-out lg:hidden shadow-2xl ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        {/* MOBILE VIEW A: ORIGINAL MAIN NAVIGATION (All 6 Modules) */}
-        {mobileNavView === "main" ? (
+        {navView === "main" ? (
+          /* MOBILE VIEW A: ORIGINAL MAIN NAVIGATION (All 6 Modules) */
           <div className="flex-1 flex flex-col min-h-0">
-            {/* Top Bar */}
+            {/* Top Header */}
             <div className="p-4 bg-white border-b-2 border-[#E5E5DE] flex items-center justify-between shrink-0">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-[#0A2540] text-white rounded-xl flex items-center justify-center font-black text-sm shadow-md">
@@ -400,17 +784,17 @@ export function Sidebar({
               </button>
             </div>
 
-            {/* Modules List Header Info */}
+            {/* Modules Header Info */}
             <div className="px-4 py-3 bg-[#FAF9F5] border-b border-[#E5E5DE] flex items-center justify-between shrink-0">
               <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#0A2540]/70">
-                Core Domains & Modules
+                Core Domains &amp; Modules
               </span>
               <span className="text-xs font-mono font-bold bg-[#0A2540]/10 text-[#0A2540] px-2 py-0.5 rounded">
                 6 Modules
               </span>
             </div>
 
-            {/* Main Navigation Modules */}
+            {/* Main Navigation Modules List */}
             <div className="p-3.5 space-y-2 overflow-y-auto flex-1">
               {NAVIGATION_SECTIONS.map((section) => {
                 const Icon = section.icon;
@@ -424,7 +808,6 @@ export function Sidebar({
                     onClick={() => {
                       if (isAllowed) {
                         handlePrimaryClick(section.id);
-                        setMobileNavView("sub");
                       }
                     }}
                     className={`w-full min-h-[58px] p-3 rounded-xl text-left transition-all flex items-center justify-between border cursor-pointer group ${
@@ -476,53 +859,47 @@ export function Sidebar({
         ) : (
           /* MOBILE VIEW B: SUB-NAVIGATION VIEW (Main nav items removed) */
           <div className="flex-1 flex flex-col min-h-0">
-            {/* Dedicated Top Section: Back to Original Main Navigation */}
-            <div className="p-3 bg-white border-b-2 border-[#E5E5DE] shrink-0">
-              <button
-                onClick={() => setMobileNavView("main")}
-                className="w-full min-h-[46px] flex items-center justify-between px-4 py-2.5 bg-[#0A2540] hover:bg-[#003366] text-white rounded-xl font-bold text-sm transition-all shadow-sm group cursor-pointer"
-              >
-                <div className="flex items-center gap-2.5">
-                  <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-                  <span>Open Original Navigation</span>
-                </div>
-                <span className="text-[11px] font-mono font-bold bg-white/20 px-2 py-0.5 rounded text-white">
-                  All Modules
-                </span>
-              </button>
-            </div>
-
-            {/* Colored Sub-Nav Domain Banner for Easy Identification */}
+            {/* Header: ICON Return to Original Navigation + Domain Identity */}
             <div
-              className={`p-4 border-b-2 ${activePrimary.theme.bannerBorder} ${activePrimary.theme.bannerBg} flex items-center justify-between shrink-0`}
+              className={`p-3.5 border-b-2 ${activePrimary.theme.bannerBorder} ${activePrimary.theme.bannerBg} flex items-center justify-between gap-3 shrink-0`}
             >
-              <div className="flex items-center gap-3 min-w-0">
-                <div
-                  className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold shrink-0 shadow-xs ${activePrimary.theme.iconPill}`}
+              <div className="flex items-center gap-2.5 min-w-0">
+                {/* RETURN TO ORIGINAL NAV ICON BUTTON */}
+                <button
+                  onClick={() => setNavView("main")}
+                  title="Return to Original Navigation"
+                  aria-label="Return to Original Navigation"
+                  className="w-9 h-9 rounded-xl bg-[#0A2540] hover:bg-[#003366] text-white flex items-center justify-center shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer shrink-0 border border-[#0A2540]"
                 >
-                  <activePrimary.icon className="w-5 h-5" />
+                  <ArrowLeft className="w-4 h-4 text-white" />
+                </button>
+
+                <div
+                  className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold shrink-0 shadow-xs ${activePrimary.theme.iconPill}`}
+                >
+                  <activePrimary.icon className="w-4 h-4" />
                 </div>
                 <div className="min-w-0">
-                  <div className={`text-[11px] font-extrabold uppercase tracking-wider ${activePrimary.theme.textSub}`}>
+                  <div className={`text-[10px] font-mono font-black uppercase tracking-wider ${activePrimary.theme.textSub}`}>
                     {activePrimary.code} Domain
                   </div>
-                  <div className={`text-base font-black ${activePrimary.theme.textTitle} truncate leading-tight mt-0.5`}>
+                  <div className={`text-sm font-black ${activePrimary.theme.textTitle} truncate leading-tight mt-0.5`}>
                     {activePrimary.name}
                   </div>
                 </div>
               </div>
               <button
                 onClick={onClose}
-                className="w-8 h-8 rounded-lg hover:bg-black/5 flex items-center justify-center text-slate-500 hover:text-slate-900 cursor-pointer"
+                className="w-8 h-8 rounded-lg hover:bg-black/5 flex items-center justify-center text-slate-500 hover:text-slate-900 cursor-pointer shrink-0"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Sub-Sections List */}
+            {/* Sub-Sections List with Individual Distinct Colors */}
             <div className="p-3 space-y-2 overflow-y-auto flex-1">
               <div className="text-[10px] font-extrabold uppercase tracking-wider text-[#0A2540]/60 px-2 pt-1 pb-1">
-                Sub-Registers & Workflows
+                Sub-Registers &amp; Workflows
               </div>
               {activePrimary.subSections.map((sub) => {
                 const SubIcon = sub.icon;
@@ -535,27 +912,44 @@ export function Sidebar({
                       handleSubClick(sub.id);
                       onClose?.();
                     }}
-                    className={`w-full min-h-[50px] px-3.5 py-3 rounded-xl text-left font-bold text-sm transition-all flex items-center justify-between group cursor-pointer ${
+                    className={`w-full min-h-[48px] px-3 py-2.5 rounded-xl text-left font-bold text-xs transition-all flex items-center justify-between group cursor-pointer border ${
                       isSubActive
-                        ? `${activePrimary.theme.activeItemBg} text-white shadow-md`
-                        : "bg-white text-[#0A2540] border border-[#E5E5DE] hover:bg-slate-50"
+                        ? `${sub.color.activeBg} border-transparent shadow-sm`
+                        : `bg-white text-[#0A2540] border-[#E5E5DE] ${sub.color.hover}`
                     }`}
                   >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <SubIcon
-                        className={`w-4 h-4 shrink-0 ${
-                          isSubActive ? "text-white" : activePrimary.theme.textSub
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div
+                        className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
+                          isSubActive ? "bg-white/20 text-white" : sub.color.iconBg
                         }`}
-                      />
+                      >
+                        <SubIcon
+                          className={`w-3.5 h-3.5 ${
+                            isSubActive ? "text-white" : sub.color.icon
+                          }`}
+                        />
+                      </div>
                       <span className="truncate">{sub.name}</span>
                     </div>
-                    <span
-                      className={`text-[11px] font-mono font-bold shrink-0 ml-2 px-2 py-0.5 rounded ${
-                        isSubActive ? "bg-white/20 text-white" : activePrimary.theme.badgeBg
-                      }`}
-                    >
-                      {sub.code}
-                    </span>
+                    <div className="flex items-center gap-1.5 shrink-0 ml-2">
+                      {sub.badge && (
+                        <span
+                          className={`text-[10px] font-black px-1.5 py-0.5 rounded-full ${
+                            isSubActive ? "bg-white text-slate-900" : "bg-rose-500 text-white"
+                          }`}
+                        >
+                          {sub.badge}
+                        </span>
+                      )}
+                      <span
+                        className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${
+                          isSubActive ? "bg-white/20 text-white" : sub.color.badge
+                        }`}
+                      >
+                        {sub.code}
+                      </span>
+                    </div>
                   </button>
                 );
               })}
@@ -563,7 +957,7 @@ export function Sidebar({
           </div>
         )}
 
-        {/* Mobile Sub-Nav Footer: Role & Simulator */}
+        {/* Mobile Footer: Persona & Session */}
         <div className="p-3.5 border-t-2 border-[#E5E5DE] bg-white space-y-3 shrink-0">
           <div className="flex items-center gap-3 p-2 rounded-xl bg-[#FAF9F5] border border-[#E5E5DE]">
             <div className="w-9 h-9 rounded-xl bg-[#0A2540] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
@@ -605,11 +999,12 @@ export function Sidebar({
       </aside>
 
       {/* ========================================================= */}
-      {/* 2. SUPABASE-STYLE DUAL-RAIL NAVIGATION (DESKTOP: lg:flex)  */}
+      {/* 2. DUAL-RAIL NAVIGATION (DESKTOP: lg:flex)                 */}
       {/* Tier 1 Primary Rail (w-[68px]) + Tier 2 Sub-Nav (w-64)     */}
+      {/* Return component is an ICON; Sub-nav items have app colors */}
       {/* ========================================================= */}
       <aside className="hidden lg:flex relative h-full shrink-0">
-        {/* TIER 1: SUPABASE PRIMARY ICON RAIL (w-[68px], Bright Navy #0A2540) */}
+        {/* TIER 1: PRIMARY ICON RAIL (w-[68px], Bright Navy #0A2540) */}
         <div className="w-[68px] bg-[#0A2540] flex flex-col items-center justify-between py-4 border-r border-[#0A2540]/30 shrink-0 z-20 text-white select-none shadow-lg">
           {/* Top: Logo Block */}
           <div className="flex flex-col items-center gap-6">
@@ -687,76 +1082,170 @@ export function Sidebar({
           </div>
         </div>
 
-        {/* TIER 2: SUPABASE SECONDARY SUB-NAV PANEL (w-64, Colored Header for Easy Identification) */}
+        {/* TIER 2: SECONDARY SUB-NAV PANEL (w-64) */}
         {!subPanelCollapsed && (
           <div className="w-64 bg-[#FAF9F5] border-r-2 border-[#E5E5DE] flex flex-col justify-between shrink-0 z-10 animate-in fade-in duration-150">
-            {/* Sub-Nav Header with Distinct Domain Color */}
-            <div>
-              <div
-                className={`p-4 border-b-2 ${activePrimary.theme.bannerBorder} ${activePrimary.theme.bannerBg} flex items-center justify-between`}
-              >
-                <div className="flex items-center gap-3 min-w-0">
-                  <div
-                    className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold shrink-0 shadow-xs ${activePrimary.theme.iconPill}`}
-                  >
-                    <activePrimary.icon className="w-4 h-4" />
-                  </div>
-                  <div className="min-w-0">
-                    <div className={`text-[11px] font-bold uppercase tracking-wider ${activePrimary.theme.textSub}`}>
-                      {activePrimary.code} Domain
-                    </div>
-                    <div className={`text-base font-extrabold ${activePrimary.theme.textTitle} truncate leading-tight mt-0.5`}>
-                      {activePrimary.name}
+            {navView === "main" ? (
+              /* DESKTOP VIEW A: ORIGINAL NAVIGATION (All 6 Modules) */
+              <div className="flex-1 flex flex-col min-h-0">
+                <div className="p-4 bg-white border-b-2 border-[#E5E5DE] flex items-center justify-between shrink-0">
+                  <div>
+                    <div className="text-sm font-black text-[#0A2540]">CostView</div>
+                    <div className="text-[10px] font-bold text-[#0A2540]/60 uppercase tracking-wider">
+                      Original Navigation
                     </div>
                   </div>
+                  <span className="text-[10px] font-mono font-bold bg-[#0A2540]/10 text-[#0A2540] px-2 py-0.5 rounded">
+                    6 Modules
+                  </span>
                 </div>
-                <button
-                  onClick={() => setSubPanelCollapsed(true)}
-                  title="Collapse Sub-Navigation"
-                  className="w-7 h-7 rounded-lg hover:bg-black/5 flex items-center justify-center text-slate-600 hover:text-slate-900 cursor-pointer"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-              </div>
 
-              {/* Sub-Sections List with Domain Color Highlights */}
-              <div className="p-3 space-y-1.5 overflow-y-auto max-h-[calc(100vh-220px)]">
-                {activePrimary.subSections.map((sub) => {
-                  const SubIcon = sub.icon;
-                  const isSubActive = activeSubSection === sub.id;
+                <div className="p-3 space-y-2 overflow-y-auto flex-1">
+                  {NAVIGATION_SECTIONS.map((section) => {
+                    const Icon = section.icon;
+                    const isAllowed = !section.permission || canAccess(activeRole, section.permission as any);
+                    const isActive = currentSection === section.id;
 
-                  return (
-                    <button
-                      key={sub.id}
-                      onClick={() => handleSubClick(sub.id)}
-                      className={`w-full min-h-[44px] px-3.5 py-2.5 rounded-xl text-left font-bold text-sm transition-all flex items-center justify-between group cursor-pointer ${
-                        isSubActive
-                          ? `${activePrimary.theme.activeItemBg} text-white shadow-sm`
-                          : `text-[#0A2540]/80 ${activePrimary.theme.hoverItemBg}`
-                      }`}
-                    >
-                      <div className="flex items-center gap-3 min-w-0">
-                        <SubIcon
-                          className={`w-4 h-4 shrink-0 ${
-                            isSubActive ? "text-white" : activePrimary.theme.textSub
-                          }`}
-                        />
-                        <span className="truncate">{sub.name}</span>
-                      </div>
-                      <span
-                        className={`text-[11px] font-mono font-bold shrink-0 ml-2 px-2 py-0.5 rounded ${
-                          isSubActive ? "bg-white/20 text-white" : activePrimary.theme.badgeBg
+                    return (
+                      <button
+                        key={section.id}
+                        disabled={!isAllowed}
+                        onClick={() => isAllowed && handlePrimaryClick(section.id)}
+                        className={`w-full min-h-[50px] p-2.5 rounded-xl text-left transition-all flex items-center justify-between border cursor-pointer group ${
+                          !isAllowed
+                            ? "opacity-40 cursor-not-allowed bg-slate-100 border-slate-200"
+                            : isActive
+                            ? `${section.theme.bannerBg} ${section.theme.bannerBorder} shadow-xs`
+                            : "bg-white border-[#E5E5DE] hover:border-slate-300 shadow-xs"
                         }`}
                       >
-                        {sub.code}
-                      </span>
-                    </button>
-                  );
-                })}
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <div
+                            className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold shrink-0 ${section.theme.iconPill}`}
+                          >
+                            <Icon className="w-4 h-4" />
+                          </div>
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-1.5">
+                              <span className={`text-[9px] font-mono font-black px-1.5 py-0.2 rounded ${section.theme.badgeBg}`}>
+                                {section.code}
+                              </span>
+                            </div>
+                            <div
+                              className={`text-xs font-black truncate mt-0.5 ${
+                                isActive ? section.theme.textTitle : "text-[#0A2540]"
+                              }`}
+                            >
+                              {section.name}
+                            </div>
+                          </div>
+                        </div>
+                        <ChevronRight className="w-3.5 h-3.5 text-[#0A2540]/40 shrink-0" />
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            ) : (
+              /* DESKTOP VIEW B: SUB-NAVIGATION VIEW (Main nav items removed) */
+              <div className="flex-1 flex flex-col min-h-0">
+                {/* Header: RETURN ICON BUTTON + Domain Info + Collapse Handle */}
+                <div
+                  className={`p-3.5 border-b-2 ${activePrimary.theme.bannerBorder} ${activePrimary.theme.bannerBg} flex items-center justify-between gap-2 shrink-0`}
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    {/* RETURN TO ORIGINAL NAV ICON BUTTON (No text!) */}
+                    <button
+                      onClick={() => setNavView("main")}
+                      title="Return to Original Navigation (All Modules)"
+                      aria-label="Return to Original Navigation"
+                      className="w-8 h-8 rounded-lg bg-[#0A2540] hover:bg-[#003366] text-white flex items-center justify-center shadow-xs hover:scale-105 active:scale-95 transition-all cursor-pointer shrink-0 border border-[#0A2540]"
+                    >
+                      <ArrowLeft className="w-4 h-4 text-white" />
+                    </button>
 
-            {/* Sub-Nav Footer: Role & Simulator */}
+                    <div
+                      className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold shrink-0 shadow-xs ${activePrimary.theme.iconPill}`}
+                    >
+                      <activePrimary.icon className="w-4 h-4" />
+                    </div>
+                    <div className="min-w-0">
+                      <div className={`text-[10px] font-mono font-bold uppercase tracking-wider ${activePrimary.theme.textSub}`}>
+                        {activePrimary.code} Domain
+                      </div>
+                      <div className={`text-xs font-black ${activePrimary.theme.textTitle} truncate leading-tight mt-0.5`}>
+                        {activePrimary.name}
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setSubPanelCollapsed(true)}
+                    title="Collapse Sub-Navigation"
+                    className="w-6 h-6 rounded-md hover:bg-black/5 flex items-center justify-center text-slate-600 hover:text-slate-900 cursor-pointer shrink-0"
+                  >
+                    <ChevronLeft className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                {/* Sub-Sections List with Distinct App Colors */}
+                <div className="p-3 space-y-1.5 overflow-y-auto flex-1">
+                  <div className="text-[10px] font-extrabold uppercase tracking-wider text-[#0A2540]/60 px-1 pt-1 pb-1">
+                    Sub-Registers &amp; Workflows
+                  </div>
+                  {activePrimary.subSections.map((sub) => {
+                    const SubIcon = sub.icon;
+                    const isSubActive = activeSubSection === sub.id;
+
+                    return (
+                      <button
+                        key={sub.id}
+                        onClick={() => handleSubClick(sub.id)}
+                        className={`w-full min-h-[44px] px-3 py-2 rounded-xl text-left font-bold text-xs transition-all flex items-center justify-between group cursor-pointer border ${
+                          isSubActive
+                            ? `${sub.color.activeBg} border-transparent shadow-xs`
+                            : `bg-white text-[#0A2540] border-[#E5E5DE] ${sub.color.hover}`
+                        }`}
+                      >
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <div
+                            className={`w-6 h-6 rounded-md flex items-center justify-center shrink-0 ${
+                              isSubActive ? "bg-white/20 text-white" : sub.color.iconBg
+                            }`}
+                          >
+                            <SubIcon
+                              className={`w-3.5 h-3.5 ${
+                                isSubActive ? "text-white" : sub.color.icon
+                              }`}
+                            />
+                          </div>
+                          <span className="truncate">{sub.name}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 shrink-0 ml-1.5">
+                          {sub.badge && (
+                            <span
+                              className={`text-[9px] font-black px-1.5 py-0.2 rounded-full ${
+                                isSubActive ? "bg-white text-slate-900" : "bg-rose-500 text-white"
+                              }`}
+                            >
+                              {sub.badge}
+                            </span>
+                          )}
+                          <span
+                            className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${
+                              isSubActive ? "bg-white/20 text-white" : sub.color.badge
+                            }`}
+                          >
+                            {sub.code}
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Desktop Sub-Nav Footer: User Profile & Persona Switcher */}
             <div className="p-3.5 border-t-2 border-[#E5E5DE] bg-white space-y-3">
               {/* Active User Card */}
               <div className="relative">
@@ -764,7 +1253,7 @@ export function Sidebar({
                   onClick={() => setAccountMenuOpen(!accountMenuOpen)}
                   className="flex items-center gap-3 p-2 rounded-xl hover:bg-[#FAF9F5] border border-[#E5E5DE] cursor-pointer transition-colors"
                 >
-                  <div className="w-9 h-9 rounded-xl bg-[#0A2540] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+                  <div className="w-8 h-8 rounded-xl bg-[#0A2540] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
                     {initials}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -782,7 +1271,7 @@ export function Sidebar({
                       className="px-3 py-2.5 rounded-lg text-xs font-bold text-[#0A2540] hover:bg-[#FAF9F5] flex items-center gap-2"
                     >
                       <User className="w-4 h-4 text-[#0A2540]" />
-                      <span>My Account & Profile</span>
+                      <span>My Account &amp; Profile</span>
                     </Link>
                     <div
                       onClick={() => {
