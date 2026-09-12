@@ -74,8 +74,20 @@ interface UserRecord {
   created_at?: string;
 }
 
-export function UserRoleManager() {
-  const [activeTab, setActiveTab] = useState<"users" | "matrix" | "audit">("users");
+export function UserRoleManager({
+  initialTab = "users",
+  onTabChange,
+}: {
+  initialTab?: "users" | "matrix" | "audit";
+  onTabChange?: (tab: "users" | "matrix" | "audit") => void;
+} = {}) {
+  const [activeTab, setActiveTab] = useState<"users" | "matrix" | "audit">(initialTab);
+
+  useEffect(() => {
+    if (initialTab && ["users", "matrix", "audit"].includes(initialTab)) {
+      setActiveTab(initialTab);
+    }
+  }, [initialTab]);
   const [users, setUsers] = useState<UserRecord[]>([]);
   const [matrix, setMatrix] = useState<Record<RoleName, Record<PermissionKey, boolean>>>(getFullMatrix());
   const [searchQuery, setSearchQuery] = useState("");
@@ -295,42 +307,7 @@ export function UserRoleManager() {
           </div>
         </div>
 
-        {/* Sub-Nav Tab Strip */}
-        <div className="flex flex-wrap gap-2 mt-6 pt-5 border-t border-white/15">
-          <button
-            onClick={() => setActiveTab("users")}
-            className={`px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all cursor-pointer min-h-[40px] ${
-              activeTab === "users"
-                ? "bg-white text-[#0A2540] shadow-md"
-                : "bg-white/10 text-white hover:bg-white/15"
-            }`}
-          >
-            <Users className="w-4 h-4" />
-            <span>Workspace Directory ({users.length})</span>
-          </button>
-          <button
-            onClick={() => setActiveTab("matrix")}
-            className={`px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all cursor-pointer min-h-[40px] ${
-              activeTab === "matrix"
-                ? "bg-white text-[#0A2540] shadow-md"
-                : "bg-white/10 text-white hover:bg-white/15"
-            }`}
-          >
-            <Sliders className="w-4 h-4" />
-            <span>Role Permissions Matrix</span>
-          </button>
-          <button
-            onClick={() => setActiveTab("audit")}
-            className={`px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all cursor-pointer min-h-[40px] ${
-              activeTab === "audit"
-                ? "bg-white text-[#0A2540] shadow-md"
-                : "bg-white/10 text-white hover:bg-white/15"
-            }`}
-          >
-            <Shield className="w-4 h-4" />
-            <span>Security Audit Trail</span>
-          </button>
-        </div>
+
       </div>
 
       {/* Tab 1: Users Directory */}

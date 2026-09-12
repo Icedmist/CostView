@@ -321,7 +321,10 @@ export default function DashboardPage() {
           {/* 2. BUDGET & BOQ MASTER */}
           {activeSection === "Budget & BOQ" && (
             <RoleGuard permission="Budget">
-              <BOQTable />
+              <BOQTable
+                initialSubTab={activeSubSection as any}
+                onTabChange={(tab) => setActiveSubSection(tab)}
+              />
             </RoleGuard>
           )}
 
@@ -368,7 +371,10 @@ export default function DashboardPage() {
           {/* 6. ADMINISTRATION & ROLES */}
           {activeSection === "Administration" && (
             <RoleGuard permission="Admin">
-              <UserRoleManager />
+              <UserRoleManager
+                initialTab={activeSubSection as any}
+                onTabChange={(tab) => setActiveSubSection(tab)}
+              />
             </RoleGuard>
           )}
         </main>

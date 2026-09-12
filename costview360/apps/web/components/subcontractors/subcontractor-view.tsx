@@ -482,65 +482,6 @@ export function SubcontractorView({
 
   return (
     <div className="bg-white/90 backdrop-blur-md border border-slate-200/80 rounded-xl shadow-xs rounded-xl overflow-hidden space-y-4">
-      {/* Subnavigation Bar */}
-      <div className="p-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between overflow-x-auto gap-2">
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => handleSubTabClick("contracts")}
-            className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
-              subTab === "contracts"
-                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
-                : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
-            }`}
-          >
-            <Briefcase className={`w-4 h-4 ${subTab === "contracts" ? "text-emerald-300" : "text-emerald-500"}`} />
-            <span>5.1 Packages & Retention</span>
-          </button>
-
-          <button
-            onClick={() => handleSubTabClick("claims")}
-            className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
-              subTab === "claims"
-                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
-                : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
-            }`}
-          >
-            <Receipt className={`w-4 h-4 ${subTab === "claims" ? "text-amber-300" : "text-amber-500"}`} />
-            <span>5.2 Interim Claims & Certs</span>
-            {claims.filter((c) => c.status === "Submitted").length > 0 && (
-              <span className={`text-[11px] px-1.5 py-0.5 font-mono font-bold rounded ${
-                subTab === "claims" ? "bg-amber-400 text-slate-900" : "bg-amber-100 text-amber-800"
-              }`}>
-                {claims.filter((c) => c.status === "Submitted").length}
-              </span>
-            )}
-          </button>
-
-          <button
-            onClick={() => handleSubTabClick("instructions")}
-            className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
-              subTab === "instructions"
-                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
-                : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
-            }`}
-          >
-            <ScrollText className={`w-4 h-4 ${subTab === "instructions" ? "text-blue-300" : "text-blue-500"}`} />
-            <span>5.3 Site Instructions</span>
-          </button>
-
-          <button
-            onClick={() => handleSubTabClick("variations")}
-            className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
-              subTab === "variations"
-                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
-                : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
-            }`}
-          >
-            <FileSpreadsheet className={`w-4 h-4 ${subTab === "variations" ? "text-purple-300" : "text-purple-500"}`} />
-            <span>5.4 Variation Orders</span>
-          </button>
-        </div>
-      </div>
 
       {/* SUBTAB 1: SUBCONTRACTOR PACKAGES & RETENTION (PRD Item 19) */}
       {subTab === "contracts" && (
