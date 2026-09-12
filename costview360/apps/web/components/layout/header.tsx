@@ -17,9 +17,11 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     localStorage.removeItem("costview_demo_role");
+    localStorage.removeItem("costview_demo_email");
+    localStorage.removeItem("costview_last_active");
+    document.cookie = "costview_demo_role=; path=/; max-age=0";
     sessionStorage.clear();
-    router.push("/login");
-    router.refresh();
+    window.location.href = "/login";
   };
 
   return (

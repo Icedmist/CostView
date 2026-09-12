@@ -27,8 +27,11 @@ export function MarketingNav() {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     localStorage.removeItem("costview_demo_role");
-    router.push("/login");
-    router.refresh();
+    localStorage.removeItem("costview_demo_email");
+    localStorage.removeItem("costview_last_active");
+    document.cookie = "costview_demo_role=; path=/; max-age=0";
+    sessionStorage.clear();
+    window.location.href = "/login";
   };
 
   return (

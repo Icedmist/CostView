@@ -31,6 +31,8 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  const demoRole = request.cookies.get("costview_demo_role")?.value;
+
   // Route protection: When live Supabase credentials are provided, redirect unauthenticated users to /login
   // Landing + marketing sub-pages are public (no auth required)
   const isPublicPage =
@@ -50,7 +52,7 @@ export async function updateSession(request: NextRequest) {
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY !== "placeholder-anon-key"
   );
 
-  if (isLiveSupabase && !user && !isPublicPage) {
+  if (isLiveSupabase && !user && !demoRole && !isPublicPage) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
