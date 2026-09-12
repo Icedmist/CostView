@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { useApp } from "@/app/providers";
-import { Building2, Bell, Menu, BookOpen, ChevronRight } from "lucide-react";
+import { Building2, Bell, Menu, BookOpen, ChevronRight, User } from "lucide-react";
 import { NAVIGATION_SECTIONS } from "@/components/layout/sidebar";
 import { OnboardingModal } from "@/components/onboarding/onboarding-modal";
 
@@ -159,6 +160,18 @@ export function Header({
             </div>
           )}
         </div>
+
+        {/* My Account & Profile Quick Link */}
+        <Link
+          href="/account"
+          title="My Account & Profile"
+          className="flex items-center gap-2 p-1.5 hover:bg-slate-100 border border-slate-300 rounded-xl transition-all shadow-xs cursor-pointer"
+        >
+          <div className="w-7 h-7 rounded-lg bg-[#0A1931] text-white flex items-center justify-center font-bold text-xs">
+            <User className="w-4 h-4 text-[#D4A017]" />
+          </div>
+          <span className="text-xs font-bold text-[#0A1931] hidden xl:inline pr-1">Account</span>
+        </Link>
       </div>
 
       <OnboardingModal isOpen={isOnboardingOpen} onClose={() => setIsOnboardingOpen(false)} />
