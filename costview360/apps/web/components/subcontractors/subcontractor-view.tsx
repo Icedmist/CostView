@@ -178,9 +178,26 @@ const INITIAL_VOS: Variation[] = [
   },
 ];
 
-export function SubcontractorView() {
+export function SubcontractorView({
+  initialSubTab = "contracts",
+  onTabChange,
+}: {
+  initialSubTab?: "contracts" | "claims" | "instructions" | "variations";
+  onTabChange?: (tab: "contracts" | "claims" | "instructions" | "variations") => void;
+} = {}) {
   const { currency, activeRole } = useApp();
-  const [subTab, setSubTab] = useState<"contracts" | "claims" | "instructions" | "variations">("contracts");
+  const [subTab, setSubTab] = useState<"contracts" | "claims" | "instructions" | "variations">(initialSubTab);
+
+  useEffect(() => {
+    if (initialSubTab) {
+      setSubTab(initialSubTab);
+    }
+  }, [initialSubTab]);
+
+  const handleSubTabClick = (tab: "contracts" | "claims" | "instructions" | "variations") => {
+    setSubTab(tab);
+    if (onTabChange) onTabChange(tab);
+  };
 
   const [subs, setSubs] = useState<Subcontractor[]>(INITIAL_SUBS);
   const [claims, setClaims] = useState<InterimClaim[]>(INITIAL_CLAIMS);
@@ -466,59 +483,61 @@ export function SubcontractorView() {
   return (
     <div className="bg-white/90 backdrop-blur-md border border-slate-200/80 rounded-xl shadow-xs rounded-xl overflow-hidden space-y-4">
       {/* Subnavigation Bar */}
-      <div className="p-2.5 bg-slate-50/80 border-b border-slate-200/80 flex items-center justify-between overflow-x-auto gap-2">
-        <div className="flex items-center gap-1.5">
+      <div className="p-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between overflow-x-auto gap-2">
+        <div className="flex items-center gap-2">
           <button
-            onClick={() => setSubTab("contracts")}
-            className={`px-3 py-1.5 border border-slate-200/80 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            onClick={() => handleSubTabClick("contracts")}
+            className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "contracts"
-                ? "bg-white text-[#0067c0] border border-slate-200/80 shadow-xs rounded-xl rounded-md"
-                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 rounded-md border border-transparent"
+                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
-            <Briefcase className="w-3.5 h-3.5 text-emerald-400" />
-            <span>6.1 Packages & Retention</span>
+            <Briefcase className={`w-4 h-4 ${subTab === "contracts" ? "text-emerald-300" : "text-emerald-500"}`} />
+            <span>5.1 Packages & Retention</span>
           </button>
 
           <button
-            onClick={() => setSubTab("claims")}
-            className={`px-3 py-1.5 border border-slate-200/80 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            onClick={() => handleSubTabClick("claims")}
+            className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "claims"
-                ? "bg-white text-[#0067c0] border border-slate-200/80 shadow-xs rounded-xl rounded-md"
-                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 rounded-md border border-transparent"
+                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
-            <Receipt className="w-3.5 h-3.5 text-amber-400" />
-            <span>6.2 Interim Claims & Certs</span>
+            <Receipt className={`w-4 h-4 ${subTab === "claims" ? "text-amber-300" : "text-amber-500"}`} />
+            <span>5.2 Interim Claims & Certs</span>
             {claims.filter((c) => c.status === "Submitted").length > 0 && (
-              <span className="text-xs bg-amber-950 text-amber-300 px-1.5 py-0.5 border border-amber-800 font-mono">
+              <span className={`text-[11px] px-1.5 py-0.5 font-mono font-bold rounded ${
+                subTab === "claims" ? "bg-amber-400 text-slate-900" : "bg-amber-100 text-amber-800"
+              }`}>
                 {claims.filter((c) => c.status === "Submitted").length}
               </span>
             )}
           </button>
 
           <button
-            onClick={() => setSubTab("instructions")}
-            className={`px-3 py-1.5 border border-slate-200/80 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            onClick={() => handleSubTabClick("instructions")}
+            className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "instructions"
-                ? "bg-white text-[#0067c0] border border-slate-200/80 shadow-xs rounded-xl rounded-md"
-                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 rounded-md border border-transparent"
+                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
-            <ScrollText className="w-3.5 h-3.5 text-blue-400" />
-            <span>7.1 Site Instructions</span>
+            <ScrollText className={`w-4 h-4 ${subTab === "instructions" ? "text-blue-300" : "text-blue-500"}`} />
+            <span>5.3 Site Instructions</span>
           </button>
 
           <button
-            onClick={() => setSubTab("variations")}
-            className={`px-3 py-1.5 border border-slate-200/80 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            onClick={() => handleSubTabClick("variations")}
+            className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "variations"
-                ? "bg-white text-[#0067c0] border border-slate-200/80 shadow-xs rounded-xl rounded-md"
-                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 rounded-md border border-transparent"
+                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
-            <FileSpreadsheet className="w-3.5 h-3.5 text-purple-400" />
-            <span>7.2 Variation Orders</span>
+            <FileSpreadsheet className={`w-4 h-4 ${subTab === "variations" ? "text-purple-300" : "text-purple-500"}`} />
+            <span>5.4 Variation Orders</span>
           </button>
         </div>
       </div>

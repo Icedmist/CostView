@@ -232,4 +232,24 @@ flowchart LR
 
 ---
 
-*CostView 360 · Version 2.0 · Comprehensive Enterprise Operations & Field Governance Manual*
+## 6. Enterprise Role-Based Access Control (RBAC) & User Management Hub
+
+CostView 360 features an interactive, enterprise-grade identity and role administration engine under **Administration > User & Role Customization**.
+
+### Key Administrative Capabilities
+
+1. **User Provisioning & Invitation**:
+   - Administrators can provision new site engineers, quantity surveyors, accountants, and project managers directly via `+ Create New User`.
+   - Credentials, contact numbers, and default roles are assigned and stored with real-time audit logging.
+2. **Dynamic Role Re-Assignment**:
+   - Change any team member's role dynamically using the in-table role dropdown. Modifications apply immediately across their active session.
+3. **Interactive Role Permissions Matrix (8 Roles × 9 Permissions)**:
+   - Configure fine-grained access across `Budget`, `Procurement`, `Materials`, `Labour`, `Progress`, `Subcontractors`, `Variations`, `Reports`, and `Admin`.
+   - Toggle module capabilities per role with real-time synchronization to Supabase `role_access`.
+4. **Expanding Sub-Navigation Hierarchy**:
+   - Direct 1-click access to all sub-registers (e.g. `3.2 Material Requisitions`, `4.4 Snags & NCRs`, `5.2 10% Retention Escrow`) via the collapsible sidebar tree and header breadcrumb trail.
+
+---
+
+*CostView 360 · Version 2.1 · Comprehensive Enterprise Operations & Field Governance Manual*
+

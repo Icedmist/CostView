@@ -36,6 +36,7 @@
 13. **Issue #23 (`feat/issue-23-straighten-edges-and-onboarding-guide`)**: Straighten all in-app component edges to sharp neo-brutalist styling, generate branded 5-page Neo-Brutalism PDF guide (`CostView-360-User-Guide.pdf`), and add interactive in-app onboarding modal hub accessible from Header & Sidebar.
 14. **Issue #25 (`feat/issue-25-user-guide-and-data-flow`)**: Remove tech stack and developer references from user documentation, expand step-by-step user operational guides across all 10 modules, add visual data flow process diagrams (3-tier system architecture, 3-way match gate, 10% retention escrow lifecycle, 4-stage variation orders) with MermaidJS support and interactive visual maps.
 15. **Issue #33 (`fix/issue-33-demo-account-auth`)**: Fix auth bug in demo account login flow — resolve stale session inactivity logout loop by initializing and resetting `costview_last_active` and `costview_tab_active`, synchronize `activeRole` in Providers from `costview_demo_role` and Supabase user metadata, allow `costview_demo_role` cookie in middleware for sandbox preview access, dynamically render demo user profiles and initials in the sidebar, and provide visual feedback for active demo account login cards.
+16. **Issue #35 (`feat/issue-35-navy-subnav-admin-roles`)**: Implement deep navy blue theme (`#0A1931`) with warm amber accents, scale up component typography and button heights (`min-h-[42px]`), restructure navigation into 6 unified modules with collapsible expanding sub-navigation trees for 1-click access, contextual header breadcrumbs, and build dedicated Admin User & Role Management Hub (`UserRoleManager` and `/api/admin/users`) with user provisioning, dynamic role re-assignment, and interactive 8-role × 9-permission matrix customization.
 
 ## Workflow (since 2026-09-09)
 - Every change = Issue → Branch `feat/issue-<n>-slug` (or `fix/`) → PR `Closes #<n>` → squash-merge. See `AGENTS.md`, `.github/WORKFLOW.md`, `.github/CONTRIBUTING.md`. Enforced for humans and AI agents.
@@ -46,4 +47,6 @@
 - Branded User Guide PDF generated at `CostView-360-User-Guide.pdf` (root) and `costview360/apps/web/public/docs/CostView-360-User-Guide.pdf` (98 KB, 5 pages, 100% end-user focus with visual data flows).
 - Dedicated Markdown User Operations Manual created at `USER_GUIDE.md` with complete MermaidJS diagram suites.
 - Auth verification: All 8 demo accounts verified in Supabase Auth and sandbox fallback verified with role synchronization.
-
+- Deep navy palette: Active across `tailwind.config.ts`, `globals.css`, sidebar, header, metric cards, and admin hubs.
+- Expanding sub-navigation: Tested across all 6 modules with 1-click jumps to specific registers.
+- Admin role customizer: Verified user creation form, role assignment dropdown, and interactive permission matrix with backend API route.
