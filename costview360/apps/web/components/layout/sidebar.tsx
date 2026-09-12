@@ -44,6 +44,7 @@ import {
   Activity,
   AlertTriangle,
   FolderSync,
+  User,
 } from "lucide-react";
 import { canAccess } from "@/lib/auth/permissions";
 import { OnboardingModal } from "@/components/onboarding/onboarding-modal";
@@ -324,6 +325,14 @@ export function Sidebar({
 
             {accountMenuOpen && (
               <div className="absolute top-full left-0 right-0 mt-1.5 bg-white border border-slate-200 rounded-xl shadow-xl p-2 z-50 animate-in fade-in">
+                <Link
+                  href="/account"
+                  onClick={() => setAccountMenuOpen(false)}
+                  className="px-3 py-2.5 rounded-lg text-xs font-bold text-slate-800 hover:bg-slate-100 cursor-pointer flex items-center gap-2"
+                >
+                  <User className="w-4 h-4 text-[#0A1931]" />
+                  <span>My Account & Profile</span>
+                </Link>
                 <div
                   onClick={() => {
                     setAccountMenuOpen(false);
