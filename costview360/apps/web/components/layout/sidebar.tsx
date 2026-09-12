@@ -47,6 +47,7 @@ import {
   User,
   PanelLeftClose,
   PanelLeftOpen,
+  ArrowLeft,
 } from "lucide-react";
 import { canAccess } from "@/lib/auth/permissions";
 import { OnboardingModal } from "@/components/onboarding/onboarding-modal";
@@ -59,6 +60,19 @@ export interface SubNavSection {
   badge?: string;
 }
 
+export interface DomainTheme {
+  accentColor: string;
+  bannerBg: string;
+  bannerBorder: string;
+  textTitle: string;
+  textSub: string;
+  badgeBg: string;
+  iconPill: string;
+  activeItemBg: string;
+  hoverItemBg: string;
+  dotIndicator: string;
+}
+
 export interface PrimarySection {
   id: string;
   name: string;
@@ -66,6 +80,7 @@ export interface PrimarySection {
   icon: React.ElementType;
   permission?: string;
   badge?: string;
+  theme: DomainTheme;
   subSections: SubNavSection[];
 }
 
@@ -75,6 +90,18 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
     name: "Command Center",
     code: "1.0",
     icon: LayoutDashboard,
+    theme: {
+      accentColor: "#1D4ED8",
+      bannerBg: "bg-blue-50/90",
+      bannerBorder: "border-blue-200",
+      textTitle: "text-blue-950",
+      textSub: "text-blue-700",
+      badgeBg: "bg-blue-100 text-blue-900 border border-blue-200",
+      iconPill: "bg-blue-100 text-blue-800",
+      activeItemBg: "bg-blue-600 text-white shadow-sm",
+      hoverItemBg: "hover:bg-blue-50 hover:text-blue-950",
+      dotIndicator: "bg-blue-500",
+    },
     subSections: [
       { id: "telemetry", name: "Telemetry & Executive KPIs", code: "1.1", icon: Activity },
       { id: "alerts", name: "Attention & Variance Alerts", code: "1.2", icon: AlertTriangle, badge: "3" },
@@ -87,6 +114,18 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
     code: "2.0",
     icon: Calculator,
     permission: "Budget",
+    theme: {
+      accentColor: "#047857",
+      bannerBg: "bg-emerald-50/90",
+      bannerBorder: "border-emerald-200",
+      textTitle: "text-emerald-950",
+      textSub: "text-emerald-700",
+      badgeBg: "bg-emerald-100 text-emerald-900 border border-emerald-200",
+      iconPill: "bg-emerald-100 text-emerald-800",
+      activeItemBg: "bg-emerald-600 text-white shadow-sm",
+      hoverItemBg: "hover:bg-emerald-50 hover:text-emerald-950",
+      dotIndicator: "bg-emerald-500",
+    },
     subSections: [
       { id: "boq", name: "BOQ Master Register", code: "2.1", icon: Calculator },
       { id: "revisions", name: "Rate Revisions & Deltas", code: "2.2", icon: FileSpreadsheet },
@@ -100,6 +139,18 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
     icon: ShoppingCart,
     permission: "Procurement",
     badge: "3",
+    theme: {
+      accentColor: "#B45309",
+      bannerBg: "bg-amber-50/90",
+      bannerBorder: "border-amber-200",
+      textTitle: "text-amber-950",
+      textSub: "text-amber-800",
+      badgeBg: "bg-amber-100 text-amber-950 border border-amber-200",
+      iconPill: "bg-amber-100 text-amber-900",
+      activeItemBg: "bg-amber-600 text-white shadow-sm",
+      hoverItemBg: "hover:bg-amber-50 hover:text-amber-950",
+      dotIndicator: "bg-amber-500",
+    },
     subSections: [
       { id: "match", name: "Three-Way Match Gate", code: "3.1", icon: BadgeCheck },
       { id: "requisitions", name: "Material Requisitions", code: "3.2", icon: Clock, badge: "3" },
@@ -114,6 +165,18 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
     code: "4.0",
     icon: HardHat,
     permission: "Progress",
+    theme: {
+      accentColor: "#C2410C",
+      bannerBg: "bg-orange-50/90",
+      bannerBorder: "border-orange-200",
+      textTitle: "text-orange-950",
+      textSub: "text-orange-800",
+      badgeBg: "bg-orange-100 text-orange-950 border border-orange-200",
+      iconPill: "bg-orange-100 text-orange-900",
+      activeItemBg: "bg-orange-600 text-white shadow-sm",
+      hoverItemBg: "hover:bg-orange-50 hover:text-orange-950",
+      dotIndicator: "bg-orange-500",
+    },
     subSections: [
       { id: "diary", name: "Daily Site Diary & Log", code: "4.1", icon: Calendar },
       { id: "stock", name: "Materials & Stock Ledger", code: "4.2", icon: Boxes },
@@ -129,6 +192,18 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
     code: "5.0",
     icon: Briefcase,
     permission: "Subcontractors",
+    theme: {
+      accentColor: "#6D28D9",
+      bannerBg: "bg-purple-50/90",
+      bannerBorder: "border-purple-200",
+      textTitle: "text-purple-950",
+      textSub: "text-purple-800",
+      badgeBg: "bg-purple-100 text-purple-950 border border-purple-200",
+      iconPill: "bg-purple-100 text-purple-900",
+      activeItemBg: "bg-purple-600 text-white shadow-sm",
+      hoverItemBg: "hover:bg-purple-50 hover:text-purple-950",
+      dotIndicator: "bg-purple-500",
+    },
     subSections: [
       { id: "contracts", name: "Subcontractor Ledger", code: "5.1", icon: Briefcase },
       { id: "claims", name: "10% Retention Escrow & Certs", code: "5.2", icon: Receipt },
@@ -141,6 +216,18 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
     code: "6.0",
     icon: ShieldCheck,
     permission: "Admin",
+    theme: {
+      accentColor: "#0F766E",
+      bannerBg: "bg-teal-50/90",
+      bannerBorder: "border-teal-200",
+      textTitle: "text-teal-950",
+      textSub: "text-teal-800",
+      badgeBg: "bg-teal-100 text-teal-950 border border-teal-200",
+      iconPill: "bg-teal-100 text-teal-900",
+      activeItemBg: "bg-teal-700 text-white shadow-sm",
+      hoverItemBg: "hover:bg-teal-50 hover:text-teal-950",
+      dotIndicator: "bg-teal-500",
+    },
     subSections: [
       { id: "users", name: "User & Role Customization", code: "6.1", icon: UserCheck },
       { id: "matrix", name: "Role Permissions Matrix", code: "6.2", icon: Sliders },
@@ -187,6 +274,7 @@ export function Sidebar({
   const [userEmail, setUserEmail] = useState<string>("user@costview.ng");
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [subPanelCollapsed, setSubPanelCollapsed] = useState(false);
+  const [mobileNavView, setMobileNavView] = useState<"main" | "sub">("sub");
   const router = useRouter();
 
   // Handle compatibility mapping
@@ -279,12 +367,248 @@ export function Sidebar({
         />
       )}
 
-      {/* Supabase-Style Dual-Rail Navigation Container */}
+      {/* ========================================================= */}
+      {/* 1. SIMPLIFIED MOBILE NAVIGATION DRAWER (lg:hidden)         */}
+      {/* Single-panel drill-down with clear "Original Nav" toggle  */}
+      {/* ========================================================= */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-50 flex transform transition-transform duration-200 ease-in-out lg:relative lg:translate-x-0 ${
+        className={`fixed top-0 bottom-0 left-0 z-50 w-full max-w-[340px] bg-[#FAF9F5] flex flex-col justify-between transform transition-transform duration-200 ease-in-out lg:hidden shadow-2xl ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
+        {/* MOBILE VIEW A: ORIGINAL MAIN NAVIGATION (All 6 Modules) */}
+        {mobileNavView === "main" ? (
+          <div className="flex-1 flex flex-col min-h-0">
+            {/* Top Bar */}
+            <div className="p-4 bg-white border-b-2 border-[#E5E5DE] flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-[#0A2540] text-white rounded-xl flex items-center justify-center font-black text-sm shadow-md">
+                  CV
+                </div>
+                <div>
+                  <div className="text-base font-extrabold text-[#0A2540]">CostView</div>
+                  <div className="text-[11px] font-bold text-[#0A2540]/60 uppercase tracking-wider">
+                    Original Navigation
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={onClose}
+                className="w-9 h-9 rounded-xl hover:bg-slate-100 flex items-center justify-center text-[#0A2540]/70 hover:text-[#0A2540] cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modules List Header Info */}
+            <div className="px-4 py-3 bg-[#FAF9F5] border-b border-[#E5E5DE] flex items-center justify-between shrink-0">
+              <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#0A2540]/70">
+                Core Domains & Modules
+              </span>
+              <span className="text-xs font-mono font-bold bg-[#0A2540]/10 text-[#0A2540] px-2 py-0.5 rounded">
+                6 Modules
+              </span>
+            </div>
+
+            {/* Main Navigation Modules */}
+            <div className="p-3.5 space-y-2 overflow-y-auto flex-1">
+              {NAVIGATION_SECTIONS.map((section) => {
+                const Icon = section.icon;
+                const isAllowed = !section.permission || canAccess(activeRole, section.permission as any);
+                const isActive = currentSection === section.id;
+
+                return (
+                  <button
+                    key={section.id}
+                    disabled={!isAllowed}
+                    onClick={() => {
+                      if (isAllowed) {
+                        handlePrimaryClick(section.id);
+                        setMobileNavView("sub");
+                      }
+                    }}
+                    className={`w-full min-h-[58px] p-3 rounded-xl text-left transition-all flex items-center justify-between border cursor-pointer group ${
+                      !isAllowed
+                        ? "opacity-40 cursor-not-allowed bg-slate-100 border-slate-200"
+                        : isActive
+                        ? `${section.theme.bannerBg} ${section.theme.bannerBorder} shadow-sm`
+                        : "bg-white border-[#E5E5DE] hover:border-slate-300 shadow-xs"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3.5 min-w-0">
+                      <div
+                        className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold shrink-0 shadow-xs ${section.theme.iconPill}`}
+                      >
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={`text-[10px] font-mono font-black px-1.5 py-0.5 rounded ${section.theme.badgeBg}`}
+                          >
+                            {section.code}
+                          </span>
+                          {section.badge && (
+                            <span className="text-[10px] font-black bg-rose-500 text-white px-1.5 py-0.2 rounded-full">
+                              {section.badge}
+                            </span>
+                          )}
+                        </div>
+                        <div
+                          className={`text-sm font-extrabold truncate mt-0.5 ${
+                            isActive ? section.theme.textTitle : "text-[#0A2540]"
+                          }`}
+                        >
+                          {section.name}
+                        </div>
+                      </div>
+                    </div>
+                    <ChevronRight
+                      className={`w-4 h-4 shrink-0 transition-transform group-hover:translate-x-0.5 ${
+                        isActive ? section.theme.textSub : "text-[#0A2540]/40"
+                      }`}
+                    />
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ) : (
+          /* MOBILE VIEW B: SUB-NAVIGATION VIEW (Main nav items removed) */
+          <div className="flex-1 flex flex-col min-h-0">
+            {/* Dedicated Top Section: Back to Original Main Navigation */}
+            <div className="p-3 bg-white border-b-2 border-[#E5E5DE] shrink-0">
+              <button
+                onClick={() => setMobileNavView("main")}
+                className="w-full min-h-[46px] flex items-center justify-between px-4 py-2.5 bg-[#0A2540] hover:bg-[#003366] text-white rounded-xl font-bold text-sm transition-all shadow-sm group cursor-pointer"
+              >
+                <div className="flex items-center gap-2.5">
+                  <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+                  <span>Open Original Navigation</span>
+                </div>
+                <span className="text-[11px] font-mono font-bold bg-white/20 px-2 py-0.5 rounded text-white">
+                  All Modules
+                </span>
+              </button>
+            </div>
+
+            {/* Colored Sub-Nav Domain Banner for Easy Identification */}
+            <div
+              className={`p-4 border-b-2 ${activePrimary.theme.bannerBorder} ${activePrimary.theme.bannerBg} flex items-center justify-between shrink-0`}
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <div
+                  className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold shrink-0 shadow-xs ${activePrimary.theme.iconPill}`}
+                >
+                  <activePrimary.icon className="w-5 h-5" />
+                </div>
+                <div className="min-w-0">
+                  <div className={`text-[11px] font-extrabold uppercase tracking-wider ${activePrimary.theme.textSub}`}>
+                    {activePrimary.code} Domain
+                  </div>
+                  <div className={`text-base font-black ${activePrimary.theme.textTitle} truncate leading-tight mt-0.5`}>
+                    {activePrimary.name}
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={onClose}
+                className="w-8 h-8 rounded-lg hover:bg-black/5 flex items-center justify-center text-slate-500 hover:text-slate-900 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Sub-Sections List */}
+            <div className="p-3 space-y-2 overflow-y-auto flex-1">
+              <div className="text-[10px] font-extrabold uppercase tracking-wider text-[#0A2540]/60 px-2 pt-1 pb-1">
+                Sub-Registers & Workflows
+              </div>
+              {activePrimary.subSections.map((sub) => {
+                const SubIcon = sub.icon;
+                const isSubActive = activeSubSection === sub.id;
+
+                return (
+                  <button
+                    key={sub.id}
+                    onClick={() => {
+                      handleSubClick(sub.id);
+                      onClose?.();
+                    }}
+                    className={`w-full min-h-[50px] px-3.5 py-3 rounded-xl text-left font-bold text-sm transition-all flex items-center justify-between group cursor-pointer ${
+                      isSubActive
+                        ? `${activePrimary.theme.activeItemBg} text-white shadow-md`
+                        : "bg-white text-[#0A2540] border border-[#E5E5DE] hover:bg-slate-50"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <SubIcon
+                        className={`w-4 h-4 shrink-0 ${
+                          isSubActive ? "text-white" : activePrimary.theme.textSub
+                        }`}
+                      />
+                      <span className="truncate">{sub.name}</span>
+                    </div>
+                    <span
+                      className={`text-[11px] font-mono font-bold shrink-0 ml-2 px-2 py-0.5 rounded ${
+                        isSubActive ? "bg-white/20 text-white" : activePrimary.theme.badgeBg
+                      }`}
+                    >
+                      {sub.code}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Mobile Sub-Nav Footer: Role & Simulator */}
+        <div className="p-3.5 border-t-2 border-[#E5E5DE] bg-white space-y-3 shrink-0">
+          <div className="flex items-center gap-3 p-2 rounded-xl bg-[#FAF9F5] border border-[#E5E5DE]">
+            <div className="w-9 h-9 rounded-xl bg-[#0A2540] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+              {initials}
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-xs font-extrabold text-[#0A2540] truncate">{userName}</div>
+              <div className="text-[11px] font-semibold text-[#0A2540]/70 truncate">{activeRole}</div>
+            </div>
+            <Link
+              href="/account"
+              onClick={onClose}
+              className="px-2.5 py-1.5 bg-white border border-[#E5E5DE] rounded-lg text-xs font-bold text-[#0A2540] hover:bg-slate-100"
+            >
+              Account
+            </Link>
+          </div>
+
+          <div className="flex items-center justify-between gap-2">
+            <button
+              onClick={() => {
+                onClose?.();
+                setIsOnboardingOpen(true);
+              }}
+              className="flex-1 h-9 bg-white border border-[#E5E5DE] rounded-lg text-xs font-bold text-[#0A2540] hover:bg-slate-100 flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>User Guide</span>
+            </button>
+            <button
+              onClick={handleLogout}
+              className="h-9 px-3 bg-rose-50 border border-rose-200 rounded-lg text-xs font-bold text-rose-700 hover:bg-rose-100 flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Exit</span>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      {/* ========================================================= */}
+      {/* 2. SUPABASE-STYLE DUAL-RAIL NAVIGATION (DESKTOP: lg:flex)  */}
+      {/* Tier 1 Primary Rail (w-[68px]) + Tier 2 Sub-Nav (w-64)     */}
+      {/* ========================================================= */}
+      <aside className="hidden lg:flex relative h-full shrink-0">
         {/* TIER 1: SUPABASE PRIMARY ICON RAIL (w-[68px], Bright Navy #0A2540) */}
         <div className="w-[68px] bg-[#0A2540] flex flex-col items-center justify-between py-4 border-r border-[#0A2540]/30 shrink-0 z-20 text-white select-none shadow-lg">
           {/* Top: Logo Block */}
@@ -319,11 +643,20 @@ export function Sidebar({
                     }`}
                   >
                     <Icon className="w-5 h-5" />
+
+                    {/* Active Domain Color Indicator Dot */}
+                    {isActive && (
+                      <span
+                        className={`absolute -left-1.5 top-1/2 -translate-y-1/2 w-1.5 h-6 rounded-r-full ${section.theme.dotIndicator}`}
+                      />
+                    )}
+
                     {section.badge && (
                       <span className="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center shadow-xs">
                         {section.badge}
                       </span>
                     )}
+
                     {/* Tooltip on hover */}
                     <div className="absolute left-full ml-3 px-3 py-1.5 bg-[#0A2540] text-white text-xs font-bold rounded-lg shadow-xl whitespace-nowrap hidden group-hover:block z-50 pointer-events-none border border-white/20">
                       {section.code} {section.name}
@@ -336,7 +669,6 @@ export function Sidebar({
 
           {/* Bottom Actions on Primary Rail */}
           <div className="flex flex-col items-center gap-3">
-            {/* User Guide Button */}
             <button
               onClick={() => setIsOnboardingOpen(true)}
               title="Interactive User Guide"
@@ -345,7 +677,6 @@ export function Sidebar({
               <BookOpen className="w-5 h-5" />
             </button>
 
-            {/* Account Quick Link */}
             <Link
               href="/account"
               title="My Account"
@@ -356,30 +687,39 @@ export function Sidebar({
           </div>
         </div>
 
-        {/* TIER 2: SUPABASE SECONDARY SUB-NAV PANEL (w-64, Milk/White Background) */}
+        {/* TIER 2: SUPABASE SECONDARY SUB-NAV PANEL (w-64, Colored Header for Easy Identification) */}
         {!subPanelCollapsed && (
           <div className="w-64 bg-[#FAF9F5] border-r-2 border-[#E5E5DE] flex flex-col justify-between shrink-0 z-10 animate-in fade-in duration-150">
-            {/* Sub-Nav Header */}
+            {/* Sub-Nav Header with Distinct Domain Color */}
             <div>
-              <div className="p-4 border-b-2 border-[#E5E5DE] bg-white flex items-center justify-between">
-                <div>
-                  <div className="text-[11px] font-bold uppercase tracking-wider text-[#0A2540]/60">
-                    {activePrimary.code} Domain
+              <div
+                className={`p-4 border-b-2 ${activePrimary.theme.bannerBorder} ${activePrimary.theme.bannerBg} flex items-center justify-between`}
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <div
+                    className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold shrink-0 shadow-xs ${activePrimary.theme.iconPill}`}
+                  >
+                    <activePrimary.icon className="w-4 h-4" />
                   </div>
-                  <div className="text-base font-extrabold text-[#0A2540] truncate leading-tight mt-0.5">
-                    {activePrimary.name}
+                  <div className="min-w-0">
+                    <div className={`text-[11px] font-bold uppercase tracking-wider ${activePrimary.theme.textSub}`}>
+                      {activePrimary.code} Domain
+                    </div>
+                    <div className={`text-base font-extrabold ${activePrimary.theme.textTitle} truncate leading-tight mt-0.5`}>
+                      {activePrimary.name}
+                    </div>
                   </div>
                 </div>
                 <button
                   onClick={() => setSubPanelCollapsed(true)}
                   title="Collapse Sub-Navigation"
-                  className="w-7 h-7 rounded-lg hover:bg-slate-100 flex items-center justify-center text-[#0A2540]/60 hover:text-[#0A2540]"
+                  className="w-7 h-7 rounded-lg hover:bg-black/5 flex items-center justify-center text-slate-600 hover:text-slate-900 cursor-pointer"
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
               </div>
 
-              {/* Sub-Sections List */}
+              {/* Sub-Sections List with Domain Color Highlights */}
               <div className="p-3 space-y-1.5 overflow-y-auto max-h-[calc(100vh-220px)]">
                 {activePrimary.subSections.map((sub) => {
                   const SubIcon = sub.icon;
@@ -391,23 +731,21 @@ export function Sidebar({
                       onClick={() => handleSubClick(sub.id)}
                       className={`w-full min-h-[44px] px-3.5 py-2.5 rounded-xl text-left font-bold text-sm transition-all flex items-center justify-between group cursor-pointer ${
                         isSubActive
-                          ? "bg-[#0A2540] text-white shadow-sm"
-                          : "text-[#0A2540]/80 hover:bg-[#0A2540]/10 hover:text-[#0A2540]"
+                          ? `${activePrimary.theme.activeItemBg} text-white shadow-sm`
+                          : `text-[#0A2540]/80 ${activePrimary.theme.hoverItemBg}`
                       }`}
                     >
                       <div className="flex items-center gap-3 min-w-0">
                         <SubIcon
                           className={`w-4 h-4 shrink-0 ${
-                            isSubActive ? "text-white" : "text-[#0A2540]/60 group-hover:text-[#0A2540]"
+                            isSubActive ? "text-white" : activePrimary.theme.textSub
                           }`}
                         />
                         <span className="truncate">{sub.name}</span>
                       </div>
                       <span
                         className={`text-[11px] font-mono font-bold shrink-0 ml-2 px-2 py-0.5 rounded ${
-                          isSubActive
-                            ? "bg-white/20 text-white"
-                            : "bg-[#0A2540]/5 text-[#0A2540]/70"
+                          isSubActive ? "bg-white/20 text-white" : activePrimary.theme.badgeBg
                         }`}
                       >
                         {sub.code}

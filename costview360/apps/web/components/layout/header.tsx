@@ -38,8 +38,22 @@ export function Header({
           <Menu className="w-5 h-5" />
         </button>
 
+        {/* Mobile Active Section Pill */}
+        {currentPrimary && (
+          <div className="flex lg:hidden items-center gap-1.5 min-w-0">
+            <span
+              className={`px-2 py-0.5 rounded-md text-[11px] font-mono font-black shrink-0 ${currentPrimary.theme.badgeBg}`}
+            >
+              {currentSub ? currentSub.code : currentPrimary.code}
+            </span>
+            <span className="text-xs font-extrabold text-[#0A2540] truncate max-w-[130px] sm:max-w-none">
+              {currentSub ? currentSub.name : currentPrimary.name}
+            </span>
+          </div>
+        )}
+
         {/* Project Switcher Pill */}
-        <div className="flex items-center gap-3">
+        <div className="hidden sm:flex items-center gap-3">
           <div className="inline-flex items-center gap-2.5 bg-[#FAF9F5] hover:bg-[#F2F1EC] border-2 border-[#E5E5DE] px-4 py-2 rounded-xl text-sm font-bold text-[#0A2540] transition-all cursor-pointer shadow-xs">
             <Building2 className="w-4 h-4 text-[#0A2540]" />
             <span className="truncate max-w-[170px] sm:max-w-none">{currentProject.name}</span>
@@ -58,7 +72,11 @@ export function Header({
           {currentSub && (
             <>
               <ChevronRight className="w-4 h-4 text-[#0A2540]/40" />
-              <span className="text-white font-bold bg-[#0A2540] px-3 py-1 rounded-lg text-xs tracking-wide shadow-xs">
+              <span
+                className={`font-bold px-3 py-1 rounded-lg text-xs tracking-wide shadow-xs ${
+                  currentPrimary?.theme.activeItemBg || "bg-[#0A2540] text-white"
+                }`}
+              >
                 {currentSub.code} {currentSub.name}
               </span>
             </>
