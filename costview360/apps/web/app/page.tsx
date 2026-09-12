@@ -81,7 +81,7 @@ export default function LandingPage() {
                 </Link>
               </div>
 
-              <div className="mt-10 flex flex-wrap items-center gap-5 text-sm font-bold text-[#0A2540]/70">
+              <div className="mt-10 flex flex-wrap items-center gap-5 text-base font-extrabold text-[#0A2540]/80">
                 <span className="flex items-center gap-2 text-[#0A2540]">
                   <CheckCircle2 className="w-5 h-5 text-emerald-600" /> No credit card required
                 </span>
@@ -93,7 +93,7 @@ export default function LandingPage() {
                 <span className="text-[#0A2540]">Audit Trail RLS</span>
               </div>
 
-              <div className="mt-8 flex items-center gap-4 p-4 bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl shadow-sm max-w-lg">
+              <div className="mt-8 flex items-center gap-4 p-5 bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl shadow-sm max-w-lg">
                 <div className="flex -space-x-3">
                   {[
                     { label: "PM", bg: "bg-[#0A2540]" },
@@ -103,15 +103,15 @@ export default function LandingPage() {
                   ].map((item) => (
                     <div
                       key={item.label}
-                      className={`w-11 h-11 rounded-full border-2 border-white flex items-center justify-center text-xs font-black text-white shadow-xs ${item.bg}`}
+                      className={`w-12 h-12 rounded-full border-2 border-white flex items-center justify-center text-sm font-black text-white shadow-xs ${item.bg}`}
                     >
                       {item.label}
                     </div>
                   ))}
                 </div>
                 <div>
-                  <div className="text-sm font-black text-[#0A2540]">Trusted by 120+ active site &amp; finance teams</div>
-                  <div className="text-xs font-semibold text-[#0A2540]/60 mt-0.5">Victoria Island · Lekki · Eko Atlantic · Abuja</div>
+                  <div className="text-base font-black text-[#0A2540]">Trusted by 120+ active site &amp; finance teams</div>
+                  <div className="text-sm font-semibold text-[#0A2540]/70 mt-0.5">Victoria Island · Lekki · Eko Atlantic · Abuja</div>
                 </div>
               </div>
             </div>
@@ -120,16 +120,16 @@ export default function LandingPage() {
             <div className="relative group">
               <div className="bg-white border-2 border-[#E5E5DE] rounded-3xl shadow-xl overflow-hidden transition-all duration-300">
                 {/* Window Header */}
-                <div className="h-14 bg-[#FAF9F5] border-b-2 border-[#E5E5DE] flex items-center justify-between px-5 py-3">
+                <div className="h-16 bg-[#FAF9F5] border-b-2 border-[#E5E5DE] flex items-center justify-between px-6 py-3">
                   <div className="flex items-center gap-2.5">
                     <span className="w-3.5 h-3.5 bg-rose-400 rounded-full" />
                     <span className="w-3.5 h-3.5 bg-amber-400 rounded-full" />
                     <span className="w-3.5 h-3.5 bg-emerald-400 rounded-full" />
-                    <span className="ml-3 text-xs font-mono font-black text-[#0A2540] tracking-wider hidden sm:inline">
+                    <span className="ml-3 text-sm font-mono font-black text-[#0A2540] tracking-wider hidden sm:inline">
                       COSTVIEW · HORIZON TOWERS
                     </span>
                   </div>
-                  <span className="inline-flex items-center gap-2 text-xs font-black px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300">
+                  <span className="inline-flex items-center gap-2 text-xs md:text-sm font-black px-3.5 py-1.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300">
                     <span className="relative flex h-2.5 w-2.5">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                       <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-600" />
@@ -139,37 +139,37 @@ export default function LandingPage() {
                 </div>
 
                 {/* Card Content Body */}
-                <div className="p-6 md:p-8 bg-white space-y-5">
+                <div className="p-7 md:p-9 bg-white space-y-6">
                   <div className="grid grid-cols-3 gap-4">
-                    <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl p-5 shadow-xs">
-                      <div className="text-xs font-black text-[#0A2540]/60 uppercase tracking-wider">Approved Budget</div>
-                      <div className="text-xl md:text-2xl font-black font-mono text-[#0A2540] mt-1.5">₦301.8M</div>
-                      <div className="h-2 bg-[#0A2540] rounded-full mt-2.5" />
+                    <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl p-5 md:p-6 shadow-xs">
+                      <div className="text-xs md:text-sm font-black text-[#0A2540]/60 uppercase tracking-wider">Approved Budget</div>
+                      <div className="text-2xl md:text-3xl font-black font-mono text-[#0A2540] mt-2">₦301.8M</div>
+                      <div className="h-2.5 bg-[#0A2540] rounded-full mt-3" />
                     </div>
-                    <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl p-5 shadow-xs">
-                      <div className="text-xs font-black text-[#0A2540]/60 uppercase tracking-wider">Committed POs</div>
-                      <div className="text-xl md:text-2xl font-black font-mono text-[#0A2540] mt-1.5">₦292.2M</div>
-                      <div className="h-2 bg-[#004080] rounded-full mt-2.5" />
+                    <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl p-5 md:p-6 shadow-xs">
+                      <div className="text-xs md:text-sm font-black text-[#0A2540]/60 uppercase tracking-wider">Committed POs</div>
+                      <div className="text-2xl md:text-3xl font-black font-mono text-[#0A2540] mt-2">₦292.2M</div>
+                      <div className="h-2.5 bg-[#004080] rounded-full mt-3" />
                     </div>
-                    <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl p-5 shadow-xs">
-                      <div className="text-xs font-black text-emerald-800 uppercase tracking-wider">Actual Certified</div>
-                      <div className="text-xl md:text-2xl font-black font-mono text-emerald-800 mt-1.5">₦216.4M</div>
-                      <div className="h-2 bg-emerald-600 rounded-full mt-2.5" />
+                    <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl p-5 md:p-6 shadow-xs">
+                      <div className="text-xs md:text-sm font-black text-emerald-800 uppercase tracking-wider">Actual Certified</div>
+                      <div className="text-2xl md:text-3xl font-black font-mono text-emerald-800 mt-2">₦216.4M</div>
+                      <div className="h-2.5 bg-emerald-600 rounded-full mt-3" />
                     </div>
                   </div>
 
                   {/* Monitor Section */}
-                  <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl p-5 shadow-xs">
+                  <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl p-6 shadow-xs">
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-sm font-black text-[#0A2540]">BOQ Variance &amp; Gatekeeper Monitor</span>
-                      <span className="text-xs font-mono font-black bg-rose-100 text-rose-800 border border-rose-300 px-2.5 py-0.5 rounded-full">
+                      <span className="text-base font-black text-[#0A2540]">BOQ Variance &amp; Gatekeeper Monitor</span>
+                      <span className="text-xs md:text-sm font-mono font-black bg-rose-100 text-rose-800 border border-rose-300 px-3 py-1 rounded-full">
                         ±5% THRESHOLD
                       </span>
                     </div>
-                    <div className="space-y-3.5">
-                      <div className="flex items-center gap-3 text-sm font-semibold">
-                        <span className="w-24 font-mono font-black text-[#0A2540]">CON-02.01</span>
-                        <div className="flex-1 h-3 bg-white rounded-full overflow-hidden flex border border-[#E5E5DE]">
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3 text-base font-semibold">
+                        <span className="w-28 font-mono font-black text-[#0A2540]">CON-02.01</span>
+                        <div className="flex-1 h-3.5 bg-white rounded-full overflow-hidden flex border border-[#E5E5DE]">
                           <div className="h-full bg-[#0A2540] w-[78%]" />
                           <div className="h-full bg-rose-500 w-[14%]" />
                         </div>
@@ -177,9 +177,9 @@ export default function LandingPage() {
                           OVER
                         </span>
                       </div>
-                      <div className="flex items-center gap-3 text-sm font-semibold">
-                        <span className="w-24 font-mono font-black text-[#0A2540]">STL-02.03</span>
-                        <div className="flex-1 h-3 bg-white rounded-full overflow-hidden border border-[#E5E5DE]">
+                      <div className="flex items-center gap-3 text-base font-semibold">
+                        <span className="w-28 font-mono font-black text-[#0A2540]">STL-02.03</span>
+                        <div className="flex-1 h-3.5 bg-white rounded-full overflow-hidden border border-[#E5E5DE]">
                           <div className="h-full bg-[#0A2540] w-[92%]" />
                         </div>
                         <span className="font-mono text-xs font-black bg-blue-100 text-[#0A2540] border border-blue-300 px-2.5 py-0.5 rounded-full">
@@ -191,11 +191,11 @@ export default function LandingPage() {
 
                   {/* Status Alerts */}
                   <div className="grid sm:grid-cols-2 gap-4">
-                    <div className="bg-rose-50 border-2 border-rose-200 p-4 text-rose-900 font-bold text-sm rounded-xl flex items-center gap-3">
+                    <div className="bg-rose-50 border-2 border-rose-200 p-4 text-rose-900 font-bold text-base rounded-xl flex items-center gap-3">
                       <AlertTriangle className="w-5 h-5 text-rose-600 shrink-0" />
                       <span>1 Invoice Discrepancy Locked</span>
                     </div>
-                    <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] p-4 text-[#0A2540] font-bold text-sm rounded-xl flex items-center gap-3">
+                    <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] p-4 text-[#0A2540] font-bold text-base rounded-xl flex items-center gap-3">
                       <Clock className="w-5 h-5 text-[#0A2540] shrink-0" />
                       <span>+₦4M Revision Pending QS Review</span>
                     </div>
@@ -204,10 +204,10 @@ export default function LandingPage() {
               </div>
 
               {/* Floating Pill Badges */}
-              <div className="absolute -bottom-4 -left-4 bg-white border-2 border-[#E5E5DE] px-5 py-2.5 rounded-xl shadow-lg text-sm font-black text-[#0A2540] hidden md:flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Immutable RLS Audit Trail
+              <div className="absolute -bottom-4 -left-4 bg-white border-2 border-[#E5E5DE] px-6 py-3 rounded-2xl shadow-xl text-base font-black text-[#0A2540] hidden md:flex items-center gap-2.5">
+                <CheckCircle2 className="w-5 h-5 text-emerald-600" /> Immutable RLS Audit Trail
               </div>
-              <div className="absolute -top-4 -right-4 bg-[#0A2540] text-white border-2 border-[#0A2540] px-5 py-2.5 rounded-xl shadow-lg text-sm font-black font-mono hidden md:block">
+              <div className="absolute -top-4 -right-4 bg-[#0A2540] text-white border-2 border-[#0A2540] px-6 py-3 rounded-2xl shadow-xl text-base font-black font-mono hidden md:block">
                 ZERO SPREADSHEET DRIFT
               </div>
             </div>
@@ -228,7 +228,7 @@ export default function LandingPage() {
               <div className="text-4xl md:text-5xl lg:text-6xl font-black font-mono tracking-tight text-[#0A2540]">
                 {s.k}
               </div>
-              <div className="text-sm font-black text-[#0A2540]/70 mt-2 uppercase tracking-wider">{s.v}</div>
+              <div className="text-sm md:text-base font-black text-[#0A2540]/80 mt-2.5 uppercase tracking-wider">{s.v}</div>
             </div>
           ))}
         </div>
@@ -264,14 +264,14 @@ export default function LandingPage() {
               ].map((item) => (
                 <div
                   key={item.title}
-                  className="flex gap-4 bg-white border-2 border-[#E5E5DE] rounded-2xl p-5 shadow-xs hover:border-[#0A2540] transition-all"
+                  className="flex gap-4 bg-white border-2 border-[#E5E5DE] rounded-2xl p-6 shadow-xs hover:border-[#0A2540] transition-all"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
-                    <AlertTriangle className="w-6 h-6" />
+                  <div className="w-14 h-14 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0 shadow-xs">
+                    <AlertTriangle className="w-7 h-7" />
                   </div>
                   <div>
-                    <h4 className="font-black text-base text-[#0A2540]">{item.title}</h4>
-                    <p className="text-sm text-[#0A2540]/70 mt-1 leading-relaxed font-semibold">{item.desc}</p>
+                    <h3 className="font-black text-lg md:text-xl text-[#0A2540]">{item.title}</h3>
+                    <p className="text-base text-[#0A2540]/75 mt-1.5 leading-relaxed font-normal">{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -395,16 +395,18 @@ export default function LandingPage() {
             ].map((f) => (
               <div
                 key={f.title}
-                className="bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl shadow-sm p-7 hover:border-[#0A2540] hover:shadow-lg transition-all flex flex-col"
+                className="bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl shadow-sm p-8 hover:border-[#0A2540] hover:shadow-lg transition-all flex flex-col justify-between"
               >
-                <div className="w-14 h-14 rounded-2xl bg-[#0A2540] text-white flex items-center justify-center mb-5 shadow-md">
-                  <f.icon className="w-7 h-7 text-white" />
+                <div>
+                  <div className="w-14 h-14 rounded-2xl bg-[#0A2540] text-white flex items-center justify-center mb-6 shadow-md">
+                    <f.icon className="w-7 h-7 text-white" />
+                  </div>
+                  <h3 className="font-black text-xl md:text-2xl text-[#0A2540]">{f.title}</h3>
                 </div>
-                <h3 className="font-black text-lg text-[#0A2540]">{f.title}</h3>
-                <ul className="mt-4 space-y-3 flex-1">
+                <ul className="mt-6 space-y-3.5 flex-1 border-t-2 border-[#E5E5DE] pt-5">
                   {f.bullets.map((b) => (
-                    <li key={b} className="flex items-start gap-3 text-sm text-[#0A2540]/80 font-bold">
-                      <span className="mt-1.5 w-2 h-2 bg-[#0A2540] rounded-full shrink-0" />
+                    <li key={b} className="flex items-start gap-3 text-sm md:text-base text-[#0A2540]/85 font-semibold">
+                      <span className="mt-2 w-2 h-2 bg-[#0A2540] rounded-full shrink-0" />
                       <span>{b}</span>
                     </li>
                   ))}
@@ -418,14 +420,14 @@ export default function LandingPage() {
       {/* 8 PERSONAS — RBAC */}
       <section id="personas" className="max-w-7xl mx-auto px-4 md:px-6 py-20 md:py-28">
         <div className="text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 bg-[#FAF9F5] text-[#0A2540] border-2 border-[#E5E5DE] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 bg-[#FAF9F5] text-[#0A2540] border-2 border-[#E5E5DE] px-5 py-2 rounded-full text-sm font-black uppercase tracking-wider shadow-xs">
             Role-Based Access Control
           </div>
-          <h2 className="mt-4 text-3xl md:text-5xl font-black tracking-tight text-[#0A2540]">
+          <h2 className="mt-5 text-3xl md:text-5xl font-black tracking-tight text-[#0A2540] leading-tight">
             Tailored For Every Stakeholder
           </h2>
-          <p className="mt-4 text-base text-[#0A2540]/70 font-semibold leading-relaxed">
-            Strict RBAC ensures site engineers cannot approve baseline budgets, and quantity surveyors cannot falsify physical store deliveries. Demo accounts seeded below — password <span className="font-mono font-black bg-white text-[#0A2540] px-2.5 py-1 rounded border-2 border-[#E5E5DE]">DemoPass2026!</span>
+          <p className="mt-5 text-base md:text-lg text-[#0A2540]/80 font-normal leading-relaxed">
+            Strict RBAC ensures site engineers cannot approve baseline budgets, and quantity surveyors cannot falsify physical store deliveries. Demo accounts seeded below — password <span className="font-mono font-black bg-white text-[#0A2540] px-3 py-1 rounded-lg border-2 border-[#E5E5DE]">DemoPass2026!</span>
           </p>
         </div>
 
@@ -442,26 +444,29 @@ export default function LandingPage() {
           ].map((p) => (
             <div
               key={p.role}
-              className="bg-white border-2 border-[#E5E5DE] rounded-2xl shadow-xs p-6 hover:border-[#0A2540] hover:shadow-md transition-all"
+              className="bg-white border-2 border-[#E5E5DE] rounded-2xl shadow-xs p-7 hover:border-[#0A2540] hover:shadow-lg transition-all flex flex-col justify-between"
             >
-              <div className={`inline-block px-3 py-1 rounded-full text-xs font-black border ${p.badge} mb-3`}>
-                {p.role}
+              <div>
+                <div className={`inline-block px-3.5 py-1.5 rounded-full text-xs md:text-sm font-black border ${p.badge} mb-3.5`}>
+                  {p.role}
+                </div>
+                <div className="font-mono text-base font-black text-[#0A2540] truncate">{p.user}</div>
+                <div className="text-sm md:text-base text-[#0A2540]/80 font-normal mt-2 leading-relaxed">{p.desc}</div>
               </div>
-              <div className="font-mono text-sm font-black text-[#0A2540] truncate">{p.user}</div>
-              <div className="text-sm text-[#0A2540]/70 font-semibold mt-2 leading-relaxed">{p.desc}</div>
-              <div className="mt-4 text-xs font-mono font-bold text-[#0A2540] bg-[#FAF9F5] border border-[#E5E5DE] px-3 py-1.5 rounded-lg">
+              <div className="mt-5 text-xs md:text-sm font-mono font-bold text-[#0A2540] bg-[#FAF9F5] border-2 border-[#E5E5DE] px-3.5 py-2 rounded-xl">
                 pwd: DemoPass2026!
               </div>
             </div>
           ))}
         </div>
 
-        <div className="mt-10 text-center">
+        <div className="mt-12 text-center">
           <Link
             href="/login"
-            className="inline-flex items-center gap-2 min-h-[48px] px-8 py-3.5 bg-white hover:bg-[#FAF9F5] text-[#0A2540] border-2 border-[#E5E5DE] rounded-xl font-black text-sm shadow-xs transition-all hover:border-[#0A2540]"
+            className="inline-flex items-center gap-2.5 min-h-[52px] px-9 py-4 bg-white hover:bg-[#FAF9F5] text-[#0A2540] border-2 border-[#E5E5DE] rounded-xl font-black text-base shadow-xs transition-all hover:border-[#0A2540]"
           >
-            Launch Interactive Role Switcher →
+            <span>Launch Interactive Role Switcher</span>
+            <ArrowRight className="w-5 h-5" />
           </Link>
         </div>
       </section>
@@ -469,18 +474,18 @@ export default function LandingPage() {
       {/* EXCEL VS COSTVIEW COMPARISON */}
       <section className="bg-white border-y-2 border-[#E5E5DE] py-20 md:py-28">
         <div className="max-w-5xl mx-auto px-4 md:px-6">
-          <div className="text-center mb-12">
-            <h3 className="text-2xl md:text-4xl font-black tracking-tight text-[#0A2540]">
+          <div className="text-center mb-14">
+            <h3 className="text-3xl md:text-5xl font-black tracking-tight text-[#0A2540]">
               Legacy Spreadsheets vs CostView
             </h3>
-            <p className="text-base text-[#0A2540]/70 font-semibold mt-3">Why modern construction projects transition to an integrated system of record.</p>
+            <p className="text-base md:text-lg text-[#0A2540]/80 font-normal mt-3">Why modern construction projects transition to an integrated system of record.</p>
           </div>
 
-          <div className="bg-white border-2 border-[#E5E5DE] rounded-2xl shadow-lg overflow-hidden">
-            <div className="grid grid-cols-3 bg-[#FAF9F5] text-[#0A2540] font-black text-sm uppercase tracking-wider border-b-2 border-[#E5E5DE]">
-              <div className="p-5">Operational Capability</div>
-              <div className="p-5 text-center text-slate-500">Excel / WhatsApp / Paper</div>
-              <div className="p-5 text-center bg-blue-50/80 text-[#0A2540]">CostView</div>
+          <div className="bg-white border-2 border-[#E5E5DE] rounded-3xl shadow-lg overflow-hidden">
+            <div className="grid grid-cols-3 bg-[#FAF9F5] text-[#0A2540] font-black text-sm md:text-base uppercase tracking-wider border-b-2 border-[#E5E5DE]">
+              <div className="p-6">Operational Capability</div>
+              <div className="p-6 text-center text-slate-500">Excel / WhatsApp / Paper</div>
+              <div className="p-6 text-center bg-blue-50/80 text-[#0A2540]">CostView</div>
             </div>
             {[
               ["BOQ Variance Threshold Alerts", "Manual checks after month-end close", "Automated ±5% real-time flag"],
@@ -492,12 +497,13 @@ export default function LandingPage() {
             ].map((row) => (
               <div
                 key={row[0]}
-                className="grid grid-cols-3 border-b border-[#E5E5DE] text-sm font-semibold hover:bg-[#FAF9F5] transition-colors"
+                className="grid grid-cols-3 border-b-2 border-[#E5E5DE] text-base font-semibold hover:bg-[#FAF9F5]/70 transition-colors"
               >
-                <div className="p-5 font-black text-[#0A2540] border-r border-[#E5E5DE]">{row[0]}</div>
-                <div className="p-5 text-center text-slate-500 border-r border-[#E5E5DE]">{row[1]}</div>
-                <div className="p-5 text-center bg-blue-50/40 text-[#0A2540] font-black flex items-center justify-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600" /> {row[2]}
+                <div className="p-6 font-black text-[#0A2540] border-r-2 border-[#E5E5DE]">{row[0]}</div>
+                <div className="p-6 text-center text-slate-500 border-r-2 border-[#E5E5DE] font-medium">{row[1]}</div>
+                <div className="p-6 text-center bg-blue-50/30 text-[#0A2540] font-black flex items-center justify-center gap-2.5">
+                  <CheckCircle2 className="w-6 h-6 text-emerald-600 shrink-0" />
+                  <span>{row[2]}</span>
                 </div>
               </div>
             ))}
@@ -512,7 +518,7 @@ export default function LandingPage() {
             <h2 className="text-3xl md:text-5xl font-black tracking-tight text-[#0A2540] leading-tight">
               From Chaos to Complete Control in Three Steps
             </h2>
-            <div className="mt-10 space-y-7">
+            <div className="mt-12 space-y-8">
               {[
                 {
                   step: "01",
@@ -530,13 +536,13 @@ export default function LandingPage() {
                   desc: "Generate certified interim valuations, reconcile variations without contractor disputes, and protect project margin to final account sign-off.",
                 },
               ].map((s) => (
-                <div key={s.step} className="flex gap-5 items-start">
-                  <div className="w-14 h-14 rounded-2xl bg-[#0A2540] text-white font-mono font-black text-xl flex items-center justify-center shrink-0 shadow-md">
+                <div key={s.step} className="flex gap-6 items-start">
+                  <div className="w-16 h-16 rounded-2xl bg-[#0A2540] text-white font-mono font-black text-2xl flex items-center justify-center shrink-0 shadow-md">
                     {s.step}
                   </div>
                   <div>
-                    <h3 className="font-black text-lg text-[#0A2540]">{s.title}</h3>
-                    <p className="text-sm md:text-base text-[#0A2540]/80 font-semibold mt-1.5 leading-relaxed font-normal">{s.desc}</p>
+                    <h3 className="font-black text-xl md:text-2xl text-[#0A2540]">{s.title}</h3>
+                    <p className="text-base md:text-lg text-[#0A2540]/80 mt-2 leading-relaxed font-normal">{s.desc}</p>
                   </div>
                 </div>
               ))}
