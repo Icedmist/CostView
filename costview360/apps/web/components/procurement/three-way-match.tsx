@@ -180,9 +180,26 @@ const INITIAL_ENQUIRIES: SupplierEnquiry[] = [
   },
 ];
 
-export function ThreeWayMatchView() {
+export function ThreeWayMatchView({
+  initialSubTab = "match",
+  onTabChange,
+}: {
+  initialSubTab?: "match" | "requisitions" | "enquiries" | "invoices" | "payments";
+  onTabChange?: (tab: "match" | "requisitions" | "enquiries" | "invoices" | "payments") => void;
+} = {}) {
   const { currency, activeRole } = useApp();
-  const [subTab, setSubTab] = useState<"match" | "requisitions" | "enquiries" | "invoices" | "payments">("match");
+  const [subTab, setSubTab] = useState<"match" | "requisitions" | "enquiries" | "invoices" | "payments">(initialSubTab);
+
+  useEffect(() => {
+    if (initialSubTab) {
+      setSubTab(initialSubTab);
+    }
+  }, [initialSubTab]);
+
+  const handleSubTabClick = (tab: "match" | "requisitions" | "enquiries" | "invoices" | "payments") => {
+    setSubTab(tab);
+    if (onTabChange) onTabChange(tab);
+  };
 
   const [records, setRecords] = useState<ThreeWayMatchRecord[]>(SAMPLE_MATCHES);
   const [requisitions, setRequisitions] = useState<Requisition[]>(INITIAL_REQUISITIONS);
@@ -448,71 +465,73 @@ export function ThreeWayMatchView() {
   return (
     <div className="bg-white/90 backdrop-blur-md border border-slate-200/80 rounded-xl shadow-xs rounded-xl overflow-hidden space-y-4">
       {/* Subnavigation Bar */}
-      <div className="p-2.5 bg-slate-50/80 border-b border-slate-200/80 flex items-center justify-between overflow-x-auto gap-2">
-        <div className="flex items-center gap-1.5">
+      <div className="p-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between overflow-x-auto gap-2">
+        <div className="flex items-center gap-2">
           <button
-            onClick={() => setSubTab("match")}
-            className={`px-3 py-1.5 border border-slate-200/80 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            onClick={() => handleSubTabClick("match")}
+            className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "match"
-                ? "bg-white text-[#0067c0] border border-slate-200/80 shadow-xs rounded-xl rounded-md"
-                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 rounded-md"
+                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
-            <BadgeCheck className="w-3.5 h-3.5 text-emerald-500" />
-            <span>2.1 Three-Way Match</span>
+            <BadgeCheck className={`w-4 h-4 ${subTab === "match" ? "text-emerald-400" : "text-emerald-600"}`} />
+            <span>3.1 Three-Way Match Gate</span>
           </button>
 
           <button
-            onClick={() => setSubTab("requisitions")}
-            className={`px-3.5 py-2 border border-slate-200/80 text-xs font-bold tracking-wide transition-all flex items-center gap-1.5 ${
+            onClick={() => handleSubTabClick("requisitions")}
+            className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "requisitions"
-                ? "bg-white text-[#0067c0] border border-slate-200/80 shadow-xs rounded-xl rounded-md"
-                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 rounded-md"
+                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
-            <Clock className="w-3.5 h-3.5 text-amber-400" />
-            <span>2.2 Requisitions</span>
+            <Clock className={`w-4 h-4 ${subTab === "requisitions" ? "text-amber-300" : "text-amber-500"}`} />
+            <span>3.2 Material Requisitions</span>
             {requisitions.filter((r) => r.status === "Pending Approval").length > 0 && (
-              <span className="text-[11px] bg-amber-100 text-amber-800 px-1.5 py-0.5 font-mono font-semibold border border-amber-200 rounded">
+              <span className={`text-[11px] px-1.5 py-0.5 font-mono font-bold rounded ${
+                subTab === "requisitions" ? "bg-amber-400 text-slate-900" : "bg-amber-100 text-amber-800"
+              }`}>
                 {requisitions.filter((r) => r.status === "Pending Approval").length}
               </span>
             )}
           </button>
 
           <button
-            onClick={() => setSubTab("enquiries")}
-            className={`px-3.5 py-2 border border-slate-200/80 text-xs font-bold tracking-wide transition-all flex items-center gap-1.5 ${
+            onClick={() => handleSubTabClick("enquiries")}
+            className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "enquiries"
-                ? "bg-white text-[#0067c0] border border-slate-200/80 shadow-xs rounded-xl rounded-md"
-                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 rounded-md"
+                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
-            <Truck className="w-3.5 h-3.5 text-blue-400" />
-            <span>2.3 Enquiries & Quotes</span>
+            <Truck className={`w-4 h-4 ${subTab === "enquiries" ? "text-blue-300" : "text-blue-500"}`} />
+            <span>3.3 Enquiries & Quotes</span>
           </button>
 
           <button
-            onClick={() => setSubTab("invoices")}
-            className={`px-3.5 py-2 border border-slate-200/80 text-xs font-bold tracking-wide transition-all flex items-center gap-1.5 ${
+            onClick={() => handleSubTabClick("invoices")}
+            className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "invoices"
-                ? "bg-white text-[#0067c0] border border-slate-200/80 shadow-xs rounded-xl rounded-md"
-                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 rounded-md"
+                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
-            <Receipt className="w-3.5 h-3.5 text-purple-400" />
-            <span>2.6 Invoices & Credits</span>
+            <Receipt className={`w-4 h-4 ${subTab === "invoices" ? "text-purple-300" : "text-purple-500"}`} />
+            <span>3.4 Invoices & Payments</span>
           </button>
 
           <button
-            onClick={() => setSubTab("payments")}
-            className={`px-3.5 py-2 border border-slate-200/80 text-xs font-bold tracking-wide transition-all flex items-center gap-1.5 ${
+            onClick={() => handleSubTabClick("payments")}
+            className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "payments"
-                ? "bg-white text-[#0067c0] border border-slate-200/80 shadow-xs rounded-xl rounded-md"
-                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 rounded-md"
+                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
-            <CreditCard className="w-3.5 h-3.5 text-emerald-400" />
-            <span>2.7 Payments Ledger</span>
+            <CreditCard className={`w-4 h-4 ${subTab === "payments" ? "text-emerald-300" : "text-emerald-500"}`} />
+            <span>3.5 Disbursement Ledger</span>
           </button>
         </div>
       </div>

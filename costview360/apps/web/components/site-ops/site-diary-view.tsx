@@ -210,9 +210,26 @@ const INITIAL_SAFETY: SafetyObservation[] = [
   },
 ];
 
-export function SiteDiaryView() {
+export function SiteDiaryView({
+  initialSubTab = "diary",
+  onTabChange,
+}: {
+  initialSubTab?: "diary" | "photos" | "inspections" | "snags" | "safety";
+  onTabChange?: (tab: "diary" | "photos" | "inspections" | "snags" | "safety") => void;
+} = {}) {
   const { activeRole } = useApp();
-  const [subTab, setSubTab] = useState<"diary" | "photos" | "inspections" | "snags" | "safety">("diary");
+  const [subTab, setSubTab] = useState<"diary" | "photos" | "inspections" | "snags" | "safety">(initialSubTab);
+
+  useEffect(() => {
+    if (initialSubTab) {
+      setSubTab(initialSubTab);
+    }
+  }, [initialSubTab]);
+
+  const handleSubTabClick = (tab: "diary" | "photos" | "inspections" | "snags" | "safety") => {
+    setSubTab(tab);
+    if (onTabChange) onTabChange(tab);
+  };
 
   const [logs, setLogs] = useState<DailyLog[]>(INITIAL_LOGS);
   const [photos, setPhotos] = useState<SitePhoto[]>(INITIAL_PHOTOS);
@@ -416,71 +433,73 @@ export function SiteDiaryView() {
   return (
     <div className="bg-white/90 backdrop-blur-md border border-slate-200/80 rounded-xl shadow-xs rounded-xl overflow-hidden space-y-4">
       {/* Sub-Navigation Header */}
-      <div className="p-2.5 bg-slate-50/80 border-b border-slate-200/80 flex items-center justify-between overflow-x-auto gap-2">
-        <div className="flex items-center gap-1.5">
+      <div className="p-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between overflow-x-auto gap-2">
+        <div className="flex items-center gap-2">
           <button
-            onClick={() => setSubTab("diary")}
-            className={`px-3 py-1.5 border border-slate-200/80 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            onClick={() => handleSubTabClick("diary")}
+            className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "diary"
-                ? "bg-white text-[#0067c0] border border-slate-200/80 shadow-xs rounded-xl rounded-md"
-                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 rounded-md border border-transparent"
+                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
-            <Calendar className="w-3.5 h-3.5 text-emerald-500" />
-            <span>5.1 Daily Diary</span>
+            <Calendar className={`w-4 h-4 ${subTab === "diary" ? "text-emerald-400" : "text-emerald-600"}`} />
+            <span>4.1 Daily Diary & Log</span>
           </button>
 
           <button
-            onClick={() => setSubTab("photos")}
-            className={`px-3 py-1.5 border border-slate-200/80 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            onClick={() => handleSubTabClick("photos")}
+            className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "photos"
-                ? "bg-white text-[#0067c0] border border-slate-200/80 shadow-xs rounded-xl rounded-md"
-                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 rounded-md border border-transparent"
+                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
-            <ImageIcon className="w-3.5 h-3.5 text-blue-400" />
-            <span>5.2 Photo Gallery</span>
+            <ImageIcon className={`w-4 h-4 ${subTab === "photos" ? "text-blue-300" : "text-blue-500"}`} />
+            <span>4.2 Progress Photos</span>
           </button>
 
           <button
-            onClick={() => setSubTab("inspections")}
-            className={`px-3 py-1.5 border border-slate-200/80 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            onClick={() => handleSubTabClick("inspections")}
+            className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "inspections"
-                ? "bg-white text-[#0067c0] border border-slate-200/80 shadow-xs rounded-xl rounded-md"
-                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 rounded-md border border-transparent"
+                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
-            <FileCheck2 className="w-3.5 h-3.5 text-purple-400" />
-            <span>5.3 Inspections</span>
+            <FileCheck2 className={`w-4 h-4 ${subTab === "inspections" ? "text-purple-300" : "text-purple-500"}`} />
+            <span>4.3 QA/QC Inspections</span>
           </button>
 
           <button
-            onClick={() => setSubTab("snags")}
-            className={`px-3 py-1.5 border border-slate-200/80 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            onClick={() => handleSubTabClick("snags")}
+            className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "snags"
-                ? "bg-white text-[#0067c0] border border-slate-200/80 shadow-xs rounded-xl rounded-md"
-                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 rounded-md border border-transparent"
+                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
-            <AlertCircle className="w-3.5 h-3.5 text-amber-400" />
-            <span>5.4 Snags & NCRs</span>
+            <AlertCircle className={`w-4 h-4 ${subTab === "snags" ? "text-amber-300" : "text-amber-500"}`} />
+            <span>4.4 Snags & NCRs</span>
             {snags.filter((s) => s.status !== "Closed").length > 0 && (
-              <span className="text-xs bg-amber-100 text-amber-800 px-1.5 py-0.5 border border-amber-200 rounded font-mono">
+              <span className={`text-[11px] px-1.5 py-0.5 font-mono font-bold rounded ${
+                subTab === "snags" ? "bg-amber-400 text-slate-900" : "bg-amber-100 text-amber-800"
+              }`}>
                 {snags.filter((s) => s.status !== "Closed").length}
               </span>
             )}
           </button>
 
           <button
-            onClick={() => setSubTab("safety")}
-            className={`px-3 py-1.5 border border-slate-200/80 text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+            onClick={() => handleSubTabClick("safety")}
+            className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "safety"
-                ? "bg-white text-[#0067c0] border border-slate-200/80 shadow-xs rounded-xl rounded-md"
-                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 rounded-md border border-transparent"
+                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
-            <HardHat className="w-3.5 h-3.5 text-red-400" />
-            <span>5.5 Safety Register</span>
+            <HardHat className={`w-4 h-4 ${subTab === "safety" ? "text-rose-300" : "text-rose-500"}`} />
+            <span>4.5 HSE Safety Register</span>
           </button>
         </div>
       </div>
