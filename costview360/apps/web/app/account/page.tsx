@@ -34,7 +34,7 @@ import {
 
 const ALL_ROLES: { name: RoleName; desc: string; color: string }[] = [
   { name: "Admin", desc: "Full system governance, user management, and workspace configuration", color: "bg-purple-100 text-purple-800 border-purple-300" },
-  { name: "Project Manager", desc: "Project budgets, procurement approvals, contractor valuations, and executive reports", color: "bg-blue-100 text-[#0A1931] border-blue-300" },
+  { name: "Project Manager", desc: "Project budgets, procurement approvals, contractor valuations, and executive reports", color: "bg-blue-100 text-[#0A2540] border-blue-300" },
   { name: "Quantity Surveyor", desc: "BOQ master, rate revisions, interim valuations, and final account reconciliation", color: "bg-indigo-100 text-indigo-800 border-indigo-300" },
   { name: "Site Engineer", desc: "Daily site diary, labour muster, material requisitions, and snagging inspections", color: "bg-amber-100 text-amber-900 border-amber-300" },
   { name: "Procurement Officer", desc: "Vendor RFQs, purchase orders, delivery GRNs, and 3-way match verification", color: "bg-sky-100 text-sky-800 border-sky-300" },
@@ -51,7 +51,7 @@ const PERMISSION_MODULES: { key: PermissionKey; label: string; desc: string }[] 
   { key: "Progress", label: "Site Diary & Snags", desc: "Log daily shift execution, weather stamps, and photo snags" },
   { key: "Subcontractors", label: "Subcontractor Ledger", desc: "Manage trade packages, interim certificates, and 10% retention" },
   { key: "Variations", label: "Variations & Claims", desc: "Raise and approve variation orders, claims, and rate reconciliations" },
-  { key: "Reports", label: "Reports & Financials", desc: "Access commercial summaries, GDV models, and cost-to-complete analytics" },
+  { key: "Reports", label: "Reports & Financials", desc: "Access financial summaries, certified valuations, and cost-to-complete analytics" },
   { key: "Admin", label: "System Administration", desc: "Manage workspace users, customize role permissions, and view audit trails" },
 ];
 
@@ -171,11 +171,11 @@ export default function AccountPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center">
-        <div className="bg-white border-2 border-slate-300 rounded-2xl p-10 shadow-lg text-center max-w-sm">
-          <div className="w-10 h-10 border-4 border-[#0A1931] border-t-transparent rounded-full mx-auto animate-spin" />
-          <p className="text-base font-bold text-[#0A1931] mt-4">Loading user profile…</p>
-          <p className="text-xs text-slate-500 mt-1">Connecting to CostView 360 session</p>
+      <div className="min-h-screen bg-[#FAF9F5] flex items-center justify-center">
+        <div className="bg-white border-2 border-[#E5E5DE] rounded-2xl p-10 shadow-lg text-center max-w-sm">
+          <div className="w-10 h-10 border-4 border-[#0A2540] border-t-transparent rounded-full mx-auto animate-spin" />
+          <p className="text-base font-bold text-[#0A2540] mt-4">Loading user profile…</p>
+          <p className="text-xs text-[#0A2540]/60 mt-1">Connecting to CostView session</p>
         </div>
       </div>
     );
@@ -200,14 +200,14 @@ export default function AccountPage() {
           {/* Top Banner Header */}
           <div className="bg-white border-2 border-slate-300 rounded-2xl shadow-sm p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="flex items-center gap-5">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#0A1931] via-[#0F2137] to-[#1E3A5F] border-2 border-slate-400 flex items-center justify-center text-white font-black text-2xl shadow-md shrink-0">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#0A2540] via-[#0F2137] to-[#1E3A5F] border-2 border-slate-400 flex items-center justify-center text-white font-black text-2xl shadow-md shrink-0">
                 <span>{initials}</span>
               </div>
               <div>
                 <div className="flex items-center gap-3 flex-wrap">
-                  <h1 className="text-2xl md:text-3xl font-extrabold text-[#0A1931] tracking-tight">{fullName}</h1>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-[#0A1931] border border-blue-300">
-                    <Shield className="w-3.5 h-3.5 text-[#D4A017]" />
+                  <h1 className="text-2xl md:text-3xl font-extrabold text-[#0A2540] tracking-tight">{fullName}</h1>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-[#0A2540] border border-blue-300">
+                    <Shield className="w-3.5 h-3.5 text-[#0A2540]" />
                     {activeRole}
                   </span>
                   <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300">
@@ -244,11 +244,11 @@ export default function AccountPage() {
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`min-h-[46px] px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2.5 cursor-pointer ${
                     isActive
-                      ? "bg-[#0A1931] text-white shadow-md border-2 border-[#0A1931]"
+                      ? "bg-[#0A2540] text-white shadow-md border-2 border-[#0A2540]"
                       : "bg-white hover:bg-slate-100 text-slate-700 border-2 border-slate-200 hover:border-slate-300"
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? "text-[#D4A017]" : "text-slate-500"}`} />
+                  <Icon className={`w-4 h-4 ${isActive ? "text-white" : "text-slate-500"}`} />
                   <span>{tab.label}</span>
                 </button>
               );
@@ -262,8 +262,8 @@ export default function AccountPage() {
                 <div className="bg-white border-2 border-slate-300 rounded-2xl shadow-sm p-6 md:p-8">
                   <div className="flex items-center justify-between pb-5 border-b-2 border-slate-100 mb-6">
                     <div>
-                      <h3 className="text-lg font-bold text-[#0A1931] flex items-center gap-2">
-                        <User className="w-5 h-5 text-[#D4A017]" /> Personal Information
+                      <h3 className="text-lg font-bold text-[#0A2540] flex items-center gap-2">
+                        <User className="w-5 h-5 text-[#0A2540]" /> Personal Information
                       </h3>
                       <p className="text-xs text-slate-500 mt-0.5">Update your operational name, contact details, and organization role.</p>
                     </div>
@@ -275,7 +275,7 @@ export default function AccountPage() {
                       <input
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
-                        className="w-full h-12 bg-white border-2 border-slate-300 rounded-xl px-4 text-base font-semibold text-[#0A1931] focus:outline-none focus:border-[#0A1931] transition-all"
+                        className="w-full h-12 bg-white border-2 border-slate-300 rounded-xl px-4 text-base font-semibold text-[#0A2540] focus:outline-none focus:border-[#0A2540] transition-all"
                       />
                     </div>
 
@@ -294,7 +294,7 @@ export default function AccountPage() {
                         <input
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
-                          className="flex-1 bg-transparent text-base font-semibold text-[#0A1931] focus:outline-none"
+                          className="flex-1 bg-transparent text-base font-semibold text-[#0A2540] focus:outline-none"
                         />
                       </div>
                     </div>
@@ -304,7 +304,7 @@ export default function AccountPage() {
                       <input
                         value={jobTitle}
                         onChange={(e) => setJobTitle(e.target.value)}
-                        className="w-full h-12 bg-white border-2 border-slate-300 rounded-xl px-4 text-base font-semibold text-[#0A1931] focus:outline-none focus:border-[#0A1931] transition-all"
+                        className="w-full h-12 bg-white border-2 border-slate-300 rounded-xl px-4 text-base font-semibold text-[#0A2540] focus:outline-none focus:border-[#0A2540] transition-all"
                       />
                     </div>
 
@@ -315,7 +315,7 @@ export default function AccountPage() {
                         <input
                           value={organization}
                           onChange={(e) => setOrganization(e.target.value)}
-                          className="flex-1 bg-transparent text-base font-semibold text-[#0A1931] focus:outline-none"
+                          className="flex-1 bg-transparent text-base font-semibold text-[#0A2540] focus:outline-none"
                         />
                       </div>
                     </div>
@@ -327,7 +327,7 @@ export default function AccountPage() {
                         <select
                           value={timezone}
                           onChange={(e) => setTimezone(e.target.value)}
-                          className="flex-1 bg-transparent text-sm font-semibold text-[#0A1931] focus:outline-none cursor-pointer"
+                          className="flex-1 bg-transparent text-sm font-semibold text-[#0A2540] focus:outline-none cursor-pointer"
                         >
                           <option value="Africa/Lagos (WAT, GMT+1)">Africa/Lagos (WAT, UTC+1)</option>
                           <option value="Europe/London (GMT, UTC+0)">Europe/London (GMT, UTC+0)</option>
@@ -341,9 +341,9 @@ export default function AccountPage() {
                   <div className="mt-8 pt-6 border-t-2 border-slate-100 flex items-center justify-between">
                     <button
                       onClick={handleSaveProfile}
-                      className="min-h-[48px] px-8 py-3 bg-[#0A1931] hover:bg-[#0F2137] text-white rounded-xl font-bold text-sm shadow-md transition-all flex items-center gap-2"
+                      className="min-h-[48px] px-8 py-3 bg-[#0A2540] hover:bg-[#0F2137] text-white rounded-xl font-bold text-sm shadow-md transition-all flex items-center gap-2"
                     >
-                      <Save className="w-4 h-4 text-[#D4A017]" /> Save Profile Changes
+                      <Save className="w-4 h-4 text-white" /> Save Profile Changes
                     </button>
 
                     {profileSaved && (
@@ -358,18 +358,18 @@ export default function AccountPage() {
               {/* Sidebar Info Card */}
               <div className="space-y-6">
                 <div className="bg-white border-2 border-slate-300 rounded-2xl shadow-sm p-6">
-                  <h4 className="text-sm font-extrabold uppercase tracking-wider text-[#0A1931] flex items-center gap-2 mb-3">
-                    <Building className="w-4 h-4 text-[#D4A017]" /> Workspace Context
+                  <h4 className="text-sm font-extrabold uppercase tracking-wider text-[#0A2540] flex items-center gap-2 mb-3">
+                    <Building className="w-4 h-4 text-[#0A2540]" /> Workspace Context
                   </h4>
-                  <p className="text-base font-bold text-[#0A1931]">CostView Demo Workspace</p>
-                  <p className="text-xs text-slate-500 mt-1">Multi-tenant construction commercial ledger</p>
+                  <p className="text-base font-bold text-[#0A2540]">CostView Demo Workspace</p>
+                  <p className="text-xs text-slate-500 mt-1">Multi-tenant construction cost &amp; finance ledger</p>
 
                   <div className="mt-4 p-3 bg-slate-100 border border-slate-300 rounded-xl">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Workspace ID</span>
                       <button
                         onClick={handleCopyUserId}
-                        className="text-xs font-bold text-[#0A1931] hover:underline flex items-center gap-1"
+                        className="text-xs font-bold text-[#0A2540] hover:underline flex items-center gap-1"
                       >
                         {copiedId ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                         {copiedId ? "Copied" : "Copy"}
@@ -381,21 +381,21 @@ export default function AccountPage() {
                   <div className="mt-4 space-y-2 text-sm font-semibold text-slate-700">
                     <div className="flex justify-between py-1 border-b border-slate-100">
                       <span className="text-slate-500">Base Currency</span>
-                      <span className="font-mono font-bold text-[#0A1931]">₦ NGN</span>
+                      <span className="font-mono font-bold text-[#0A2540]">₦ NGN</span>
                     </div>
                     <div className="flex justify-between py-1 border-b border-slate-100">
                       <span className="text-slate-500">Active Sites</span>
-                      <span className="font-bold text-[#0A1931]">2 (Eko Atlantic, Lekki)</span>
+                      <span className="font-bold text-[#0A2540]">2 (Eko Atlantic, Lekki)</span>
                     </div>
                     <div className="flex justify-between py-1">
                       <span className="text-slate-500">Role Authority</span>
-                      <span className="font-bold text-[#D4A017]">{activeRole}</span>
+                      <span className="font-bold text-[#0A2540]">{activeRole}</span>
                     </div>
                   </div>
 
                   <button
                     onClick={() => router.push("/settings")}
-                    className="mt-6 w-full min-h-[44px] bg-slate-100 hover:bg-slate-200 text-[#0A1931] border-2 border-slate-300 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2"
+                    className="mt-6 w-full min-h-[44px] bg-slate-100 hover:bg-slate-200 text-[#0A2540] border-2 border-slate-300 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2"
                   >
                     <span>Manage Workspace Settings</span>
                     <ExternalLink className="w-4 h-4" />
@@ -411,8 +411,8 @@ export default function AccountPage() {
               <div className="lg:col-span-2 space-y-6">
                 {/* Change Password Card */}
                 <div className="bg-white border-2 border-slate-300 rounded-2xl shadow-sm p-6 md:p-8">
-                  <h3 className="text-lg font-bold text-[#0A1931] flex items-center gap-2 mb-1">
-                    <Key className="w-5 h-5 text-[#D4A017]" /> Password & Credentials
+                  <h3 className="text-lg font-bold text-[#0A2540] flex items-center gap-2 mb-1">
+                    <Key className="w-5 h-5 text-[#0A2540]" /> Password & Credentials
                   </h3>
                   <p className="text-xs text-slate-500 mb-6">Manage password complexity and authentication security.</p>
 
@@ -424,7 +424,7 @@ export default function AccountPage() {
                         value={currentPassword}
                         onChange={(e) => setCurrentPassword(e.target.value)}
                         placeholder="••••••••••••"
-                        className="w-full h-12 bg-white border-2 border-slate-300 rounded-xl px-4 text-base font-mono text-[#0A1931] focus:outline-none focus:border-[#0A1931]"
+                        className="w-full h-12 bg-white border-2 border-slate-300 rounded-xl px-4 text-base font-mono text-[#0A2540] focus:outline-none focus:border-[#0A2540]"
                       />
                     </div>
 
@@ -435,7 +435,7 @@ export default function AccountPage() {
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         placeholder="At least 8 characters with numbers"
-                        className="w-full h-12 bg-white border-2 border-slate-300 rounded-xl px-4 text-base font-mono text-[#0A1931] focus:outline-none focus:border-[#0A1931]"
+                        className="w-full h-12 bg-white border-2 border-slate-300 rounded-xl px-4 text-base font-mono text-[#0A2540] focus:outline-none focus:border-[#0A2540]"
                       />
                     </div>
 
@@ -446,7 +446,7 @@ export default function AccountPage() {
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         placeholder="Re-type new password"
-                        className="w-full h-12 bg-white border-2 border-slate-300 rounded-xl px-4 text-base font-mono text-[#0A1931] focus:outline-none focus:border-[#0A1931]"
+                        className="w-full h-12 bg-white border-2 border-slate-300 rounded-xl px-4 text-base font-mono text-[#0A2540] focus:outline-none focus:border-[#0A2540]"
                       />
                     </div>
 
@@ -464,7 +464,7 @@ export default function AccountPage() {
 
                     <button
                       onClick={handleUpdatePassword}
-                      className="min-h-[48px] px-8 py-3 bg-[#0A1931] hover:bg-[#0F2137] text-white rounded-xl font-bold text-sm shadow-md transition-all mt-2"
+                      className="min-h-[48px] px-8 py-3 bg-[#0A2540] hover:bg-[#0F2137] text-white rounded-xl font-bold text-sm shadow-md transition-all mt-2"
                     >
                       Update Password
                     </button>
@@ -473,7 +473,7 @@ export default function AccountPage() {
 
                 {/* Session Security Policy Telemetry */}
                 <div className="bg-white border-2 border-slate-300 rounded-2xl shadow-sm p-6 md:p-8">
-                  <h3 className="text-lg font-bold text-[#0A1931] flex items-center gap-2 mb-1">
+                  <h3 className="text-lg font-bold text-[#0A2540] flex items-center gap-2 mb-1">
                     <ShieldCheck className="w-5 h-5 text-emerald-600" /> Active Session Telemetry
                   </h3>
                   <p className="text-xs text-slate-500 mb-6">Real-time session state, automatic expiry protection, and device authentication.</p>
@@ -481,9 +481,9 @@ export default function AccountPage() {
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="p-4 bg-slate-50 border-2 border-slate-200 rounded-xl">
                       <div className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-wider">
-                        <Laptop className="w-4 h-4 text-[#0A1931]" /> Current Client Device
+                        <Laptop className="w-4 h-4 text-[#0A2540]" /> Current Client Device
                       </div>
-                      <div className="text-base font-bold text-[#0A1931] mt-1">Modern Web Browser (Chrome/V8)</div>
+                      <div className="text-base font-bold text-[#0A2540] mt-1">Modern Web Browser (Chrome/V8)</div>
                       <div className="text-xs text-slate-500 mt-0.5">Desktop Environment · Linux Session</div>
                     </div>
 
@@ -491,17 +491,17 @@ export default function AccountPage() {
                       <div className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-wider">
                         <Globe className="w-4 h-4 text-emerald-600" /> Cloud Database Connection
                       </div>
-                      <div className="text-base font-bold text-[#0A1931] mt-1">Supabase eu-central-1 (Frankfurt)</div>
+                      <div className="text-base font-bold text-[#0A2540] mt-1">Supabase eu-central-1 (Frankfurt)</div>
                       <div className="text-xs text-slate-500 mt-0.5">IPv4 Pooler Active · 25 Tables RLS</div>
                     </div>
                   </div>
 
                   <div className="mt-6 p-4 bg-blue-50 border-2 border-blue-200 rounded-xl flex items-start gap-3.5">
-                    <Clock className="w-5 h-5 text-[#0A1931] shrink-0 mt-0.5" />
+                    <Clock className="w-5 h-5 text-[#0A2540] shrink-0 mt-0.5" />
                     <div>
-                      <div className="text-sm font-bold text-[#0A1931]">Inactivity Lock &amp; Tab-Close Session Guard</div>
+                      <div className="text-sm font-bold text-[#0A2540]">Inactivity Lock &amp; Tab-Close Session Guard</div>
                       <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                        To protect commercial data on shared site laptops, sessions automatically expire after <strong>2 hours of inactivity</strong> or immediately upon closing the browser tab (<code className="font-mono bg-white px-1.5 py-0.5 rounded border border-blue-200">sessionStorage</code>).
+                        To protect project and financial data on shared site laptops, sessions automatically expire after <strong>2 hours of inactivity</strong> or immediately upon closing the browser tab (<code className="font-mono bg-white px-1.5 py-0.5 rounded border border-blue-200">sessionStorage</code>).
                       </p>
                     </div>
                   </div>
@@ -511,15 +511,15 @@ export default function AccountPage() {
               {/* 2FA & Danger Zone */}
               <div className="space-y-6">
                 <div className="bg-white border-2 border-slate-300 rounded-2xl shadow-sm p-6">
-                  <h4 className="text-sm font-extrabold uppercase tracking-wider text-[#0A1931] flex items-center gap-2 mb-2">
-                    <Lock className="w-4 h-4 text-[#D4A017]" /> Two-Factor Authentication
+                  <h4 className="text-sm font-extrabold uppercase tracking-wider text-[#0A2540] flex items-center gap-2 mb-2">
+                    <Lock className="w-4 h-4 text-[#0A2540]" /> Two-Factor Authentication
                   </h4>
                   <p className="text-xs text-slate-500 leading-relaxed">
-                    Require an authenticator code (TOTP) during sign-in to safeguard commercial and financial records.
+                    Require an authenticator code (TOTP) during sign-in to safeguard project cost and financial records.
                   </p>
 
                   <div className="mt-4 flex items-center justify-between p-3 bg-slate-50 border border-slate-200 rounded-xl">
-                    <span className="text-sm font-bold text-[#0A1931]">Authenticator App (TOTP)</span>
+                    <span className="text-sm font-bold text-[#0A2540]">Authenticator App (TOTP)</span>
                     <button
                       onClick={() => setTwoFactorEnabled(!twoFactorEnabled)}
                       className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
@@ -555,10 +555,10 @@ export default function AccountPage() {
               {/* Role Header Banner */}
               <div className="bg-white border-2 border-slate-300 rounded-2xl shadow-sm p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-[#0A1931] border border-blue-300 mb-2">
-                    <Shield className="w-3.5 h-3.5 text-[#D4A017]" /> Current Effective Role
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-[#0A2540] border border-blue-300 mb-2">
+                    <Shield className="w-3.5 h-3.5 text-[#0A2540]" /> Current Effective Role
                   </div>
-                  <h2 className="text-2xl font-black text-[#0A1931]">{activeRole}</h2>
+                  <h2 className="text-2xl font-black text-[#0A2540]">{activeRole}</h2>
                   <p className="text-sm text-slate-600 mt-1 max-w-xl">
                     {ALL_ROLES.find((r) => r.name === activeRole)?.desc || "Active operational role with specific permission boundaries."}
                   </p>
@@ -567,18 +567,18 @@ export default function AccountPage() {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => router.push("/settings")}
-                    className="min-h-[46px] px-6 py-2.5 bg-[#0A1931] hover:bg-[#0F2137] text-white rounded-xl font-bold text-sm shadow-md transition-all flex items-center gap-2"
+                    className="min-h-[46px] px-6 py-2.5 bg-[#0A2540] hover:bg-[#003366] text-white rounded-xl font-bold text-sm shadow-md transition-all flex items-center gap-2 cursor-pointer"
                   >
                     <span>Admin Role Customizer</span>
-                    <ExternalLink className="w-4 h-4 text-[#D4A017]" />
+                    <ExternalLink className="w-4 h-4 text-white" />
                   </button>
                 </div>
               </div>
 
               {/* Interactive Role Switcher for Sandboxing */}
               <div>
-                <h3 className="text-base font-extrabold uppercase tracking-wider text-[#0A1931] mb-2 flex items-center gap-2">
-                  <Zap className="w-4 h-4 text-[#D4A017]" /> Interactive Role Simulator
+                <h3 className="text-base font-extrabold uppercase tracking-wider text-[#0A2540] mb-2 flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-[#0A2540]" /> Interactive Role Simulator
                 </h3>
                 <p className="text-sm text-slate-600 mb-5">
                   Select any persona to immediately simulate their permissions, UI navigation, and operational privileges:
@@ -593,7 +593,7 @@ export default function AccountPage() {
                         onClick={() => handleRoleSelect(r.name)}
                         className={`p-5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between ${
                           isSelected
-                            ? "bg-slate-900 text-white border-[#0A1931] shadow-lg scale-[1.02]"
+                            ? "bg-[#0A2540] text-white border-[#0A2540] shadow-lg scale-[1.02]"
                             : "bg-white hover:bg-slate-50 text-slate-800 border-slate-300 hover:border-slate-400 shadow-xs"
                         }`}
                       >
@@ -601,19 +601,19 @@ export default function AccountPage() {
                           <div className="flex items-center justify-between mb-2">
                             <span
                               className={`text-xs font-bold px-2.5 py-0.5 rounded-full border ${
-                                isSelected ? "bg-amber-400 text-slate-900 border-amber-300" : r.color
+                                isSelected ? "bg-white text-[#0A2540] border-white font-black" : r.color
                               }`}
                             >
                               {r.name}
                             </span>
-                            {isSelected && <Check className="w-4 h-4 text-[#D4A017]" />}
+                            {isSelected && <Check className="w-4 h-4 text-white" />}
                           </div>
-                          <p className={`text-xs mt-2 leading-relaxed ${isSelected ? "text-slate-300" : "text-slate-600"}`}>
+                          <p className={`text-xs mt-2 leading-relaxed ${isSelected ? "text-slate-200" : "text-slate-600"}`}>
                             {r.desc}
                           </p>
                         </div>
-                        <div className="mt-4 pt-3 border-t border-slate-200/50 flex items-center justify-between text-xs font-semibold">
-                          <span className={isSelected ? "text-amber-400 font-bold" : "text-slate-500"}>
+                        <div className="mt-4 pt-3 border-t border-slate-200/40 flex items-center justify-between text-xs font-semibold">
+                          <span className={isSelected ? "text-white font-bold" : "text-slate-500"}>
                             {isSelected ? "Active Persona" : "Click to Switch"}
                           </span>
                         </div>
@@ -627,7 +627,7 @@ export default function AccountPage() {
               <div className="bg-white border-2 border-slate-300 rounded-2xl shadow-sm p-6 md:p-8">
                 <div className="flex items-center justify-between mb-6 pb-4 border-b-2 border-slate-100">
                   <div>
-                    <h3 className="text-lg font-bold text-[#0A1931] flex items-center gap-2">
+                    <h3 className="text-lg font-bold text-[#0A2540] flex items-center gap-2">
                       <ShieldCheck className="w-5 h-5 text-emerald-600" /> Effective Module Permissions ({activeRole})
                     </h3>
                     <p className="text-xs text-slate-500 mt-0.5">
@@ -684,8 +684,8 @@ export default function AccountPage() {
               <div className="bg-white border-2 border-slate-300 rounded-2xl shadow-sm p-6 md:p-8">
                 <div className="flex items-center justify-between pb-5 border-b-2 border-slate-100 mb-6">
                   <div>
-                    <h3 className="text-lg font-bold text-[#0A1931] flex items-center gap-2">
-                      <Bell className="w-5 h-5 text-[#D4A017]" /> Alert &amp; Workflow Notifications
+                    <h3 className="text-lg font-bold text-[#0A2540] flex items-center gap-2">
+                      <Bell className="w-5 h-5 text-[#0A2540]" /> Alert &amp; Workflow Notifications
                     </h3>
                     <p className="text-xs text-slate-500 mt-0.5">
                       Configure instant alerts when budget ceilings are exceeded or invoices fail matching rules.
@@ -707,14 +707,14 @@ export default function AccountPage() {
                       title: "BOQ Variance Threshold (±5%) Exceeded",
                       desc: "Notify when work package spending moves outside the approved contractual threshold.",
                       priority: "High",
-                      pColor: "bg-amber-100 text-amber-800 border-amber-300",
+                      pColor: "bg-[#0A2540]/10 text-[#0A2540] border-[#0A2540]/20",
                     },
                     {
                       id: "poApprovalRequest",
                       title: "Purchase Order & Requisition Approvals",
-                      desc: "Notifications when site engineers submit material requisitions requiring commercial sign-off.",
+                      desc: "Notifications when site engineers submit material requisitions requiring budget sign-off.",
                       priority: "Action Required",
-                      pColor: "bg-blue-100 text-[#0A1931] border-blue-300",
+                      pColor: "bg-blue-100 text-[#0A2540] border-blue-300",
                     },
                     {
                       id: "lowStockWarning",
@@ -732,10 +732,10 @@ export default function AccountPage() {
                     },
                     {
                       id: "weeklyFinancialDigest",
-                      title: "Weekly Commercial GDV & Margin Digest",
-                      desc: "Executive snapshot of cash outflow, certified valuations, and projected developer profit.",
+                      title: "Weekly Financial & Valuation Digest",
+                      desc: "Executive snapshot of cash outflow, certified valuations, and projected project cost.",
                       priority: "Executive",
-                      pColor: "bg-purple-100 text-purple-800 border-purple-300",
+                      pColor: "bg-[#FAF9F5] text-[#0A2540] border-[#E5E5DE]",
                     },
                   ].map((item) => {
                     const isChecked = (notifs as any)[item.id];
@@ -746,7 +746,7 @@ export default function AccountPage() {
                       >
                         <div>
                           <div className="flex items-center gap-2.5">
-                            <span className="text-base font-bold text-[#0A1931]">{item.title}</span>
+                            <span className="text-base font-bold text-[#0A2540]">{item.title}</span>
                             <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full border ${item.pColor}`}>
                               {item.priority}
                             </span>
@@ -757,12 +757,12 @@ export default function AccountPage() {
                         <button
                           onClick={() => setNotifs((prev) => ({ ...prev, [item.id]: !isChecked }))}
                           className={`w-14 h-8 rounded-full p-1 transition-colors flex items-center cursor-pointer shrink-0 ${
-                            isChecked ? "bg-[#0A1931]" : "bg-slate-300"
+                            isChecked ? "bg-[#0A2540]" : "bg-slate-300"
                           }`}
                         >
                           <div
                             className={`w-6 h-6 rounded-full bg-white shadow-md transform transition-transform ${
-                              isChecked ? "translate-x-6 bg-[#D4A017]" : "translate-x-0"
+                              isChecked ? "translate-x-6 bg-white" : "translate-x-0"
                             }`}
                           />
                         </button>
@@ -774,9 +774,9 @@ export default function AccountPage() {
                 <div className="mt-8 pt-6 border-t-2 border-slate-100 flex items-center justify-between">
                   <button
                     onClick={handleSaveNotifications}
-                    className="min-h-[48px] px-8 py-3 bg-[#0A1931] hover:bg-[#0F2137] text-white rounded-xl font-bold text-sm shadow-md transition-all flex items-center gap-2"
+                    className="min-h-[48px] px-8 py-3 bg-[#0A2540] hover:bg-[#003366] text-white rounded-xl font-bold text-sm shadow-md transition-all flex items-center gap-2"
                   >
-                    <Save className="w-4 h-4 text-[#D4A017]" /> Save Notification Preferences
+                    <Save className="w-4 h-4 text-white" /> Save Notification Preferences
                   </button>
 
                   {notifsSaved && (

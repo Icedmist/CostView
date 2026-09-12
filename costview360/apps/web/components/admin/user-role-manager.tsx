@@ -248,7 +248,7 @@ export function UserRoleManager() {
         <div
           className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 rounded-xl shadow-xl transition-all border animate-in fade-in slide-in-from-bottom-3 ${
             notification.type === "success"
-              ? "bg-[#0A1931] text-white border-[#1E3A5F]"
+              ? "bg-[#0A2540] text-white border-[#0A2540]"
               : "bg-rose-900 text-white border-rose-700"
           }`}
         >
@@ -262,18 +262,17 @@ export function UserRoleManager() {
       )}
 
       {/* Hero / Header Card */}
-      <div className="bg-gradient-to-r from-[#0A1931] via-[#0F2137] to-[#142C4E] rounded-2xl p-6 md:p-8 text-white shadow-xl relative overflow-hidden">
-        <div className="pointer-events-none absolute right-0 bottom-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+      <div className="bg-[#0A2540] rounded-2xl p-6 md:p-8 text-white shadow-xl relative overflow-hidden">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 px-3 py-1 rounded-full text-xs font-bold text-amber-300 mb-3 backdrop-blur-md">
-              <ShieldCheck className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 px-3.5 py-1.5 rounded-full text-xs font-bold text-white mb-3 backdrop-blur-md">
+              <ShieldCheck className="w-4 h-4 text-white" />
               <span>Enterprise RBAC &amp; Identity Engine</span>
             </div>
             <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">
               User &amp; Role Management Hub
             </h1>
-            <p className="text-slate-300 text-sm mt-2 max-w-2xl leading-relaxed">
+            <p className="text-slate-200 text-sm mt-2 max-w-2xl leading-relaxed">
               Create and provision workspace users, adjust role assignments with instant effect, and customize the module-by-module permission matrix.
             </p>
           </div>
@@ -281,15 +280,15 @@ export function UserRoleManager() {
           <div className="flex flex-wrap items-center gap-3 shrink-0">
             <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="px-5 py-3 bg-[#D4A017] hover:bg-[#E8B838] text-[#0A1931] rounded-xl text-sm font-bold flex items-center gap-2 shadow-lg transition-all active:scale-[0.98] cursor-pointer"
+              className="px-5 py-3 bg-white hover:bg-slate-100 text-[#0A2540] rounded-xl text-sm font-bold flex items-center gap-2 shadow-lg transition-all active:scale-[0.98] cursor-pointer min-h-[44px]"
             >
-              <UserPlus className="w-4 h-4" />
+              <UserPlus className="w-4 h-4 text-[#0A2540]" />
               <span>+ Create New User</span>
             </button>
             <button
               onClick={fetchUsers}
               title="Refresh User Directory"
-              className="p-3 bg-white/10 hover:bg-white/20 text-white rounded-xl border border-white/20 transition-all cursor-pointer"
+              className="p-3 bg-white/10 hover:bg-white/20 text-white rounded-xl border border-white/20 transition-all cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
             >
               <RefreshCw className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`} />
             </button>
@@ -297,12 +296,12 @@ export function UserRoleManager() {
         </div>
 
         {/* Sub-Nav Tab Strip */}
-        <div className="flex flex-wrap gap-2 mt-6 pt-5 border-t border-white/10">
+        <div className="flex flex-wrap gap-2 mt-6 pt-5 border-t border-white/15">
           <button
             onClick={() => setActiveTab("users")}
-            className={`px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all cursor-pointer ${
+            className={`px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all cursor-pointer min-h-[40px] ${
               activeTab === "users"
-                ? "bg-white text-[#0A1931] shadow-md"
+                ? "bg-white text-[#0A2540] shadow-md"
                 : "bg-white/10 text-white hover:bg-white/15"
             }`}
           >
@@ -311,9 +310,9 @@ export function UserRoleManager() {
           </button>
           <button
             onClick={() => setActiveTab("matrix")}
-            className={`px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all cursor-pointer ${
+            className={`px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all cursor-pointer min-h-[40px] ${
               activeTab === "matrix"
-                ? "bg-white text-[#0A1931] shadow-md"
+                ? "bg-white text-[#0A2540] shadow-md"
                 : "bg-white/10 text-white hover:bg-white/15"
             }`}
           >
@@ -322,9 +321,9 @@ export function UserRoleManager() {
           </button>
           <button
             onClick={() => setActiveTab("audit")}
-            className={`px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all cursor-pointer ${
+            className={`px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all cursor-pointer min-h-[40px] ${
               activeTab === "audit"
-                ? "bg-white text-[#0A1931] shadow-md"
+                ? "bg-white text-[#0A2540] shadow-md"
                 : "bg-white/10 text-white hover:bg-white/15"
             }`}
           >
@@ -346,7 +345,7 @@ export function UserRoleManager() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search user by name, email, or role..."
-                className="w-full bg-white border border-slate-300 rounded-xl pl-10 pr-4 py-2 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#0A1931] focus:ring-2 focus:ring-[#0A1931]/15"
+                className="w-full bg-white border border-slate-300 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#0A2540] focus:ring-2 focus:ring-[#0A2540]/15"
               />
             </div>
 
@@ -355,7 +354,7 @@ export function UserRoleManager() {
               <select
                 value={roleFilter}
                 onChange={(e) => setRoleFilter(e.target.value)}
-                className="bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-semibold text-slate-800 focus:outline-none focus:border-[#0A1931] cursor-pointer"
+                className="bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:outline-none focus:border-[#0A2540] cursor-pointer"
               >
                 <option value="All">All Roles ({users.length})</option>
                 {ALL_ROLES.map((r) => (
@@ -371,7 +370,7 @@ export function UserRoleManager() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-slate-100/75 border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-600">
+                <tr className="bg-[#FAF9F5] border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-600">
                   <th className="py-3.5 px-5">User</th>
                   <th className="py-3.5 px-4">Contact Info</th>
                   <th className="py-3.5 px-4">Current Assigned Role</th>
@@ -402,7 +401,7 @@ export function UserRoleManager() {
                       <tr key={u.id} className="hover:bg-slate-50/80 transition-colors">
                         <td className="py-4 px-5">
                           <div className="flex items-center gap-3.5">
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#0A1931] to-[#1E3A5F] text-white flex items-center justify-center font-bold text-sm shadow-sm shrink-0">
+                            <div className="w-10 h-10 rounded-full bg-[#0A2540] text-white flex items-center justify-center font-bold text-sm shadow-sm shrink-0">
                               {initials}
                             </div>
                             <div>
@@ -419,7 +418,7 @@ export function UserRoleManager() {
                             <select
                               value={u.default_role}
                               onChange={(e) => handleRoleChange(u.id, e.target.value as RoleName)}
-                              className="bg-slate-50 hover:bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-xs font-bold text-[#0A1931] focus:outline-none focus:border-[#0A1931] focus:ring-2 focus:ring-[#0A1931]/15 cursor-pointer transition-all shadow-xs"
+                              className="bg-slate-50 hover:bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-[#0A2540] focus:outline-none focus:border-[#0A2540] focus:ring-2 focus:ring-[#0A2540]/15 cursor-pointer transition-all shadow-xs min-h-[38px]"
                             >
                               {ALL_ROLES.map((r) => (
                                 <option key={r} value={r}>
@@ -444,7 +443,7 @@ export function UserRoleManager() {
                               showNotification(`Role permissions loaded for ${u.full_name}`);
                               setActiveTab("matrix");
                             }}
-                            className="text-xs font-bold text-[#0A1931] hover:text-[#1E3A5F] hover:underline cursor-pointer"
+                            className="text-xs font-bold text-[#0A2540] hover:underline cursor-pointer"
                           >
                             View Matrix
                           </button>
@@ -464,7 +463,7 @@ export function UserRoleManager() {
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-5">
             <div>
-              <h2 className="text-lg font-extrabold text-[#0A1931]">
+              <h2 className="text-lg font-extrabold text-[#0A2540]">
                 Interactive Role Permissions Matrix
               </h2>
               <p className="text-xs text-slate-600 mt-1">
@@ -479,7 +478,7 @@ export function UserRoleManager() {
                   setMatrix(getFullMatrix());
                   showNotification("Matrix reset to default configurations");
                 }}
-                className="px-4 py-2 border border-slate-300 hover:bg-slate-50 rounded-xl text-xs font-bold text-slate-700 transition-all cursor-pointer"
+                className="px-4 py-2 border border-slate-300 hover:bg-slate-50 rounded-xl text-xs font-bold text-slate-700 transition-all cursor-pointer min-h-[38px]"
               >
                 Reset to Defaults
               </button>
@@ -489,7 +488,7 @@ export function UserRoleManager() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse min-w-[800px]">
               <thead>
-                <tr className="bg-slate-100 border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-700">
+                <tr className="bg-[#FAF9F5] border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-700">
                   <th className="py-3.5 px-4 w-52">Role Name</th>
                   {PERMISSION_KEYS.map((p) => (
                     <th key={p.key} className="py-3.5 px-3 text-center" title={p.desc}>
@@ -525,7 +524,7 @@ export function UserRoleManager() {
                               isAdminRole
                                 ? "bg-slate-100 text-slate-400 cursor-not-allowed"
                                 : isAllowed
-                                ? "bg-[#0A1931] text-white hover:bg-[#1E3A5F] shadow-xs cursor-pointer active:scale-95"
+                                ? "bg-[#0A2540] text-white hover:bg-[#003366] shadow-xs cursor-pointer active:scale-95"
                                 : "bg-slate-100 text-slate-400 hover:bg-slate-200 hover:text-slate-700 cursor-pointer"
                             }`}
                           >
@@ -540,10 +539,10 @@ export function UserRoleManager() {
             </table>
           </div>
 
-          <div className="p-4 bg-blue-50/70 border border-blue-200/80 rounded-xl text-xs text-[#0A1931] flex items-start gap-3">
-            <ShieldCheck className="w-5 h-5 text-[#0A1931] shrink-0 mt-0.5" />
+          <div className="p-4 bg-[#FAF9F5] border border-[#E5E5DE] rounded-xl text-xs text-[#0A2540] flex items-start gap-3">
+            <ShieldCheck className="w-5 h-5 text-[#0A2540] shrink-0 mt-0.5" />
             <div>
-              <span className="font-bold">Automated RBAC Enforcement:</span> Role permission updates take immediate effect for navigation items, data entry forms, and approval authorization gates across CostView 360.
+              <span className="font-bold">Automated RBAC Enforcement:</span> Role permission updates take immediate effect for navigation items, data entry forms, and approval authorization gates across CostView.
             </div>
           </div>
         </div>
@@ -553,7 +552,7 @@ export function UserRoleManager() {
       {activeTab === "audit" && (
         <div className="space-y-4">
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
-            <h2 className="text-lg font-extrabold text-[#0A1931]">
+            <h2 className="text-lg font-extrabold text-[#0A2540]">
               Postgres Row-Level Security &amp; Admin Audit Trail
             </h2>
             <p className="text-xs text-slate-600 mt-1">
@@ -568,9 +567,9 @@ export function UserRoleManager() {
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in">
           <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-lg overflow-hidden animate-in zoom-in-95">
-            <div className="p-5 bg-gradient-to-r from-[#0A1931] to-[#142C4E] text-white flex items-center justify-between">
+            <div className="p-5 bg-[#0A2540] text-white flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <UserPlus className="w-5 h-5 text-[#D4A017]" />
+                <UserPlus className="w-5 h-5 text-white" />
                 <h3 className="font-extrabold text-lg">Provision New Workspace User</h3>
               </div>
               <button
@@ -594,7 +593,7 @@ export function UserRoleManager() {
                     value={formName}
                     onChange={(e) => setFormName(e.target.value)}
                     placeholder="e.g. Ibrahim Suleiman"
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl pl-10 pr-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-[#0A1931] focus:ring-2 focus:ring-[#0A1931]/15"
+                    className="w-full bg-[#FAF9F5] border border-slate-300 rounded-xl pl-10 pr-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-[#0A2540] focus:ring-2 focus:ring-[#0A2540]/15"
                   />
                 </div>
               </div>
@@ -611,7 +610,7 @@ export function UserRoleManager() {
                     value={formEmail}
                     onChange={(e) => setFormEmail(e.target.value)}
                     placeholder="suleiman@contractor.ng"
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl pl-10 pr-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-[#0A1931] focus:ring-2 focus:ring-[#0A1931]/15"
+                    className="w-full bg-[#FAF9F5] border border-slate-300 rounded-xl pl-10 pr-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-[#0A2540] focus:ring-2 focus:ring-[#0A2540]/15"
                   />
                 </div>
               </div>
@@ -624,9 +623,9 @@ export function UserRoleManager() {
                   <button
                     type="button"
                     onClick={generatePassword}
-                    className="text-xs font-bold text-[#0A1931] hover:underline flex items-center gap-1 cursor-pointer"
+                    className="text-xs font-bold text-[#0A2540] hover:underline flex items-center gap-1 cursor-pointer"
                   >
-                    <Sparkles className="w-3.5 h-3.5 text-[#D4A017]" />
+                    <Sparkles className="w-3.5 h-3.5 text-[#0A2540]" />
                     Generate Strong
                   </button>
                 </div>
@@ -637,7 +636,7 @@ export function UserRoleManager() {
                     required
                     value={formPassword}
                     onChange={(e) => setFormPassword(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl pl-10 pr-3.5 py-2.5 text-sm font-mono text-slate-900 focus:outline-none focus:border-[#0A1931] focus:ring-2 focus:ring-[#0A1931]/15"
+                    className="w-full bg-[#FAF9F5] border border-slate-300 rounded-xl pl-10 pr-3.5 py-2.5 text-sm font-mono text-slate-900 focus:outline-none focus:border-[#0A2540] focus:ring-2 focus:ring-[#0A2540]/15"
                   />
                 </div>
               </div>
@@ -649,7 +648,7 @@ export function UserRoleManager() {
                 <select
                   value={formRole}
                   onChange={(e) => setFormRole(e.target.value as RoleName)}
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-bold text-[#0A1931] focus:outline-none focus:border-[#0A1931] focus:ring-2 focus:ring-[#0A1931]/15 cursor-pointer"
+                  className="w-full bg-[#FAF9F5] border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-bold text-[#0A2540] focus:outline-none focus:border-[#0A2540] focus:ring-2 focus:ring-[#0A2540]/15 cursor-pointer"
                 >
                   {ALL_ROLES.map((r) => (
                     <option key={r} value={r}>
@@ -673,7 +672,7 @@ export function UserRoleManager() {
                     value={formPhone}
                     onChange={(e) => setFormPhone(e.target.value)}
                     placeholder="+234 800 000 0000"
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl pl-10 pr-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-[#0A1931] focus:ring-2 focus:ring-[#0A1931]/15"
+                    className="w-full bg-[#FAF9F5] border border-slate-300 rounded-xl pl-10 pr-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-[#0A2540] focus:ring-2 focus:ring-[#0A2540]/15"
                   />
                 </div>
               </div>
@@ -682,14 +681,14 @@ export function UserRoleManager() {
                 <button
                   type="button"
                   onClick={() => setIsCreateModalOpen(false)}
-                  className="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-bold hover:bg-slate-50 transition-all cursor-pointer"
+                  className="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-bold hover:bg-slate-50 transition-all cursor-pointer min-h-[44px]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-6 py-2.5 rounded-xl bg-[#0A1931] hover:bg-[#142C4E] text-white font-bold transition-all shadow-md active:scale-98 cursor-pointer flex items-center gap-2"
+                  className="px-6 py-2.5 rounded-xl bg-[#0A2540] hover:bg-[#003366] text-white font-bold transition-all shadow-md active:scale-98 cursor-pointer flex items-center gap-2 min-h-[44px]"
                 >
                   {isSubmitting ? (
                     <>

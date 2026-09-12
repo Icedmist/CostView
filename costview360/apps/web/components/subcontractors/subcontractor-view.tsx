@@ -489,7 +489,7 @@ export function SubcontractorView({
             onClick={() => handleSubTabClick("contracts")}
             className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "contracts"
-                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
                 : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
@@ -501,7 +501,7 @@ export function SubcontractorView({
             onClick={() => handleSubTabClick("claims")}
             className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "claims"
-                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
                 : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
@@ -520,7 +520,7 @@ export function SubcontractorView({
             onClick={() => handleSubTabClick("instructions")}
             className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "instructions"
-                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
                 : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
@@ -532,7 +532,7 @@ export function SubcontractorView({
             onClick={() => handleSubTabClick("variations")}
             className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "variations"
-                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
                 : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >

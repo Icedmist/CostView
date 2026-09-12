@@ -7,40 +7,38 @@ export function Logo({
   showWordmark = true,
 }: {
   size?: "sm" | "md" | "lg" | "xl";
-  variant?: "navy" | "mustard" | "white";
+  variant?: "navy" | "white";
   showWordmark?: boolean;
 }) {
   const blockSize =
     size === "sm"
-      ? "w-8 h-8 text-xs rounded-lg"
+      ? "w-9 h-9 text-sm rounded-xl"
       : size === "lg"
-      ? "w-12 h-12 text-lg rounded-2xl"
+      ? "w-13 h-13 text-xl rounded-2xl"
       : size === "xl"
-      ? "w-14 h-14 text-xl rounded-2xl"
-      : "w-10 h-10 text-sm rounded-xl";
+      ? "w-16 h-16 text-2xl rounded-2xl"
+      : "w-11 h-11 text-base rounded-xl";
   const wordSize =
-    size === "sm" ? "text-base" : size === "lg" ? "text-2xl" : size === "xl" ? "text-3xl" : "text-lg";
+    size === "sm" ? "text-lg" : size === "lg" ? "text-2xl" : size === "xl" ? "text-3xl" : "text-xl";
 
   const variants: Record<string, string> = {
-    navy: "bg-gradient-to-br from-[#0A1931] via-[#0F2137] to-[#1E3A5F] text-white shadow-md border border-white/20",
-    mustard: "bg-[#D4A017] text-[#0A1931] shadow-sm border border-amber-300 font-black",
-    white: "bg-white text-[#0A1931] border border-slate-300 shadow-sm",
+    navy: "bg-[#0A2540] text-white shadow-md border border-[#0A2540]/30",
+    white: "bg-white text-[#0A2540] border-2 border-[#0A2540] shadow-sm",
   };
 
   return (
-    <div className="flex items-center gap-3 group">
+    <div className="flex items-center gap-3.5 group">
       <div
-        className={`${blockSize} ${variants[variant]} flex items-center justify-center font-black tracking-tight shrink-0 leading-none select-none transition-transform group-hover:scale-105`}
+        className={`${blockSize} ${variants[variant] || variants.navy} flex items-center justify-center font-black tracking-tight shrink-0 leading-none select-none transition-transform group-hover:scale-105`}
       >
         <span>CV</span>
       </div>
       {showWordmark && (
         <div className="leading-tight">
-          <div className={`${wordSize} font-black tracking-tight text-[#0A1931] flex items-baseline`}>
+          <div className={`${wordSize} font-black tracking-tight text-[#0A2540]`}>
             <span>CostView</span>
-            <span className="font-extrabold text-[#D4A017] ml-1 tracking-normal">360</span>
           </div>
-          <div className="text-xs font-bold tracking-wider text-slate-500 uppercase mt-0.5">
+          <div className="text-xs font-bold tracking-wider text-[#0A2540]/70 uppercase mt-0.5">
             Construction Cost Intelligence
           </div>
         </div>
@@ -52,7 +50,7 @@ export function Logo({
 export function LogoBlock({ className = "" }: { className?: string }) {
   return (
     <div
-      className={`w-10 h-10 bg-gradient-to-br from-[#0A1931] via-[#0F2137] to-[#1E3A5F] text-white rounded-xl flex items-center justify-center font-black text-sm shadow-md border border-white/20 ${className}`}
+      className={`w-11 h-11 bg-[#0A2540] text-white rounded-xl flex items-center justify-center font-black text-base shadow-md border border-[#0A2540]/30 ${className}`}
     >
       <span>CV</span>
     </div>

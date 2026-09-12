@@ -22,17 +22,17 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f0f7ff]/40 via-white to-[#f8fafc] text-slate-900 font-sans">
+    <div className="min-h-screen bg-[#FAF9F5] text-slate-900 font-sans">
       <MarketingNav />
 
       {/* Hero */}
-      <header className="border-b border-slate-200/80 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(0,103,192,0.12),rgba(255,255,255,0))]">
+      <header className="border-b border-[#E5E5DE] bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-14 md:py-20 text-center max-w-3xl">
-          <div className="inline-flex items-center gap-1.5 bg-blue-50 text-[#0067c0] border border-blue-200/80 px-4 py-1.5 rounded-full text-xs font-semibold mb-4 shadow-xs">
+          <div className="inline-flex items-center gap-1.5 bg-[#0A2540]/10 text-[#0A2540] border border-[#0A2540]/20 px-4 py-1.5 rounded-full text-xs font-semibold mb-4 shadow-xs">
             Direct Technical Advisory
           </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
-            Let’s Discuss <span className="bg-gradient-to-r from-[#0067c0] to-[#0284c7] bg-clip-text text-transparent">Your Next Build.</span>
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#0A2540] leading-tight">
+            Let’s Discuss Your Next Build.
           </h1>
           <p className="mt-4 text-base text-slate-600 leading-relaxed max-w-2xl mx-auto">
             Based in Lagos, available globally. We onboard site teams and import master BOQs directly to get you running within 24 hours.
@@ -43,8 +43,8 @@ export default function ContactPage() {
       {/* Form & Contact Details */}
       <section className="max-w-7xl mx-auto px-4 md:px-6 py-14 md:py-20">
         <div className="grid lg:grid-cols-2 gap-10 max-w-5xl mx-auto">
-          <div className="bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-3xl p-8 shadow-card">
-            <h3 className="font-bold text-xl text-slate-900">Send a Message</h3>
+          <div className="bg-white border border-[#E5E5DE] rounded-3xl p-8 shadow-xs">
+            <h3 className="font-bold text-xl text-[#0A2540]">Send a Message</h3>
             <p className="text-xs text-slate-600 mt-1 leading-relaxed">
               Tell us about your project scale, number of active sites, and current tools.
             </p>
@@ -64,7 +64,7 @@ export default function ContactPage() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Engr. Babatunde"
-                      className="w-full bg-slate-50/80 border border-slate-200/90 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-[#0067c0] focus:ring-2 focus:ring-blue-500/10 transition-all"
+                      className="w-full bg-[#FAF9F5] border border-[#E5E5DE] rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-[#0A2540] focus:ring-2 focus:ring-[#0A2540]/10 transition-all"
                     />
                   </div>
                   <div>
@@ -75,7 +75,7 @@ export default function ContactPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="you@firm.ng"
-                      className="w-full bg-slate-50/80 border border-slate-200/90 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-[#0067c0] focus:ring-2 focus:ring-blue-500/10 transition-all"
+                      className="w-full bg-[#FAF9F5] border border-[#E5E5DE] rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-[#0A2540] focus:ring-2 focus:ring-[#0A2540]/10 transition-all"
                     />
                   </div>
                 </div>
@@ -85,7 +85,7 @@ export default function ContactPage() {
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
                     placeholder="Horizon Towers / Lekki Developments"
-                    className="w-full bg-slate-50/80 border border-slate-200/90 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-[#0067c0] focus:ring-2 focus:ring-blue-500/10 transition-all"
+                    className="w-full bg-[#FAF9F5] border border-[#E5E5DE] rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-[#0A2540] focus:ring-2 focus:ring-[#0A2540]/10 transition-all"
                   />
                 </div>
                 <div>
@@ -96,12 +96,12 @@ export default function ContactPage() {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="We have 2 active sites, 45 site workers, BOQ in Excel, need 3-way match automation..."
-                    className="w-full bg-slate-50/80 border border-slate-200/90 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-[#0067c0] focus:ring-2 focus:ring-blue-500/10 transition-all"
+                    className="w-full bg-[#FAF9F5] border border-[#E5E5DE] rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-[#0A2540] focus:ring-2 focus:ring-[#0A2540]/10 transition-all"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-3.5 bg-gradient-to-r from-[#0067c0] to-[#0284c7] hover:from-[#005ba1] hover:to-[#0275b0] text-white rounded-xl font-bold text-xs shadow-md shadow-blue-600/25 flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
+                  className="w-full py-3.5 bg-[#0A2540] hover:bg-[#003366] text-white rounded-xl font-bold text-xs shadow-md flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
                 >
                   <Send className="w-4 h-4" /> Send Inquiry
                 </button>
@@ -110,10 +110,10 @@ export default function ContactPage() {
           </div>
 
           <div className="space-y-6">
-            <div className="bg-white/90 backdrop-blur-xl border border-slate-200/80 rounded-3xl p-6 shadow-card space-y-4">
-              <h4 className="font-bold text-base text-slate-900">Direct Contact</h4>
+            <div className="bg-white border border-[#E5E5DE] rounded-3xl p-6 shadow-xs space-y-4">
+              <h4 className="font-bold text-base text-[#0A2540]">Direct Contact</h4>
               <div className="flex items-center gap-3 text-xs text-slate-600">
-                <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0067c0] flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-[#0A2540]/10 text-[#0A2540] flex items-center justify-center shrink-0">
                   <Mail className="w-4 h-4" />
                 </div>
                 <div>
@@ -122,7 +122,7 @@ export default function ContactPage() {
                 </div>
               </div>
               <div className="flex items-center gap-3 text-xs text-slate-600">
-                <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0067c0] flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-[#0A2540]/10 text-[#0A2540] flex items-center justify-center shrink-0">
                   <Phone className="w-4 h-4" />
                 </div>
                 <div>
@@ -131,7 +131,7 @@ export default function ContactPage() {
                 </div>
               </div>
               <div className="flex items-center gap-3 text-xs text-slate-600">
-                <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0067c0] flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-[#0A2540]/10 text-[#0A2540] flex items-center justify-center shrink-0">
                   <MapPin className="w-4 h-4" />
                 </div>
                 <div>
@@ -140,7 +140,7 @@ export default function ContactPage() {
                 </div>
               </div>
               <div className="flex items-center gap-3 text-xs text-slate-600">
-                <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0067c0] flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-[#0A2540]/10 text-[#0A2540] flex items-center justify-center shrink-0">
                   <Clock className="w-4 h-4" />
                 </div>
                 <div>
@@ -150,9 +150,9 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="smooth-pearl-hero text-slate-900 rounded-3xl p-6 shadow-pearl border border-sky-200/80">
-              <h4 className="font-bold text-base mb-1.5 text-slate-900 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#0067c0]" /> Live BOQ Onboarding
+            <div className="bg-[#FAF9F5] border border-[#E5E5DE] text-slate-900 rounded-3xl p-6 shadow-xs">
+              <h4 className="font-bold text-base mb-1.5 text-[#0A2540] flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#0A2540]" /> Live BOQ Onboarding
               </h4>
               <p className="text-xs text-slate-600 leading-relaxed">
                 Want us to review your actual BOQ format? Attach your bill in your message or email us directly and our quantity surveyors will format it into CostView for your pilot.

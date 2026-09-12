@@ -1,4 +1,4 @@
-# CostView 360 - Project Memory & Context
+# CostView - Project Memory & Context
 
 ## User Constraints & Global Rules
 - **Rule 1**: Always store chat memories.
@@ -10,7 +10,7 @@
 - **Rule 5**: Never run browser agent.
 
 ## Project Context & Live Infrastructure
-- **Product**: CostView 360 — Construction cost-management platform for contractors, developers, and consultants.
+- **Product**: CostView — Construction cost intelligence and cost-management platform for contractors, developers, and consultants.
 - **Architecture**: Option 1 (Unified Next.js 14 Full Stack with Supabase).
 - **Core Currency**: Nigerian Naira (₦ / NGN) default, multi-currency configurable per workspace.
 - **Live Supabase Environment**:
@@ -38,16 +38,14 @@
 15. **Issue #33 (`fix/issue-33-demo-account-auth`)**: Fix auth bug in demo account login flow — resolve stale session inactivity logout loop by initializing and resetting `costview_last_active` and `costview_tab_active`, synchronize `activeRole` in Providers from `costview_demo_role` and Supabase user metadata, allow `costview_demo_role` cookie in middleware for sandbox preview access, dynamically render demo user profiles and initials in the sidebar, and provide visual feedback for active demo account login cards.
 16. **Issue #35 (`feat/issue-35-navy-subnav-admin-roles`)**: Implement deep navy blue theme (`#0A1931`) with warm amber accents, scale up component typography and button heights (`min-h-[42px]`), restructure navigation into 6 unified modules with collapsible expanding sub-navigation trees for 1-click access, contextual header breadcrumbs, and build dedicated Admin User & Role Management Hub (`UserRoleManager` and `/api/admin/users`) with user provisioning, dynamic role re-assignment, and interactive 8-role × 9-permission matrix customization.
 17. **Issue #37 (`feat/issue-37-landing-scale-account-section`)**: Upgrade landing page (`/`) sizing and visual hierarchy with signature deep navy (`#0A1931`) and warm amber (`#D4A017`) color palette, scale typography (headline `text-[48px] md:text-[76px]`, body `text-lg`/`text-xl`, buttons `min-h-[52px]`), eliminate micro-fonts, and create a comprehensive 4-tab Account Center (`/account`) for personal profile management, security & session telemetry with 2-hour/tab-close inactivity policies, live RBAC permissions matrix with interactive 8-role simulator, and granular notification preferences; linked seamlessly from sidebar and header.
+18. **Issue #39 (`feat/issue-39-supabase-nav-bright-navy-scale`)**: Rebrand product strictly to CostView (purged all '360' branding and completely removed commercial section and mode). Implemented Supabase-style dual-rail navigation architecture (narrow primary rail `w-[68px]` in bright navy `#0A2540` with domain icons + adjacent secondary sub-nav panel `w-64` in milk `#FAF9F5` with 44px sub-section items, numbered codes, and active pill states). Upgraded theme palette strictly to bright navy blue (`#0A2540` / `#003366`) and white/milk (`#FAF9F5` / `#FFFFFF`), eliminating legacy amber and deep navy #0A1931. Scaled up components across all sub-pages: typography, row padding, buttons (`min-h-[44px]`), inputs (`h-11`/`h-12`), metric cards, and modals. Regenerated branded PDF guide to `CostView-User-Guide.pdf` and verified all 19 Next.js routes compile cleanly.
 
 ## Workflow (since 2026-09-09)
 - Every change = Issue → Branch `feat/issue-<n>-slug` (or `fix/`) → PR `Closes #<n>` → squash-merge. See `AGENTS.md`, `.github/WORKFLOW.md`, `.github/CONTRIBUTING.md`. Enforced for humans and AI agents.
 
 ## Verification Status
 - `npm run build --workspace=apps/web`: Production build verified with all 19 static/dynamic routes compiled cleanly (0 errors, 0 warnings).
-- Edge styling audit: 0 unintended `rounded` classes remaining across web components (only pulsating LED status indicator lights).
-- Branded User Guide PDF generated at `CostView-360-User-Guide.pdf` (root) and `costview360/apps/web/public/docs/CostView-360-User-Guide.pdf` (98 KB, 5 pages, 100% end-user focus with visual data flows).
-- Dedicated Markdown User Operations Manual created at `USER_GUIDE.md` with complete MermaidJS diagram suites.
-- Auth verification: All 8 demo accounts verified in Supabase Auth and sandbox fallback verified with role synchronization.
-- Deep navy palette: Active across `tailwind.config.ts`, `globals.css`, sidebar, header, metric cards, and admin hubs.
-- Expanding sub-navigation: Tested across all 6 modules with 1-click jumps to specific registers.
-- Admin role customizer: Verified user creation form, role assignment dropdown, and interactive permission matrix with backend API route.
+- Theme Palette: Strictly bright navy (`#0A2540` / `#003366`) and white/milk (`#FAF9F5` / `#FFFFFF`) across all views.
+- Navigation: Supabase-style dual rail active and verified on dashboard and inner sub-pages.
+- Product Branding: Purged all "360" branding across codebase, marketing pages, docs, and metadata.
+- Branded User Guide PDF generated at `costview360/apps/web/public/docs/CostView-User-Guide.pdf` (CostView branded).

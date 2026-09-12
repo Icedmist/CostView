@@ -5,14 +5,14 @@ import type { RoleName } from "@/lib/supabase/database.types";
 export const dynamic = "force-dynamic";
 
 const DEFAULT_USERS = [
-  { id: "usr-admin", full_name: "Adebayo Admin", email: "admin@costview360.com", phone: "+234 802 111 0001", default_role: "Admin" as RoleName, created_at: "2026-09-01T08:00:00Z" },
-  { id: "usr-pm", full_name: "Babatunde Adeyemi", email: "pm@costview360.com", phone: "+234 803 222 0002", default_role: "Project Manager" as RoleName, created_at: "2026-09-01T08:15:00Z" },
-  { id: "usr-qs", full_name: "Mrs. Nkechi", email: "qs@costview360.com", phone: "+234 805 333 0003", default_role: "Quantity Surveyor" as RoleName, created_at: "2026-09-01T08:30:00Z" },
-  { id: "usr-arch", full_name: "David Okafor", email: "architect@costview360.com", phone: "+234 807 444 0004", default_role: "Architect" as RoleName, created_at: "2026-09-01T09:00:00Z" },
-  { id: "usr-eng", full_name: "Engr. Tayo", email: "engineer@costview360.com", phone: "+234 808 555 0005", default_role: "Site Engineer" as RoleName, created_at: "2026-09-01T09:30:00Z" },
-  { id: "usr-proc", full_name: "Chidi Procurement", email: "procurement@costview360.com", phone: "+234 809 666 0006", default_role: "Procurement Officer" as RoleName, created_at: "2026-09-01T10:00:00Z" },
-  { id: "usr-acc", full_name: "Funke Accountant", email: "accountant@costview360.com", phone: "+234 810 777 0007", default_role: "Accountant" as RoleName, created_at: "2026-09-01T10:30:00Z" },
-  { id: "usr-store", full_name: "Musa Storekeeper", email: "storekeeper@costview360.com", phone: "+234 812 888 0008", default_role: "Storekeeper" as RoleName, created_at: "2026-09-01T11:00:00Z" },
+  { id: "usr-admin", full_name: "Adebayo Admin", email: "admin@costview.app", phone: "+234 802 111 0001", default_role: "Admin" as RoleName, created_at: "2026-09-01T08:00:00Z" },
+  { id: "usr-pm", full_name: "Babatunde Adeyemi", email: "pm@costview.app", phone: "+234 803 222 0002", default_role: "Project Manager" as RoleName, created_at: "2026-09-01T08:15:00Z" },
+  { id: "usr-qs", full_name: "Mrs. Nkechi", email: "qs@costview.app", phone: "+234 805 333 0003", default_role: "Quantity Surveyor" as RoleName, created_at: "2026-09-01T08:30:00Z" },
+  { id: "usr-arch", full_name: "David Okafor", email: "architect@costview.app", phone: "+234 807 444 0004", default_role: "Architect" as RoleName, created_at: "2026-09-01T09:00:00Z" },
+  { id: "usr-eng", full_name: "Engr. Tayo", email: "engineer@costview.app", phone: "+234 808 555 0005", default_role: "Site Engineer" as RoleName, created_at: "2026-09-01T09:30:00Z" },
+  { id: "usr-proc", full_name: "Chidi Procurement", email: "procurement@costview.app", phone: "+234 809 666 0006", default_role: "Procurement Officer" as RoleName, created_at: "2026-09-01T10:00:00Z" },
+  { id: "usr-acc", full_name: "Funke Accountant", email: "accountant@costview.app", phone: "+234 810 777 0007", default_role: "Accountant" as RoleName, created_at: "2026-09-01T10:30:00Z" },
+  { id: "usr-store", full_name: "Musa Storekeeper", email: "storekeeper@costview.app", phone: "+234 812 888 0008", default_role: "Storekeeper" as RoleName, created_at: "2026-09-01T11:00:00Z" },
 ];
 
 export async function GET() {
@@ -52,7 +52,7 @@ export async function GET() {
     const merged = (profiles as any[]).map((p: any) => ({
       id: p.id,
       full_name: p.full_name,
-      email: emailMap.get(p.id) || `${p.full_name.toLowerCase().replace(/[^a-z0-9]/g, ".")}@costview360.com`,
+      email: emailMap.get(p.id) || `${p.full_name.toLowerCase().replace(/[^a-z0-9]/g, ".")}@costview.app`,
       phone: p.phone,
       default_role: p.default_role as RoleName,
       avatar_url: p.avatar_url,
