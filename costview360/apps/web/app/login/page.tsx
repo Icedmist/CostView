@@ -1,137 +1,192 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { Logo } from "@/components/brand/logo";
-import { Lock, Mail, ArrowRight } from "lucide-react";
+import { ArrowRight, Lock, Mail, CheckCircle2 } from "lucide-react";
+import type { RoleName } from "@/lib/supabase/database.types";
 
 const DEMO_ACCOUNTS = [
-  { label: "Admin", sub: "Full Access", email: "admin@costview.ng", role: "Admin" },
-  { label: "PM", sub: "Manager", email: "pm@costview.ng", role: "Project Manager" },
-  { label: "QS", sub: "Valuations", email: "qs@costview.ng", role: "Quantity Surveyor" },
-  { label: "Arch", sub: "Architect", email: "arch@costview.ng", role: "Architect" },
-  { label: "Site Eng", sub: "Deliveries", email: "site@costview.ng", role: "Site Engineer" },
-  { label: "Procure", sub: "RFQ/PO", email: "procure@costview.ng", role: "Procurement Officer" },
-  { label: "Acct", sub: "Finance", email: "acct@costview.ng", role: "Accountant" },
-  { label: "Store", sub: "Stock", email: "store@costview.ng", role: "Storekeeper" },
-] as const;
+  { label: "Admin", email: "admin@costview.ng", role: "Admin" as RoleName, sub: "Full system governance" },
+  { label: "Project Manager", email: "pm@costview.ng", role: "Project Manager" as RoleName, sub: "Budgets & procurement" },
+  { label: "Quantity Surveyor", email: "qs@costview.ng", role: "Quantity Surveyor" as RoleName, sub: "BOQ & variations" },
+  { label: "Site Engineer", email: "site@costview.ng", role: "Site Engineer" as RoleName, sub: "Materials & labour" },
+  { label: "Procurement Officer", email: "procure@costview.ng", role: "Procurement Officer" as RoleName, sub: "RFQs & 3-way match" },
+  { label: "Accountant", email: "acct@costview.ng", role: "Accountant" as RoleName, sub: "Invoices & payouts" },
+  { label: "Storekeeper", email: "store@costview.ng", role: "Storekeeper" as RoleName, sub: "Stock receipts & issues" },
+  { label: "Architect", email: "arch@costview.ng", role: "Architect" as RoleName, sub: "Drawings & snags" },
+];
 
 export default function LoginPage() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [activeDemoEmail, setActiveDemoEmail] = useState<string | null>(null);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-  const setSessionCredentials = (role: string, userEmail: string) => {
-    if (typeof window !== "undefined") {
-      const nowStr = Date.now().toString();
-      localStorage.setItem("costview_demo_role", role);
-      localStorage.setItem("costview_demo_email", userEmail);
-      localStorage.setItem("costview_last_active", nowStr);
-      sessionStorage.setItem("costview_tab_active", "1");
-      sessionStorage.setItem("costview_last_active", nowStr);
-      document.cookie = `costview_demo_role=${encodeURIComponent(role)}; path=/; max-age=7200; SameSite=Lax`;
-    }
-  };
+  const router = useRouter();
+  const supabase = createClient();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setErrorMsg(null);
-    const supabase = createClient();
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
     if (error) {
       setErrorMsg(error.message);
       setLoading(false);
     } else {
-      const matchedDemo = DEMO_ACCOUNTS.find((a) => a.email.toLowerCase() === email.toLowerCase());
-      const role =
-        (data.user?.user_metadata?.default_role as string) ||
-        matchedDemo?.role ||
-        "Project Manager";
-      setSessionCredentials(role, email);
-      window.location.href = "/dashboard";
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("costview_tab_active", "1");
+        sessionStorage.setItem("costview_last_active", Date.now().toString());
+        localStorage.setItem("costview_last_active", Date.now().toString());
+      }
+      router.push("/dashboard");
+      router.refresh();
     }
   };
 
-  const handleDemoLogin = async (account: (typeof DEMO_ACCOUNTS)[number]) => {
-    setLoading(true);
+  const handleDemoLogin = async (account: typeof DEMO_ACCOUNTS[0]) => {
     setActiveDemoEmail(account.email);
-    setErrorMsg(null);
     setEmail(account.email);
     setPassword("DemoPass2026!");
+    setLoading(true);
+    setErrorMsg(null);
 
-    setSessionCredentials(account.role, account.email);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: account.email,
+      password: "DemoPass2026!",
+    });
 
-    try {
-      const supabase = createClient();
-      const { error } = await supabase.auth.signInWithPassword({
-        email: account.email,
-        password: "DemoPass2026!",
-      });
-      if (error) {
-        console.warn("Supabase demo auth fallback:", error.message);
+    if (error) {
+      if (typeof window !== "undefined") {
+        localStorage.setItem("costview_demo_role", account.role);
+        localStorage.setItem("costview_demo_email", account.email);
+        localStorage.setItem("costview_last_active", Date.now().toString());
+        sessionStorage.setItem("costview_tab_active", "1");
+        sessionStorage.setItem("costview_last_active", Date.now().toString());
+        document.cookie = `costview_demo_role=${account.role}; path=/; max-age=604800; SameSite=Lax`;
       }
-      window.location.href = "/dashboard";
-    } catch (err: any) {
-      console.warn("Demo login error, falling back to sandbox:", err?.message);
-      window.location.href = "/dashboard";
+      router.push("/dashboard");
+      return;
     }
+
+    if (typeof window !== "undefined") {
+      localStorage.setItem("costview_demo_role", account.role);
+      localStorage.setItem("costview_demo_email", account.email);
+      localStorage.setItem("costview_last_active", Date.now().toString());
+      sessionStorage.setItem("costview_tab_active", "1");
+      sessionStorage.setItem("costview_last_active", Date.now().toString());
+      document.cookie = `costview_demo_role=${account.role}; path=/; max-age=604800; SameSite=Lax`;
+    }
+    router.push("/dashboard");
+    router.refresh();
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#003a70] via-[#005ba1] to-[#0284c7] flex flex-col font-sans relative overflow-hidden">
-      <div className="h-[64px] bg-white/10 backdrop-blur-xl border-b border-white/15 flex items-center justify-between px-6 z-10">
-        <Link href="/"><Logo size="sm" /></Link>
-        <Link href="/" className="text-xs font-semibold text-white/90 hover:text-white border border-white/25 hover:border-white/50 px-4 py-1.5 rounded-xl backdrop-blur-sm transition-all">← Back to Landing</Link>
+    <div className="min-h-screen bg-[#FAF9F5] flex flex-col font-sans text-[#0A2540]">
+      {/* Top Brand Header */}
+      <div className="p-6 flex items-center justify-between border-b-2 border-[#E5E5DE] bg-white">
+        <Link href="/" className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-[#0A2540] rounded-xl text-white font-black flex items-center justify-center text-sm shadow-md">
+            CV
+          </div>
+          <span className="font-black text-xl text-[#0A2540]">CostView</span>
+        </Link>
+        <Link
+          href="/"
+          className="text-xs font-black uppercase tracking-wider text-[#0A2540] hover:bg-[#FAF9F5] border-2 border-[#E5E5DE] px-4 py-2 rounded-xl transition-all"
+        >
+          ← Back to Landing
+        </Link>
       </div>
 
-      <div className="flex-1 flex items-center justify-center p-6">
-        <div className="w-full max-w-[540px]">
-          <div className="bg-white/95 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-8">
-            <div className="text-center mb-6">
-              <div className="inline-flex items-center justify-center w-12 h-12 bg-[#0067c0] rounded-xl text-white font-bold text-lg shadow-sm mb-3">CV</div>
-              <h2 className="text-2xl font-bold tracking-tight text-slate-900">Welcome Back</h2>
-              <p className="text-xs text-slate-500 mt-1">Sign in to your CostView 360 workspace</p>
+      <div className="flex-1 flex items-center justify-center p-6 py-12">
+        <div className="w-full max-w-[580px]">
+          <div className="bg-white border-2 border-[#E5E5DE] rounded-3xl shadow-xl p-8 md:p-10">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center justify-center w-14 h-14 bg-[#0A2540] rounded-2xl text-white font-black text-xl shadow-md mb-4">
+                CV
+              </div>
+              <h2 className="text-2xl md:text-3xl font-black text-[#0A2540] tracking-tight">
+                Welcome to CostView
+              </h2>
+              <p className="text-sm font-semibold text-[#0A2540]/60 mt-1">
+                Sign in to command your construction costs
+              </p>
             </div>
 
-            <form className="space-y-4" onSubmit={handleLogin}>
-              {errorMsg && <div className="p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-xs font-medium">{errorMsg}</div>}
+            <form className="space-y-5" onSubmit={handleLogin}>
+              {errorMsg && (
+                <div className="p-4 bg-rose-50 border-2 border-rose-200 text-rose-800 rounded-xl text-xs font-bold">
+                  {errorMsg}
+                </div>
+              )}
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-900 mb-1.5">Work Email</label>
+                <label className="block text-xs font-black uppercase tracking-wider text-[#0A2540] mb-2">
+                  Work Email Address
+                </label>
                 <div className="relative">
-                  <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-                  <input type="email" required placeholder="name@firm.ng" value={email} onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-10 pr-3 py-2.5 bg-white border border-slate-200/80 rounded-lg text-sm text-slate-900 placeholder:text-[#8b8b8b] focus:outline-none focus:border-[#0067c0] focus:ring-1 focus:ring-[#0067c0] transition-all" />
+                  <Mail className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#0A2540]/50" />
+                  <input
+                    type="email"
+                    required
+                    placeholder="name@firm.ng"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full pl-11 pr-4 h-12 bg-white border-2 border-[#E5E5DE] rounded-xl text-base font-semibold text-[#0A2540] placeholder-[#0A2540]/40 focus:outline-none focus:border-[#0A2540] transition-all"
+                  />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-900 mb-1.5">Password</label>
+                <label className="block text-xs font-black uppercase tracking-wider text-[#0A2540] mb-2">
+                  Password
+                </label>
                 <div className="relative">
-                  <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-                  <input type="password" required placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-10 pr-3 py-2.5 bg-white border border-slate-200/80 rounded-lg text-sm font-mono text-slate-900 placeholder:text-[#8b8b8b] focus:outline-none focus:border-[#0067c0] focus:ring-1 focus:ring-[#0067c0] transition-all" />
+                  <Lock className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#0A2540]/50" />
+                  <input
+                    type="password"
+                    required
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full pl-11 pr-4 h-12 bg-white border-2 border-[#E5E5DE] rounded-xl text-base font-mono font-semibold text-[#0A2540] placeholder-[#0A2540]/40 focus:outline-none focus:border-[#0A2540] transition-all"
+                  />
                 </div>
-                <p className="text-[11px] text-slate-500 mt-1.5">Demo password for all accounts: <span className="font-mono font-semibold text-[#0067c0] bg-blue-50 border border-blue-200 px-1.5 py-0.5 rounded">DemoPass2026!</span></p>
+                <p className="text-xs text-[#0A2540]/60 font-semibold mt-2">
+                  Demo password for all accounts:{" "}
+                  <span className="font-mono font-black text-[#0A2540] bg-[#FAF9F5] border border-[#E5E5DE] px-2 py-0.5 rounded">
+                    DemoPass2026!
+                  </span>
+                </p>
               </div>
 
-              <button type="submit" disabled={loading}
-                className="w-full mt-2 flex items-center justify-center gap-2 py-3 bg-[#0067c0] hover:bg-[#005ba1] text-white rounded-lg font-semibold text-sm shadow-md transition-all active:scale-[0.98]">
-                {loading ? "Signing in..." : "Sign in to Workspace"} <ArrowRight className="w-4 h-4" />
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full min-h-[50px] mt-2 flex items-center justify-center gap-2.5 bg-[#0A2540] hover:bg-[#003366] text-white rounded-xl font-black text-base shadow-md transition-all active:scale-[0.98] cursor-pointer"
+              >
+                {loading ? "Signing in..." : "Sign in to Workspace"}{" "}
+                <ArrowRight className="w-5 h-5" />
               </button>
             </form>
 
-            <div className="mt-6 pt-5 border-t border-slate-200/80">
-              <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-3 flex items-center justify-between">
-                <span>Quick Test Access — 1 Click (8 roles)</span><span className="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded text-[10px] font-medium">Sandbox Ready</span>
+            {/* Quick Test Demo Role Cards */}
+            <div className="mt-8 pt-6 border-t-2 border-[#E5E5DE]">
+              <div className="text-xs font-black uppercase tracking-wider text-[#0A2540]/70 mb-3.5 flex items-center justify-between">
+                <span>Quick Test Access — 1 Click (8 roles)</span>
+                <span className="bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded text-[11px] font-black">
+                  Sandbox Ready
+                </span>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                 {DEMO_ACCOUNTS.map((b) => {
                   const isCurrent = activeDemoEmail === b.email;
                   return (
@@ -140,33 +195,42 @@ export default function LoginPage() {
                       type="button"
                       onClick={() => handleDemoLogin(b)}
                       disabled={loading}
-                      className={`p-2.5 border rounded-xl text-left transition-all disabled:opacity-50 group relative overflow-hidden ${
+                      className={`p-3 border-2 rounded-xl text-left transition-all disabled:opacity-50 group relative cursor-pointer ${
                         isCurrent
-                          ? "bg-blue-50 border-[#0067c0] shadow-xs"
-                          : "bg-slate-50/80 border-slate-200/80 hover:bg-blue-50 hover:border-[#0067c0] hover:shadow-xs"
+                          ? "bg-[#0A2540] text-white border-[#0A2540] shadow-md"
+                          : "bg-[#FAF9F5] hover:bg-white text-[#0A2540] border-[#E5E5DE] hover:border-[#0A2540]"
                       }`}
                     >
                       <div className="flex items-center justify-between">
-                        <div className="text-xs font-semibold text-slate-900 group-hover:text-[#0067c0]">{b.label}</div>
+                        <div className={`text-xs font-black truncate ${isCurrent ? "text-white" : "text-[#0A2540]"}`}>
+                          {b.label}
+                        </div>
                         {isCurrent && (
-                          <div className="w-2 h-2 rounded-full bg-[#0067c0] animate-ping" />
+                          <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
                         )}
                       </div>
-                      <div className="text-[10px] text-slate-500 truncate">{b.sub}</div>
-                      <div className="text-[9px] font-mono text-[#8b8b8b] truncate">{b.email}</div>
+                      <div className={`text-[10px] font-semibold truncate mt-0.5 ${isCurrent ? "text-white/70" : "text-[#0A2540]/60"}`}>
+                        {b.sub}
+                      </div>
                     </button>
                   );
                 })}
               </div>
-              <p className="text-[11px] text-[#8b8b8b] mt-2 text-center">Click any card to sign in instantly — no typing needed</p>
+              <p className="text-xs text-[#0A2540]/60 font-semibold mt-3 text-center">
+                Click any card to sign in instantly — no typing needed
+              </p>
             </div>
 
-            <div className="mt-6 text-center text-xs">
-              <span className="text-slate-500">New company? </span>
-              <Link href="/register" className="font-semibold text-[#0067c0] hover:underline">Register Workspace →</Link>
+            <div className="mt-8 text-center text-sm font-semibold">
+              <span className="text-[#0A2540]/60">New contractor or firm? </span>
+              <Link href="/register" className="font-black text-[#0A2540] hover:underline">
+                Register Workspace →
+              </Link>
             </div>
           </div>
-          <div className="mt-4 text-center text-[11px] font-mono text-white/50 tracking-wider">© 2026 CostView 360 · Fluent Glassmorphism Edition</div>
+          <div className="mt-5 text-center text-xs font-bold text-[#0A2540]/40 uppercase tracking-widest">
+            © 2026 CostView · Construction Cost Intelligence
+          </div>
         </div>
       </div>
     </div>

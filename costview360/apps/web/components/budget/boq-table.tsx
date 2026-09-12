@@ -413,34 +413,34 @@ export function BOQTable() {
   };
 
   return (
-    <div className="bg-white/90 backdrop-blur-md border border-slate-200/80 rounded-xl shadow-xs overflow-hidden">
-      {/* Sub-Navigation Tabs matching PRD Section 1 - Modern Glassmorphism */}
-      <div className="p-2.5 bg-slate-50/80 border-b border-slate-200/80 flex items-center justify-between overflow-x-auto gap-2">
-        <div className="flex items-center gap-1.5">
+    <div className="bg-white border-2 border-[#E5E5DE] rounded-2xl shadow-sm overflow-hidden">
+      {/* Sub-Navigation Tabs */}
+      <div className="p-3.5 bg-[#FAF9F5] border-b-2 border-[#E5E5DE] flex items-center justify-between overflow-x-auto gap-2">
+        <div className="flex items-center gap-2">
           <button
             onClick={() => setActiveSubTab("master")}
-            className={`px-3.5 py-2 text-xs font-bold tracking-wide transition-all flex items-center gap-1.5 border ${
+            className={`min-h-[44px] px-5 py-2.5 text-sm font-bold tracking-wide transition-all flex items-center gap-2 rounded-xl border-2 ${
               activeSubTab === "master"
-                ? "bg-white text-[#0067c0] border-slate-200/80 shadow-xs"
-                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 border-transparent"
+                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
+                : "bg-white text-[#0A2540]/80 hover:bg-white border-[#E5E5DE]"
             }`}
           >
-            <Layers className="w-3.5 h-3.5 text-emerald-400" />
-            <span>1.2 BOQ Master</span>
+            <Layers className="w-4 h-4" />
+            <span>2.1 BOQ Master</span>
           </button>
 
           <button
             onClick={() => setActiveSubTab("risks")}
-            className={`px-3.5 py-2 text-xs font-bold tracking-wide transition-all flex items-center gap-1.5 border ${
+            className={`min-h-[44px] px-5 py-2.5 text-sm font-bold tracking-wide transition-all flex items-center gap-2 rounded-xl border-2 ${
               activeSubTab === "risks"
-                ? "bg-white text-[#0067c0] border-slate-200/80 shadow-xs"
-                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 border-transparent"
+                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
+                : "bg-white text-[#0A2540]/80 hover:bg-white border-[#E5E5DE]"
             }`}
           >
-            <ShieldAlert className="w-3.5 h-3.5 text-amber-400" />
-            <span>1.4 Cost Control & Risks</span>
+            <ShieldAlert className="w-4 h-4 text-amber-500" />
+            <span>2.2 Cost Control &amp; Risks</span>
             {risks.filter((r) => !r.isHandled).length > 0 && (
-              <span className="text-[11px] bg-amber-100 text-amber-800 px-1.5 py-0.5 font-mono font-semibold border border-amber-200 rounded">
+              <span className="text-xs bg-amber-100 text-amber-900 px-2 py-0.5 font-mono font-bold rounded-full">
                 {risks.filter((r) => !r.isHandled).length}
               </span>
             )}
@@ -448,16 +448,16 @@ export function BOQTable() {
 
           <button
             onClick={() => setActiveSubTab("revisions")}
-            className={`px-3.5 py-2 text-xs font-bold tracking-wide transition-all flex items-center gap-1.5 border ${
+            className={`min-h-[44px] px-5 py-2.5 text-sm font-bold tracking-wide transition-all flex items-center gap-2 rounded-xl border-2 ${
               activeSubTab === "revisions"
-                ? "bg-white text-[#0067c0] border-slate-200/80 shadow-xs"
-                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 border-transparent"
+                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
+                : "bg-white text-[#0A2540]/80 hover:bg-white border-[#E5E5DE]"
             }`}
           >
-            <Clock className="w-3.5 h-3.5 text-blue-400" />
-            <span>1.5 Budget Revisions</span>
+            <Clock className="w-4 h-4" />
+            <span>2.3 Budget Revisions</span>
             {revisions.filter((r) => r.status === "Pending").length > 0 && (
-              <span className="text-[11px] bg-blue-100 text-[#0067c0] px-1.5 py-0.5 font-mono font-semibold border border-blue-200 rounded">
+              <span className="text-xs bg-rose-100 text-rose-800 px-2 py-0.5 font-mono font-bold rounded-full">
                 {revisions.filter((r) => r.status === "Pending").length}
               </span>
             )}
@@ -465,21 +465,21 @@ export function BOQTable() {
 
           <button
             onClick={() => setActiveSubTab("finalAccount")}
-            className={`px-3.5 py-2 text-xs font-bold tracking-wide transition-all flex items-center gap-1.5 border ${
+            className={`min-h-[44px] px-5 py-2.5 text-sm font-bold tracking-wide transition-all flex items-center gap-2 rounded-xl border-2 ${
               activeSubTab === "finalAccount"
-                ? "bg-white text-[#0067c0] border-slate-200/80 shadow-xs"
-                : "text-slate-500 hover:text-slate-900 hover:bg-black/5 border-transparent"
+                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
+                : "bg-white text-[#0A2540]/80 hover:bg-white border-[#E5E5DE]"
             }`}
           >
-            <FileText className="w-3.5 h-3.5 text-purple-400" />
-            <span>1.6 Final Account</span>
+            <FileText className="w-4 h-4" />
+            <span>2.4 Final Account</span>
           </button>
         </div>
 
-        {/* Global Threshold Tag (PRD Question 1) */}
-        <div className="hidden md:flex items-center gap-2 text-xs font-medium text-slate-500 bg-white border border-slate-200/80 px-2.5 py-1 rounded-md shadow-xs">
-          <span className="uppercase tracking-wider">Threshold:</span>
-          <span className="text-emerald-600 font-mono font-bold">±{thresholdPercent}%</span>
+        {/* Global Threshold Tag */}
+        <div className="hidden md:flex items-center gap-2.5 text-sm font-bold text-[#0A2540] bg-white border-2 border-[#E5E5DE] px-4 py-2 rounded-xl shadow-xs">
+          <span className="uppercase tracking-wider text-[#0A2540]/60 text-xs">Threshold:</span>
+          <span className="text-emerald-700 font-mono font-black">±{thresholdPercent}%</span>
         </div>
       </div>
 
@@ -487,48 +487,48 @@ export function BOQTable() {
       {activeSubTab === "master" && (
         <>
           {/* Table Toolbar */}
-          <div className="p-3.5 border-b border-slate-200/80 bg-white flex flex-col md:flex-row md:items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <div className="relative flex-1 md:w-72">
-                <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-900/60" />
+          <div className="p-4 border-b-2 border-[#E5E5DE] bg-white flex flex-col md:flex-row md:items-center justify-between gap-3.5">
+            <div className="flex items-center gap-3 flex-1">
+              <div className="relative flex-1 md:max-w-xs">
+                <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#0A2540]/60" />
                 <input
                   type="text"
                   placeholder="Search code or description..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full pl-9 pr-3 py-1.5 bg-white border border-slate-200/80 rounded-md text-xs font-normal text-slate-900 placeholder-[#8b8b8b] focus:outline-none focus:border-[#0067c0] focus:ring-1 focus:ring-[#0067c0] transition-all"
+                  className="w-full pl-10 pr-3.5 h-11 bg-white border-2 border-[#E5E5DE] rounded-xl text-sm font-semibold text-[#0A2540] placeholder-[#0A2540]/40 focus:outline-none focus:border-[#0A2540] transition-all"
                 />
               </div>
 
-              <div className="flex items-center gap-1 bg-white border border-slate-200/80 rounded-md px-2.5 py-1.5 shadow-xs">
-                <Filter className="w-3.5 h-3.5 text-slate-900/60" />
+              <div className="flex items-center gap-2 bg-white border-2 border-[#E5E5DE] rounded-xl px-3.5 h-11 shadow-xs">
+                <Filter className="w-4 h-4 text-[#0A2540]/60" />
                 <select
                   value={categoryFilter}
                   onChange={(e) => setCategoryFilter(e.target.value)}
-                  className="bg-transparent text-xs font-medium text-slate-900 focus:outline-none cursor-pointer"
+                  className="bg-transparent text-sm font-bold text-[#0A2540] focus:outline-none cursor-pointer"
                 >
                   <option value="All" className="bg-white">All Categories</option>
                   <option value="Material" className="bg-white">Materials</option>
                   <option value="Labour" className="bg-white">Labour</option>
-                  <option value="Plant" className="bg-white">Plant & Machinery</option>
+                  <option value="Plant" className="bg-white">Plant &amp; Machinery</option>
                   <option value="Subcontractor" className="bg-white">Subcontractor</option>
                 </select>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <button
                 onClick={() => setIsImportModalOpen(true)}
-                className="flex items-center gap-1.5 bg-white hover:bg-[#f5f5f5] text-slate-900 border border-slate-200/80 rounded-md px-3 py-1.5 text-xs font-medium shadow-xs transition-all"
+                className="flex items-center gap-2 bg-[#FAF9F5] hover:bg-[#F2F1EC] text-[#0A2540] border-2 border-[#E5E5DE] rounded-xl px-4 h-11 text-xs font-black uppercase tracking-wider shadow-xs transition-all cursor-pointer"
               >
-                <Download className="w-3.5 h-3.5 text-slate-900 rotate-180" />
+                <Download className="w-4 h-4 text-[#0A2540] rotate-180" />
                 <span>Import BOQ / CSV</span>
               </button>
               <button
                 onClick={() => setIsAddModalOpen(true)}
-                className="flex items-center gap-1.5 bg-[#0067c0] hover:bg-[#005ba1] text-white rounded-md px-3.5 py-1.5 text-xs font-semibold shadow-xs transition-all"
+                className="flex items-center gap-2 bg-[#0A2540] hover:bg-[#003366] text-white rounded-xl px-5 h-11 text-xs font-black uppercase tracking-wider shadow-md transition-all cursor-pointer"
               >
-                <Plus className="w-3.5 h-3.5" />
+                <Plus className="w-4 h-4" />
                 <span>Add BOQ Item</span>
               </button>
             </div>
@@ -536,108 +536,111 @@ export function BOQTable() {
 
           {/* Table Data */}
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
+            <table className="w-full text-left text-sm border-collapse">
               <thead>
-                <tr className="border-b border-slate-200/80 bg-slate-50/80 text-slate-500 font-semibold uppercase text-xs tracking-wider">
-                  <th className="py-3 px-4">Cost Code</th>
-                  <th className="py-3 px-4">Description</th>
-                  <th className="py-3 px-3">Category</th>
-                  <th className="py-3 px-3">Unit</th>
-                  <th className="py-3 px-3 text-right">Qty</th>
-                  <th className="py-3 px-3 text-right">Rate</th>
-                  <th className="py-3 px-4 text-right">Approved Budget</th>
-                  <th className="py-3 px-4 text-right">Committed (POs)</th>
-                  <th className="py-3 px-4 text-right">Variance</th>
-                  <th className="py-3 px-3 text-center">Status</th>
-                  <th className="py-3 px-3 text-center">Actions</th>
+                <tr className="border-b-2 border-[#E5E5DE] bg-[#FAF9F5] text-[#0A2540] font-black uppercase text-xs tracking-wider">
+                  <th className="py-4 px-4">Cost Code</th>
+                  <th className="py-4 px-4">Description</th>
+                  <th className="py-4 px-3">Category</th>
+                  <th className="py-4 px-3">Unit</th>
+                  <th className="py-4 px-3 text-right">Qty</th>
+                  <th className="py-4 px-3 text-right">Rate</th>
+                  <th className="py-4 px-4 text-right">Approved Budget</th>
+                  <th className="py-4 px-4 text-right">Committed (POs)</th>
+                  <th className="py-4 px-4 text-right">Variance</th>
+                  <th className="py-4 px-3 text-center">Status</th>
+                  <th className="py-4 px-3 text-center">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#e5e5e5] text-slate-900">
+              <tbody className="divide-y divide-[#E5E5DE] text-slate-900">
                 {filteredItems.map((item) => {
                   const variance = item.budgetAmount - item.committedAmount;
                   const varianceRatio = item.budgetAmount > 0 ? (item.committedAmount - item.budgetAmount) / item.budgetAmount : 0;
                   
                   // PRD Question 1: ±5% threshold indicator
-                  const statusLabel =
-                    varianceRatio > 0.05
-                      ? "Over Budget"
-                      : varianceRatio < -0.05
-                      ? "Under Budget"
-                      : "On Budget";
+                  const isOverBudget = item.committedAmount > item.budgetAmount;
+                  const isThresholdExceeded = Math.abs(varianceRatio) > (thresholdPercent / 100);
+                  
+                  let statusColor = "bg-emerald-50 text-emerald-800 border-emerald-300";
+                  let statusLabel = "On Track";
 
-                  const statusColor =
-                    statusLabel === "Over Budget"
-                      ? "bg-red-50 text-red-700 border border-red-200 rounded-md"
-                      : statusLabel === "Under Budget"
-                      ? "bg-blue-50 text-[#0067c0] border border-blue-200 rounded-md"
-                      : "bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-md";
+                  if (isOverBudget && isThresholdExceeded) {
+                    statusColor = "bg-rose-50 text-rose-800 border-rose-300 font-bold";
+                    statusLabel = "Over Threshold";
+                  } else if (isOverBudget) {
+                    statusColor = "bg-amber-50 text-amber-900 border-amber-300 font-bold";
+                    statusLabel = "Over Budget";
+                  } else if (item.committedAmount > 0) {
+                    statusColor = "bg-blue-50 text-[#0A2540] border-blue-200 font-bold";
+                    statusLabel = "Committed";
+                  }
 
                   return (
-                    <tr key={item.id} className="hover:bg-[#f5f5f5]/70 transition-colors">
-                      <td className="py-3 px-4 font-mono font-bold text-emerald-500 whitespace-nowrap">
-                        {item.code}
+                    <tr
+                      key={item.id}
+                      className="hover:bg-[#FAF9F5] transition-colors group text-sm"
+                    >
+                      <td className="py-4 px-4 font-mono font-black text-[#0A2540] whitespace-nowrap">
+                        <div className="flex items-center gap-1.5">
+                          <span>{item.code}</span>
+                          {isThresholdExceeded && (
+                            <AlertCircle className="w-4 h-4 text-rose-600 inline shrink-0" />
+                          )}
+                        </div>
                       </td>
-                      <td className="py-3 px-4 font-bold text-slate-900 max-w-xs">
+                      <td className="py-4 px-4 font-bold text-slate-800 max-w-sm">
                         {item.description}
                       </td>
-                      <td className="py-3 px-3">
-                        <span className={`px-2 py-0.5 text-xs font-medium rounded-md border ${
-                          item.category === "Material"
-                            ? "bg-blue-50 text-blue-700 border-blue-200"
-                            : item.category === "Labour"
-                            ? "bg-amber-50 text-amber-700 border-amber-200"
-                            : item.category === "Plant"
-                            ? "bg-purple-50 text-purple-700 border-purple-200"
-                            : "bg-emerald-50 text-emerald-700 border-emerald-200"
-                        }`}>
+                      <td className="py-4 px-3 whitespace-nowrap">
+                        <span className="px-2.5 py-1 text-xs font-bold rounded-lg border border-[#E5E5DE] bg-white text-[#0A2540]">
                           {item.category}
                         </span>
                       </td>
-                      <td className="py-3 px-3 text-slate-900/80 font-bold">{item.unit}</td>
-                      <td className="py-3 px-3 text-right font-mono font-bold text-slate-900">
+                      <td className="py-4 px-3 text-[#0A2540]/80 font-bold">{item.unit}</td>
+                      <td className="py-4 px-3 text-right font-mono font-black text-[#0A2540]">
                         {item.quantity.toLocaleString()}
                       </td>
-                      <td className="py-3 px-3 text-right font-mono font-bold text-slate-900">
+                      <td className="py-4 px-3 text-right font-mono font-black text-[#0A2540]">
                         {formatCurrency(item.rate, currency)}
                       </td>
-                      <td className="py-3 px-4 text-right font-mono font-bold text-slate-900 whitespace-nowrap">
+                      <td className="py-4 px-4 text-right font-mono font-black text-[#0A2540] whitespace-nowrap">
                         {formatCurrency(item.budgetAmount, currency)}
                       </td>
-                      <td className="py-3 px-4 text-right font-mono font-bold text-slate-900 whitespace-nowrap">
+                      <td className="py-4 px-4 text-right font-mono font-black text-[#0A2540] whitespace-nowrap">
                         {formatCurrency(item.committedAmount, currency)}
                       </td>
-                      <td className="py-3 px-4 text-right font-mono whitespace-nowrap">
-                        <span className={`font-bold ${variance < 0 ? "text-red-600" : "text-emerald-700"}`}>
+                      <td className="py-4 px-4 text-right font-mono whitespace-nowrap">
+                        <span className={`font-black ${variance < 0 ? "text-rose-600" : "text-emerald-700"}`}>
                           {formatCurrency(variance, currency)}
                         </span>
                       </td>
-                      <td className="py-3 px-3 text-center whitespace-nowrap">
-                        <span className={`px-2 py-0.5 text-xs font-medium rounded-md border ${statusColor}`}>
+                      <td className="py-4 px-3 text-center whitespace-nowrap">
+                        <span className={`px-3 py-1 text-xs font-bold rounded-lg border ${statusColor}`}>
                           {statusLabel}
                         </span>
                       </td>
-                      <td className="py-3 px-3 text-center whitespace-nowrap">
-                        <div className="flex items-center justify-center gap-1.5">
+                      <td className="py-4 px-3 text-center whitespace-nowrap">
+                        <div className="flex items-center justify-center gap-2">
                           <button
                             onClick={() => handleOpenRevision(item)}
                             title="Request Revision"
-                            className="p-1.5 text-slate-500 hover:text-[#0067c0] hover:bg-blue-50 rounded-md transition-all"
+                            className="p-2 text-[#0A2540]/70 hover:text-[#0A2540] hover:bg-[#FAF9F5] border border-transparent hover:border-[#E5E5DE] rounded-lg transition-all"
                           >
-                            <Edit3 className="w-3.5 h-3.5" />
+                            <Edit3 className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleOpenEdit(item)}
                             title="Edit Item Details"
-                            className="p-1.5 text-slate-500 hover:text-[#0067c0] hover:bg-blue-50 rounded-md transition-all"
+                            className="p-2 text-[#0A2540]/70 hover:text-[#0A2540] hover:bg-[#FAF9F5] border border-transparent hover:border-[#E5E5DE] rounded-lg transition-all"
                           >
-                            <FileCheck className="w-3.5 h-3.5" />
+                            <FileCheck className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleDeleteItem(item.id)}
                             title="Delete Item"
-                            className="p-1.5 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-md transition-all"
+                            className="p-2 text-[#0A2540]/70 hover:text-rose-600 hover:bg-rose-50 border border-transparent hover:border-rose-200 rounded-lg transition-all"
                           >
-                            <Trash2 className="w-3.5 h-3.5" />
+                            <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
                       </td>
@@ -684,7 +687,7 @@ export function BOQTable() {
                       ? "bg-rose-50 text-rose-600 border-rose-200"
                       : risk.severity === "Medium"
                       ? "bg-amber-50 text-amber-600 border-amber-200"
-                      : "bg-blue-50 text-[#0067c0] border-blue-200"
+                      : "bg-[#FAF9F5] text-[#0A2540] border-[#E5E5DE]"
                   }`}>
                     <AlertCircle className="w-4 h-4" />
                   </div>
@@ -692,7 +695,7 @@ export function BOQTable() {
                     <div className="flex items-center gap-2 mb-1">
                       <span className="font-mono font-bold text-slate-900 text-xs">{risk.itemCode}</span>
                       <span className="text-slate-900/40">·</span>
-                      <span className="text-xs uppercase font-bold text-slate-900 bg-blue-50 text-[#0067c0] border-blue-200 px-2 py-0.5 border border-slate-200/80">
+                      <span className="text-xs uppercase font-bold bg-[#FAF9F5] text-[#0A2540] border border-[#E5E5DE] px-2 py-0.5 rounded">
                         +{risk.variancePercentage}% Variance
                       </span>
                     </div>

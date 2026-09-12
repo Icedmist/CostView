@@ -471,7 +471,7 @@ export function ThreeWayMatchView({
             onClick={() => handleSubTabClick("match")}
             className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "match"
-                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
                 : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
@@ -483,7 +483,7 @@ export function ThreeWayMatchView({
             onClick={() => handleSubTabClick("requisitions")}
             className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "requisitions"
-                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
                 : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
@@ -502,7 +502,7 @@ export function ThreeWayMatchView({
             onClick={() => handleSubTabClick("enquiries")}
             className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "enquiries"
-                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
                 : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
@@ -514,7 +514,7 @@ export function ThreeWayMatchView({
             onClick={() => handleSubTabClick("invoices")}
             className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "invoices"
-                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
                 : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
@@ -526,7 +526,7 @@ export function ThreeWayMatchView({
             onClick={() => handleSubTabClick("payments")}
             className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "payments"
-                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
                 : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
@@ -553,9 +553,9 @@ export function ThreeWayMatchView({
             </div>
             <button
               onClick={() => setIsNewInvoiceOpen(true)}
-              className="px-3.5 py-1.5 bg-[#0067c0] hover:bg-[#005ba1] text-white rounded-md text-xs font-semibold uppercase tracking-wider shadow-xs rounded-xl transition-all active:scale-[0.98] flex items-center gap-1.5"
+              className="min-h-[44px] px-5 py-2.5 bg-[#0A2540] hover:bg-[#003366] text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-md transition-all active:scale-[0.98] flex items-center gap-2 cursor-pointer"
             >
-              <Plus className="w-3.5 h-3.5" />
+              <Plus className="w-4 h-4" />
               <span>Log Supplier Invoice</span>
             </button>
           </div>
@@ -818,10 +818,10 @@ export function ThreeWayMatchView({
                       </div>
                       <button
                         onClick={() => alert(`Supplier ${quote.name} selected. Converting RFQ to Purchase Order.`)}
-                        className="mt-3 w-full py-2 bg-blue-50 text-[#0067c0] border-blue-200 hover:bg-[#0067c0] text-slate-900 border border-slate-200/80 text-xs font-bold tracking-wide shadow-xs rounded-xl transition-all active:scale-[0.98] flex items-center justify-center gap-1"
+                        className="mt-3 w-full min-h-[42px] bg-[#FAF9F5] text-[#0A2540] hover:bg-[#0A2540] hover:text-white border-2 border-[#E5E5DE] text-xs font-black tracking-wide shadow-xs rounded-xl transition-all active:scale-[0.98] flex items-center justify-center gap-1.5 cursor-pointer"
                       >
-                        <span>Award & Create PO</span>
-                        <ArrowRight className="w-3 h-3 text-slate-900" />
+                        <span>Award &amp; Create PO</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   ))}
@@ -1044,7 +1044,7 @@ export function ThreeWayMatchView({
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#0067c0] hover:bg-[#005ba1] text-white rounded-md text-xs font-semibold uppercase tracking-wider shadow-xs rounded-xl transition-all active:scale-[0.98]"
+                  className="min-h-[44px] px-6 py-2.5 bg-[#0A2540] hover:bg-[#003366] text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-md transition-all active:scale-[0.98] cursor-pointer"
                 >
                   Submit Requisition
                 </button>
@@ -1225,9 +1225,9 @@ export function ThreeWayMatchView({
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#0067c0] hover:bg-[#005ba1] text-white rounded-md text-xs font-semibold uppercase tracking-wider shadow-xs rounded-xl transition-all active:scale-[0.98]"
+                  className="min-h-[44px] px-6 py-2.5 bg-[#0A2540] hover:bg-[#003366] text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-md transition-all active:scale-[0.98] cursor-pointer"
                 >
-                  Confirm & Release Funds
+                  Confirm &amp; Release Funds
                 </button>
               </div>
             </form>

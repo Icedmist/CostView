@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useApp } from "@/app/providers";
 import type { RoleName } from "@/lib/supabase/database.types";
 import {
@@ -18,8 +19,6 @@ import {
   Building2,
   Receipt,
   FileCheck,
-  Scale,
-  DollarSign,
   ClipboardList,
   Home,
   X,
@@ -28,6 +27,7 @@ import {
   BookOpen,
   ChevronDown,
   ChevronRight,
+  ChevronLeft,
   BadgeCheck,
   Clock,
   Truck,
@@ -45,6 +45,8 @@ import {
   AlertTriangle,
   FolderSync,
   User,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from "lucide-react";
 import { canAccess } from "@/lib/auth/permissions";
 import { OnboardingModal } from "@/components/onboarding/onboarding-modal";
@@ -122,16 +124,15 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
     ],
   },
   {
-    id: "Commercial & Contracts",
-    name: "Commercial & Contracts",
+    id: "Contracts & Subcontractors",
+    name: "Contracts & Subcontractors",
     code: "5.0",
-    icon: Scale,
+    icon: Briefcase,
     permission: "Subcontractors",
     subSections: [
       { id: "contracts", name: "Subcontractor Ledger", code: "5.1", icon: Briefcase },
       { id: "claims", name: "10% Retention Escrow & Certs", code: "5.2", icon: Receipt },
       { id: "instructions", name: "Site Instructions Register", code: "5.3", icon: ScrollText },
-      { id: "feasibility", name: "Project Margin & Feasibility", code: "5.4", icon: DollarSign, badge: "LIVE" },
     ],
   },
   {
@@ -160,22 +161,11 @@ const ALL_ROLES: RoleName[] = [
   "Storekeeper",
 ];
 
-const DEMO_USER_NAMES: Record<string, string> = {
-  Admin: "Adebayo Admin",
-  "Project Manager": "Babatunde Adeyemi",
-  "Quantity Surveyor": "Mrs. Nkechi",
-  Architect: "David Okafor",
-  "Site Engineer": "Engr. Tayo",
-  "Procurement Officer": "Chidi Procurement",
-  Accountant: "Funke Accountant",
-  Storekeeper: "Musa Storekeeper",
-};
-
 interface SidebarProps {
   activeSection?: string;
   activeSubSection?: string;
   onSelectNav?: (section: string, subSection?: string) => void;
-  // Backwards compatibility props
+  // Legacy props compatibility
   activeTab?: string;
   onSelectTab?: (tab: string) => void;
   open?: boolean;
@@ -183,330 +173,336 @@ interface SidebarProps {
 }
 
 export function Sidebar({
-  activeSection,
-  activeSubSection,
+  activeSection = "Command Center",
+  activeSubSection = "telemetry",
   onSelectNav,
   activeTab,
   onSelectTab,
-  open = true,
+  open,
   onClose,
 }: SidebarProps) {
-  const { activeRole, setActiveRole } = useApp();
+  const { activeRole, setActiveRole, currentProject } = useApp();
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
+  const [userName, setUserName] = useState<string>("CostView User");
+  const [userEmail, setUserEmail] = useState<string>("user@costview.ng");
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
-  const [userName, setUserName] = useState(DEMO_USER_NAMES[activeRole] || "Abubakar Alkali");
+  const [subPanelCollapsed, setSubPanelCollapsed] = useState(false);
+  const router = useRouter();
 
-  // Resolve current active section
-  const currentActiveSection = activeSection || (activeTab === "Dashboard" ? "Command Center" : activeTab) || "Command Center";
-  const currentActiveSub = activeSubSection || "";
+  // Handle compatibility mapping
+  const currentSection = activeSection || "Command Center";
+  const activePrimary = NAVIGATION_SECTIONS.find((s) => s.id === currentSection) || NAVIGATION_SECTIONS[0];
 
-  // Track expanded sections: default to activeSection
-  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
-    [currentActiveSection]: true,
-  });
-
-  // Keep active section expanded
   useEffect(() => {
-    if (currentActiveSection) {
-      setExpandedSections((prev) => ({ ...prev, [currentActiveSection]: true }));
+    if (typeof window !== "undefined") {
+      const demoRole = localStorage.getItem("costview_demo_role") || activeRole;
+      const demoEmail = localStorage.getItem("costview_demo_email");
+
+      const roleDisplayMap: Record<string, { name: string; email: string }> = {
+        Admin: { name: "Adebayo Admin", email: "admin@costview.ng" },
+        "Project Manager": { name: "Babatunde Adeyemi", email: "pm@costview.ng" },
+        "Quantity Surveyor": { name: "Mrs. Nkechi", email: "qs@costview.ng" },
+        Architect: { name: "David Okafor", email: "arch@costview.ng" },
+        "Site Engineer": { name: "Engr. Tayo", email: "site@costview.ng" },
+        "Procurement Officer": { name: "Chidi Procurement", email: "procure@costview.ng" },
+        Accountant: { name: "Funke Accountant", email: "acct@costview.ng" },
+        Storekeeper: { name: "Musa Storekeeper", email: "store@costview.ng" },
+      };
+
+      const mapped = roleDisplayMap[demoRole] || {
+        name: `CostView (${demoRole})`,
+        email: demoEmail || `${demoRole.toLowerCase().replace(/\s+/g, ".")}@costview.ng`,
+      };
+
+      setUserName(mapped.name);
+      setUserEmail(mapped.email);
     }
-  }, [currentActiveSection]);
-
-  useEffect(() => {
-    import("@/lib/supabase/client").then(({ createClient }) => {
-      const supabase = createClient();
-      supabase.auth.getUser().then(({ data }) => {
-        const metaName = data.user?.user_metadata?.full_name;
-        if (metaName) {
-          setUserName(metaName);
-        } else if (DEMO_USER_NAMES[activeRole]) {
-          setUserName(DEMO_USER_NAMES[activeRole]);
-        }
-      });
-    });
   }, [activeRole]);
 
-  const initials =
-    userName
-      .split(" ")
-      .map((p) => p[0])
-      .filter(Boolean)
-      .slice(0, 2)
-      .join("")
-      .toUpperCase() || "CV";
-
-  const handleSectionClick = (sec: PrimarySection) => {
-    const isCurrentlyExpanded = !!expandedSections[sec.id];
-    setExpandedSections((prev) => ({ ...prev, [sec.id]: !isCurrentlyExpanded }));
-
-    // Activate the first sub-section if not already on this section
-    if (currentActiveSection !== sec.id) {
-      const firstSub = sec.subSections[0]?.id;
-      if (onSelectNav) {
-        onSelectNav(sec.id, firstSub);
-      } else if (onSelectTab) {
-        onSelectTab(sec.id);
-      }
+  const handleRoleChange = (newRole: RoleName) => {
+    setActiveRole(newRole);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("costview_demo_role", newRole);
+      document.cookie = `costview_demo_role=${newRole}; path=/; max-age=604800; SameSite=Lax`;
     }
   };
 
-  const handleSubSectionClick = (secId: string, subId: string) => {
+  const handlePrimaryClick = (sectionId: string) => {
+    const sec = NAVIGATION_SECTIONS.find((s) => s.id === sectionId);
+    const firstSub = sec?.subSections[0]?.id || "";
     if (onSelectNav) {
-      onSelectNav(secId, subId);
+      onSelectNav(sectionId, firstSub);
     } else if (onSelectTab) {
-      onSelectTab(secId);
+      onSelectTab(sectionId);
     }
-    if (onClose) onClose();
+    if (subPanelCollapsed) {
+      setSubPanelCollapsed(false);
+    }
   };
 
-  const handleLogout = async () => {
-    const { createClient } = await import("@/lib/supabase/client");
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    localStorage.removeItem("costview_demo_role");
-    localStorage.removeItem("costview_demo_email");
-    localStorage.removeItem("costview_last_active");
-    document.cookie = "costview_demo_role=; path=/; max-age=0";
-    sessionStorage.clear();
-    window.location.href = "/login";
+  const handleSubClick = (subId: string) => {
+    if (onSelectNav) {
+      onSelectNav(currentSection, subId);
+    } else if (onSelectTab) {
+      onSelectTab(subId);
+    }
+    if (onClose) {
+      onClose();
+    }
   };
+
+  const handleLogout = () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("costview_demo_role");
+      localStorage.removeItem("costview_demo_email");
+      localStorage.removeItem("costview_last_active");
+      sessionStorage.clear();
+      document.cookie = "costview_demo_role=; path=/; max-age=0";
+      window.location.href = "/login";
+    }
+  };
+
+  const initials = userName
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
 
   return (
     <>
-      {/* Mobile overlay */}
+      {/* Mobile Backdrop Overlay */}
       {open && (
         <div
-          className="fixed inset-0 bg-[#0A1931]/50 backdrop-blur-xs z-30 lg:hidden"
           onClick={onClose}
+          className="fixed inset-0 bg-[#0A2540]/60 backdrop-blur-sm z-40 lg:hidden"
         />
       )}
 
+      {/* Supabase-Style Dual-Rail Navigation Container */}
       <aside
-        className={`fixed lg:static inset-y-0 left-0 z-40 w-[320px] lg:w-[320px] bg-white text-slate-900 border-r border-slate-200 flex flex-col h-screen select-none shrink-0 transition-transform duration-300 shadow-sm ${
-          open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-        } overflow-hidden`}
+        className={`fixed top-0 bottom-0 left-0 z-50 flex transform transition-transform duration-200 ease-in-out lg:relative lg:translate-x-0 ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
-        {/* Brand Header */}
-        <div className="shrink-0 p-4 pb-3 bg-white border-b border-slate-100">
-          <div className="flex items-center justify-between px-1">
-            <Link href="/" className="group flex items-baseline select-none">
-              <span className="text-2xl font-black text-[#0A1931] tracking-tight">CostView</span>
-              <span className="text-2xl font-extrabold text-[#D4A017] ml-1 tracking-tight">360</span>
+        {/* TIER 1: SUPABASE PRIMARY ICON RAIL (w-[68px], Bright Navy #0A2540) */}
+        <div className="w-[68px] bg-[#0A2540] flex flex-col items-center justify-between py-4 border-r border-[#0A2540]/30 shrink-0 z-20 text-white select-none shadow-lg">
+          {/* Top: Logo Block */}
+          <div className="flex flex-col items-center gap-6">
+            <Link
+              href="/dashboard"
+              title="CostView Home"
+              className="w-11 h-11 bg-white text-[#0A2540] rounded-xl flex items-center justify-center font-black text-base shadow-md hover:scale-105 transition-transform"
+            >
+              CV
             </Link>
-            <button
-              onClick={onClose}
-              className="lg:hidden w-8 h-8 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-600 hover:text-slate-900 cursor-pointer"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-          <div className="px-1 text-xs font-bold text-slate-500 uppercase tracking-wider mt-1">
-            Construction Cost Intelligence
-          </div>
-        </div>
 
-        {/* Scrollable Navigation Body */}
-        <div className="flex-1 min-h-0 overflow-y-auto p-3.5 space-y-3">
-          {/* User Profile Card */}
-          <div className="relative">
-            <div
-              onClick={() => setAccountMenuOpen((v) => !v)}
-              className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-all border border-slate-200 bg-white shadow-xs"
-            >
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#0A1931] to-[#1E3A5F] flex items-center justify-center text-white font-bold text-sm shadow-xs shrink-0">
-                <span>{initials}</span>
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="text-sm font-bold text-slate-900 truncate">{userName}</div>
-                <div className="text-xs text-slate-500 truncate font-semibold">{activeRole}</div>
-              </div>
-              <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
-            </div>
+            {/* Primary Domain Icons */}
+            <nav className="flex flex-col items-center gap-3">
+              {NAVIGATION_SECTIONS.map((section) => {
+                const Icon = section.icon;
+                const isAllowed = !section.permission || canAccess(activeRole, section.permission as any);
+                const isActive = currentSection === section.id;
 
-            {accountMenuOpen && (
-              <div className="absolute top-full left-0 right-0 mt-1.5 bg-white border border-slate-200 rounded-xl shadow-xl p-2 z-50 animate-in fade-in">
-                <Link
-                  href="/account"
-                  onClick={() => setAccountMenuOpen(false)}
-                  className="px-3 py-2.5 rounded-lg text-xs font-bold text-slate-800 hover:bg-slate-100 cursor-pointer flex items-center gap-2"
-                >
-                  <User className="w-4 h-4 text-[#0A1931]" />
-                  <span>My Account & Profile</span>
-                </Link>
-                <div
-                  onClick={() => {
-                    setAccountMenuOpen(false);
-                    handleSubSectionClick("Administration", "settings");
-                  }}
-                  className="px-3 py-2.5 rounded-lg text-xs font-bold text-slate-800 hover:bg-slate-100 cursor-pointer flex items-center gap-2"
-                >
-                  <Settings className="w-4 h-4 text-slate-500" />
-                  <span>Workspace Settings</span>
-                </div>
-                <div
-                  onClick={() => {
-                    setAccountMenuOpen(false);
-                    setIsOnboardingOpen(true);
-                  }}
-                  className="px-3 py-2.5 rounded-lg text-xs font-bold text-slate-800 hover:bg-slate-100 cursor-pointer flex items-center gap-2"
-                >
-                  <BookOpen className="w-4 h-4 text-[#D4A017]" />
-                  <span>Interactive User Guide</span>
-                </div>
-                <div className="h-[1px] bg-slate-100 my-1" />
-                <div
-                  onClick={() => {
-                    setAccountMenuOpen(false);
-                    handleLogout();
-                  }}
-                  className="px-3 py-2.5 rounded-lg text-xs font-bold text-rose-600 hover:bg-rose-50 cursor-pointer flex items-center gap-2"
-                >
-                  <LogOut className="w-4 h-4" />
-                  <span>Sign Out</span>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Role Simulator Selector */}
-          <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-xs">
-            <div className="text-[11px] uppercase font-bold tracking-wider text-slate-500 flex items-center justify-between mb-1.5 px-0.5">
-              <span>Active Simulator Role</span>
-              <span className="text-[#0A1931] bg-blue-100/70 px-2 py-0.5 rounded-md text-[10px] font-bold border border-blue-200">
-                RBAC LIVE
-              </span>
-            </div>
-            <select
-              value={activeRole}
-              onChange={(e) => setActiveRole(e.target.value as RoleName)}
-              className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-[#0A1931] focus:outline-none focus:border-[#0A1931] cursor-pointer shadow-xs"
-            >
-              {ALL_ROLES.map((role) => (
-                <option key={role} value={role}>
-                  {role}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Navigation Section Tree */}
-          <nav className="space-y-1.5 pt-1">
-            <div className="px-2 py-1 text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">
-              Modules &amp; Sub-Navigation
-            </div>
-
-            {NAVIGATION_SECTIONS.map((section) => {
-              const allowed = !section.permission || canAccess(activeRole, section.permission as any);
-              const isSectionActive = currentActiveSection === section.id;
-              const isExpanded = !!expandedSections[section.id];
-
-              return (
-                <div key={section.id} className="space-y-1">
-                  {/* Primary Section Button */}
+                return (
                   <button
-                    onClick={() => allowed && handleSectionClick(section)}
-                    disabled={!allowed}
-                    className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-bold transition-all cursor-pointer ${
-                      !allowed
-                        ? "opacity-40 cursor-not-allowed text-slate-400"
-                        : isSectionActive
-                        ? "bg-[#0A1931] text-white shadow-sm border border-[#0A1931]"
-                        : "text-slate-700 hover:bg-slate-100 hover:text-slate-900 border border-transparent"
+                    key={section.id}
+                    onClick={() => isAllowed && handlePrimaryClick(section.id)}
+                    disabled={!isAllowed}
+                    title={`${section.code} ${section.name}${!isAllowed ? " (Restricted for your role)" : ""}`}
+                    className={`relative w-11 h-11 rounded-xl flex items-center justify-center transition-all cursor-pointer group ${
+                      !isAllowed
+                        ? "opacity-35 cursor-not-allowed text-white/40"
+                        : isActive
+                        ? "bg-white text-[#0A2540] shadow-md font-bold"
+                        : "text-white/80 hover:bg-white/15 hover:text-white"
                     }`}
                   >
-                    <div className="flex items-center gap-3 truncate">
-                      <section.icon
-                        className={`w-5 h-5 shrink-0 ${
-                          isSectionActive ? "text-[#D4A017]" : "text-slate-500"
-                        }`}
-                      />
-                      <span className="truncate">{section.name}</span>
-                    </div>
-
-                    <div className="flex items-center gap-2 shrink-0">
-                      {!allowed ? (
-                        <Lock className="w-3.5 h-3.5 text-slate-400" />
-                      ) : (
-                        <>
-                          {section.badge && (
-                            <span
-                              className={`px-2 py-0.5 text-xs font-extrabold rounded-full ${
-                                isSectionActive
-                                  ? "bg-[#D4A017] text-[#0A1931]"
-                                  : "bg-blue-100 text-[#0A1931]"
-                              }`}
-                            >
-                              {section.badge}
-                            </span>
-                          )}
-                          {isExpanded ? (
-                            <ChevronDown className="w-4 h-4 text-slate-400" />
-                          ) : (
-                            <ChevronRight className="w-4 h-4 text-slate-400" />
-                          )}
-                        </>
-                      )}
+                    <Icon className="w-5 h-5" />
+                    {section.badge && (
+                      <span className="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center shadow-xs">
+                        {section.badge}
+                      </span>
+                    )}
+                    {/* Tooltip on hover */}
+                    <div className="absolute left-full ml-3 px-3 py-1.5 bg-[#0A2540] text-white text-xs font-bold rounded-lg shadow-xl whitespace-nowrap hidden group-hover:block z-50 pointer-events-none border border-white/20">
+                      {section.code} {section.name}
                     </div>
                   </button>
+                );
+              })}
+            </nav>
+          </div>
 
-                  {/* Expanding Sub-Nav Tree */}
-                  {allowed && isExpanded && (
-                    <div className="pl-4 pr-1 py-1 space-y-1 border-l-2 border-[#0A1931]/20 ml-5 animate-in slide-in-from-top-2 duration-200">
-                      {section.subSections.map((sub) => {
-                        const isSubActive =
-                          isSectionActive && (currentActiveSub === sub.id || (!currentActiveSub && section.subSections[0]?.id === sub.id));
+          {/* Bottom Actions on Primary Rail */}
+          <div className="flex flex-col items-center gap-3">
+            {/* User Guide Button */}
+            <button
+              onClick={() => setIsOnboardingOpen(true)}
+              title="Interactive User Guide"
+              className="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
+            >
+              <BookOpen className="w-5 h-5" />
+            </button>
 
-                        return (
-                          <button
-                            key={sub.id}
-                            onClick={() => handleSubSectionClick(section.id, sub.id)}
-                            className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                              isSubActive
-                                ? "bg-[#0A1931] text-white font-bold shadow-xs border border-[#0A1931]"
-                                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 border border-transparent"
-                            }`}
-                          >
-                            <div className="flex items-center gap-2.5 truncate">
-                              <sub.icon
-                                className={`w-3.5 h-3.5 shrink-0 ${
-                                  isSubActive ? "text-[#D4A017]" : "text-slate-400"
-                                }`}
-                              />
-                              <span className="truncate">{sub.name}</span>
-                            </div>
+            {/* Account Quick Link */}
+            <Link
+              href="/account"
+              title="My Account"
+              className="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center font-bold text-xs transition-colors border border-white/20"
+            >
+              <span>{initials}</span>
+            </Link>
+          </div>
+        </div>
 
-                            {sub.badge && (
-                              <span
-                                className={`px-1.5 py-0.2 text-[10px] font-extrabold rounded-full ${
-                                  isSubActive
-                                    ? "bg-[#D4A017] text-[#0A1931]"
-                                    : "bg-slate-200 text-slate-700"
-                                }`}
-                              >
-                                {sub.badge}
-                              </span>
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
+        {/* TIER 2: SUPABASE SECONDARY SUB-NAV PANEL (w-64, Milk/White Background) */}
+        {!subPanelCollapsed && (
+          <div className="w-64 bg-[#FAF9F5] border-r-2 border-[#E5E5DE] flex flex-col justify-between shrink-0 z-10 animate-in fade-in duration-150">
+            {/* Sub-Nav Header */}
+            <div>
+              <div className="p-4 border-b-2 border-[#E5E5DE] bg-white flex items-center justify-between">
+                <div>
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-[#0A2540]/60">
+                    {activePrimary.code} Domain
+                  </div>
+                  <div className="text-base font-extrabold text-[#0A2540] truncate leading-tight mt-0.5">
+                    {activePrimary.name}
+                  </div>
                 </div>
-              );
-            })}
-          </nav>
-        </div>
+                <button
+                  onClick={() => setSubPanelCollapsed(true)}
+                  title="Collapse Sub-Navigation"
+                  className="w-7 h-7 rounded-lg hover:bg-slate-100 flex items-center justify-center text-[#0A2540]/60 hover:text-[#0A2540]"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+              </div>
 
-        {/* User Guide Footer Hub */}
-        <div className="p-3.5 border-t border-slate-200 bg-white">
+              {/* Sub-Sections List */}
+              <div className="p-3 space-y-1.5 overflow-y-auto max-h-[calc(100vh-220px)]">
+                {activePrimary.subSections.map((sub) => {
+                  const SubIcon = sub.icon;
+                  const isSubActive = activeSubSection === sub.id;
+
+                  return (
+                    <button
+                      key={sub.id}
+                      onClick={() => handleSubClick(sub.id)}
+                      className={`w-full min-h-[44px] px-3.5 py-2.5 rounded-xl text-left font-bold text-sm transition-all flex items-center justify-between group cursor-pointer ${
+                        isSubActive
+                          ? "bg-[#0A2540] text-white shadow-sm"
+                          : "text-[#0A2540]/80 hover:bg-[#0A2540]/10 hover:text-[#0A2540]"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <SubIcon
+                          className={`w-4 h-4 shrink-0 ${
+                            isSubActive ? "text-white" : "text-[#0A2540]/60 group-hover:text-[#0A2540]"
+                          }`}
+                        />
+                        <span className="truncate">{sub.name}</span>
+                      </div>
+                      <span
+                        className={`text-[11px] font-mono font-bold shrink-0 ml-2 px-2 py-0.5 rounded ${
+                          isSubActive
+                            ? "bg-white/20 text-white"
+                            : "bg-[#0A2540]/5 text-[#0A2540]/70"
+                        }`}
+                      >
+                        {sub.code}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Sub-Nav Footer: Role & Simulator */}
+            <div className="p-3.5 border-t-2 border-[#E5E5DE] bg-white space-y-3">
+              {/* Active User Card */}
+              <div className="relative">
+                <div
+                  onClick={() => setAccountMenuOpen(!accountMenuOpen)}
+                  className="flex items-center gap-3 p-2 rounded-xl hover:bg-[#FAF9F5] border border-[#E5E5DE] cursor-pointer transition-colors"
+                >
+                  <div className="w-9 h-9 rounded-xl bg-[#0A2540] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+                    {initials}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-xs font-extrabold text-[#0A2540] truncate">{userName}</div>
+                    <div className="text-[11px] font-semibold text-[#0A2540]/70 truncate">{activeRole}</div>
+                  </div>
+                  <ChevronDown className="w-3.5 h-3.5 text-[#0A2540]/60 shrink-0" />
+                </div>
+
+                {accountMenuOpen && (
+                  <div className="absolute bottom-full left-0 right-0 mb-2 bg-white border-2 border-[#E5E5DE] rounded-xl shadow-xl p-2 z-50">
+                    <Link
+                      href="/account"
+                      onClick={() => setAccountMenuOpen(false)}
+                      className="px-3 py-2.5 rounded-lg text-xs font-bold text-[#0A2540] hover:bg-[#FAF9F5] flex items-center gap-2"
+                    >
+                      <User className="w-4 h-4 text-[#0A2540]" />
+                      <span>My Account & Profile</span>
+                    </Link>
+                    <div
+                      onClick={() => {
+                        setAccountMenuOpen(false);
+                        handlePrimaryClick("Administration");
+                        handleSubClick("settings");
+                      }}
+                      className="px-3 py-2.5 rounded-lg text-xs font-bold text-[#0A2540] hover:bg-[#FAF9F5] flex items-center gap-2 cursor-pointer"
+                    >
+                      <Settings className="w-4 h-4 text-[#0A2540]/70" />
+                      <span>Workspace Settings</span>
+                    </div>
+                    <div className="h-[1px] bg-[#E5E5DE] my-1" />
+                    <div
+                      onClick={() => {
+                        setAccountMenuOpen(false);
+                        handleLogout();
+                      }}
+                      className="px-3 py-2.5 rounded-lg text-xs font-bold text-rose-600 hover:bg-rose-50 flex items-center gap-2 cursor-pointer"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      <span>Sign Out</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Persona Switcher */}
+              <div className="p-2.5 bg-[#FAF9F5] border border-[#E5E5DE] rounded-xl">
+                <div className="text-[10px] font-extrabold uppercase tracking-wider text-[#0A2540]/70 mb-1.5 flex items-center justify-between">
+                  <span>Simulator Persona</span>
+                </div>
+                <select
+                  value={activeRole}
+                  onChange={(e) => handleRoleChange(e.target.value as RoleName)}
+                  className="w-full h-8 text-xs font-bold bg-white text-[#0A2540] border border-[#E5E5DE] rounded-lg px-2 focus:outline-none cursor-pointer"
+                >
+                  {ALL_ROLES.map((r) => (
+                    <option key={r} value={r}>
+                      {r}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Collapsed Sub-Nav Re-open Handle */}
+        {subPanelCollapsed && (
           <button
-            onClick={() => setIsOnboardingOpen(true)}
-            className="w-full flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-800 border border-slate-200 text-xs font-bold shadow-xs transition-all cursor-pointer"
+            onClick={() => setSubPanelCollapsed(false)}
+            title="Expand Sub-Navigation"
+            className="hidden lg:flex items-center justify-center w-5 bg-[#FAF9F5] hover:bg-white border-r-2 border-[#E5E5DE] text-[#0A2540]/60 hover:text-[#0A2540] cursor-pointer"
           >
-            <BookOpen className="w-4 h-4 text-[#D4A017]" />
-            <span>Interactive User Operations Guide</span>
+            <ChevronRight className="w-3.5 h-3.5" />
           </button>
-        </div>
+        )}
       </aside>
 
       <OnboardingModal isOpen={isOnboardingOpen} onClose={() => setIsOnboardingOpen(false)} />

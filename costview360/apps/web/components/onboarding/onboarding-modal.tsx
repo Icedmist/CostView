@@ -134,7 +134,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-base md:text-lg font-bold tracking-tight uppercase">
-                  CostView 360 · User Guide & Operations Manual
+                  CostView · User Guide & Operations Manual
                 </h2>
                 <span className="text-xs bg-blue-50 text-[#0067c0] border-blue-200 text-slate-900 px-2 py-0.5 border border-slate-200/80 font-mono font-bold hidden sm:inline-block">
                   v2.0 Manual
@@ -208,14 +208,14 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
               <div className="bg-white border border-slate-200/80 p-4 shadow-xs rounded-xl">
                 <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                  Why CostView 360 Exists: Eliminating Commercial Construction Cost Leakage
+                  Why CostView Exists: Eliminating Commercial Construction Cost Leakage
                 </h3>
                 <p className="text-xs text-slate-900/80 mt-1 leading-relaxed">
                   Commercial building projects in Nigeria routinely suffer from 15% to 30% unbudgeted cost inflation,
                   uncontrolled contractor variation claims, material diversion from site storage, and unverified contractor invoices.
-                  CostView 360 bridges the critical operational chasm between physical site operations and commercial finance controllers.
+                  CostView bridges the critical operational chasm between physical site operations and commercial finance controllers.
                   By enforcing real-time Bill of Quantities (BOQ) baselines, mandatory 3-way invoice matching, statutory 10% retention
-                  withholding, and shift attendance logs, CostView 360 ensures every kobo spent is verified against physical site reality.
+                  withholding, and shift attendance logs, CostView ensures every kobo spent is verified against physical site reality.
                 </p>
               </div>
 
@@ -416,7 +416,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                   Visual Data Flow Architecture & Process Maps
                 </h3>
                 <p className="text-xs text-slate-900/80 mt-1">
-                  Visualize how information travels across CostView 360 between field site teams, commercial surveyors, and executive controllers.
+                  Visualize how information travels across CostView between field site teams, commercial surveyors, and executive controllers.
                 </p>
               </div>
 
@@ -618,7 +618,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
 
                     <div className="bg-blue-100 border border-slate-200/80 p-3 text-center">
                       <span className="font-mono font-bold text-xs uppercase text-slate-900">
-                        ⚡ Reconciled Automatically by CostView 360 Matching Engine
+                        ⚡ Reconciled Automatically by CostView Matching Engine
                       </span>
                     </div>
 
@@ -774,17 +774,17 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                     <span className="text-xs font-bold text-slate-900">5-Page Branded Neo-Brutalist PDF</span>
                   </div>
                   <h3 className="text-base font-bold text-slate-900 uppercase tracking-tight">
-                    CostView 360 · Comprehensive Enterprise User Manual
+                    CostView · Comprehensive Enterprise User Manual
                   </h3>
                   <p className="text-xs text-slate-900/80 mt-1 max-w-xl">
-                    Download the complete, high-resolution Neo-Brutalist PDF guide covering system purpose, the 10 functional modules,
+                    Download the complete, high-resolution PDF guide covering system purpose, the functional modules,
                     step-by-step field routines, visual data flow maps, standard status badges, and field troubleshooting.
                   </p>
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 shrink-0">
                   <a
-                    href="/docs/CostView-360-User-Guide.pdf"
+                    href="/docs/CostView-User-Guide.pdf"
                     target="_blank"
                     rel="noreferrer"
                     className="px-4 py-2.5 bg-white hover:bg-white text-slate-900 border border-slate-200/80 shadow-xs rounded-xl font-bold text-xs uppercase flex items-center justify-center gap-1.5 transition-transform active:translate-x-0.5 active:translate-y-0.5"
@@ -793,8 +793,8 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                     <span>Open in Tab</span>
                   </a>
                   <a
-                    href="/docs/CostView-360-User-Guide.pdf"
-                    download="CostView-360-User-Guide.pdf"
+                    href="/docs/CostView-User-Guide.pdf"
+                    download="CostView-User-Guide.pdf"
                     className="px-4 py-2.5 bg-slate-900 hover:bg-navy-900 text-[#0067c0] border border-slate-200/80 shadow-xs rounded-xl font-bold text-xs uppercase flex items-center justify-center gap-1.5 transition-transform active:translate-x-0.5 active:translate-y-0.5"
                   >
                     <Download className="w-4 h-4" />
@@ -862,11 +862,11 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
         {/* Modal Bottom Action Bar */}
         <div className="bg-white border-t border-slate-200/80 px-5 py-3 flex items-center justify-between shrink-0">
           <span className="text-xs text-slate-900 font-bold hidden sm:inline-block">
-            CostView 360 · Enterprise Commercial Construction Intelligence
+            CostView · Enterprise Construction Cost Intelligence
           </span>
           <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
             <a
-              href="/docs/CostView-360-User-Guide.pdf"
+              href="/docs/CostView-User-Guide.pdf"
               target="_blank"
               rel="noreferrer"
               className="px-3 py-1.5 bg-white text-slate-900 border border-slate-200/80 shadow-xs rounded-xl font-bold text-xs uppercase hover:bg-[#f5f5f5] transition-colors flex items-center gap-1"

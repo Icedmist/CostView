@@ -439,7 +439,7 @@ export function SiteDiaryView({
             onClick={() => handleSubTabClick("diary")}
             className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "diary"
-                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
                 : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
@@ -451,7 +451,7 @@ export function SiteDiaryView({
             onClick={() => handleSubTabClick("photos")}
             className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "photos"
-                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
                 : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
@@ -463,7 +463,7 @@ export function SiteDiaryView({
             onClick={() => handleSubTabClick("inspections")}
             className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "inspections"
-                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
                 : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
@@ -475,7 +475,7 @@ export function SiteDiaryView({
             onClick={() => handleSubTabClick("snags")}
             className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "snags"
-                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
                 : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
@@ -494,7 +494,7 @@ export function SiteDiaryView({
             onClick={() => handleSubTabClick("safety")}
             className={`px-4 py-2 border text-xs font-bold transition-all flex items-center gap-2 rounded-xl cursor-pointer ${
               subTab === "safety"
-                ? "bg-[#0A1931] text-white border-[#0A1931] shadow-sm"
+                ? "bg-[#0A2540] text-white border-[#0A2540] shadow-sm"
                 : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >

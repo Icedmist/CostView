@@ -29,36 +29,36 @@ export function Header({
   const currentSub = currentPrimary?.subSections.find((sub) => sub.id === activeSubSection);
 
   return (
-    <header className="h-[64px] bg-white border-b border-slate-200 px-4 md:px-6 flex items-center justify-between gap-4 shrink-0 shadow-xs z-20">
-      <div className="flex items-center gap-3.5 min-w-0">
+    <header className="h-[68px] bg-white border-b-2 border-[#E5E5DE] px-4 md:px-6 flex items-center justify-between gap-4 shrink-0 z-20">
+      <div className="flex items-center gap-4 min-w-0">
         <button
           onClick={onMenuClick}
-          className="lg:hidden w-10 h-10 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-center text-slate-700 hover:text-[#0A1931] shadow-xs cursor-pointer"
+          className="lg:hidden w-11 h-11 bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-xl flex items-center justify-center text-[#0A2540] shadow-xs cursor-pointer"
         >
           <Menu className="w-5 h-5" />
         </button>
 
         {/* Project Switcher Pill */}
         <div className="flex items-center gap-3">
-          <div className="inline-flex items-center gap-2 bg-slate-100/90 hover:bg-slate-200/80 border border-slate-300 px-3.5 py-1.5 rounded-full text-xs font-bold text-[#0A1931] transition-all cursor-pointer shadow-xs">
-            <Building2 className="w-4 h-4 text-[#0A1931]" />
+          <div className="inline-flex items-center gap-2.5 bg-[#FAF9F5] hover:bg-[#F2F1EC] border-2 border-[#E5E5DE] px-4 py-2 rounded-xl text-sm font-bold text-[#0A2540] transition-all cursor-pointer shadow-xs">
+            <Building2 className="w-4 h-4 text-[#0A2540]" />
             <span className="truncate max-w-[170px] sm:max-w-none">{currentProject.name}</span>
-            <span className="text-[11px] text-slate-500 font-mono">({currentProject.code})</span>
+            <span className="text-xs text-[#0A2540]/60 font-mono">({currentProject.code})</span>
           </div>
         </div>
 
         {/* Contextual Nav Breadcrumbs */}
-        <div className="hidden md:flex items-center gap-2 text-xs font-semibold text-slate-600 pl-2 border-l border-slate-200">
+        <div className="hidden md:flex items-center gap-2.5 text-sm font-semibold text-[#0A2540]/70 pl-3 border-l-2 border-[#E5E5DE]">
           <button
             onClick={() => onSelectNav?.(activeSection)}
-            className="text-slate-800 hover:text-[#0A1931] font-bold cursor-pointer hover:underline"
+            className="text-[#0A2540] hover:underline font-extrabold cursor-pointer"
           >
             {activeSection}
           </button>
           {currentSub && (
             <>
-              <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-              <span className="text-[#0A1931] font-extrabold bg-blue-50 px-2.5 py-0.5 rounded-md border border-blue-200">
+              <ChevronRight className="w-4 h-4 text-[#0A2540]/40" />
+              <span className="text-white font-bold bg-[#0A2540] px-3 py-1 rounded-lg text-xs tracking-wide shadow-xs">
                 {currentSub.code} {currentSub.name}
               </span>
             </>
@@ -66,14 +66,14 @@ export function Header({
         </div>
       </div>
 
-      <div className="flex items-center gap-2 md:gap-3 shrink-0">
+      <div className="flex items-center gap-3 shrink-0">
         {/* Currency Switcher */}
-        <div className="hidden sm:flex items-center gap-1.5 bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-700 shadow-xs">
-          <span className="text-slate-500">Currency:</span>
+        <div className="hidden sm:flex items-center gap-2 bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-xl px-3.5 h-10 text-xs font-bold text-[#0A2540] shadow-xs">
+          <span className="text-[#0A2540]/60 uppercase tracking-wider">Currency:</span>
           <select
             value={currency}
             onChange={(e) => setCurrency(e.target.value)}
-            className="bg-transparent text-xs font-extrabold text-[#0A1931] focus:outline-none cursor-pointer"
+            className="bg-transparent text-sm font-black text-[#0A2540] focus:outline-none cursor-pointer"
           >
             <option value="NGN">₦ NGN</option>
             <option value="USD">$ USD</option>
@@ -86,15 +86,15 @@ export function Header({
         <button
           onClick={() => setIsOnboardingOpen(true)}
           title="Open User Guide & Onboarding Hub"
-          className="flex items-center gap-1.5 px-3 py-2 bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 rounded-xl font-bold text-xs shadow-xs transition-all cursor-pointer"
+          className="flex items-center gap-2 h-10 px-4 bg-white hover:bg-[#FAF9F5] border-2 border-[#E5E5DE] text-[#0A2540] rounded-xl font-bold text-xs uppercase tracking-wider shadow-xs transition-all cursor-pointer"
         >
-          <BookOpen className="w-4 h-4 text-[#D4A017]" />
+          <BookOpen className="w-4 h-4 text-[#0A2540]" />
           <span className="hidden md:inline">User Guide</span>
         </button>
 
         {/* Live Status Pill */}
-        <div className="hidden lg:flex items-center gap-2 bg-emerald-50 text-emerald-800 border border-emerald-300 px-3 py-1.5 rounded-full text-xs font-bold shadow-xs">
-          <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+        <div className="hidden lg:flex items-center gap-2 bg-emerald-50 text-emerald-900 border-2 border-emerald-300 px-3.5 h-10 rounded-xl text-xs font-bold shadow-xs">
+          <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse" />
           <span>System Online</span>
         </div>
 
@@ -103,32 +103,32 @@ export function Header({
           <button
             onClick={() => setNotifOpen((v) => !v)}
             title="Attention Alerts"
-            className="relative w-10 h-10 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 flex items-center justify-center text-slate-700 hover:text-[#0A1931] transition-all shadow-xs cursor-pointer"
+            className="relative w-10 h-10 rounded-xl border-2 border-[#E5E5DE] bg-white hover:bg-[#FAF9F5] flex items-center justify-center text-[#0A2540] transition-all shadow-xs cursor-pointer"
           >
             <Bell className="w-4 h-4" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-rose-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-xs">
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-rose-600 text-white text-[10px] font-black rounded-full flex items-center justify-center shadow-xs">
               3
             </span>
           </button>
 
           {notifOpen && (
-            <div className="absolute right-0 top-full mt-2 w-80 bg-white border border-slate-200 rounded-2xl shadow-2xl p-3 z-50 animate-in fade-in">
-              <div className="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 pb-2 border-b border-slate-100 flex items-center justify-between">
+            <div className="absolute right-0 top-full mt-2 w-84 bg-white border-2 border-[#E5E5DE] rounded-2xl shadow-2xl p-4 z-50 animate-in fade-in">
+              <div className="text-xs font-extrabold uppercase tracking-wider text-[#0A2540]/70 pb-2.5 border-b-2 border-[#E5E5DE] flex items-center justify-between">
                 <span>Attention Alerts</span>
-                <span className="bg-rose-50 text-rose-700 border border-rose-200 px-2 py-0.5 rounded-full text-[10px] font-bold">
+                <span className="bg-rose-100 text-rose-800 border border-rose-300 px-2 py-0.5 rounded-full text-xs font-black">
                   3 Active
                 </span>
               </div>
-              <div className="py-2 space-y-2 text-xs">
+              <div className="py-2.5 space-y-2.5 text-xs">
                 <div
                   onClick={() => {
                     setNotifOpen(false);
                     onSelectNav?.("Procurement", "match");
                   }}
-                  className="p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-900 cursor-pointer hover:bg-rose-100/70 transition-colors"
+                  className="p-3 rounded-xl bg-rose-50 border-2 border-rose-200 text-rose-950 cursor-pointer hover:bg-rose-100/80 transition-colors"
                 >
-                  <div className="font-bold">Procurement Match Discrepancy</div>
-                  <div className="text-[11px] text-rose-700 mt-0.5">
+                  <div className="font-bold text-sm">Procurement Match Discrepancy</div>
+                  <div className="text-xs text-rose-800 mt-1">
                     Pulkit Steels PO-2026-092 billed 30T vs 27T GRN delivered. Locked.
                   </div>
                 </div>
@@ -137,11 +137,11 @@ export function Header({
                     setNotifOpen(false);
                     onSelectNav?.("Budget & BOQ", "revisions");
                   }}
-                  className="p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 cursor-pointer hover:bg-amber-100/70 transition-colors"
+                  className="p-3 rounded-xl bg-[#FAF9F5] border-2 border-[#E5E5DE] text-[#0A2540] cursor-pointer hover:bg-slate-100 transition-colors"
                 >
-                  <div className="font-bold">BOQ Revision Pending</div>
-                  <div className="text-[11px] text-amber-800 mt-0.5">
-                    CON-02.01 ready-mix +₦4M diesel pump adjustment awaiting QS review.
+                  <div className="font-bold text-sm">BOQ Revision Pending</div>
+                  <div className="text-xs text-[#0A2540]/80 mt-1">
+                    CON-02.01 ready-mix diesel pump adjustment awaiting QS review.
                   </div>
                 </div>
                 <div
@@ -149,10 +149,10 @@ export function Header({
                     setNotifOpen(false);
                     onSelectNav?.("Site Operations", "diary");
                   }}
-                  className="p-2.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-900 cursor-pointer hover:bg-blue-100/70 transition-colors"
+                  className="p-3 rounded-xl bg-blue-50 border-2 border-blue-200 text-[#0A2540] cursor-pointer hover:bg-blue-100/70 transition-colors"
                 >
-                  <div className="font-bold">Site Execution Sync</div>
-                  <div className="text-[11px] text-blue-800 mt-0.5">
+                  <div className="font-bold text-sm">Site Execution Sync</div>
+                  <div className="text-xs text-[#0A2540]/80 mt-1">
                     Shift #142 closed with 48 crew. 2 non-critical snags logged.
                   </div>
                 </div>
@@ -165,12 +165,10 @@ export function Header({
         <Link
           href="/account"
           title="My Account & Profile"
-          className="flex items-center gap-2 p-1.5 hover:bg-slate-100 border border-slate-300 rounded-xl transition-all shadow-xs cursor-pointer"
+          className="flex items-center gap-2 h-10 px-3 bg-[#0A2540] hover:bg-[#003366] text-white rounded-xl transition-all shadow-xs cursor-pointer"
         >
-          <div className="w-7 h-7 rounded-lg bg-[#0A1931] text-white flex items-center justify-center font-bold text-xs">
-            <User className="w-4 h-4 text-[#D4A017]" />
-          </div>
-          <span className="text-xs font-bold text-[#0A1931] hidden xl:inline pr-1">Account</span>
+          <User className="w-4 h-4 text-white" />
+          <span className="text-xs font-bold hidden sm:inline">Account</span>
         </Link>
       </div>
 
