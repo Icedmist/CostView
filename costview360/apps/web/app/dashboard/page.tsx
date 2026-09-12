@@ -12,6 +12,8 @@ import { MaterialsStockView } from "@/components/materials/materials-stock-view"
 import { LabourView } from "@/components/labour/labour-view";
 import { SubcontractorView } from "@/components/subcontractors/subcontractor-view";
 import { UserRoleManager } from "@/components/admin/user-role-manager";
+import { DataMigrationHub } from "@/components/admin/data-migration-hub";
+import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav";
 import {
   ArrowUpRight,
   AlertTriangle,
@@ -27,6 +29,7 @@ import {
   Calculator,
   ShoppingCart,
   Briefcase,
+  FolderSync,
 } from "lucide-react";
 import { RoleGuard } from "@/components/auth/role-guard";
 import { canAccess } from "@/lib/auth/permissions";
@@ -88,7 +91,7 @@ export default function DashboardPage() {
           onSelectNav={handleNavSelect}
         />
 
-        <main className="flex-1 overflow-y-auto p-5 md:p-8 space-y-8 bg-[#FAF9F5]">
+        <main className="flex-1 overflow-y-auto p-5 md:p-8 space-y-8 bg-[#FAF9F5] pb-24 lg:pb-8">
           {/* 1. COMMAND CENTER */}
           {activeSection === "Command Center" && (
             <div className="space-y-8">
@@ -127,13 +130,22 @@ export default function DashboardPage() {
                       Verify 3-Way Match Gate
                     </button>
                     {activeRole === "Admin" && (
-                      <button
-                        onClick={() => handleNavSelect("Administration", "users")}
-                        className="min-h-[46px] px-6 py-3 bg-white text-[#0A2540] hover:bg-slate-100 rounded-xl text-sm font-extrabold flex items-center gap-2 transition-all shadow-md cursor-pointer"
-                      >
-                        <UserPlus className="w-4 h-4 text-[#0A2540]" />
-                        <span>User &amp; Role Hub</span>
-                      </button>
+                      <>
+                        <button
+                          onClick={() => handleNavSelect("Administration", "migration")}
+                          className="min-h-[46px] px-5 py-3 bg-white/15 hover:bg-white/25 text-white border-2 border-white/30 rounded-xl text-sm font-extrabold flex items-center gap-2 transition-all shadow-xs cursor-pointer"
+                        >
+                          <FolderSync className="w-4 h-4 text-white" />
+                          <span>Data Migration Hub</span>
+                        </button>
+                        <button
+                          onClick={() => handleNavSelect("Administration", "users")}
+                          className="min-h-[46px] px-6 py-3 bg-white text-[#0A2540] hover:bg-slate-100 rounded-xl text-sm font-extrabold flex items-center gap-2 transition-all shadow-md cursor-pointer"
+                        >
+                          <UserPlus className="w-4 h-4 text-[#0A2540]" />
+                          <span>User &amp; Role Hub</span>
+                        </button>
+                      </>
                     )}
                   </div>
                 </div>
@@ -371,14 +383,26 @@ export default function DashboardPage() {
           {/* 6. ADMINISTRATION & ROLES */}
           {activeSection === "Administration" && (
             <RoleGuard permission="Admin">
-              <UserRoleManager
-                initialTab={activeSubSection as any}
-                onTabChange={(tab) => setActiveSubSection(tab)}
-              />
+              {activeSubSection === "migration" ? (
+                <DataMigrationHub />
+              ) : (
+                <UserRoleManager
+                  initialTab={activeSubSection as any}
+                  onTabChange={(tab) => setActiveSubSection(tab)}
+                />
+              )}
             </RoleGuard>
           )}
         </main>
       </div>
+
+      {/* Mobile Bottom Navigation Bar */}
+      <MobileBottomNav
+        activeSection={activeSection}
+        onSelectNav={handleNavSelect}
+        onMenuClick={() => setSidebarOpen((v) => !v)}
+        isMenuOpen={sidebarOpen}
+      />
     </div>
   );
 }

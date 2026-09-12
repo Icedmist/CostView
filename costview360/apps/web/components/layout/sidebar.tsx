@@ -586,9 +586,24 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
         },
       },
       {
+        id: "migration",
+        name: "Data Migration Hub",
+        code: "6.3",
+        icon: FolderSync,
+        badge: "New",
+        color: {
+          icon: "text-blue-600",
+          iconBg: "bg-blue-50 border border-blue-200",
+          activeBg: "bg-blue-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-blue-100 text-blue-900 border border-blue-200",
+          hover: "hover:bg-blue-50/70",
+        },
+      },
+      {
         id: "audit",
         name: "Immutable Audit Trail",
-        code: "6.3",
+        code: "6.4",
         icon: History,
         color: {
           icon: "text-amber-600",
@@ -602,7 +617,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "settings",
         name: "Workspace & Project Config",
-        code: "6.4",
+        code: "6.5",
         icon: Settings,
         color: {
           icon: "text-teal-600",
@@ -772,7 +787,7 @@ export function Sidebar({
                 <div>
                   <div className="text-base font-extrabold text-[#0A2540]">CostView</div>
                   <div className="text-[11px] font-bold text-[#0A2540]/60 uppercase tracking-wider">
-                    Original Navigation
+                    Main Navigation
                   </div>
                 </div>
               </div>
@@ -1085,165 +1100,104 @@ export function Sidebar({
         {/* TIER 2: SECONDARY SUB-NAV PANEL (w-64) */}
         {!subPanelCollapsed && (
           <div className="w-64 bg-[#FAF9F5] border-r-2 border-[#E5E5DE] flex flex-col justify-between shrink-0 z-10 animate-in fade-in duration-150">
-            {navView === "main" ? (
-              /* DESKTOP VIEW A: ORIGINAL NAVIGATION (All 6 Modules) */
-              <div className="flex-1 flex flex-col min-h-0">
-                <div className="p-4 bg-white border-b-2 border-[#E5E5DE] flex items-center justify-between shrink-0">
-                  <div>
-                    <div className="text-sm font-black text-[#0A2540]">CostView</div>
-                    <div className="text-[10px] font-bold text-[#0A2540]/60 uppercase tracking-wider">
-                      Original Navigation
-                    </div>
-                  </div>
-                  <span className="text-[10px] font-mono font-bold bg-[#0A2540]/10 text-[#0A2540] px-2 py-0.5 rounded">
-                    6 Modules
-                  </span>
-                </div>
-
-                <div className="p-3 space-y-2 overflow-y-auto flex-1">
-                  {NAVIGATION_SECTIONS.map((section) => {
-                    const Icon = section.icon;
-                    const isAllowed = !section.permission || canAccess(activeRole, section.permission as any);
-                    const isActive = currentSection === section.id;
-
-                    return (
-                      <button
-                        key={section.id}
-                        disabled={!isAllowed}
-                        onClick={() => isAllowed && handlePrimaryClick(section.id)}
-                        className={`w-full min-h-[50px] p-2.5 rounded-xl text-left transition-all flex items-center justify-between border cursor-pointer group ${
-                          !isAllowed
-                            ? "opacity-40 cursor-not-allowed bg-slate-100 border-slate-200"
-                            : isActive
-                            ? `${section.theme.bannerBg} ${section.theme.bannerBorder} shadow-xs`
-                            : "bg-white border-[#E5E5DE] hover:border-slate-300 shadow-xs"
-                        }`}
-                      >
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <div
-                            className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold shrink-0 ${section.theme.iconPill}`}
-                          >
-                            <Icon className="w-4 h-4" />
-                          </div>
-                          <div className="min-w-0">
-                            <div className="flex items-center gap-1.5">
-                              <span className={`text-[9px] font-mono font-black px-1.5 py-0.2 rounded ${section.theme.badgeBg}`}>
-                                {section.code}
-                              </span>
-                            </div>
-                            <div
-                              className={`text-xs font-black truncate mt-0.5 ${
-                                isActive ? section.theme.textTitle : "text-[#0A2540]"
-                              }`}
-                            >
-                              {section.name}
-                            </div>
-                          </div>
-                        </div>
-                        <ChevronRight className="w-3.5 h-3.5 text-[#0A2540]/40 shrink-0" />
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            ) : (
-              /* DESKTOP VIEW B: SUB-NAVIGATION VIEW (Main nav items removed) */
-              <div className="flex-1 flex flex-col min-h-0">
-                {/* Header: RETURN ICON BUTTON + Domain Info + Collapse Handle */}
-                <div
-                  className={`p-3.5 border-b-2 ${activePrimary.theme.bannerBorder} ${activePrimary.theme.bannerBg} flex items-center justify-between gap-2 shrink-0`}
-                >
-                  <div className="flex items-center gap-2 min-w-0">
-                    {/* RETURN TO ORIGINAL NAV ICON BUTTON (No text!) */}
+            {/* SUB-NAVIGATION VIEW (Registers & Workflows) */}
+            <div className="flex-1 flex flex-col min-h-0">
+              {/* Header: Domain Info + Return to Command Center + Collapse Handle */}
+              <div
+                className={`p-3.5 border-b-2 ${activePrimary.theme.bannerBorder} ${activePrimary.theme.bannerBg} flex items-center justify-between gap-2 shrink-0`}
+              >
+                <div className="flex items-center gap-2 min-w-0">
+                  {/* RETURN TO COMMAND CENTER / MAIN NAV ICON BUTTON (Opens existing main nav, no new nav) */}
+                  {currentSection !== "Command Center" && (
                     <button
-                      onClick={() => setNavView("main")}
-                      title="Return to Original Navigation (All Modules)"
-                      aria-label="Return to Original Navigation"
+                      onClick={() => handlePrimaryClick("Command Center")}
+                      title="Return to Command Center"
+                      aria-label="Return to Command Center"
                       className="w-8 h-8 rounded-lg bg-[#0A2540] hover:bg-[#003366] text-white flex items-center justify-center shadow-xs hover:scale-105 active:scale-95 transition-all cursor-pointer shrink-0 border border-[#0A2540]"
                     >
                       <ArrowLeft className="w-4 h-4 text-white" />
                     </button>
+                  )}
 
-                    <div
-                      className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold shrink-0 shadow-xs ${activePrimary.theme.iconPill}`}
-                    >
-                      <activePrimary.icon className="w-4 h-4" />
-                    </div>
-                    <div className="min-w-0">
-                      <div className={`text-[10px] font-mono font-bold uppercase tracking-wider ${activePrimary.theme.textSub}`}>
-                        {activePrimary.code} Domain
-                      </div>
-                      <div className={`text-xs font-black ${activePrimary.theme.textTitle} truncate leading-tight mt-0.5`}>
-                        {activePrimary.name}
-                      </div>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => setSubPanelCollapsed(true)}
-                    title="Collapse Sub-Navigation"
-                    className="w-6 h-6 rounded-md hover:bg-black/5 flex items-center justify-center text-slate-600 hover:text-slate-900 cursor-pointer shrink-0"
+                  <div
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold shrink-0 shadow-xs ${activePrimary.theme.iconPill}`}
                   >
-                    <ChevronLeft className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-
-                {/* Sub-Sections List with Distinct App Colors */}
-                <div className="p-3 space-y-1.5 overflow-y-auto flex-1">
-                  <div className="text-[10px] font-extrabold uppercase tracking-wider text-[#0A2540]/60 px-1 pt-1 pb-1">
-                    Sub-Registers &amp; Workflows
+                    <activePrimary.icon className="w-4 h-4" />
                   </div>
-                  {activePrimary.subSections.map((sub) => {
-                    const SubIcon = sub.icon;
-                    const isSubActive = activeSubSection === sub.id;
-
-                    return (
-                      <button
-                        key={sub.id}
-                        onClick={() => handleSubClick(sub.id)}
-                        className={`w-full min-h-[44px] px-3 py-2 rounded-xl text-left font-bold text-xs transition-all flex items-center justify-between group cursor-pointer border ${
-                          isSubActive
-                            ? `${sub.color.activeBg} border-transparent shadow-xs`
-                            : `bg-white text-[#0A2540] border-[#E5E5DE] ${sub.color.hover}`
-                        }`}
-                      >
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <div
-                            className={`w-6 h-6 rounded-md flex items-center justify-center shrink-0 ${
-                              isSubActive ? "bg-white/20 text-white" : sub.color.iconBg
-                            }`}
-                          >
-                            <SubIcon
-                              className={`w-3.5 h-3.5 ${
-                                isSubActive ? "text-white" : sub.color.icon
-                              }`}
-                            />
-                          </div>
-                          <span className="truncate">{sub.name}</span>
-                        </div>
-                        <div className="flex items-center gap-1.5 shrink-0 ml-1.5">
-                          {sub.badge && (
-                            <span
-                              className={`text-[9px] font-black px-1.5 py-0.2 rounded-full ${
-                                isSubActive ? "bg-white text-slate-900" : "bg-rose-500 text-white"
-                              }`}
-                            >
-                              {sub.badge}
-                            </span>
-                          )}
-                          <span
-                            className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${
-                              isSubActive ? "bg-white/20 text-white" : sub.color.badge
-                            }`}
-                          >
-                            {sub.code}
-                          </span>
-                        </div>
-                      </button>
-                    );
-                  })}
+                  <div className="min-w-0">
+                    <div className={`text-[10px] font-mono font-bold uppercase tracking-wider ${activePrimary.theme.textSub}`}>
+                      {activePrimary.code} Domain
+                    </div>
+                    <div className={`text-xs font-black ${activePrimary.theme.textTitle} truncate leading-tight mt-0.5`}>
+                      {activePrimary.name}
+                    </div>
+                  </div>
                 </div>
+                <button
+                  onClick={() => setSubPanelCollapsed(true)}
+                  title="Collapse Sub-Navigation"
+                  className="w-6 h-6 rounded-md hover:bg-black/5 flex items-center justify-center text-slate-600 hover:text-slate-900 cursor-pointer shrink-0"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                </button>
               </div>
-            )}
+
+              {/* Sub-Sections List with Distinct App Colors */}
+              <div className="p-3 space-y-1.5 overflow-y-auto flex-1">
+                <div className="text-[10px] font-extrabold uppercase tracking-wider text-[#0A2540]/60 px-1 pt-1 pb-1">
+                  Sub-Registers &amp; Workflows
+                </div>
+                {activePrimary.subSections.map((sub) => {
+                  const SubIcon = sub.icon;
+                  const isSubActive = activeSubSection === sub.id;
+
+                  return (
+                    <button
+                      key={sub.id}
+                      onClick={() => handleSubClick(sub.id)}
+                      className={`w-full min-h-[44px] px-3 py-2 rounded-xl text-left font-bold text-xs transition-all flex items-center justify-between group cursor-pointer border ${
+                        isSubActive
+                          ? `${sub.color.activeBg} border-transparent shadow-xs`
+                          : `bg-white text-[#0A2540] border-[#E5E5DE] ${sub.color.hover}`
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div
+                          className={`w-6 h-6 rounded-md flex items-center justify-center shrink-0 ${
+                            isSubActive ? "bg-white/20 text-white" : sub.color.iconBg
+                          }`}
+                        >
+                          <SubIcon
+                            className={`w-3.5 h-3.5 ${
+                              isSubActive ? "text-white" : sub.color.icon
+                            }`}
+                          />
+                        </div>
+                        <span className="truncate">{sub.name}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 shrink-0 ml-1.5">
+                        {sub.badge && (
+                          <span
+                            className={`text-[9px] font-black px-1.5 py-0.2 rounded-full ${
+                              isSubActive ? "bg-white text-slate-900" : "bg-rose-500 text-white"
+                            }`}
+                          >
+                            {sub.badge}
+                          </span>
+                        )}
+                        <span
+                          className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${
+                            isSubActive ? "bg-white/20 text-white" : sub.color.badge
+                          }`}
+                        >
+                          {sub.code}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
 
             {/* Desktop Sub-Nav Footer: User Profile & Persona Switcher */}
             <div className="p-3.5 border-t-2 border-[#E5E5DE] bg-white space-y-3">
