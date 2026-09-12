@@ -13,6 +13,9 @@ import { LabourView } from "@/components/labour/labour-view";
 import { SubcontractorView } from "@/components/subcontractors/subcontractor-view";
 import { UserRoleManager } from "@/components/admin/user-role-manager";
 import { DataMigrationHub } from "@/components/admin/data-migration-hub";
+import { AuditLogView } from "@/components/admin/audit-log-view";
+import { WorkspaceSettingsView } from "@/components/settings/workspace-settings";
+import { ReportsView } from "@/components/reports/reports-view";
 import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav";
 import {
   ArrowUpRight,
@@ -30,6 +33,7 @@ import {
   ShoppingCart,
   Briefcase,
   FolderSync,
+  FileText,
 } from "lucide-react";
 import { RoleGuard } from "@/components/auth/role-guard";
 import { canAccess } from "@/lib/auth/permissions";
@@ -66,6 +70,7 @@ export default function DashboardPage() {
       "Site Operations": "Progress",
       "Contracts & Subcontractors": "Subcontractors",
       Administration: "Admin",
+      "Reports Studio": "Reports",
     };
     const perm = permMap[activeSection];
     if (perm && !canAccess(activeRole, perm as any)) {
@@ -128,6 +133,13 @@ export default function DashboardPage() {
                       className="min-h-[46px] px-6 py-3 bg-white/10 hover:bg-white/20 text-white border-2 border-white/30 rounded-xl text-sm font-extrabold transition-all shadow-xs cursor-pointer"
                     >
                       Verify 3-Way Match Gate
+                    </button>
+                    <button
+                      onClick={() => handleNavSelect("Reports Studio", "cost-control")}
+                      className="min-h-[46px] px-5 py-3 bg-white/15 hover:bg-white/25 text-white border-2 border-white/30 rounded-xl text-sm font-extrabold flex items-center gap-2 transition-all shadow-xs cursor-pointer"
+                    >
+                      <FileText className="w-4 h-4 text-white" />
+                      <span>Reports Studio</span>
                     </button>
                     {activeRole === "Admin" && (
                       <>
@@ -385,12 +397,26 @@ export default function DashboardPage() {
             <RoleGuard permission="Admin">
               {activeSubSection === "migration" ? (
                 <DataMigrationHub />
+              ) : activeSubSection === "audit" ? (
+                <AuditLogView />
+              ) : activeSubSection === "settings" ? (
+                <WorkspaceSettingsView />
               ) : (
                 <UserRoleManager
                   initialTab={activeSubSection as any}
                   onTabChange={(tab) => setActiveSubSection(tab)}
                 />
               )}
+            </RoleGuard>
+          )}
+
+          {/* 7. REPORTS STUDIO */}
+          {activeSection === "Reports Studio" && (
+            <RoleGuard permission="Reports">
+              <ReportsView
+                initialReportId={activeSubSection}
+                onReportChange={(reportSlug) => setActiveSubSection(reportSlug)}
+              />
             </RoleGuard>
           )}
         </main>

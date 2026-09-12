@@ -48,6 +48,12 @@ export function MarketingNav() {
             Features
           </Link>
           <Link
+            href="/reports"
+            className="px-4 py-2.5 rounded-xl hover:text-[#0A2540] hover:bg-white transition-all"
+          >
+            Reports
+          </Link>
+          <Link
             href="/how-it-works"
             className="px-4 py-2.5 rounded-xl hover:text-[#0A2540] hover:bg-white transition-all"
           >
@@ -129,6 +135,13 @@ export function MarketingNav() {
             className="block px-4 py-3 rounded-xl hover:bg-white font-black text-base text-[#0A2540] border border-transparent hover:border-[#E5E5DE] transition-all"
           >
             Features
+          </Link>
+          <Link
+            href="/reports"
+            onClick={() => setMobileOpen(false)}
+            className="block px-4 py-3 rounded-xl hover:bg-white font-black text-base text-[#0A2540] border border-transparent hover:border-[#E5E5DE] transition-all"
+          >
+            Reports Studio
           </Link>
           <Link
             href="/how-it-works"
