@@ -34,3 +34,4 @@ pnpm-debug.log*
 next-env.d.ts
 .vercel
 .env*
+*reconciliation_report.json

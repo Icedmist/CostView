@@ -1,0 +1,8 @@
+item_name,category,unit,current_stock,minimum_buffer,unit_cost,storage_location
+"Dangote Cement Grade 42.5R (50kg)",Material,Bags,850,200,10500,"Main Central Warehouse (Bay 1)"
+"Y16 High-Yield Deformed Rebar",Material,Tons,22,10,1450000,"Steel Yard (Raft Pad Storage)"
+"Y20 High-Yield Deformed Rebar",Material,Tons,18,8,1450000,"Steel Yard (Column Bay)"
+"Sharp Sand (Concrete Aggregate)",Material,m³,140,50,18500,"Aggregate Silo Area"
+"Granite 20mm Chippings",Material,m³,190,60,22500,"Aggregate Silo Area"
+"225mm Vibrated Sandcrete Blocks",Material,Units,4500,1000,650,"Block Stacking Yard B"
+"Diesel AGO (Industrial Generators)",Fuel,Litres,3200,1000,1250,"Fuel Storage Tank #1"

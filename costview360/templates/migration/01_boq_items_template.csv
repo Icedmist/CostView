@@ -1,0 +1,9 @@
+code,description,category,unit,quantity,rate,budget_amount
+SUB-01.01,"Excavation and earthwork disposal offsite",Plant,m³,1250,18500,23125000
+CON-02.01,"Grade 30 reinforced concrete for foundation raft & plinth beams",Material,m³,480,195000,93600000
+STL-02.03,"High-yield deformed reinforcement bars (12mm, 16mm, 20mm)",Material,Tons,65,1450000,94250000
+BLK-03.01,"225mm vibrated hollow sandcrete blockwork in cement mortar (1:4)",Material,m²,3200,11200,35840000
+LAB-01.02,"Structural steel fixing and formwork carpenters gang attendance",Labour,Man-days,600,12500,7500000
+MEP-04.01,"First fix electrical conduit pipes & heavy-duty distribution boards",Subcontractor,Item,1,45000000,45000000
+FIN-05.01,"Vitrified porcelain floor tiles (600mm x 600mm) including adhesive & grouting",Material,m²,1800,14500,26100000
+ROF-06.01,"0.55mm aluminium standing seam roofing sheets on treated hardwood timber trusses",Material,m²,950,16800,15960000

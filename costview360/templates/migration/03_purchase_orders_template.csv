@@ -1,0 +1,5 @@
+po_number,supplier_name,item_description,boq_code,quantity,agreed_rate,total_amount,status,issue_date
+PO-2026-081,"Lafarge Readymix Nigeria","45m³ Grade 30 Concrete for raft foundation",CON-02.01,45,195000,8775000,Fulfilled,2026-08-10
+PO-2026-088,"Dangote Cement PLC","600 Bags Grade 42.5R Portland Limestone Cement",BLK-03.01,600,10500,6300000,Fulfilled,2026-08-18
+PO-2026-092,"Pulkit Steels Ltd","30T High-yield 16mm deformed rebar",STL-02.03,30,1450000,43500000,Open,2026-09-02
+PO-2026-095,"Schneider Electric Nigeria","Main Low Voltage distribution panels & breakers",MEP-04.01,1,18500000,18500000,Approved,2026-09-08
