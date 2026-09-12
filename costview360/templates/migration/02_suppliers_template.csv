@@ -1,0 +1,6 @@
+company_name,trade_category,contact_person,phone,email,bank_name,account_number,tax_id
+"Dangote Cement PLC",Material,"Alhaji Sani Bello","+234 803 111 2233","sales@dangote.com","Zenith Bank",1012345678,"TIN-98765432-01"
+"Pulkit Steels Ltd",Material,"Rajesh Kumar","+234 802 333 4455","orders@pulkit.ng","Access Bank",0023456789,"TIN-87654321-02"
+"Lafarge Readymix Nigeria",Material,"Engr. Femi Babatunde","+234 805 444 5566","dispatch@lafarge.com","GTBank",0123456780,"TIN-76543210-03"
+"Julius Berger Aggregates",Material,"Emmanuel Okon","+234 809 555 6677","quarry@juliusberger.com","First Bank",2012345678,"TIN-65432109-04"
+"Schneider Electric Nigeria",Material,"Claire Dubois","+234 801 666 7788","projects@se.com","Standard Chartered",5001234567,"TIN-54321098-05"
