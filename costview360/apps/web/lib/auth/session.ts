@@ -5,6 +5,22 @@ import { createClient } from "@/lib/supabase/client";
 
 const INACTIVITY_MS = 2 * 60 * 60 * 1000; // 2 hours
 
+export async function clearAuthSession(supabase: any) {
+  try {
+    await supabase.auth.signOut();
+  } catch (e) {
+    // ignore
+  }
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("costview_demo_role");
+    localStorage.removeItem("costview_demo_email");
+    localStorage.removeItem("costview_last_active");
+    sessionStorage.clear();
+    document.cookie = "costview_demo_role=; path=/; max-age=0";
+    window.location.href = "/login";
+  }
+}
+
 export function useSessionExpiry() {
   const router = useRouter();
   const supabase = createClient();
@@ -17,12 +33,7 @@ export function useSessionExpiry() {
       const lastActive = Number(localStorage.getItem("costview_last_active") || "0");
       // Only sign out if user has been inactive for longer than the inactivity window
       if (lastActive > 0 && Date.now() - lastActive > INACTIVITY_MS) {
-        supabase.auth.signOut().then(() => {
-          localStorage.removeItem("costview_demo_role");
-          sessionStorage.clear();
-          router.push("/login");
-          router.refresh();
-        });
+        clearAuthSession(supabase);
         return;
       }
       sessionStorage.setItem("costview_tab_active", "1");
@@ -36,12 +47,8 @@ export function useSessionExpiry() {
         sessionStorage.setItem("costview_last_active", Date.now().toString());
         localStorage.setItem("costview_last_active", Date.now().toString());
       }
-      timerRef.current = setTimeout(async () => {
-        await supabase.auth.signOut();
-        localStorage.removeItem("costview_demo_role");
-        sessionStorage.clear();
-        router.push("/login");
-        router.refresh();
+      timerRef.current = setTimeout(() => {
+        clearAuthSession(supabase);
       }, INACTIVITY_MS);
     };
 
@@ -57,10 +64,7 @@ export function useSessionExpiry() {
       if (document.visibilityState === "visible") {
         const last = Number(localStorage.getItem("costview_last_active") || "0");
         if (Date.now() - last > INACTIVITY_MS) {
-          supabase.auth.signOut().then(() => {
-            router.push("/login");
-            router.refresh();
-          });
+          clearAuthSession(supabase);
         }
       }
     };
@@ -71,5 +75,5 @@ export function useSessionExpiry() {
       events.forEach((ev) => window.removeEventListener(ev, resetTimer));
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [router]);
+  }, [router, supabase]);
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useApp } from "@/app/providers";
 import type { RoleName } from "@/lib/supabase/database.types";
@@ -73,6 +73,17 @@ const ALL_ROLES: RoleName[] = [
   "Storekeeper",
 ];
 
+const DEMO_USER_NAMES: Record<string, string> = {
+  Admin: "Adebayo Admin",
+  "Project Manager": "Babatunde Adeyemi",
+  "Quantity Surveyor": "Mrs. Nkechi",
+  Architect: "David Okafor",
+  "Site Engineer": "Engr. Tayo",
+  "Procurement Officer": "Chidi Procurement",
+  Accountant: "Funke Accountant",
+  Storekeeper: "Musa Storekeeper",
+};
+
 export function Sidebar({
   activeTab,
   onSelectTab,
@@ -87,6 +98,31 @@ export function Sidebar({
   const { activeMode, setActiveMode, activeRole, setActiveRole } = useApp();
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const [userName, setUserName] = useState(DEMO_USER_NAMES[activeRole] || "Abubakar Alkali");
+
+  useEffect(() => {
+    import("@/lib/supabase/client").then(({ createClient }) => {
+      const supabase = createClient();
+      supabase.auth.getUser().then(({ data }) => {
+        const metaName = data.user?.user_metadata?.full_name;
+        if (metaName) {
+          setUserName(metaName);
+        } else if (DEMO_USER_NAMES[activeRole]) {
+          setUserName(DEMO_USER_NAMES[activeRole]);
+        }
+      });
+    });
+  }, [activeRole]);
+
+  const initials =
+    userName
+      .split(" ")
+      .map((p) => p[0])
+      .filter(Boolean)
+      .slice(0, 2)
+      .join("")
+      .toUpperCase() || "CV";
+
   const navItems = activeMode === "site" ? SITE_OPS_NAV : COMMERCIAL_NAV;
   const isHomeActive = activeTab === "Dashboard" || activeTab === "Command Center";
 
@@ -100,6 +136,9 @@ export function Sidebar({
     const supabase = createClient();
     await supabase.auth.signOut();
     localStorage.removeItem("costview_demo_role");
+    localStorage.removeItem("costview_demo_email");
+    localStorage.removeItem("costview_last_active");
+    document.cookie = "costview_demo_role=; path=/; max-age=0";
     sessionStorage.clear();
     window.location.href = "/login";
   };
@@ -189,10 +228,10 @@ export function Sidebar({
               className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-100/70 cursor-pointer transition-all border border-slate-200/70 bg-white/70 shadow-xs"
             >
               <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#0067c0] to-[#0284c7] flex items-center justify-center text-white font-bold text-xs shadow-xs shrink-0">
-                <span>AA</span>
+                <span>{initials}</span>
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-xs font-bold text-slate-900 truncate">Abubakar Alkali</div>
+                <div className="text-xs font-bold text-slate-900 truncate">{userName}</div>
                 <div className="text-[11px] text-slate-500 truncate font-medium">{activeRole}</div>
               </div>
             </div>

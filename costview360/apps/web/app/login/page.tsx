@@ -23,43 +23,63 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [activeDemoEmail, setActiveDemoEmail] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  const setSessionCredentials = (role: string, userEmail: string) => {
+    if (typeof window !== "undefined") {
+      const nowStr = Date.now().toString();
+      localStorage.setItem("costview_demo_role", role);
+      localStorage.setItem("costview_demo_email", userEmail);
+      localStorage.setItem("costview_last_active", nowStr);
+      sessionStorage.setItem("costview_tab_active", "1");
+      sessionStorage.setItem("costview_last_active", nowStr);
+      document.cookie = `costview_demo_role=${encodeURIComponent(role)}; path=/; max-age=7200; SameSite=Lax`;
+    }
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setErrorMsg(null);
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       setErrorMsg(error.message);
       setLoading(false);
     } else {
-      router.push("/dashboard");
-      router.refresh();
+      const matchedDemo = DEMO_ACCOUNTS.find((a) => a.email.toLowerCase() === email.toLowerCase());
+      const role =
+        (data.user?.user_metadata?.default_role as string) ||
+        matchedDemo?.role ||
+        "Project Manager";
+      setSessionCredentials(role, email);
+      window.location.href = "/dashboard";
     }
   };
 
-  const handleDemoLogin = async (demoEmail: string) => {
+  const handleDemoLogin = async (account: (typeof DEMO_ACCOUNTS)[number]) => {
     setLoading(true);
+    setActiveDemoEmail(account.email);
     setErrorMsg(null);
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({
-      email: demoEmail,
-      password: "DemoPass2026!",
-    });
-    if (error) {
-      // Fallback for placeholder Supabase — still allow navigation to dashboard for preview
-      if (error.message.includes("Invalid API key") || error.message.includes("fetch")) {
-        localStorage.setItem("costview_demo_role", demoEmail);
-        router.push("/dashboard");
-        return;
+    setEmail(account.email);
+    setPassword("DemoPass2026!");
+
+    setSessionCredentials(account.role, account.email);
+
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithPassword({
+        email: account.email,
+        password: "DemoPass2026!",
+      });
+      if (error) {
+        console.warn("Supabase demo auth fallback:", error.message);
       }
-      setErrorMsg(error.message);
-      setLoading(false);
-    } else {
-      router.push("/dashboard");
-      router.refresh();
+      window.location.href = "/dashboard";
+    } catch (err: any) {
+      console.warn("Demo login error, falling back to sandbox:", err?.message);
+      window.location.href = "/dashboard";
     }
   };
 
@@ -112,14 +132,31 @@ export default function LoginPage() {
                 <span>Quick Test Access — 1 Click (8 roles)</span><span className="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded text-[10px] font-medium">Sandbox Ready</span>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                {DEMO_ACCOUNTS.map((b) => (
-                  <button key={b.email} type="button" onClick={() => handleDemoLogin(b.email)} disabled={loading}
-                    className="p-2.5 bg-slate-50/80 border border-slate-200/80 rounded-lg text-left hover:bg-blue-50 hover:border-[#0067c0] hover:shadow-xs rounded-xl transition-all disabled:opacity-50 group">
-                    <div className="text-xs font-semibold text-slate-900 group-hover:text-[#0067c0]">{b.label}</div>
-                    <div className="text-[10px] text-slate-500 truncate">{b.sub}</div>
-                    <div className="text-[9px] font-mono text-[#8b8b8b] truncate">{b.email}</div>
-                  </button>
-                ))}
+                {DEMO_ACCOUNTS.map((b) => {
+                  const isCurrent = activeDemoEmail === b.email;
+                  return (
+                    <button
+                      key={b.email}
+                      type="button"
+                      onClick={() => handleDemoLogin(b)}
+                      disabled={loading}
+                      className={`p-2.5 border rounded-xl text-left transition-all disabled:opacity-50 group relative overflow-hidden ${
+                        isCurrent
+                          ? "bg-blue-50 border-[#0067c0] shadow-xs"
+                          : "bg-slate-50/80 border-slate-200/80 hover:bg-blue-50 hover:border-[#0067c0] hover:shadow-xs"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="text-xs font-semibold text-slate-900 group-hover:text-[#0067c0]">{b.label}</div>
+                        {isCurrent && (
+                          <div className="w-2 h-2 rounded-full bg-[#0067c0] animate-ping" />
+                        )}
+                      </div>
+                      <div className="text-[10px] text-slate-500 truncate">{b.sub}</div>
+                      <div className="text-[9px] font-mono text-[#8b8b8b] truncate">{b.email}</div>
+                    </button>
+                  );
+                })}
               </div>
               <p className="text-[11px] text-[#8b8b8b] mt-2 text-center">Click any card to sign in instantly — no typing needed</p>
             </div>

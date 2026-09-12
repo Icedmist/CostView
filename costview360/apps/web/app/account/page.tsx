@@ -23,7 +23,16 @@ export default function AccountPage() {
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
       if (!data.user) {
-        router.push("/login");
+        const demoRole = typeof window !== "undefined" ? localStorage.getItem("costview_demo_role") : null;
+        const demoEmail = typeof window !== "undefined" ? localStorage.getItem("costview_demo_email") : null;
+        if (demoRole) {
+          const fallbackEmail = demoEmail || "demo@costview.ng";
+          setUser({ id: "demo-sandbox-id", email: fallbackEmail, user_metadata: { full_name: `CostView Demo (${demoRole})` } });
+          setEmail(fallbackEmail);
+          setFullName(`CostView Demo (${demoRole})`);
+          return;
+        }
+        window.location.href = "/login";
         return;
       }
       setUser(data.user);
@@ -40,8 +49,11 @@ export default function AccountPage() {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     localStorage.removeItem("costview_demo_role");
+    localStorage.removeItem("costview_demo_email");
+    localStorage.removeItem("costview_last_active");
+    document.cookie = "costview_demo_role=; path=/; max-age=0";
     sessionStorage.clear();
-    router.push("/login");
+    window.location.href = "/login";
   };
 
   if (!user) {
