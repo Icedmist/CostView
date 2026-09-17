@@ -52,6 +52,7 @@ import {
   FileDown,
   DollarSign,
   Layers,
+  DraftingCompass,
 } from "lucide-react";
 import { canAccess } from "@/lib/auth/permissions";
 import { OnboardingModal } from "@/components/onboarding/onboarding-modal";
@@ -254,9 +255,73 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
     ],
   },
   {
+    id: "Drawings",
+    name: "Drawings",
+    code: "3.0",
+    icon: DraftingCompass,
+    // No permission gate: every project role reads the current drawings
+    // (Architect uploads, Site Engineer builds from them).
+    theme: {
+      accentColor: "#0284C7",
+      bannerBg: "bg-sky-50/90",
+      bannerBorder: "border-sky-200",
+      textTitle: "text-sky-950",
+      textSub: "text-sky-800",
+      badgeBg: "bg-sky-100 text-sky-950 border border-sky-200",
+      iconPill: "bg-sky-100 text-sky-900",
+      activeItemBg: "bg-sky-600 text-white shadow-sm",
+      hoverItemBg: "hover:bg-sky-50 hover:text-sky-950",
+      dotIndicator: "bg-sky-500",
+    },
+    subSections: [
+      {
+        id: "current",
+        name: "Current Drawings",
+        code: "3.1",
+        icon: FileCheck2,
+        color: {
+          icon: "text-sky-600",
+          iconBg: "bg-sky-50 border border-sky-200",
+          activeBg: "bg-sky-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-sky-100 text-sky-900 border border-sky-200",
+          hover: "hover:bg-sky-50/70",
+        },
+      },
+      {
+        id: "history",
+        name: "Version History",
+        code: "3.2",
+        icon: History,
+        color: {
+          icon: "text-slate-600",
+          iconBg: "bg-slate-50 border border-slate-200",
+          activeBg: "bg-slate-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-slate-100 text-slate-900 border border-slate-200",
+          hover: "hover:bg-slate-50/70",
+        },
+      },
+      {
+        id: "approvals",
+        name: "Variation Approvals",
+        code: "3.3",
+        icon: BadgeCheck,
+        color: {
+          icon: "text-amber-600",
+          iconBg: "bg-amber-50 border border-amber-200",
+          activeBg: "bg-amber-600 text-white",
+          activeIcon: "text-white",
+          badge: "bg-amber-100 text-amber-900 border border-amber-200",
+          hover: "hover:bg-amber-50/70",
+        },
+      },
+    ],
+  },
+  {
     id: "Procurement",
     name: "Procurement Lifecycle",
-    code: "3.0",
+    code: "4.0",
     icon: ShoppingCart,
     permission: "Procurement",
     badge: "3",
@@ -276,7 +341,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "match",
         name: "Three-Way Match Gate",
-        code: "3.1",
+        code: "4.1",
         icon: BadgeCheck,
         color: {
           icon: "text-emerald-600",
@@ -290,7 +355,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "requisitions",
         name: "Material Requisitions",
-        code: "3.2",
+        code: "4.2",
         icon: Clock,
         badge: "3",
         color: {
@@ -305,7 +370,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "enquiries",
         name: "Supplier Enquiries & Quotes",
-        code: "3.3",
+        code: "4.3",
         icon: Truck,
         color: {
           icon: "text-blue-600",
@@ -319,7 +384,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "invoices",
         name: "Invoices & Payments",
-        code: "3.4",
+        code: "4.4",
         icon: Receipt,
         color: {
           icon: "text-purple-600",
@@ -333,7 +398,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "payments",
         name: "Disbursement Ledger",
-        code: "3.5",
+        code: "4.5",
         icon: CreditCard,
         color: {
           icon: "text-teal-600",
@@ -349,7 +414,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
   {
     id: "Site Operations",
     name: "Site Operations",
-    code: "4.0",
+    code: "5.0",
     icon: HardHat,
     permission: "Progress",
     theme: {
@@ -368,7 +433,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "diary",
         name: "Daily Site Diary & Log",
-        code: "4.1",
+        code: "5.1",
         icon: Calendar,
         color: {
           icon: "text-emerald-600",
@@ -382,7 +447,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "stock",
         name: "Materials & Stock Ledger",
-        code: "4.2",
+        code: "5.2",
         icon: Boxes,
         color: {
           icon: "text-amber-600",
@@ -396,7 +461,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "labour",
         name: "Labour Muster & Productivity",
-        code: "4.3",
+        code: "5.3",
         icon: Users,
         color: {
           icon: "text-blue-600",
@@ -410,7 +475,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "photos",
         name: "Progress Photos & Proof",
-        code: "4.4",
+        code: "5.4",
         icon: ImageIcon,
         color: {
           icon: "text-sky-600",
@@ -424,7 +489,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "inspections",
         name: "QA/QC Inspections & Tests",
-        code: "4.5",
+        code: "5.5",
         icon: FileCheck2,
         color: {
           icon: "text-purple-600",
@@ -438,7 +503,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "snags",
         name: "Snags & NCRs",
-        code: "4.6",
+        code: "5.6",
         icon: AlertCircle,
         color: {
           icon: "text-orange-600",
@@ -452,7 +517,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "safety",
         name: "HSE Safety Observations",
-        code: "4.7",
+        code: "5.7",
         icon: HardHat,
         color: {
           icon: "text-rose-600",
@@ -468,7 +533,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
   {
     id: "Contracts & Subcontractors",
     name: "Contracts & Subcontractors",
-    code: "5.0",
+    code: "6.0",
     icon: Briefcase,
     permission: "Subcontractors",
     theme: {
@@ -487,7 +552,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "contracts",
         name: "Subcontractor Ledger & Retention",
-        code: "5.1",
+        code: "6.1",
         icon: Briefcase,
         color: {
           icon: "text-emerald-600",
@@ -501,7 +566,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "claims",
         name: "Interim Claims & Certs",
-        code: "5.2",
+        code: "6.2",
         icon: Receipt,
         color: {
           icon: "text-amber-600",
@@ -515,7 +580,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "instructions",
         name: "Site Instructions Register",
-        code: "5.3",
+        code: "6.3",
         icon: ScrollText,
         color: {
           icon: "text-blue-600",
@@ -529,7 +594,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "variations",
         name: "Variation Orders Register",
-        code: "5.4",
+        code: "6.4",
         icon: FileSpreadsheet,
         color: {
           icon: "text-purple-600",
@@ -545,7 +610,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
   {
     id: "Administration",
     name: "Administration & Security",
-    code: "6.0",
+    code: "7.0",
     icon: ShieldCheck,
     permission: "Admin",
     theme: {
@@ -564,7 +629,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "users",
         name: "User & Role Customization",
-        code: "6.1",
+        code: "7.1",
         icon: UserCheck,
         color: {
           icon: "text-blue-600",
@@ -578,7 +643,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "matrix",
         name: "Role Permissions Matrix",
-        code: "6.2",
+        code: "7.2",
         icon: Sliders,
         color: {
           icon: "text-purple-600",
@@ -592,7 +657,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "migration",
         name: "Data Migration Hub",
-        code: "6.3",
+        code: "7.3",
         icon: FolderSync,
         badge: "New",
         color: {
@@ -607,7 +672,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "audit",
         name: "Immutable Audit Trail",
-        code: "6.4",
+        code: "7.4",
         icon: History,
         color: {
           icon: "text-amber-600",
@@ -621,7 +686,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "settings",
         name: "Workspace & Project Config",
-        code: "6.5",
+        code: "7.5",
         icon: Settings,
         color: {
           icon: "text-teal-600",
@@ -637,7 +702,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
   {
     id: "Reports Studio",
     name: "Reports Studio",
-    code: "7.0",
+    code: "8.0",
     icon: FileText,
     permission: "Reports",
     theme: {
@@ -656,7 +721,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "cost-control",
         name: "Cost Control Summary",
-        code: "7.1",
+        code: "8.1",
         icon: DollarSign,
         color: {
           icon: "text-emerald-600",
@@ -670,7 +735,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "variance",
         name: "Budget vs Actual Variance",
-        code: "7.2",
+        code: "8.2",
         icon: Layers,
         color: {
           icon: "text-blue-600",
@@ -684,7 +749,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "forecast",
         name: "Forecast & EAC/ETC",
-        code: "7.3",
+        code: "8.3",
         icon: FileSpreadsheet,
         color: {
           icon: "text-purple-600",
@@ -698,7 +763,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "procurement",
         name: "Procurement & 3-Way Match",
-        code: "7.4",
+        code: "8.4",
         icon: FileDown,
         color: {
           icon: "text-amber-600",
@@ -712,7 +777,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "suppliers",
         name: "Supplier Performance",
-        code: "7.5",
+        code: "8.5",
         icon: Briefcase,
         color: {
           icon: "text-teal-600",
@@ -726,7 +791,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "inventory",
         name: "Inventory & Stock Movement",
-        code: "7.6",
+        code: "8.6",
         icon: Boxes,
         color: {
           icon: "text-orange-600",
@@ -740,7 +805,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "labour",
         name: "Labour & Productivity",
-        code: "7.7",
+        code: "8.7",
         icon: Users,
         color: {
           icon: "text-blue-600",
@@ -754,7 +819,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "site-diary",
         name: "Site Diary & Progress",
-        code: "7.8",
+        code: "8.8",
         icon: Calendar,
         color: {
           icon: "text-emerald-600",
@@ -768,7 +833,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "subcontractors",
         name: "Subcontractor Ledger",
-        code: "7.9",
+        code: "8.9",
         icon: Building,
         color: {
           icon: "text-purple-600",
@@ -782,7 +847,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "variations",
         name: "Variation Orders Impact",
-        code: "7.10",
+        code: "8.10",
         icon: FileText,
         color: {
           icon: "text-rose-600",
@@ -835,7 +900,7 @@ export function Sidebar({
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [subPanelCollapsed, setSubPanelCollapsed] = useState(false);
 
-  // navView can be "main" (showing all 6 modules) or "sub" (showing active module's sub-navigation)
+  // navView can be "main" (showing all 7 modules) or "sub" (showing active module's sub-navigation)
   const [navView, setNavView] = useState<"main" | "sub">("sub");
   const router = useRouter();
 
@@ -941,7 +1006,7 @@ export function Sidebar({
         }`}
       >
         {navView === "main" ? (
-          /* MOBILE VIEW A: ORIGINAL MAIN NAVIGATION (All 6 Modules) */
+          /* MOBILE VIEW A: ORIGINAL MAIN NAVIGATION (All 7 Modules) */
           <div className="flex-1 flex flex-col min-h-0">
             {/* Top Header */}
             <div className="p-4 bg-white border-b-2 border-[#E5E5DE] flex items-center justify-between shrink-0">
@@ -970,7 +1035,7 @@ export function Sidebar({
                 Core Domains &amp; Modules
               </span>
               <span className="text-xs font-mono font-bold bg-[#0A2540]/10 text-[#0A2540] px-2 py-0.5 rounded">
-                6 Modules
+                7 Modules
               </span>
             </div>
 

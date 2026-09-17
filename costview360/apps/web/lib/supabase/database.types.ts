@@ -25,6 +25,7 @@ export type SnagSeverity = "Low" | "Medium" | "High" | "Critical";
 export type SnagStatus = "Open" | "In Progress" | "Remediated" | "Closed";
 export type ClaimStatus = "Submitted" | "Verified" | "Certified" | "Approved" | "Paid";
 export type VariationStatus = "Draft" | "QS Valuation" | "PM Review" | "Client Approved" | "Rejected";
+export type DrawingDiscipline = "Architectural" | "Structural" | "Mechanical";
 
 export interface Database {
   public: {
@@ -142,6 +143,7 @@ export interface Database {
           committed_amount: number;
           actual_amount: number;
           category: string;
+          design_verified: boolean;
           created_at: string;
         };
         Insert: {
@@ -157,6 +159,7 @@ export interface Database {
           committed_amount?: number;
           actual_amount?: number;
           category?: string;
+          design_verified?: boolean;
           created_at?: string;
         };
         Update: {
@@ -172,6 +175,51 @@ export interface Database {
           committed_amount?: number;
           actual_amount?: number;
           category?: string;
+          design_verified?: boolean;
+          created_at?: string;
+        };
+      };
+      drawings: {
+        Row: {
+          id: string;
+          project_id: string;
+          discipline: DrawingDiscipline;
+          title: string;
+          drawing_number: string;
+          version: number;
+          file_url: string | null;
+          is_current: boolean;
+          supersedes_id: string | null;
+          linked_boq_code: string | null;
+          uploaded_by: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          project_id: string;
+          discipline?: DrawingDiscipline;
+          title: string;
+          drawing_number: string;
+          version?: number;
+          file_url?: string | null;
+          is_current?: boolean;
+          supersedes_id?: string | null;
+          linked_boq_code?: string | null;
+          uploaded_by?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          project_id?: string;
+          discipline?: DrawingDiscipline;
+          title?: string;
+          drawing_number?: string;
+          version?: number;
+          file_url?: string | null;
+          is_current?: boolean;
+          supersedes_id?: string | null;
+          linked_boq_code?: string | null;
+          uploaded_by?: string | null;
           created_at?: string;
         };
       };
