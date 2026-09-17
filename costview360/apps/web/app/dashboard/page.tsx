@@ -6,6 +6,7 @@ import { Sidebar, NAVIGATION_SECTIONS } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { MetricCards } from "@/components/dashboard/metric-cards";
 import { BOQTable } from "@/components/budget/boq-table";
+import { DrawingsView } from "@/components/drawings/drawings-view";
 import { ThreeWayMatchView } from "@/components/procurement/three-way-match";
 import { SiteDiaryView } from "@/components/site-ops/site-diary-view";
 import { MaterialsStockView } from "@/components/materials/materials-stock-view";
@@ -352,7 +353,15 @@ export default function DashboardPage() {
             </RoleGuard>
           )}
 
-          {/* 3. PROCUREMENT LIFECYCLE */}
+          {/* 3. DRAWINGS (PRD: Architect-owned design information) */}
+          {activeSection === "Drawings" && (
+            <DrawingsView
+              initialSubTab={activeSubSection as any}
+              onTabChange={(tab) => setActiveSubSection(tab)}
+            />
+          )}
+
+          {/* 4. PROCUREMENT LIFECYCLE */}
           {activeSection === "Procurement" && (
             <RoleGuard permission="Procurement">
               <ThreeWayMatchView
@@ -362,7 +371,7 @@ export default function DashboardPage() {
             </RoleGuard>
           )}
 
-          {/* 4. SITE OPERATIONS */}
+          {/* 5. SITE OPERATIONS */}
           {activeSection === "Site Operations" && (
             <RoleGuard permission="Progress">
               <div className="space-y-6">
@@ -380,7 +389,7 @@ export default function DashboardPage() {
             </RoleGuard>
           )}
 
-          {/* 5. CONTRACTS & SUBCONTRACTORS (Commercial removed) */}
+          {/* 6. CONTRACTS & SUBCONTRACTORS (Commercial removed) */}
           {activeSection === "Contracts & Subcontractors" && (
             <RoleGuard permission="Subcontractors">
               <div className="space-y-6">
@@ -392,7 +401,7 @@ export default function DashboardPage() {
             </RoleGuard>
           )}
 
-          {/* 6. ADMINISTRATION & ROLES */}
+          {/* 7. ADMINISTRATION & ROLES */}
           {activeSection === "Administration" && (
             <RoleGuard permission="Admin">
               {activeSubSection === "migration" ? (
@@ -410,7 +419,7 @@ export default function DashboardPage() {
             </RoleGuard>
           )}
 
-          {/* 7. REPORTS STUDIO */}
+          {/* 8. REPORTS STUDIO */}
           {activeSection === "Reports Studio" && (
             <RoleGuard permission="Reports">
               <ReportsView
