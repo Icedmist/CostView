@@ -57,6 +57,7 @@ interface WorkItemVerify {
   description: string;
   linkedDrawing: string;
   designVerified: boolean;
+  dbId?: string;
 }
 
 const SAMPLE_DRAWINGS: Drawing[] = [
@@ -191,7 +192,7 @@ interface DrawingsViewProps {
 }
 
 export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) {
-  const { activeRole } = useApp();
+  const { activeRole, currentProject } = useApp();
   const [tab, setTab] = useState(initialSubTab || "current");
   const [drawings, setDrawings] = useState<Drawing[]>(SAMPLE_DRAWINGS);
   const [variations, setVariations] = useState<VariationReq[]>(SAMPLE_VARIATIONS);
@@ -199,6 +200,7 @@ export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) 
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [selectedWorkItem, setSelectedWorkItem] = useState(SAMPLE_WORK_ITEMS[0].code);
   const [priceInputs, setPriceInputs] = useState<Record<string, string>>({});
+  const [syncNote, setSyncNote] = useState<string | null>(null);
 
   // Form state for upload / revision
   const [formTitle, setFormTitle] = useState("");
@@ -212,39 +214,115 @@ export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) 
   const canVerify = activeRole === "Admin" || activeRole === "Architect";
   const canPrice = activeRole === "Admin" || activeRole === "Quantity Surveyor" || activeRole === "Project Manager";
 
-  // Load live drawings from Supabase when available; fall back to samples.
+  // DB-backed rows use real UUIDs; built-in samples use short ids.
+  // Writes only target the database for DB-backed rows.
+  const isDbId = (id: string) => id.length > 20;
+
+  const dbStatusToStage = (status: string, costImpact: number | null): VariationStage => {
+    if (status === "Rejected") return "Rejected";
+    if (status === "Draft") return "Pending Architect";
+    if (status === "QS Valuation")
+      return costImpact && costImpact > 0 ? "Priced — cost updated" : "Approved — with QS for pricing";
+    return "Priced — cost updated"; // PM Review / Client Approved
+  };
+
+  // Load live project data from Supabase when available; fall back to samples.
   useEffect(() => {
     let isMounted = true;
     (async () => {
       try {
         const supabase = createClient();
-        const { data, error } = await supabase
+        const projectId = currentProject.id;
+
+        const { data: drawingsData, error: drawingsError } = await supabase
           .from("drawings")
           .select("id, discipline, title, drawing_number, version, file_url, is_current, linked_boq_code, uploaded_by, created_at")
+          .eq("project_id", projectId)
           .order("drawing_number", { ascending: true })
           .order("version", { ascending: false });
-        if (!isMounted || error || !data || data.length === 0) return;
-        setDrawings(
-          data.map((d: any) => ({
-            id: d.id,
-            discipline: d.discipline as DrawingDiscipline,
-            title: d.title,
-            drawingNumber: d.drawing_number,
-            version: Number(d.version || 1),
-            fileRef: d.file_url || `${d.drawing_number}_v${d.version}.pdf`,
-            isCurrent: Boolean(d.is_current),
-            linkedBoqCode: d.linked_boq_code || "",
-            uploadedBy: d.uploaded_by || "Architect",
-            uploadedAt: String(d.created_at || "").slice(0, 10),
-          }))
-        );
+        if (isMounted && !drawingsError && drawingsData && drawingsData.length > 0) {
+          setDrawings(
+            drawingsData.map((d: any) => ({
+              id: d.id,
+              discipline: d.discipline as DrawingDiscipline,
+              title: d.title,
+              drawingNumber: d.drawing_number,
+              version: Number(d.version || 1),
+              fileRef: d.file_url || `${d.drawing_number}_v${d.version}.pdf`,
+              isCurrent: Boolean(d.is_current),
+              linkedBoqCode: d.linked_boq_code || "",
+              uploadedBy: d.uploaded_by || "Architect",
+              uploadedAt: String(d.created_at || "").slice(0, 10),
+            }))
+          );
+        }
+
+        const { data: voData, error: voError } = await supabase
+          .from("variation_orders")
+          .select("id, vo_number, title, description, cost_impact, status, raised_by, created_at, boq_items(code)")
+          .eq("project_id", projectId)
+          .order("created_at", { ascending: false });
+        if (isMounted && !voError && voData && voData.length > 0) {
+          const raiserIds = Array.from(
+            new Set(voData.map((v: any) => v.raised_by).filter(Boolean))
+          ) as string[];
+          let nameById: Record<string, string> = {};
+          if (raiserIds.length > 0) {
+            const { data: profiles } = await supabase
+              .from("profiles")
+              .select("id, full_name")
+              .in("id", raiserIds);
+            (profiles || []).forEach((p: any) => {
+              nameById[p.id] = p.full_name;
+            });
+          }
+          setVariations(
+            voData.map((v: any) => {
+              const cost = v.cost_impact === null ? null : Number(v.cost_impact);
+              return {
+                id: v.id,
+                voNumber: v.vo_number,
+                title: v.title,
+                siteNote: v.description || "",
+                linkedBoq: v.boq_items?.code || "",
+                linkedDrawing: "",
+                raisedBy: (v.raised_by && nameById[v.raised_by]) || "Site team",
+                raisedAt: String(v.created_at || "").slice(0, 10),
+                stage: dbStatusToStage(v.status, cost),
+                costImpact: cost,
+              };
+            })
+          );
+        }
+
+        const { data: boqData, error: boqError } = await supabase
+          .from("boq_items")
+          .select("id, code, description, design_verified")
+          .eq("project_id", projectId)
+          .order("code", { ascending: true })
+          .limit(50);
+        if (isMounted && !boqError && boqData && boqData.length > 0) {
+          setWorkItems(
+            boqData.map((b: any) => ({
+              code: b.code,
+              description: b.description,
+              linkedDrawing: "",
+              designVerified: Boolean(b.design_verified),
+              dbId: b.id,
+            }))
+          );
+          setSelectedWorkItem((prev) =>
+            boqData.some((b: any) => b.code === prev) ? prev : boqData[0].code
+          );
+        }
       } catch {
-        // Offline / table not yet migrated — keep sample data.
+        // Offline / not yet migrated — keep sample data.
       }
     })();
     return () => {
       isMounted = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const selectTab = (t: string) => {
@@ -266,14 +344,14 @@ export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) 
 
   // Upload: a repeated drawing number becomes a new version;
   // the previous current copy is retained as history (never replaced).
-  const handleUpload = () => {
+  // Persists to the drawings table; falls back to local-only on failure.
+  const handleUpload = async () => {
     if (!formTitle.trim() || !formNumber.trim()) return;
-    const same = drawings.filter(
-      (d) => d.drawingNumber.toLowerCase() === formNumber.trim().toLowerCase()
-    );
+    const number = formNumber.trim().toUpperCase();
+    const same = drawings.filter((d) => d.drawingNumber.toLowerCase() === number.toLowerCase());
     const nextVersion = same.length > 0 ? Math.max(...same.map((d) => d.version)) + 1 : 1;
-    const updated = drawings.map((d) =>
-      d.drawingNumber.toLowerCase() === formNumber.trim().toLowerCase() && d.isCurrent
+    const retired = drawings.map((d) =>
+      d.drawingNumber.toLowerCase() === number.toLowerCase() && d.isCurrent
         ? { ...d, isCurrent: false }
         : d
     );
@@ -281,15 +359,47 @@ export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) 
       id: `drw-${Date.now()}`,
       discipline: formDiscipline,
       title: formTitle.trim(),
-      drawingNumber: formNumber.trim().toUpperCase(),
+      drawingNumber: number,
       version: nextVersion,
-      fileRef: formFile.trim() || `${formNumber.trim().toUpperCase()}_v${nextVersion}.pdf`,
+      fileRef: formFile.trim() || `${number}_v${nextVersion}.pdf`,
       isCurrent: true,
       linkedBoqCode: formBoq.trim().toUpperCase(),
       uploadedBy: `${activeRole}`,
       uploadedAt: new Date().toISOString().slice(0, 10),
     };
-    setDrawings([...updated, entry]);
+
+    try {
+      const supabase = createClient();
+      const retiredIds = same.filter((d) => d.isCurrent && isDbId(d.id)).map((d) => d.id);
+      if (retiredIds.length > 0) {
+        const { error: retireError } = await supabase
+          .from("drawings")
+          .update({ is_current: false })
+          .in("id", retiredIds);
+        if (retireError) throw retireError;
+      }
+      const { data, error } = await supabase
+        .from("drawings")
+        .insert({
+          project_id: currentProject.id,
+          discipline: formDiscipline,
+          title: formTitle.trim(),
+          drawing_number: number,
+          version: nextVersion,
+          file_url: entry.fileRef,
+          is_current: true,
+          linked_boq_code: entry.linkedBoqCode || null,
+        })
+        .select("id")
+        .single();
+      if (error) throw error;
+      entry.id = data.id;
+      setSyncNote(null);
+    } catch {
+      setSyncNote("Could not reach the project database — this drawing is kept on this device only.");
+    }
+
+    setDrawings([...retired, entry]);
     setFormTitle("");
     setFormNumber("");
     setFormBoq("");
@@ -298,30 +408,77 @@ export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) 
     selectTab("current");
   };
 
-  const handleVariationDecision = (id: string, approved: boolean) => {
-    setVariations((prev) =>
-      prev.map((v) =>
-        v.id === id
-          ? { ...v, stage: approved ? "Approved — with QS for pricing" : "Rejected" }
-          : v
-      )
+  const persistVariation = async (id: string, patch: { status?: string; cost_impact?: number }) => {
+    if (!isDbId(id)) return false;
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.from("variation_orders").update(patch).eq("id", id);
+      if (error) throw error;
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const handleVariationDecision = async (id: string, approved: boolean) => {
+    const stage: VariationStage = approved ? "Approved — with QS for pricing" : "Rejected";
+    setVariations((prev) => prev.map((v) => (v.id === id ? { ...v, stage } : v)));
+    const saved = await persistVariation(id, {
+      status: approved ? "QS Valuation" : "Rejected",
+    });
+    setSyncNote(
+      saved || !isDbId(id)
+        ? null
+        : "Could not reach the project database — this decision is kept on this device only."
     );
   };
 
-  const handlePriceVariation = (id: string) => {
+  const handlePriceVariation = async (id: string) => {
     const raw = (priceInputs[id] || "").replace(/[^0-9]/g, "");
     if (!raw) return;
+    const amount = Number(raw);
     setVariations((prev) =>
       prev.map((v) =>
-        v.id === id ? { ...v, stage: "Priced — cost updated", costImpact: Number(raw) } : v
+        v.id === id ? { ...v, stage: "Priced — cost updated", costImpact: amount } : v
       )
+    );
+    const saved = await persistVariation(id, { cost_impact: amount });
+    setSyncNote(
+      saved || !isDbId(id)
+        ? null
+        : "Could not reach the project database — this price is kept on this device only."
     );
   };
 
-  const toggleVerified = (code: string) => {
+  const toggleVerified = async (code: string) => {
+    const target = workItems.find((w) => w.code === code);
+    if (!target) return;
+    const next = !target.designVerified;
     setWorkItems((prev) =>
-      prev.map((w) => (w.code === code ? { ...w, designVerified: !w.designVerified } : w))
+      prev.map((w) => (w.code === code ? { ...w, designVerified: next } : w))
     );
+    if (target.dbId) {
+      try {
+        const supabase = createClient();
+        const { error } = await supabase
+          .from("boq_items")
+          .update({ design_verified: next })
+          .eq("id", target.dbId);
+        if (error) throw error;
+        setSyncNote(null);
+      } catch {
+        setSyncNote("Could not reach the project database — this mark is kept on this device only.");
+      }
+    }
+  };
+
+  // Current drawing governing a work item (used by variation rows from the DB,
+  // which carry the BOQ link rather than a drawing label).
+  const drawingLabelFor = (boqCode: string) => {
+    const match = drawings.find(
+      (d) => d.isCurrent && d.linkedBoqCode.toLowerCase() === boqCode.toLowerCase()
+    );
+    return match ? `${match.drawingNumber} v${match.version}` : "—";
   };
 
   const focusedWorkItem = workItems.find((w) => w.code === selectedWorkItem) || workItems[0];
@@ -361,6 +518,11 @@ export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) 
               Architectural, structural and mechanical drawings. The current version is
               always shown first — older versions are kept below as record.
             </p>
+            {syncNote && (
+              <p className="mt-2 text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200 rounded-xl px-4 py-2.5">
+                {syncNote}
+              </p>
+            )}
           </div>
           {canUpload && (
             <button
@@ -590,7 +752,7 @@ export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) 
                   <tr key={w.code} className="border-t border-slate-100">
                     <td className="py-3 pr-4 font-mono font-black text-slate-800">{w.code}</td>
                     <td className="py-3 pr-4 font-semibold text-slate-700">{w.description}</td>
-                    <td className="py-3 pr-4 font-mono font-bold text-sky-800">{w.linkedDrawing}</td>
+                    <td className="py-3 pr-4 font-mono font-bold text-sky-800">{w.linkedDrawing || drawingLabelFor(w.code)}</td>
                     <td className="py-3 pr-4">
                       <span
                         className={`text-[11px] font-black px-2.5 py-1 rounded-full border ${
@@ -690,7 +852,7 @@ export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) 
               <div className="text-xs text-slate-500 font-semibold mt-2">
                 Raised by {v.raisedBy} · {v.raisedAt} · Work item{" "}
                 <span className="font-mono font-bold">{v.linkedBoq}</span> · Drawing{" "}
-                <span className="font-mono font-bold">{v.linkedDrawing}</span>
+                <span className="font-mono font-bold">{v.linkedDrawing || drawingLabelFor(v.linkedBoq)}</span>
                 {v.costImpact !== null && (
                   <>
                     {" "}· Priced at{" "}
