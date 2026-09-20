@@ -54,6 +54,12 @@ export function MarketingNav() {
             Reports
           </Link>
           <Link
+            href="/portal"
+            className="px-4 py-2.5 rounded-xl text-emerald-800 font-extrabold hover:text-emerald-950 hover:bg-emerald-50/70 transition-all"
+          >
+            Investor Portal
+          </Link>
+          <Link
             href="/how-it-works"
             className="px-4 py-2.5 rounded-xl hover:text-[#0A2540] hover:bg-white transition-all"
           >
@@ -142,6 +148,13 @@ export function MarketingNav() {
             className="block px-4 py-3 rounded-xl hover:bg-white font-black text-base text-[#0A2540] border border-transparent hover:border-[#E5E5DE] transition-all"
           >
             Reports Studio
+          </Link>
+          <Link
+            href="/portal"
+            onClick={() => setMobileOpen(false)}
+            className="block px-4 py-3 rounded-xl bg-emerald-50 text-emerald-950 font-black text-base border border-emerald-200 hover:bg-emerald-100 transition-all"
+          >
+            Investor Portal
           </Link>
           <Link
             href="/how-it-works"
