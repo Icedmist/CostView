@@ -44,7 +44,9 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname.startsWith("/pricing") ||
     request.nextUrl.pathname.startsWith("/how-it-works") ||
     request.nextUrl.pathname.startsWith("/about") ||
-    request.nextUrl.pathname.startsWith("/contact");
+    request.nextUrl.pathname.startsWith("/contact") ||
+    request.nextUrl.pathname.startsWith("/portal") ||
+    request.nextUrl.pathname.startsWith("/reports");
   const isLiveSupabase = Boolean(
     process.env.NEXT_PUBLIC_SUPABASE_URL &&
       process.env.NEXT_PUBLIC_SUPABASE_URL !== "https://placeholder-project.supabase.co" &&

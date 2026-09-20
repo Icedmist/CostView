@@ -278,7 +278,10 @@ export default function DashboardPage() {
                   </div>
                 </div>
               ) : activeSubSection === "portal" ? (
-                <ClientPortalView standalone={false} />
+                <ClientPortalView
+                  standalone={false}
+                  onReturn={() => handleNavSelect("Command Center", "telemetry")}
+                />
               ) : (
                 /* Telemetry Overview: BOQ & 3-Way Match Quick Modules */
                 <div className="grid lg:grid-cols-2 gap-8">
@@ -375,7 +378,10 @@ export default function DashboardPage() {
           {activeSection === "Budget & BOQ" && (
             <RoleGuard permission="Budget">
               {activeSubSection === "estimator" ? (
-                <AICostEstimator onGenerateBOQ={() => handleNavSelect("Budget & BOQ", "boq")} />
+                <AICostEstimator
+                  onBack={() => handleNavSelect("Budget & BOQ", "boq")}
+                  onGenerateBOQ={() => handleNavSelect("Budget & BOQ", "boq")}
+                />
               ) : (
                 <BOQTable
                   initialSubTab={activeSubSection as any}
@@ -397,7 +403,9 @@ export default function DashboardPage() {
           {activeSection === "Procurement" && (
             <RoleGuard permission="Procurement">
               {activeSubSection === "directory" ? (
-                <TradeDirectoryView />
+                <TradeDirectoryView
+                  onBack={() => handleNavSelect("Procurement", "match")}
+                />
               ) : (
                 <ThreeWayMatchView
                   initialSubTab={activeSubSection as any}
