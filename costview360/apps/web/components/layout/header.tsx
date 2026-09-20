@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useApp } from "@/app/providers";
-import { Building2, Bell, Menu, BookOpen, ChevronRight, User } from "lucide-react";
+import { Building2, Bell, Menu, BookOpen, ChevronRight, User, Globe } from "lucide-react";
 import { NAVIGATION_SECTIONS } from "@/components/layout/sidebar";
 import { OnboardingModal } from "@/components/onboarding/onboarding-modal";
 
@@ -99,6 +99,17 @@ export function Header({
             <option value="EUR">€ EUR</option>
           </select>
         </div>
+
+        {/* Client Portal Link */}
+        <Link
+          href="/portal"
+          target="_blank"
+          title="Open Public Client & Investor Portal"
+          className="hidden sm:flex items-center gap-1.5 h-10 px-3 bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-300 text-emerald-900 rounded-xl font-bold text-xs uppercase tracking-wider shadow-xs transition-all cursor-pointer"
+        >
+          <Globe className="w-3.5 h-3.5 text-emerald-700" />
+          <span className="hidden xl:inline">Client Portal</span>
+        </Link>
 
         {/* User Guide Hub */}
         <button

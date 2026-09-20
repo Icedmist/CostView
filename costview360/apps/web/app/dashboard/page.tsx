@@ -17,6 +17,9 @@ import { DataMigrationHub } from "@/components/admin/data-migration-hub";
 import { AuditLogView } from "@/components/admin/audit-log-view";
 import { WorkspaceSettingsView } from "@/components/settings/workspace-settings";
 import { ReportsView } from "@/components/reports/reports-view";
+import { AICostEstimator } from "@/components/budget/ai-cost-estimator";
+import { TradeDirectoryView } from "@/components/procurement/trade-directory-view";
+import { ClientPortalView } from "@/components/portal/client-portal-view";
 import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav";
 import {
   ArrowUpRight,
@@ -35,6 +38,8 @@ import {
   Briefcase,
   FolderSync,
   FileText,
+  Globe,
+  Store,
 } from "lucide-react";
 import { RoleGuard } from "@/components/auth/role-guard";
 import { canAccess } from "@/lib/auth/permissions";
@@ -122,6 +127,27 @@ export default function DashboardPage() {
                   </div>
 
                   <div className="flex flex-wrap items-center gap-3.5">
+                    <button
+                      onClick={() => handleNavSelect("Budget & BOQ", "estimator")}
+                      className="min-h-[46px] px-5 py-3 bg-amber-400 hover:bg-amber-300 text-[#0A2540] rounded-xl text-sm font-black flex items-center gap-2 shadow-md transition-all active:scale-[0.98] cursor-pointer"
+                    >
+                      <Sparkles className="w-4 h-4 fill-[#0A2540]" />
+                      <span>AI Cost Estimator</span>
+                    </button>
+                    <button
+                      onClick={() => handleNavSelect("Procurement", "directory")}
+                      className="min-h-[46px] px-5 py-3 bg-white/10 hover:bg-white/20 text-white border-2 border-white/30 rounded-xl text-sm font-extrabold flex items-center gap-2 transition-all shadow-xs cursor-pointer"
+                    >
+                      <Store className="w-4 h-4 text-white" />
+                      <span>Vetted Trade Directory</span>
+                    </button>
+                    <button
+                      onClick={() => handleNavSelect("Command Center", "portal")}
+                      className="min-h-[46px] px-5 py-3 bg-emerald-500 hover:bg-emerald-400 text-[#0A2540] rounded-xl text-sm font-black flex items-center gap-2 shadow-sm transition-all cursor-pointer"
+                    >
+                      <Globe className="w-4 h-4 text-[#0A2540]" />
+                      <span>Client Investor Portal</span>
+                    </button>
                     <button
                       onClick={() => handleNavSelect("Budget & BOQ", "boq")}
                       className="min-h-[46px] px-6 py-3 bg-white hover:bg-slate-100 text-[#0A2540] rounded-xl text-sm font-extrabold flex items-center gap-2 shadow-md transition-all active:scale-[0.98] cursor-pointer"
@@ -251,6 +277,8 @@ export default function DashboardPage() {
                     </div>
                   </div>
                 </div>
+              ) : activeSubSection === "portal" ? (
+                <ClientPortalView standalone={false} />
               ) : (
                 /* Telemetry Overview: BOQ & 3-Way Match Quick Modules */
                 <div className="grid lg:grid-cols-2 gap-8">
@@ -346,10 +374,14 @@ export default function DashboardPage() {
           {/* 2. BUDGET & BOQ MASTER */}
           {activeSection === "Budget & BOQ" && (
             <RoleGuard permission="Budget">
-              <BOQTable
-                initialSubTab={activeSubSection as any}
-                onTabChange={(tab) => setActiveSubSection(tab)}
-              />
+              {activeSubSection === "estimator" ? (
+                <AICostEstimator onGenerateBOQ={() => handleNavSelect("Budget & BOQ", "boq")} />
+              ) : (
+                <BOQTable
+                  initialSubTab={activeSubSection as any}
+                  onTabChange={(tab) => setActiveSubSection(tab)}
+                />
+              )}
             </RoleGuard>
           )}
 
@@ -364,10 +396,14 @@ export default function DashboardPage() {
           {/* 4. PROCUREMENT LIFECYCLE */}
           {activeSection === "Procurement" && (
             <RoleGuard permission="Procurement">
-              <ThreeWayMatchView
-                initialSubTab={activeSubSection as any}
-                onTabChange={(tab) => setActiveSubSection(tab)}
-              />
+              {activeSubSection === "directory" ? (
+                <TradeDirectoryView />
+              ) : (
+                <ThreeWayMatchView
+                  initialSubTab={activeSubSection as any}
+                  onTabChange={(tab) => setActiveSubSection(tab)}
+                />
+              )}
             </RoleGuard>
           )}
 
