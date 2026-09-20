@@ -20,6 +20,7 @@ import {
   Sliders,
   DollarSign,
   Info,
+  ArrowLeft,
 } from "lucide-react";
 
 interface ProjectPreset {
@@ -97,7 +98,13 @@ const FOUNDATION_TYPES = [
   { id: "piles", name: "Swamp / Deep Foundation (Precast / Bored Piles)", factor: 1.35 },
 ];
 
-export function AICostEstimator({ onGenerateBOQ }: { onGenerateBOQ?: () => void }) {
+export function AICostEstimator({
+  onGenerateBOQ,
+  onBack,
+}: {
+  onGenerateBOQ?: () => void;
+  onBack?: () => void;
+}) {
   const [selectedPreset, setSelectedPreset] = useState<string>("apartments");
   const [gfa, setGfa] = useState<number>(2200);
   const [storeys, setStoreys] = useState<number>(6);
@@ -254,6 +261,16 @@ export function AICostEstimator({ onGenerateBOQ }: { onGenerateBOQ?: () => void 
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
+            {onBack && (
+              <button
+                type="button"
+                onClick={onBack}
+                className="min-h-[46px] px-5 py-2.5 bg-white/15 hover:bg-white/25 text-white border-2 border-white/20 rounded-xl text-sm font-black flex items-center gap-2 shadow-xs transition-all cursor-pointer"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>Back to Master BOQ</span>
+              </button>
+            )}
             <button
               onClick={handleExportProForma}
               className="min-h-[46px] px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white border-2 border-white/20 rounded-xl text-sm font-black flex items-center gap-2 transition-all cursor-pointer"

@@ -24,6 +24,7 @@ import {
   X,
   FileText,
   AlertCircle,
+  ArrowLeft,
 } from "lucide-react";
 
 interface SupplierItem {
@@ -258,7 +259,11 @@ const SAMPLE_ARTISANS: ArtisanTradeItem[] = [
   },
 ];
 
-export function TradeDirectoryView() {
+export function TradeDirectoryView({
+  onBack,
+}: {
+  onBack?: () => void;
+} = {}) {
   const [activeTab, setActiveTab] = useState<"suppliers" | "artisans">("suppliers");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -325,6 +330,16 @@ export function TradeDirectoryView() {
           </div>
 
           <div className="flex flex-wrap items-center gap-4">
+            {onBack && (
+              <button
+                type="button"
+                onClick={onBack}
+                className="min-h-[46px] px-5 py-2.5 bg-white/15 hover:bg-white/25 text-white border-2 border-white/20 rounded-xl text-sm font-black flex items-center gap-2 shadow-xs transition-all cursor-pointer"
+              >
+                <ArrowLeft className="w-4 h-4 text-white" />
+                <span>Back to 3-Way Match</span>
+              </button>
+            )}
             <div className="bg-white/10 border-2 border-white/20 rounded-2xl p-4 text-center min-w-[140px]">
               <div className="text-2xl font-black font-mono text-white">100%</div>
               <div className="text-[11px] font-bold uppercase tracking-wider text-white/70 mt-0.5">CAC Verified</div>

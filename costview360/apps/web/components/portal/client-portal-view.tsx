@@ -24,6 +24,7 @@ import {
   Check,
   Eye,
   Lock,
+  ArrowLeft,
 } from "lucide-react";
 
 interface MilestoneItem {
@@ -139,7 +140,13 @@ const SITE_PHOTOS: SitePhotoItem[] = [
   },
 ];
 
-export function ClientPortalView({ standalone = false }: { standalone?: boolean }) {
+export function ClientPortalView({
+  standalone = false,
+  onReturn,
+}: {
+  standalone?: boolean;
+  onReturn?: () => void;
+}) {
   const [copiedLink, setCopiedLink] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<SitePhotoItem | null>(null);
 
@@ -183,6 +190,16 @@ export function ClientPortalView({ standalone = false }: { standalone?: boolean 
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
+            {!standalone && onReturn && (
+              <button
+                type="button"
+                onClick={onReturn}
+                className="min-h-[46px] px-5 py-2.5 bg-white/15 hover:bg-white/25 text-white border-2 border-white/20 rounded-xl text-sm font-black flex items-center gap-2 shadow-xs transition-all cursor-pointer"
+              >
+                <ArrowLeft className="w-4 h-4 text-white" />
+                <span>Return to Telemetry</span>
+              </button>
+            )}
             <button
               onClick={handleCopyShareLink}
               className="min-h-[46px] px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white border-2 border-white/20 rounded-xl text-sm font-black flex items-center gap-2 transition-all cursor-pointer"
