@@ -1083,7 +1083,7 @@ export function Sidebar({
                 Core Domains &amp; Modules
               </span>
               <span className="text-xs font-mono font-bold bg-[#0A2540]/10 text-[#0A2540] px-2 py-0.5 rounded">
-                7 Modules
+                {NAVIGATION_SECTIONS.length} Modules
               </span>
             </div>
 

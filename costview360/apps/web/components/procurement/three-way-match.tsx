@@ -26,6 +26,7 @@ import {
   Receipt,
   Eye,
   BadgeCheck,
+  Store,
 } from "lucide-react";
 
 interface ThreeWayMatchRecord {
@@ -480,13 +481,24 @@ export function ThreeWayMatchView({
                 Automated quantity and unit rate cross-validation per PRD Section 2.
               </p>
             </div>
-            <button
-              onClick={() => setIsNewInvoiceOpen(true)}
-              className="min-h-[44px] px-5 py-2.5 bg-[#0A2540] hover:bg-[#003366] text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-md transition-all active:scale-[0.98] flex items-center gap-2 cursor-pointer"
-            >
-              <Plus className="w-4 h-4" />
-              <span>Log Supplier Invoice</span>
-            </button>
+            <div className="flex items-center gap-2.5">
+              <button
+                type="button"
+                onClick={() => onTabChange?.("directory" as any)}
+                title="Browse Vetted Material Suppliers & Artisan Trades"
+                className="min-h-[44px] px-4 py-2.5 bg-blue-50 hover:bg-blue-100 text-[#0A2540] border-2 border-blue-200 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer shadow-xs"
+              >
+                <Store className="w-4 h-4 text-blue-700" />
+                <span>Vetted Directory</span>
+              </button>
+              <button
+                onClick={() => setIsNewInvoiceOpen(true)}
+                className="min-h-[44px] px-5 py-2.5 bg-[#0A2540] hover:bg-[#003366] text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-md transition-all active:scale-[0.98] flex items-center gap-2 cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Log Supplier Invoice</span>
+              </button>
+            </div>
           </div>
 
           <div className="divide-y-2 divide-navy-800/20">
