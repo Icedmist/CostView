@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { Logo } from "@/components/brand/logo";
 import { ArrowRight, Lock, Mail, CheckCircle2 } from "lucide-react";
 import type { RoleName } from "@/lib/supabase/database.types";
 
@@ -92,11 +93,8 @@ export default function LoginPage() {
     <div className="min-h-screen bg-[#FAF9F5] flex flex-col font-sans text-[#0A2540]">
       {/* Top Brand Header */}
       <div className="p-6 flex items-center justify-between border-b-2 border-[#E5E5DE] bg-white">
-        <Link href="/" className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-[#0A2540] rounded-xl text-white font-black flex items-center justify-center text-sm shadow-md">
-            CV
-          </div>
-          <span className="font-black text-xl text-[#0A2540]">CostView</span>
+        <Link href="/" className="flex items-center">
+          <Logo size="md" showSubtitle={false} />
         </Link>
         <Link
           href="/"

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useApp } from "@/app/providers";
 import type { RoleName } from "@/lib/supabase/database.types";
@@ -1059,8 +1060,15 @@ export function Sidebar({
             {/* Top Header */}
             <div className="p-4 bg-white border-b-2 border-[#E5E5DE] flex items-center justify-between shrink-0">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-[#0A2540] text-white rounded-xl flex items-center justify-center font-black text-sm shadow-md">
-                  CV
+                <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center p-1.5 shadow-sm border border-[#0A2540]/15 shrink-0">
+                  <Image
+                    src="/logo-mark.png"
+                    alt="CostView Logo"
+                    width={28}
+                    height={28}
+                    className="w-full h-full object-contain"
+                    priority
+                  />
                 </div>
                 <div>
                   <div className="text-base font-extrabold text-[#0A2540]">CostView</div>
@@ -1304,9 +1312,16 @@ export function Sidebar({
             <Link
               href="/dashboard"
               title="CostView Home"
-              className="w-11 h-11 bg-white text-[#0A2540] rounded-xl flex items-center justify-center font-black text-base shadow-md hover:scale-105 transition-transform"
+              className="w-11 h-11 bg-white rounded-xl flex items-center justify-center p-1.5 shadow-md hover:scale-105 transition-transform border border-white/20 shrink-0"
             >
-              CV
+              <Image
+                src="/logo-mark.png"
+                alt="CostView Home"
+                width={32}
+                height={32}
+                className="w-full h-full object-contain"
+                priority
+              />
             </Link>
 
             {/* Primary Domain Icons */}
