@@ -16,7 +16,7 @@ export default function SettingsPage() {
   useSessionExpiry();
 
   const handleNavSelect = (section: string, subSection?: string) => {
-    if (section === "Administration" && subSection === "settings") {
+    if (section === "Oversight" && subSection === "admin") {
       // Stay on settings
     } else {
       router.push("/dashboard");
@@ -26,8 +26,8 @@ export default function SettingsPage() {
   return (
     <div className="flex h-screen overflow-hidden bg-[#FAF9F5] font-sans text-slate-900">
       <Sidebar
-        activeSection="Administration"
-        activeSubSection="settings"
+        activeSection="Oversight"
+        activeSubSection="admin"
         onSelectNav={handleNavSelect}
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
@@ -36,8 +36,8 @@ export default function SettingsPage() {
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <Header
           onMenuClick={() => setSidebarOpen((v) => !v)}
-          activeSection="Administration"
-          activeSubSection="settings"
+          activeSection="Oversight"
+          activeSubSection="admin"
           onSelectNav={handleNavSelect}
         />
 
@@ -49,7 +49,7 @@ export default function SettingsPage() {
       </div>
 
       <MobileBottomNav
-        activeSection="Administration"
+        activeSection="Oversight"
         onSelectNav={handleNavSelect}
         onMenuClick={() => setSidebarOpen((v) => !v)}
         isMenuOpen={sidebarOpen}

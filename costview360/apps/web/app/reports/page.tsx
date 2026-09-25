@@ -21,7 +21,7 @@ function ReportsContent() {
 
   // Navigation coordinator to switch sections or routes
   const handleNavSelect = (section: string, subSection?: string) => {
-    if (section === "Reports Studio") {
+    if (section === "Oversight" && subSection === "reports-all") {
       if (subSection) {
         setActiveSubSection(subSection);
         router.replace(`/reports?report=${subSection}`);
@@ -34,8 +34,8 @@ function ReportsContent() {
   return (
     <div className="flex h-screen overflow-hidden bg-[#FAF9F5] font-sans text-slate-900">
       <Sidebar
-        activeSection="Reports Studio"
-        activeSubSection={activeSubSection}
+        activeSection="Oversight"
+        activeSubSection="reports-all"
         onSelectNav={handleNavSelect}
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
@@ -44,8 +44,8 @@ function ReportsContent() {
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <Header
           onMenuClick={() => setSidebarOpen((v) => !v)}
-          activeSection="Reports Studio"
-          activeSubSection={activeSubSection}
+          activeSection="Oversight"
+          activeSubSection="reports-all"
           onSelectNav={handleNavSelect}
         />
 
@@ -64,7 +64,7 @@ function ReportsContent() {
 
       {/* Mobile Bottom Navigation Bar */}
       <MobileBottomNav
-        activeSection="Reports Studio"
+        activeSection="Oversight"
         onSelectNav={handleNavSelect}
         onMenuClick={() => setSidebarOpen((v) => !v)}
         isMenuOpen={sidebarOpen}

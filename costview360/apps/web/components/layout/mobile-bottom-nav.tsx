@@ -2,13 +2,14 @@
 
 import React from "react";
 import {
-  LayoutDashboard,
   Calculator,
   ShoppingCart,
   HardHat,
   Briefcase,
+  LayoutDashboard,
   Menu,
 } from "lucide-react";
+import { normalizeSection } from "@/components/layout/sidebar";
 
 interface MobileBottomNavProps {
   activeSection: string;
@@ -26,30 +27,30 @@ interface BottomNavItem {
 
 const BOTTOM_NAV_ITEMS: BottomNavItem[] = [
   {
-    id: "Command Center",
-    name: "Command",
-    icon: LayoutDashboard,
-  },
-  {
-    id: "Budget & BOQ",
-    name: "BOQ",
+    id: "Cost Plan",
+    name: "Cost Plan",
     icon: Calculator,
   },
   {
-    id: "Procurement",
-    name: "Procure",
+    id: "Buy & Supply",
+    name: "Buy",
     icon: ShoppingCart,
     badge: "3",
   },
   {
-    id: "Site Operations",
+    id: "Site",
     name: "Site",
     icon: HardHat,
   },
   {
-    id: "Contracts & Subcontractors",
+    id: "Contracts",
     name: "Contracts",
     icon: Briefcase,
+  },
+  {
+    id: "Oversight",
+    name: "Oversight",
+    icon: LayoutDashboard,
   },
 ];
 
@@ -59,6 +60,8 @@ export function MobileBottomNav({
   onMenuClick,
   isMenuOpen = false,
 }: MobileBottomNavProps) {
+  const currentFlow = normalizeSection(activeSection);
+
   return (
     <nav
       aria-label="Mobile Navigation Bar"
@@ -67,19 +70,18 @@ export function MobileBottomNav({
       <div className="flex items-center justify-around max-w-lg mx-auto">
         {BOTTOM_NAV_ITEMS.map((item) => {
           const Icon = item.icon;
-          const isActive = activeSection === item.id && !isMenuOpen;
+          const isActive = currentFlow === item.id && !isMenuOpen;
 
           return (
             <button
               key={item.id}
               onClick={() => onSelectNav(item.id)}
-              className={`relative flex flex-col items-center justify-center min-w-[56px] py-1 px-2 rounded-xl transition-all cursor-pointer ${
+              className={`relative flex flex-col items-center justify-center min-w-[52px] py-1 px-1.5 rounded-xl transition-all cursor-pointer ${
                 isActive
                   ? "bg-[#0A2540]/10 text-[#0A2540]"
                   : "text-[#0A2540]/60 hover:text-[#0A2540] hover:bg-slate-100"
               }`}
             >
-              {/* Active top indicator dot */}
               {isActive && (
                 <span className="absolute -top-1 w-2 h-1 bg-[#0A2540] rounded-full" />
               )}
@@ -91,7 +93,7 @@ export function MobileBottomNav({
                   }`}
                 />
                 {item.badge && (
-                  <span className="absolute -top-1 -right-2 min-w-[14px] h-[14px] px-1 bg-rose-500 text-white text-[9px] font-black rounded-full flex items-center justify-center leading-none shadow-xs">
+                  <span className="absolute -top-1 -right-2 min-w-[14px] h-[14px] px-1 bg-amber-500 text-white text-[9px] font-black rounded-full flex items-center justify-center leading-none shadow-xs">
                     {item.badge}
                   </span>
                 )}
@@ -108,11 +110,11 @@ export function MobileBottomNav({
           );
         })}
 
-        {/* Menu / More Button (Opens full existing navigation drawer) */}
+        {/* Menu / Drawer Toggle */}
         <button
           onClick={onMenuClick}
-          aria-label="Open Full Menu and Administration"
-          className={`relative flex flex-col items-center justify-center min-w-[56px] py-1 px-2 rounded-xl transition-all cursor-pointer ${
+          aria-label="Open Full Navigation Drawer"
+          className={`relative flex flex-col items-center justify-center min-w-[52px] py-1 px-1.5 rounded-xl transition-all cursor-pointer ${
             isMenuOpen
               ? "bg-[#0A2540] text-white"
               : "text-[#0A2540]/60 hover:text-[#0A2540] hover:bg-slate-100"
