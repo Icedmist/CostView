@@ -96,17 +96,6 @@ export default function AccountPage() {
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
       if (!data.user) {
-        const demoRole = typeof window !== "undefined" ? localStorage.getItem("costview_demo_role") : null;
-        const demoEmail = typeof window !== "undefined" ? localStorage.getItem("costview_demo_email") : null;
-        if (demoRole) {
-          const fallbackEmail = demoEmail || "demo@costview.ng";
-          const fallbackName = `CostView Demo (${demoRole})`;
-          setUser({ id: "11111111-1111-1111-1111-111111111111", email: fallbackEmail, user_metadata: { full_name: fallbackName } });
-          setEmail(fallbackEmail);
-          setFullName(fallbackName);
-          setJobTitle(demoRole);
-          return;
-        }
         window.location.href = "/login";
         return;
       }

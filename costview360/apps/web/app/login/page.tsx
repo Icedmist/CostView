@@ -4,27 +4,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { Logo } from "@/components/brand/logo";
-import { ArrowRight, Lock, Mail, CheckCircle2 } from "lucide-react";
-import type { RoleName } from "@/lib/supabase/database.types";
-
-const DEMO_ACCOUNTS = [
-  { label: "Admin", email: "admin@costview.ng", role: "Admin" as RoleName, sub: "Full system governance" },
-  { label: "Project Manager", email: "pm@costview.ng", role: "Project Manager" as RoleName, sub: "Budgets & procurement" },
-  { label: "Quantity Surveyor", email: "qs@costview.ng", role: "Quantity Surveyor" as RoleName, sub: "BOQ & variations" },
-  { label: "Site Engineer", email: "site@costview.ng", role: "Site Engineer" as RoleName, sub: "Materials & labour" },
-  { label: "Procurement Officer", email: "procure@costview.ng", role: "Procurement Officer" as RoleName, sub: "RFQs & 3-way match" },
-  { label: "Accountant", email: "acct@costview.ng", role: "Accountant" as RoleName, sub: "Invoices & payouts" },
-  { label: "Storekeeper", email: "store@costview.ng", role: "Storekeeper" as RoleName, sub: "Stock receipts & issues" },
-  { label: "Architect", email: "arch@costview.ng", role: "Architect" as RoleName, sub: "Drawings & snags" },
-];
+import { Logo, LogoBlock } from "@/components/brand/logo";
+import { ArrowRight, Lock, Mail } from "lucide-react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [activeDemoEmail, setActiveDemoEmail] = useState<string | null>(null);
   const router = useRouter();
   const supabase = createClient();
 
@@ -52,43 +39,6 @@ export default function LoginPage() {
     }
   };
 
-  const handleDemoLogin = async (account: typeof DEMO_ACCOUNTS[0]) => {
-    setActiveDemoEmail(account.email);
-    setEmail(account.email);
-    setPassword("DemoPass2026!");
-    setLoading(true);
-    setErrorMsg(null);
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email: account.email,
-      password: "DemoPass2026!",
-    });
-
-    if (error) {
-      if (typeof window !== "undefined") {
-        localStorage.setItem("costview_demo_role", account.role);
-        localStorage.setItem("costview_demo_email", account.email);
-        localStorage.setItem("costview_last_active", Date.now().toString());
-        sessionStorage.setItem("costview_tab_active", "1");
-        sessionStorage.setItem("costview_last_active", Date.now().toString());
-        document.cookie = `costview_demo_role=${account.role}; path=/; max-age=604800; SameSite=Lax`;
-      }
-      router.push("/dashboard");
-      return;
-    }
-
-    if (typeof window !== "undefined") {
-      localStorage.setItem("costview_demo_role", account.role);
-      localStorage.setItem("costview_demo_email", account.email);
-      localStorage.setItem("costview_last_active", Date.now().toString());
-      sessionStorage.setItem("costview_tab_active", "1");
-      sessionStorage.setItem("costview_last_active", Date.now().toString());
-      document.cookie = `costview_demo_role=${account.role}; path=/; max-age=604800; SameSite=Lax`;
-    }
-    router.push("/dashboard");
-    router.refresh();
-  };
-
   return (
     <div className="min-h-screen bg-[#FAF9F5] flex flex-col font-sans text-[#0A2540]">
       {/* Top Brand Header */}
@@ -105,11 +55,11 @@ export default function LoginPage() {
       </div>
 
       <div className="flex-1 flex items-center justify-center p-6 py-12">
-        <div className="w-full max-w-[580px]">
+        <div className="w-full max-w-[480px]">
           <div className="bg-white border-2 border-[#E5E5DE] rounded-3xl shadow-xl p-8 md:p-10">
             <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-14 h-14 bg-[#0A2540] rounded-2xl text-white font-black text-xl shadow-md mb-4">
-                CV
+              <div className="flex justify-center mb-4">
+                <LogoBlock size="lg" />
               </div>
               <h2 className="text-2xl md:text-3xl font-black text-[#0A2540] tracking-tight">
                 Welcome to CostView
@@ -144,9 +94,11 @@ export default function LoginPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-black uppercase tracking-wider text-[#0A2540] mb-2">
-                  Password
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-xs font-black uppercase tracking-wider text-[#0A2540]">
+                    Password
+                  </label>
+                </div>
                 <div className="relative">
                   <Lock className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#0A2540]/50" />
                   <input
@@ -158,12 +110,6 @@ export default function LoginPage() {
                     className="w-full pl-11 pr-4 h-12 bg-white border-2 border-[#E5E5DE] rounded-xl text-base font-mono font-semibold text-[#0A2540] placeholder-[#0A2540]/40 focus:outline-none focus:border-[#0A2540] transition-all"
                   />
                 </div>
-                <p className="text-xs text-[#0A2540]/60 font-semibold mt-2">
-                  Demo password for all accounts:{" "}
-                  <span className="font-mono font-black text-[#0A2540] bg-[#FAF9F5] border border-[#E5E5DE] px-2 py-0.5 rounded">
-                    DemoPass2026!
-                  </span>
-                </p>
               </div>
 
               <button
@@ -176,50 +122,7 @@ export default function LoginPage() {
               </button>
             </form>
 
-            {/* Quick Test Demo Role Cards */}
-            <div className="mt-8 pt-6 border-t-2 border-[#E5E5DE]">
-              <div className="text-xs font-black uppercase tracking-wider text-[#0A2540]/70 mb-3.5 flex items-center justify-between">
-                <span>Quick Test Access — 1 Click (8 roles)</span>
-                <span className="bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded text-[11px] font-black">
-                  Sandbox Ready
-                </span>
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                {DEMO_ACCOUNTS.map((b) => {
-                  const isCurrent = activeDemoEmail === b.email;
-                  return (
-                    <button
-                      key={b.email}
-                      type="button"
-                      onClick={() => handleDemoLogin(b)}
-                      disabled={loading}
-                      className={`p-3 border-2 rounded-xl text-left transition-all disabled:opacity-50 group relative cursor-pointer ${
-                        isCurrent
-                          ? "bg-[#0A2540] text-white border-[#0A2540] shadow-md"
-                          : "bg-[#FAF9F5] hover:bg-white text-[#0A2540] border-[#E5E5DE] hover:border-[#0A2540]"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className={`text-xs font-black truncate ${isCurrent ? "text-white" : "text-[#0A2540]"}`}>
-                          {b.label}
-                        </div>
-                        {isCurrent && (
-                          <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                        )}
-                      </div>
-                      <div className={`text-[10px] font-semibold truncate mt-0.5 ${isCurrent ? "text-white/70" : "text-[#0A2540]/60"}`}>
-                        {b.sub}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-              <p className="text-xs text-[#0A2540]/60 font-semibold mt-3 text-center">
-                Click any card to sign in instantly — no typing needed
-              </p>
-            </div>
-
-            <div className="mt-8 text-center text-sm font-semibold">
+            <div className="mt-8 text-center text-sm font-semibold pt-6 border-t-2 border-[#E5E5DE]">
               <span className="text-[#0A2540]/60">New contractor or firm? </span>
               <Link href="/register" className="font-black text-[#0A2540] hover:underline">
                 Register Workspace →
