@@ -30,7 +30,10 @@ import {
   ExternalLink,
   ShieldCheck,
   Zap,
+  Sun,
+  Moon,
 } from "lucide-react";
+import { ThemeSwitcher } from "@/components/theme/theme-switcher";
 
 const ALL_ROLES: { name: RoleName; desc: string; color: string }[] = [
   { name: "Admin", desc: "Full system governance, user management, and workspace configuration", color: "bg-purple-100 text-purple-800 border-purple-300" },
@@ -194,23 +197,23 @@ export default function AccountPage() {
               </div>
               <div>
                 <div className="flex items-center gap-3 flex-wrap">
-                  <h1 className="text-2xl md:text-3xl font-extrabold text-[#0A2540] tracking-tight">{fullName}</h1>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-[#0A2540] border border-blue-300">
-                    <Shield className="w-3.5 h-3.5 text-[#0A2540]" />
+                  <h1 className="text-2xl md:text-3xl font-extrabold text-[#0A2540] dark:text-white tracking-tight">{fullName}</h1>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-100 dark:bg-blue-950/60 text-[#0A2540] dark:text-blue-300 border border-blue-300 dark:border-blue-700">
+                    <Shield className="w-3.5 h-3.5 text-[#0A2540] dark:text-blue-300" />
                     {activeRole}
                   </span>
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700">
                     <CheckCircle2 className="w-3.5 h-3.5" /> Verified
                   </span>
                 </div>
-                <p className="text-sm font-medium text-slate-500 mt-1">{email} · CostView Demo Workspace (ID: 11111111-1111)</p>
+                <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mt-1">{email} · CostView Workspace</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
               <button
                 onClick={handleLogout}
-                className="min-h-[44px] px-5 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border-2 border-rose-300 rounded-xl font-bold text-sm shadow-xs transition-all flex items-center gap-2"
+                className="min-h-[44px] px-5 py-2.5 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 text-rose-700 dark:text-rose-300 border-2 border-rose-300 dark:border-rose-700 rounded-xl font-bold text-sm shadow-xs transition-all flex items-center gap-2 cursor-pointer"
               >
                 <LogOut className="w-4 h-4" /> Sign Out
               </button>
@@ -218,7 +221,7 @@ export default function AccountPage() {
           </div>
 
           {/* Tab Navigation Pill Bar */}
-          <div className="flex flex-wrap gap-2 border-b-2 border-slate-200 pb-2">
+          <div className="flex flex-wrap gap-2 border-b-2 border-slate-200 dark:border-[#1E3A5F] pb-2">
             {[
               { id: "profile", label: "Profile & Identity", icon: User },
               { id: "security", label: "Security & Sessions", icon: Key },
@@ -233,11 +236,11 @@ export default function AccountPage() {
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`min-h-[46px] px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2.5 cursor-pointer ${
                     isActive
-                      ? "bg-[#0A2540] text-white shadow-md border-2 border-[#0A2540]"
-                      : "bg-white hover:bg-slate-100 text-slate-700 border-2 border-slate-200 hover:border-slate-300"
+                      ? "bg-[#0A2540] dark:bg-[#FFD23F] text-white dark:text-[#0A1931] shadow-md border-2 border-[#0A2540] dark:border-[#FFD23F]"
+                      : "bg-white dark:bg-[#0A1931] hover:bg-slate-100 dark:hover:bg-[#0F2137] text-slate-700 dark:text-slate-200 border-2 border-slate-200 dark:border-[#1E3A5F] hover:border-slate-300"
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? "text-white" : "text-slate-500"}`} />
+                  <Icon className={`w-4 h-4 ${isActive ? "text-white dark:text-[#0A1931]" : "text-slate-500 dark:text-slate-400"}`} />
                   <span>{tab.label}</span>
                 </button>
               );
@@ -346,45 +349,65 @@ export default function AccountPage() {
 
               {/* Sidebar Info Card */}
               <div className="space-y-6">
-                <div className="bg-white border-2 border-slate-300 rounded-2xl shadow-sm p-6">
-                  <h4 className="text-sm font-extrabold uppercase tracking-wider text-[#0A2540] flex items-center gap-2 mb-3">
-                    <Building className="w-4 h-4 text-[#0A2540]" /> Workspace Context
-                  </h4>
-                  <p className="text-base font-bold text-[#0A2540]">CostView Demo Workspace</p>
-                  <p className="text-xs text-slate-500 mt-1">Multi-tenant construction cost &amp; finance ledger</p>
+                {/* Theme & Appearance Card */}
+                <div className="bg-white dark:bg-[#0A1931] border-2 border-slate-300 dark:border-[#1E3A5F] rounded-2xl shadow-sm p-6 space-y-4">
+                  <div className="flex items-center justify-between pb-3 border-b-2 border-slate-100 dark:border-[#1E3A5F]">
+                    <div className="flex items-center gap-2">
+                      <Sun className="w-5 h-5 text-amber-500" />
+                      <h4 className="text-sm font-extrabold uppercase tracking-wider text-[#0A2540] dark:text-white">
+                        Theme &amp; Appearance
+                      </h4>
+                    </div>
+                  </div>
 
-                  <div className="mt-4 p-3 bg-slate-100 border border-slate-300 rounded-xl">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    Default is <strong className="text-[#0A2540] dark:text-white">Auto (Time-based)</strong>: light mode during the day (6:00 AM – 6:59 PM) and dark mode during the night (7:00 PM – 5:59 AM) unless changed.
+                  </p>
+
+                  <div className="pt-1">
+                    <ThemeSwitcher variant="segmented" className="w-full justify-between" />
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-[#0A1931] border-2 border-slate-300 dark:border-[#1E3A5F] rounded-2xl shadow-sm p-6">
+                  <h4 className="text-sm font-extrabold uppercase tracking-wider text-[#0A2540] dark:text-white flex items-center gap-2 mb-3">
+                    <Building className="w-4 h-4 text-[#0A2540] dark:text-white" /> Workspace Context
+                  </h4>
+                  <p className="text-base font-bold text-[#0A2540] dark:text-white">CostView Workspace</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Multi-tenant construction cost &amp; finance ledger</p>
+
+                  <div className="mt-4 p-3 bg-slate-100 dark:bg-[#071324] border border-slate-300 dark:border-[#1E3A5F] rounded-xl">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Workspace ID</span>
+                      <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Workspace ID</span>
                       <button
                         onClick={handleCopyUserId}
-                        className="text-xs font-bold text-[#0A2540] hover:underline flex items-center gap-1"
+                        className="text-xs font-bold text-[#0A2540] dark:text-white hover:underline flex items-center gap-1 cursor-pointer"
                       >
-                        {copiedId ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                        {copiedId ? <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                         {copiedId ? "Copied" : "Copy"}
                       </button>
                     </div>
-                    <p className="font-mono text-xs font-bold text-slate-800 mt-1 truncate">11111111-1111-1111-1111-111111111111</p>
+                    <p className="font-mono text-xs font-bold text-slate-800 dark:text-slate-200 mt-1 truncate">11111111-1111-1111-1111-111111111111</p>
                   </div>
 
-                  <div className="mt-4 space-y-2 text-sm font-semibold text-slate-700">
-                    <div className="flex justify-between py-1 border-b border-slate-100">
-                      <span className="text-slate-500">Base Currency</span>
-                      <span className="font-mono font-bold text-[#0A2540]">₦ NGN</span>
+                  <div className="mt-4 space-y-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
+                    <div className="flex justify-between py-1 border-b border-slate-100 dark:border-[#1E3A5F]">
+                      <span className="text-slate-500 dark:text-slate-400">Base Currency</span>
+                      <span className="font-mono font-bold text-[#0A2540] dark:text-white">₦ NGN</span>
                     </div>
-                    <div className="flex justify-between py-1 border-b border-slate-100">
-                      <span className="text-slate-500">Active Sites</span>
-                      <span className="font-bold text-[#0A2540]">2 (Eko Atlantic, Lekki)</span>
+                    <div className="flex justify-between py-1 border-b border-slate-100 dark:border-[#1E3A5F]">
+                      <span className="text-slate-500 dark:text-slate-400">Active Sites</span>
+                      <span className="font-bold text-[#0A2540] dark:text-white">2 (Eko Atlantic, Lekki)</span>
                     </div>
                     <div className="flex justify-between py-1">
-                      <span className="text-slate-500">Role Authority</span>
-                      <span className="font-bold text-[#0A2540]">{activeRole}</span>
+                      <span className="text-slate-500 dark:text-slate-400">Role Authority</span>
+                      <span className="font-bold text-[#0A2540] dark:text-white">{activeRole}</span>
                     </div>
                   </div>
 
                   <button
                     onClick={() => router.push("/settings")}
-                    className="mt-6 w-full min-h-[44px] bg-slate-100 hover:bg-slate-200 text-[#0A2540] border-2 border-slate-300 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2"
+                    className="mt-6 w-full min-h-[44px] bg-slate-100 dark:bg-[#071324] hover:bg-slate-200 dark:hover:bg-[#0F2137] text-[#0A2540] dark:text-white border-2 border-slate-300 dark:border-[#1E3A5F] rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>Manage Workspace Settings</span>
                     <ExternalLink className="w-4 h-4" />

@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { RoleName } from "@/lib/supabase/database.types";
 import { AppDataProvider } from "@/lib/store/app-data";
 import { createClient } from "@/lib/supabase/client";
+import { ThemeProvider } from "@/lib/theme/theme-context";
 
 const ALL_VALID_ROLES: RoleName[] = [
   "Admin",
@@ -125,7 +126,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
           currentProject,
         }}
       >
-        <AppDataProvider>{children}</AppDataProvider>
+        <ThemeProvider>
+          <AppDataProvider>{children}</AppDataProvider>
+        </ThemeProvider>
       </AppContext.Provider>
     </QueryClientProvider>
   );
