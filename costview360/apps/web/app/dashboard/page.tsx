@@ -23,6 +23,9 @@ import { AICostEstimator } from "@/components/budget/ai-cost-estimator";
 import { TradeDirectoryView } from "@/components/procurement/trade-directory-view";
 import { ClientPortalView } from "@/components/portal/client-portal-view";
 import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav";
+import { AssetManagementView } from "@/components/assets/asset-management-view";
+import { DocumentsAdminView } from "@/components/admin/documents-admin-view";
+import { ManagementDecisionCenter } from "@/components/dashboard/management-decision-center";
 import {
   AlertTriangle,
   Sparkles,
@@ -149,7 +152,9 @@ export default function DashboardPage() {
           {/* ========================================================= */}
           {activeSection === "Buy & Supply" && (
             <RoleGuard permission="Procurement">
-              {activeSubSection === "directory" ? (
+              {activeSubSection === "assets" ? (
+                <AssetManagementView />
+              ) : activeSubSection === "directory" ? (
                 <TradeDirectoryView
                   onBack={() => handleNavSelect("Buy & Supply", "match")}
                 />
@@ -252,7 +257,11 @@ export default function DashboardPage() {
           {/* ========================================================= */}
           {activeSection === "Oversight" && (
             <div className="space-y-8">
-              {activeSubSection === "portal" ? (
+              {activeSubSection === "documents-admin" ? (
+                <DocumentsAdminView />
+              ) : activeSubSection === "telemetry" ? (
+                <ManagementDecisionCenter onNavigate={handleNavSelect} />
+              ) : activeSubSection === "portal" ? (
                 <ClientPortalView
                   standalone={false}
                   onReturn={() => handleNavSelect("Oversight", "telemetry")}

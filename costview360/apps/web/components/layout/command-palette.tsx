@@ -173,6 +173,16 @@ export const COMMAND_ITEMS: CommandItem[] = [
     icon: Boxes,
   },
   {
+    id: "bs-assets",
+    title: "Plant, Equipment & Asset Register",
+    category: "Buy & Supply",
+    section: "Buy & Supply",
+    subSection: "assets",
+    description: "Plant machinery, operating hours, maintenance logs, and asset depreciation calculations",
+    flowLabel: "Buy & Supply · Asset Flow",
+    icon: Truck,
+  },
+  {
     id: "bs-dir",
     title: "Vetted Trade & Supplier Directory",
     category: "Buy & Supply",
@@ -310,12 +320,12 @@ export const COMMAND_ITEMS: CommandItem[] = [
   },
   {
     id: "ov-telemetry",
-    title: "Executive Telemetry & KPIs",
+    title: "Management Performance & Decision Center",
     category: "Flow",
     section: "Oversight",
     subSection: "telemetry",
-    description: "Macro project progress, CPI, committed budget, and cashflow speed",
-    flowLabel: "Oversight · Watch",
+    description: "Company & project performance, treasury cash runway, plant fleet, and executive decisions",
+    flowLabel: "Oversight · Management Flow",
     icon: Activity,
   },
   {
@@ -357,6 +367,16 @@ export const COMMAND_ITEMS: CommandItem[] = [
     description: "User roles, permissions matrix, database migrations, and audit trails",
     flowLabel: "Oversight · Admin",
     icon: ShieldCheck,
+  },
+  {
+    id: "ov-docs-admin",
+    title: "Corporate Documents & Administration",
+    category: "Admin",
+    section: "Oversight",
+    subSection: "documents-admin",
+    description: "CAC, LASBCA, COREN permits, master agreements, company structure, and company-wide approvals",
+    flowLabel: "Oversight · Admin Flow",
+    icon: FileCheck2,
   },
 ];
 
