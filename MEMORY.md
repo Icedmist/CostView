@@ -64,3 +64,18 @@
 - **2026-09-20**: User confirmed selection: Implement all 3 missing modules (AI Cost Estimator, Vetted Supplier & Artisan Directory, and Client/Investor Portal).
 - **2026-09-20**: User emphasized navigation, simplicity, and UX ("dont forget the nav, simplicity and UX"), prompting in-page shortcuts in BOQ and Procurement, dynamic module counts, and public marketing portal navigation.
 - **2026-09-20**: User asked "are you certain?????" following the navigation upgrade. A deep verification pass identified that `/portal` was being intercepted by Supabase middleware (redirecting unauthenticated clients to `/login`) and the newly opened submodules lacked obvious banner back buttons. Resolved under Issue #59.
+- **2026-09-25**: User requested adding the missing Averitec flows and clearly indicating where they are:
+  1. **Assets & Depreciation**:
+     - Location: **Buy & Supply** → **Plant, Equipment & Assets** (`assets`, Code `2.7`).
+     - Stated Flow: `Acquire → Register → Allocate → Use → Maintain → Monitor → Retire/Dispose`.
+     - Live depreciation calculations (Straight-Line & Reducing Balance, salvage value, accumulated depreciation, Net Book Value, and hourly BOQ cost recovery).
+  2. **Documents & Administration**:
+     - Location: **Oversight** → **Documents & Administration** (`documents-admin`, Code `5.8`).
+     - Stated Flow: `Create/Receive → Store → Review → Approve → Use → Update → Archive`.
+     - 5 Document Categories: Company Documents (CAC, TCC, COREN), Contracts & Agreements, Legal & Statutory (LASBCA, EIA), Financial Documents (APG, Bonds), and Correspondence.
+     - Company Approvals Hub (CAPEX > ₦10M, Variations, Subcontractor claims), Department Structure, Policies & Procedures (SOPs), and Statutory Compliance.
+  3. **Management Performance & Decision Center**:
+     - Location: **Oversight** → **Management Decision Center** (`telemetry`, Code `5.2`).
+     - Stated Flow: `Information → Dashboard → Reports → Review → Decision → Action`.
+     - 7 Performance Domains: Company Performance, Financial & Treasury, Project Comparative Matrix, Business & Tenders, People & Workforce, Plant & Fleet Assets, and Action Decision Queue.
+- Implemented and merged into `main` via PR #72 (Issue #71). All 21 Next.js routes compile cleanly.
