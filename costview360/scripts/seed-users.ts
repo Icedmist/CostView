@@ -33,7 +33,7 @@ const DEMO_USERS = [
   { email: "store@costview.ng", full_name: "Musa Storekeeper", role: "Storekeeper" },
 ] as const;
 
-const PASSWORD = "DemoPass2026!";
+const PASSWORD = process.env.INITIAL_USER_PASSWORD || "CostView2026!";
 
 async function main() {
   for (const u of DEMO_USERS) {
@@ -62,7 +62,7 @@ async function main() {
     await link(userId, u);
     console.log(`  ✓ ${u.email} (${userId})`);
   }
-  console.log("\nDone. All demo users password: DemoPass2026!");
+  console.log("\nDone. User seeding complete.");
 }
 
 async function link(userId: string, u: typeof DEMO_USERS[number]) {

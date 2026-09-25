@@ -19,13 +19,9 @@ npm run build --workspace=apps/web && npm run start --workspace=apps/web
 - Palette: navy `#0A1931`, cream `#FFFDF0`, mustard `#FFD23F`
 - Brutalism smoothed: `border-2` (2px), `shadow: 4px 4px 0 #0A1931`, `Space Grotesk`/`Archivo Black`
 
-## Seeding demo users
-```bash
-SUPABASE_URL=https://wtrxamprkfjbatrsszep.supabase.co \
-SUPABASE_SERVICE_ROLE_KEY=sb_secret_… \
-npx tsx costview360/scripts/seed-users.ts
-# 8 accounts, pwd DemoPass2026!: admin@, pm@, qs@, arch@, site@, procure@, acct@, store@ (@costview.ng)
-```
+## User Accounts & Role Simulation
+- User accounts are managed via the Administration module (`/settings` or `/dashboard` Oversight flow) or Supabase Auth.
+- For local interface testing across permissions, use the in-app **Simulate Role** switcher in the sidebar.
 
 ## Do not
 - Push to `main`, force-push, skip issue, edit workflow docs without an issue.

@@ -155,6 +155,5 @@ VALUES
   ('22222222-2222-2222-2222-222222222222', 'aaaa0004-0000-0000-0000-000000000004', 180, 60, 320)
 ON CONFLICT (project_id, item_id) DO NOTHING;
 
--- Demo Users Guidance (run scripts/seed-users.ts to create auth.users)
--- Password for all demo accounts: DemoPass2026!
--- 8 roles: admin@costview.ng, pm@costview.ng, qs@costview.ng, site@costview.ng, procure@costview.ng, acct@costview.ng, store@costview.ng, arch@costview.ng
+-- User Accounts Guidance:
+-- Real accounts are managed via Supabase Auth or the Administration module (/dashboard Oversight flow).

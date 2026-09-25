@@ -62,24 +62,19 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000  # prod: https://costview-peach.verce
 
 Vercel: `vercel env ls` (linked `iced-mist-s-projects/costview`) — prod/preview/development. After `vercel env add`, `vercel --prod --yes`.
 
-## Demo Logins (seeded)
+## Roles & Permissions
 
-All password **DemoPass2026!** — seeded via `scripts/seed-users.ts`:
+CostView supports 8 operational RBAC roles:
+- **Admin**: Full workspace configuration, user governance & audit trail.
+- **Project Manager**: Budgets, PO certifications, variation reviews & telemetry.
+- **Quantity Surveyor**: Contractual BOQs, rate revisions, valuations & claims.
+- **Site Engineer**: Site diaries, labour muster, material receipts & snags.
+- **Procurement Officer**: Requisitions, trade directory RFQs, PO authoring & 3-way match.
+- **Accountant**: Three-way match payment gate, invoice sign-off & disbursement.
+- **Storekeeper**: Warehouse inventory, material issues & gate-pass balances.
+- **Architect**: Drawing revisions, design assurance & variation authoring.
 
-| Role | Email |
-|---|---|
-| Admin | admin@costview.ng |
-| Project Manager | pm@costview.ng |
-| Quantity Surveyor | qs@costview.ng |
-| Architect | arch@costview.ng |
-| Site Engineer | site@costview.ng |
-| Procurement Officer | procure@costview.ng |
-| Accountant | acct@costview.ng |
-| Storekeeper | store@costview.ng |
-
-Also **Simulate Role** switcher in sidebar (`costview360/apps/web/components/layout/sidebar.tsx:131`).
-
-Seed: `SUPABASE_URL=… SUPABASE_SERVICE_ROLE_KEY=… npx tsx costview360/scripts/seed-users.ts`
+Testing role views can be performed via the in-app **Simulate Role** switcher in the sidebar.
 
 ## Workflow
 

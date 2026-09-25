@@ -10,6 +10,7 @@
     "start": "npm run start --workspace=apps/web",
     "lint": "npm run lint --workspace=apps/web",
     "seed:users": "tsx scripts/seed-users.ts",
+    "clear:users": "tsx scripts/clear-demo-users.ts",
     "migrate:enterprise": "tsx scripts/migrate-enterprise-data.ts",
     "migrate:enterprise:dry-run": "tsx scripts/migrate-enterprise-data.ts --dry-run"
   },
