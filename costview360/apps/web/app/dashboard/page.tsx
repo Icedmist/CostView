@@ -88,7 +88,7 @@ export default function DashboardPage() {
   }, [activeRole, activeSection]);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#FAF9F5] font-sans text-slate-900">
+    <div className="flex h-screen overflow-hidden bg-[#FAF9F5] dark:bg-[#071324] font-sans text-slate-900 dark:text-slate-100">
       <Sidebar
         activeSection={activeSection}
         activeSubSection={activeSubSection}
@@ -107,7 +107,7 @@ export default function DashboardPage() {
           onOpenSearch={() => setCommandPaletteOpen(true)}
         />
 
-        <main className="flex-1 overflow-y-auto p-5 md:p-8 space-y-8 bg-[#FAF9F5] pb-24 lg:pb-8">
+        <main className="flex-1 overflow-y-auto p-5 md:p-8 space-y-8 bg-[#FAF9F5] dark:bg-[#071324] pb-24 lg:pb-8">
           {/* ========================================================= */}
           {/* FLOW 1: COST PLAN                                         */}
           {/* Stated sequence: Estimate → BOQ → Cost Control → Close-out */}
@@ -121,10 +121,10 @@ export default function DashboardPage() {
                 />
               ) : activeSubSection === "reports-cost" ? (
                 <div className="space-y-6">
-                  <div className="bg-white border-2 border-[#E5E5DE] rounded-2xl p-5 shadow-xs flex items-center justify-between">
+                  <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-5 shadow-xs flex items-center justify-between">
                     <div>
-                      <h3 className="text-xl font-black text-[#0A2540]">Cost Plan Analytics &amp; Reports</h3>
-                      <p className="text-xs text-[#0A2540]/60 mt-0.5">
+                      <h3 className="text-xl font-black text-[#0A2540] dark:text-white">Cost Plan Analytics &amp; Reports</h3>
+                      <p className="text-xs text-[#0A2540]/60 dark:text-slate-400 mt-0.5">
                         Flow 1.0 · Budget vs Actual Variance, CPI, and Forecasts
                       </p>
                     </div>
@@ -157,10 +157,10 @@ export default function DashboardPage() {
                 <MaterialsStockView />
               ) : activeSubSection === "reports-procurement" ? (
                 <div className="space-y-6">
-                  <div className="bg-white border-2 border-[#E5E5DE] rounded-2xl p-5 shadow-xs flex items-center justify-between">
+                  <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-5 shadow-xs flex items-center justify-between">
                     <div>
-                      <h3 className="text-xl font-black text-[#0A2540]">Procurement &amp; Materials Reports</h3>
-                      <p className="text-xs text-[#0A2540]/60 mt-0.5">
+                      <h3 className="text-xl font-black text-[#0A2540] dark:text-white">Procurement &amp; Materials Reports</h3>
+                      <p className="text-xs text-[#0A2540]/60 dark:text-slate-400 mt-0.5">
                         Flow 2.0 · 3-Way Match discrepancy audit, supplier performance, and warehouse stock movement
                       </p>
                     </div>
@@ -194,10 +194,10 @@ export default function DashboardPage() {
                 <LabourView />
               ) : activeSubSection === "reports-site" ? (
                 <div className="space-y-6">
-                  <div className="bg-white border-2 border-[#E5E5DE] rounded-2xl p-5 shadow-xs flex items-center justify-between">
+                  <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-5 shadow-xs flex items-center justify-between">
                     <div>
-                      <h3 className="text-xl font-black text-[#0A2540]">Site Progress &amp; Shift Reports</h3>
-                      <p className="text-xs text-[#0A2540]/60 mt-0.5">
+                      <h3 className="text-xl font-black text-[#0A2540] dark:text-white">Site Progress &amp; Shift Reports</h3>
+                      <p className="text-xs text-[#0A2540]/60 dark:text-slate-400 mt-0.5">
                         Flow 3.0 · Site diary logs, weather impacts, and trade productivity
                       </p>
                     </div>
@@ -224,10 +224,10 @@ export default function DashboardPage() {
             <RoleGuard permission="Subcontractors">
               {activeSubSection === "reports-contracts" ? (
                 <div className="space-y-6">
-                  <div className="bg-white border-2 border-[#E5E5DE] rounded-2xl p-5 shadow-xs flex items-center justify-between">
+                  <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-5 shadow-xs flex items-center justify-between">
                     <div>
-                      <h3 className="text-xl font-black text-[#0A2540]">Contracts &amp; Valuation Reports</h3>
-                      <p className="text-xs text-[#0A2540]/60 mt-0.5">
+                      <h3 className="text-xl font-black text-[#0A2540] dark:text-white">Contracts &amp; Valuation Reports</h3>
+                      <p className="text-xs text-[#0A2540]/60 dark:text-slate-400 mt-0.5">
                         Flow 4.0 · Subcontractor ledger, retention tracking, and variation order impacts
                       </p>
                     </div>
@@ -267,11 +267,11 @@ export default function DashboardPage() {
               ) : activeSubSection === "admin" ? (
                 <RoleGuard permission="Admin">
                   <div className="space-y-8">
-                    <div className="bg-white border-2 border-[#E5E5DE] rounded-2xl p-6 shadow-sm">
-                      <h2 className="text-2xl font-black text-[#0A2540] tracking-tight">
+                    <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-6 shadow-sm">
+                      <h2 className="text-2xl font-black text-[#0A2540] dark:text-white tracking-tight">
                         Workspace Governance &amp; Administration
                       </h2>
-                      <p className="text-sm text-[#0A2540]/70 mt-1">
+                      <p className="text-sm text-[#0A2540]/70 dark:text-slate-300 mt-1">
                         Manage security credentials, custom user roles, database migration syncs, and immutable audit logs.
                       </p>
                     </div>
@@ -359,34 +359,34 @@ export default function DashboardPage() {
                     <MyWorkQueue onSelectNav={handleNavSelect} />
                   ) : activeSubSection === "alerts" ? (
                     <div className="space-y-5">
-                      <div className="p-6 rounded-2xl bg-white border-2 border-[#E5E5DE] shadow-sm">
-                        <h3 className="text-lg font-black text-[#0A2540] flex items-center gap-2 mb-4">
-                          <AlertTriangle className="w-5 h-5 text-rose-600" /> Active Attention &amp; Variance Alerts
+                      <div className="p-6 rounded-2xl bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 shadow-sm">
+                        <h3 className="text-lg font-black text-[#0A2540] dark:text-white flex items-center gap-2 mb-4">
+                          <AlertTriangle className="w-5 h-5 text-rose-600 dark:text-rose-400" /> Active Attention &amp; Variance Alerts
                         </h3>
                         <div className="grid md:grid-cols-2 gap-4">
-                          <div className="p-5 rounded-xl bg-rose-50 border-2 border-rose-200 text-rose-950">
-                            <div className="text-sm font-black uppercase tracking-wider text-rose-700">Procurement Discrepancy</div>
+                          <div className="p-5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border-2 border-rose-200 dark:border-rose-900/60 text-rose-950 dark:text-rose-200">
+                            <div className="text-sm font-black uppercase tracking-wider text-rose-700 dark:text-rose-400">Procurement Discrepancy</div>
                             <div className="text-base font-extrabold mt-1">PO-2026-092 (Pulkit Steels) Locked</div>
-                            <p className="text-sm text-rose-800 mt-1 leading-relaxed">
+                            <p className="text-sm text-rose-800 dark:text-rose-300 mt-1 leading-relaxed">
                               Invoice billed 30T vs 27T physical GRN receipt delivered to site. Automatic payment disbursement hold active.
                             </p>
                             <button
                               onClick={() => handleNavSelect("Buy & Supply", "match")}
-                              className="mt-3.5 px-4 py-2 bg-rose-600 text-white rounded-lg text-xs font-black uppercase tracking-wider shadow-xs hover:bg-rose-700 cursor-pointer"
+                              className="mt-3.5 px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-black uppercase tracking-wider shadow-xs cursor-pointer"
                             >
                               Resolve Discrepancy in Buy &amp; Supply →
                             </button>
                           </div>
 
-                          <div className="p-5 rounded-xl bg-[#FAF9F5] border-2 border-[#E5E5DE] text-[#0A2540]">
-                            <div className="text-sm font-black uppercase tracking-wider text-[#0A2540]/60">BOQ Baseline Drift</div>
+                          <div className="p-5 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border-2 border-[#E5E5DE] dark:border-white/10 text-[#0A2540] dark:text-slate-100">
+                            <div className="text-sm font-black uppercase tracking-wider text-[#0A2540]/60 dark:text-slate-400">BOQ Baseline Drift</div>
                             <div className="text-base font-extrabold mt-1">CON-02.01 (+₦4M Variance Pending)</div>
-                            <p className="text-sm text-[#0A2540]/80 mt-1 leading-relaxed">
+                            <p className="text-sm text-[#0A2540]/80 dark:text-slate-300 mt-1 leading-relaxed">
                               Substructure ready-mix concrete pump rates updated. Awaiting formal Quantity Surveyor delta sign-off.
                             </p>
                             <button
                               onClick={() => handleNavSelect("Cost Plan", "revisions")}
-                              className="mt-3.5 px-4 py-2 bg-[#0A2540] text-white rounded-lg text-xs font-black uppercase tracking-wider shadow-xs hover:bg-[#003366] cursor-pointer"
+                              className="mt-3.5 px-4 py-2 bg-[#0A2540] hover:bg-[#003366] dark:bg-amber-400 dark:hover:bg-amber-300 text-white dark:text-[#0A2540] rounded-lg text-xs font-black uppercase tracking-wider shadow-xs cursor-pointer"
                             >
                               Review Revision Delta in Cost Plan →
                             </button>
@@ -395,26 +395,26 @@ export default function DashboardPage() {
                       </div>
                     </div>
                   ) : activeSubSection === "health" ? (
-                    <div className="bg-white border-2 border-[#E5E5DE] rounded-2xl p-7 shadow-sm">
-                      <h3 className="text-xl font-black text-[#0A2540] mb-3">Baseline Financial Health &amp; Earned Value</h3>
-                      <p className="text-sm text-[#0A2540]/70 mb-6">
+                    <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-7 shadow-sm">
+                      <h3 className="text-xl font-black text-[#0A2540] dark:text-white mb-3">Baseline Financial Health &amp; Earned Value</h3>
+                      <p className="text-sm text-[#0A2540]/70 dark:text-slate-300 mb-6">
                         Real-time index comparing planned schedule value against certified work performance and physical delivery receipts.
                       </p>
                       <div className="grid sm:grid-cols-3 gap-6">
-                        <div className="p-5 rounded-xl bg-[#FAF9F5] border-2 border-[#E5E5DE]">
-                          <div className="text-xs font-black uppercase tracking-wider text-[#0A2540]/60">Cost Performance Index (CPI)</div>
-                          <div className="text-3xl font-black font-mono text-emerald-700 mt-2">1.04</div>
-                          <div className="text-xs text-emerald-800 font-bold mt-1">Under budget by 4% per naira spent</div>
+                        <div className="p-5 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border-2 border-[#E5E5DE] dark:border-white/10">
+                          <div className="text-xs font-black uppercase tracking-wider text-[#0A2540]/60 dark:text-slate-400">Cost Performance Index (CPI)</div>
+                          <div className="text-3xl font-black font-mono text-emerald-700 dark:text-emerald-400 mt-2">1.04</div>
+                          <div className="text-xs text-emerald-800 dark:text-emerald-300 font-bold mt-1">Under budget by 4% per naira spent</div>
                         </div>
-                        <div className="p-5 rounded-xl bg-[#FAF9F5] border-2 border-[#E5E5DE]">
-                          <div className="text-xs font-black uppercase tracking-wider text-[#0A2540]/60">Schedule Performance Index (SPI)</div>
-                          <div className="text-3xl font-black font-mono text-[#0A2540] mt-2">0.98</div>
-                          <div className="text-xs text-[#0A2540]/70 font-bold mt-1">2% schedule delay on rebar fixing</div>
+                        <div className="p-5 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border-2 border-[#E5E5DE] dark:border-white/10">
+                          <div className="text-xs font-black uppercase tracking-wider text-[#0A2540]/60 dark:text-slate-400">Schedule Performance Index (SPI)</div>
+                          <div className="text-3xl font-black font-mono text-[#0A2540] dark:text-white mt-2">0.98</div>
+                          <div className="text-xs text-[#0A2540]/70 dark:text-slate-400 font-bold mt-1">2% schedule delay on rebar fixing</div>
                         </div>
-                        <div className="p-5 rounded-xl bg-[#FAF9F5] border-2 border-[#E5E5DE]">
-                          <div className="text-xs font-black uppercase tracking-wider text-[#0A2540]/60">Certified Retention Escrow</div>
-                          <div className="text-3xl font-black font-mono text-[#0A2540] mt-2">₦21.6M</div>
-                          <div className="text-xs text-[#0A2540]/70 font-bold mt-1">10% retained until defects liability signoff</div>
+                        <div className="p-5 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border-2 border-[#E5E5DE] dark:border-white/10">
+                          <div className="text-xs font-black uppercase tracking-wider text-[#0A2540]/60 dark:text-slate-400">Certified Retention Escrow</div>
+                          <div className="text-3xl font-black font-mono text-[#0A2540] dark:text-white mt-2">₦21.6M</div>
+                          <div className="text-xs text-[#0A2540]/70 dark:text-slate-400 font-bold mt-1">10% retained until defects liability signoff</div>
                         </div>
                       </div>
                     </div>
@@ -422,17 +422,17 @@ export default function DashboardPage() {
                     /* Telemetry Overview: BOQ & 3-Way Match Quick Modules */
                     <div className="grid lg:grid-cols-2 gap-8">
                       {/* BOQ Summary Card */}
-                      <div className="bg-white border-2 border-[#E5E5DE] rounded-2xl p-6 md:p-8 shadow-sm space-y-6">
-                        <div className="flex items-center justify-between pb-4 border-b-2 border-[#E5E5DE]">
+                      <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-6 md:p-8 shadow-sm space-y-6">
+                        <div className="flex items-center justify-between pb-4 border-b-2 border-[#E5E5DE] dark:border-white/10">
                           <div>
-                            <h3 className="text-lg font-black text-[#0A2540] flex items-center gap-2.5">
-                              <Calculator className="w-5 h-5 text-[#0A2540]" /> Contractual BOQ Master
+                            <h3 className="text-lg font-black text-[#0A2540] dark:text-white flex items-center gap-2.5">
+                              <Calculator className="w-5 h-5 text-[#0A2540] dark:text-amber-400" /> Contractual BOQ Master
                             </h3>
-                            <p className="text-xs font-semibold text-[#0A2540]/60 mt-1">Active items tracked against contractual budget cap</p>
+                            <p className="text-xs font-semibold text-[#0A2540]/60 dark:text-slate-400 mt-1">Active items tracked against contractual budget cap</p>
                           </div>
                           <button
                             onClick={() => handleNavSelect("Cost Plan", "boq")}
-                            className="px-4 py-2 bg-[#FAF9F5] hover:bg-[#F2F1EC] text-[#0A2540] border-2 border-[#E5E5DE] rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer"
+                            className="px-4 py-2 bg-[#FAF9F5] dark:bg-[#071324] hover:bg-[#F2F1EC] dark:hover:bg-white/5 text-[#0A2540] dark:text-white border-2 border-[#E5E5DE] dark:border-white/10 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer"
                           >
                             <span>Open in Cost Plan</span>
                             <ChevronRight className="w-4 h-4" />
@@ -445,19 +445,19 @@ export default function DashboardPage() {
                             { code: "STL-02.03", desc: "High-yield deformed rebar Y16 & Y20", budget: "₦78.2M", committed: "₦72.0M", over: false },
                             { code: "EAR-01.02", desc: "Bulk site excavation & cart-away", budget: "₦42.0M", committed: "₦38.5M", over: false },
                           ].map((item) => (
-                            <div key={item.code} className="p-4 rounded-xl bg-[#FAF9F5] border border-[#E5E5DE] flex items-center justify-between gap-4">
+                            <div key={item.code} className="p-4 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-white/10 flex items-center justify-between gap-4">
                               <div>
                                 <div className="flex items-center gap-2">
-                                  <span className="font-mono text-xs font-black text-[#0A2540]">{item.code}</span>
-                                  <span className={`text-[10px] font-black px-2 py-0.5 rounded-full ${item.over ? "bg-rose-100 text-rose-800" : "bg-emerald-100 text-emerald-800"}`}>
+                                  <span className="font-mono text-xs font-black text-[#0A2540] dark:text-white">{item.code}</span>
+                                  <span className={`text-[10px] font-black px-2 py-0.5 rounded-full ${item.over ? "bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-800" : "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800"}`}>
                                     {item.over ? "VARIANCE FLAGGED" : "ON TRACK"}
                                   </span>
                                 </div>
-                                <div className="text-sm font-bold text-slate-800 mt-1">{item.desc}</div>
+                                <div className="text-sm font-bold text-slate-800 dark:text-slate-200 mt-1">{item.desc}</div>
                               </div>
                               <div className="text-right shrink-0">
-                                <div className="text-sm font-black font-mono text-[#0A2540]">{item.committed}</div>
-                                <div className="text-xs text-[#0A2540]/60 font-semibold">of {item.budget}</div>
+                                <div className="text-sm font-black font-mono text-[#0A2540] dark:text-white">{item.committed}</div>
+                                <div className="text-xs text-[#0A2540]/60 dark:text-slate-400 font-semibold">of {item.budget}</div>
                               </div>
                             </div>
                           ))}
@@ -465,17 +465,17 @@ export default function DashboardPage() {
                       </div>
 
                       {/* 3-Way Match Quick Summary Card */}
-                      <div className="bg-white border-2 border-[#E5E5DE] rounded-2xl p-6 md:p-8 shadow-sm space-y-6">
-                        <div className="flex items-center justify-between pb-4 border-b-2 border-[#E5E5DE]">
+                      <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-6 md:p-8 shadow-sm space-y-6">
+                        <div className="flex items-center justify-between pb-4 border-b-2 border-[#E5E5DE] dark:border-white/10">
                           <div>
-                            <h3 className="text-lg font-black text-[#0A2540] flex items-center gap-2.5">
-                              <ShoppingCart className="w-5 h-5 text-[#0A2540]" /> Three-Way Match Engine
+                            <h3 className="text-lg font-black text-[#0A2540] dark:text-white flex items-center gap-2.5">
+                              <ShoppingCart className="w-5 h-5 text-[#0A2540] dark:text-amber-400" /> Three-Way Match Engine
                             </h3>
-                            <p className="text-xs font-semibold text-[#0A2540]/60 mt-1">PO ⇄ GRN ⇄ Invoice automated payment verification</p>
+                            <p className="text-xs font-semibold text-[#0A2540]/60 dark:text-slate-400 mt-1">PO ⇄ GRN ⇄ Invoice automated payment verification</p>
                           </div>
                           <button
                             onClick={() => handleNavSelect("Buy & Supply", "match")}
-                            className="px-4 py-2 bg-[#FAF9F5] hover:bg-[#F2F1EC] text-[#0A2540] border-2 border-[#E5E5DE] rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer"
+                            className="px-4 py-2 bg-[#FAF9F5] dark:bg-[#071324] hover:bg-[#F2F1EC] dark:hover:bg-white/5 text-[#0A2540] dark:text-white border-2 border-[#E5E5DE] dark:border-white/10 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer"
                           >
                             <span>Open in Buy &amp; Supply</span>
                             <ChevronRight className="w-4 h-4" />
@@ -488,16 +488,16 @@ export default function DashboardPage() {
                             { id: "PO-2026-088", vendor: "Dangote Cement PLC", items: "600 Bags Grade 42.5R", status: "MATCH VERIFIED", locked: false },
                             { id: "PO-2026-081", vendor: "Lafarge Readymix", items: "45m³ Grade 30 Concrete", status: "MATCH VERIFIED", locked: false },
                           ].map((po) => (
-                            <div key={po.id} className="p-4 rounded-xl bg-[#FAF9F5] border border-[#E5E5DE] flex items-center justify-between gap-4">
+                            <div key={po.id} className="p-4 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-white/10 flex items-center justify-between gap-4">
                               <div>
                                 <div className="flex items-center gap-2">
-                                  <span className="font-mono text-xs font-black text-[#0A2540]">{po.id}</span>
-                                  <span className="text-xs font-bold text-slate-600">· {po.vendor}</span>
+                                  <span className="font-mono text-xs font-black text-[#0A2540] dark:text-white">{po.id}</span>
+                                  <span className="text-xs font-bold text-slate-600 dark:text-slate-400">· {po.vendor}</span>
                                 </div>
-                                <div className="text-sm font-bold text-slate-800 mt-1">{po.items}</div>
+                                <div className="text-sm font-bold text-slate-800 dark:text-slate-200 mt-1">{po.items}</div>
                               </div>
                               <div className="text-right shrink-0">
-                                <span className={`text-xs font-black px-2.5 py-1 rounded-full ${po.locked ? "bg-rose-100 text-rose-800 border border-rose-300" : "bg-emerald-100 text-emerald-800 border border-emerald-300"}`}>
+                                <span className={`text-xs font-black px-2.5 py-1 rounded-full ${po.locked ? "bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-800" : "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800"}`}>
                                   {po.status}
                                 </span>
                               </div>

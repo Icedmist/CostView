@@ -24,7 +24,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#FAF9F5] font-sans text-slate-900">
+    <div className="flex h-screen overflow-hidden bg-[#FAF9F5] dark:bg-[#071324] font-sans text-slate-900 dark:text-slate-100">
       <Sidebar
         activeSection="Oversight"
         activeSubSection="admin"
@@ -41,7 +41,7 @@ export default function SettingsPage() {
           onSelectNav={handleNavSelect}
         />
 
-        <main className="flex-1 overflow-y-auto p-5 md:p-8 space-y-8 bg-[#FAF9F5] pb-24 lg:pb-8">
+        <main className="flex-1 overflow-y-auto p-5 md:p-8 space-y-8 bg-[#FAF9F5] dark:bg-[#071324] pb-24 lg:pb-8">
           <RoleGuard permission="Admin">
             <WorkspaceSettingsView />
           </RoleGuard>

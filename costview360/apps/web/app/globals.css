@@ -21,6 +21,23 @@
   --radius: 14px;
 }
 
+.dark {
+  --win-bg: #071324;
+  --win-bg-alt: #0a1931;
+  --nav-bg: rgba(10, 25, 49, 0.95);
+  --content-bg: #071324;
+  --card-bg: #0a1931;
+  --card-hover: #142c4e;
+  --border: #1e3a5f;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --accent: #ffd23f;
+  --accent-hover: #e8b838;
+  --titlebar-bg: #0a1931;
+  --toggle-off: #475569;
+  --radius: 14px;
+}
+
 @layer base {
   html {
     font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -243,6 +260,43 @@
     outline: none;
     border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(10, 25, 49, 0.15);
+  }
+
+  /* Dark mode specific component surfaces */
+  .dark .glass-card {
+    background: rgba(10, 25, 49, 0.88);
+    border: 1px solid rgba(30, 58, 95, 0.85);
+    box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.3);
+  }
+  .dark .glass-card:hover {
+    background: rgba(15, 33, 55, 0.98);
+    border-color: rgba(255, 210, 63, 0.35);
+  }
+  .dark .glass-panel {
+    background: rgba(10, 25, 49, 0.85);
+    border: 1px solid rgba(30, 58, 95, 0.9);
+  }
+  .dark .glass-nav {
+    background: rgba(10, 25, 49, 0.92);
+    border-right: 1px solid rgba(30, 58, 95, 0.8);
+  }
+  .dark .glass-header {
+    background: rgba(10, 25, 49, 0.92);
+    border-bottom: 1px solid rgba(30, 58, 95, 0.8);
+  }
+  .dark .brutal-card {
+    background: rgba(10, 25, 49, 0.92);
+    border-color: rgba(30, 58, 95, 0.85);
+    color: #f8fafc;
+  }
+  .dark .brutal-input, .dark .fluent-input {
+    background: #0f2137;
+    border-color: #1e3a5f;
+    color: #f8fafc;
+  }
+  .dark .brutal-input:focus, .dark .fluent-input:focus {
+    border-color: #ffd23f;
+    box-shadow: 0 0 0 3px rgba(255, 210, 63, 0.2);
   }
 }
 
