@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { MarketingNav } from "@/components/marketing/nav";
+import { Logo } from "@/components/brand/logo";
 import {
   ArrowRight,
   CheckCircle2,
@@ -584,11 +585,7 @@ export default function LandingPage() {
       <footer className="bg-white border-t-2 border-[#E5E5DE] py-12">
         <div className="max-w-7xl mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3.5">
-            <div className="w-9 h-9 rounded-xl bg-[#0A2540] text-white flex items-center justify-center font-black text-sm shadow-xs">
-              CV
-            </div>
-            <span className="font-black text-base text-[#0A2540]">CostView</span>
-            <span className="text-sm text-[#0A2540]/60 font-semibold">· Construction Cost Intelligence</span>
+            <Logo size="sm" />
           </div>
           <div className="flex flex-wrap items-center gap-6 text-sm text-[#0A2540] font-bold">
             <Link href="/dashboard" className="hover:underline">Command Center</Link>
