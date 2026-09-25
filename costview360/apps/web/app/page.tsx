@@ -421,41 +421,38 @@ export default function LandingPage() {
       {/* 8 PERSONAS — RBAC */}
       <section id="personas" className="max-w-7xl mx-auto px-4 md:px-6 py-20 md:py-28">
         <div className="text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 bg-[#FAF9F5] text-[#0A2540] border-2 border-[#E5E5DE] px-5 py-2 rounded-full text-sm font-black uppercase tracking-wider shadow-xs">
+          <div className="inline-flex items-center gap-2 bg-[#FAF9F5] dark:bg-[#071324] text-[#0A2540] dark:text-amber-400 border-2 border-[#E5E5DE] dark:border-white/10 px-5 py-2 rounded-full text-sm font-black uppercase tracking-wider shadow-xs">
             Role-Based Access Control
           </div>
-          <h2 className="mt-5 text-3xl md:text-5xl font-black tracking-tight text-[#0A2540] leading-tight">
+          <h2 className="mt-5 text-3xl md:text-5xl font-black tracking-tight text-[#0A2540] dark:text-white leading-tight">
             Tailored For Every Stakeholder
           </h2>
-          <p className="mt-5 text-base md:text-lg text-[#0A2540]/80 font-normal leading-relaxed">
-            Strict RBAC ensures site engineers cannot approve baseline budgets, and quantity surveyors cannot falsify physical store deliveries. Demo accounts seeded below — password <span className="font-mono font-black bg-white text-[#0A2540] px-3 py-1 rounded-lg border-2 border-[#E5E5DE]">DemoPass2026!</span>
+          <p className="mt-5 text-base md:text-lg text-[#0A2540]/80 dark:text-slate-300 font-normal leading-relaxed">
+            Strict RBAC ensures site engineers cannot approve baseline budgets, and quantity surveyors cannot falsify physical store deliveries. Every team member operates within strictly defined, auditable financial and operational authorities.
           </p>
         </div>
 
         <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
-            { role: "Admin", user: "admin@costview.ng", desc: "Full permissions & system governance", badge: "bg-purple-100 text-purple-800 border-purple-300" },
-            { role: "Project Manager", user: "pm@costview.ng", desc: "Budgets, procurement & reports studio", badge: "bg-blue-100 text-[#0A2540] border-blue-300" },
-            { role: "Quantity Surveyor", user: "qs@costview.ng", desc: "BOQ master, variations & valuations", badge: "bg-indigo-100 text-indigo-800 border-indigo-300" },
-            { role: "Site Engineer", user: "site@costview.ng", desc: "Daily materials, labour & site diary", badge: "bg-amber-100 text-amber-900 border-amber-300" },
-            { role: "Procurement Officer", user: "procure@costview.ng", desc: "RFQs, purchase orders & 3-way match", badge: "bg-sky-100 text-sky-800 border-sky-300" },
-            { role: "Accountant", user: "acct@costview.ng", desc: "Invoices, payment releases & audit logs", badge: "bg-emerald-100 text-emerald-800 border-emerald-300" },
-            { role: "Storekeeper", user: "store@costview.ng", desc: "Inventory receipts, issues & transfers", badge: "bg-teal-100 text-teal-800 border-teal-300" },
-            { role: "Architect", user: "arch@costview.ng", desc: "Drawing revisions, variations & snags", badge: "bg-rose-100 text-rose-800 border-rose-300" },
+            { role: "Admin", title: "Executive Governance", desc: "Full permissions, role matrix configuration & immutable security audit trail.", badge: "bg-purple-100 text-purple-800 border-purple-300 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800" },
+            { role: "Project Manager", title: "Project Oversight", desc: "Baseline budgets, PO certifications, variation reviews & reports studio.", badge: "bg-blue-100 text-[#0A2540] border-blue-300 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800" },
+            { role: "Quantity Surveyor", title: "Commercial Lead", desc: "Contractual BOQ master, rate revisions, subcontractor valuations & claims.", badge: "bg-indigo-100 text-indigo-800 border-indigo-300 dark:bg-indigo-950/60 dark:text-indigo-300 dark:border-indigo-800" },
+            { role: "Site Engineer", title: "Field Operations", desc: "Daily site diary logs, material receipts, labour muster & snag inspections.", badge: "bg-amber-100 text-amber-900 border-amber-300 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800" },
+            { role: "Procurement Officer", title: "Supply Chain", desc: "Requisitions, trade quotes, purchase orders & 3-way match verification.", badge: "bg-sky-100 text-sky-800 border-sky-300 dark:bg-sky-950/60 dark:text-sky-300 dark:border-sky-800" },
+            { role: "Accountant", title: "Financial Control", desc: "Three-way match payment gate, invoice sign-offs & disbursement releases.", badge: "bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800" },
+            { role: "Storekeeper", title: "Warehouse Custody", desc: "Physical inventory balances, material issue vouchers & gate-pass transfers.", badge: "bg-teal-100 text-teal-800 border-teal-300 dark:bg-teal-950/60 dark:text-teal-300 dark:border-teal-800" },
+            { role: "Architect", title: "Design Assurance", desc: "Current drawing sets, revision logs, variation instructions & quality snags.", badge: "bg-rose-100 text-rose-800 border-rose-300 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800" },
           ].map((p) => (
             <div
               key={p.role}
-              className="bg-white border-2 border-[#E5E5DE] rounded-2xl shadow-xs p-7 hover:border-[#0A2540] hover:shadow-lg transition-all flex flex-col justify-between"
+              className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl shadow-xs p-7 hover:border-[#0A2540] dark:hover:border-amber-400 hover:shadow-lg transition-all flex flex-col justify-between"
             >
               <div>
                 <div className={`inline-block px-3.5 py-1.5 rounded-full text-xs md:text-sm font-black border ${p.badge} mb-3.5`}>
                   {p.role}
                 </div>
-                <div className="font-mono text-base font-black text-[#0A2540] truncate">{p.user}</div>
-                <div className="text-sm md:text-base text-[#0A2540]/80 font-normal mt-2 leading-relaxed">{p.desc}</div>
-              </div>
-              <div className="mt-5 text-xs md:text-sm font-mono font-bold text-[#0A2540] bg-[#FAF9F5] border-2 border-[#E5E5DE] px-3.5 py-2 rounded-xl">
-                pwd: DemoPass2026!
+                <div className="text-base font-black text-[#0A2540] dark:text-white">{p.title}</div>
+                <div className="text-sm text-[#0A2540]/80 dark:text-slate-300 font-normal mt-2 leading-relaxed">{p.desc}</div>
               </div>
             </div>
           ))}
@@ -464,9 +461,9 @@ export default function LandingPage() {
         <div className="mt-12 text-center">
           <Link
             href="/login"
-            className="inline-flex items-center gap-2.5 min-h-[52px] px-9 py-4 bg-white hover:bg-[#FAF9F5] text-[#0A2540] border-2 border-[#E5E5DE] rounded-xl font-black text-base shadow-xs transition-all hover:border-[#0A2540]"
+            className="inline-flex items-center gap-2.5 min-h-[52px] px-9 py-4 bg-[#0A2540] hover:bg-[#003366] dark:bg-amber-400 dark:hover:bg-amber-300 text-white dark:text-[#0A2540] rounded-xl font-black text-base shadow-md transition-all active:scale-[0.98]"
           >
-            <span>Launch Interactive Role Switcher</span>
+            <span>Sign In to Your Workspace</span>
             <ArrowRight className="w-5 h-5" />
           </Link>
         </div>
