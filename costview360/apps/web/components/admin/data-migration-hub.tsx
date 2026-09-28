@@ -101,38 +101,11 @@ const DEFAULT_MAPPINGS: Record<DataType, ColumnMapping[]> = {
   ],
 };
 
-const SAMPLE_DATA: Record<DataType, string> = {
-  boq: `code,description,category,unit,quantity,rate,budget_amount
-SUB-01.01,"Excavation and earthwork disposal offsite",Plant,m³,1250,18500,23125000
-CON-02.01,"Grade 30 reinforced concrete for foundation raft & plinth beams",Material,m³,480,195000,93600000
-STL-02.03,"High-yield deformed reinforcement bars (12mm, 16mm, 20mm)",Material,Tons,65,1450000,94250000
-BLK-03.01,"225mm vibrated hollow sandcrete blockwork in cement mortar (1:4)",Material,m²,3200,11200,35840000
-LAB-01.02,"Structural steel fixing and formwork carpenters gang attendance",Labour,Man-days,600,12500,7500000
-MEP-04.01,"First fix electrical conduit pipes & heavy-duty distribution boards",Subcontractor,Item,1,45000000,45000000
-FIN-05.01,"Vitrified porcelain floor tiles (600mm x 600mm) including adhesive & grouting",Material,m²,1800,14500,26100000
-ROF-06.01,"0.55mm aluminium standing seam roofing sheets on treated hardwood trusses",Material,m²,950,16800,15960000`,
-
-  suppliers: `company_name,trade_category,contact_person,phone,email,bank_name,account_number,tax_id
-"Dangote Cement PLC",Material,"Alhaji Sani Bello","+234 803 111 2233","sales@dangote.com","Zenith Bank",1012345678,"TIN-98765432-01"
-"Pulkit Steels Ltd",Material,"Rajesh Kumar","+234 802 333 4455","orders@pulkit.ng","Access Bank",0023456789,"TIN-87654321-02"
-"Lafarge Readymix Nigeria",Material,"Engr. Femi Babatunde","+234 805 444 5566","dispatch@lafarge.com","GTBank",0123456780,"TIN-76543210-03"
-"Julius Berger Aggregates",Material,"Emmanuel Okon","+234 809 555 6677","quarry@juliusberger.com","First Bank",2012345678,"TIN-65432109-04"
-"Schneider Electric Nigeria",Material,"Claire Dubois","+234 801 666 7788","projects@se.com","Standard Chartered",5001234567,"TIN-54321098-05"`,
-
-  subcontractors: `company_name,trade,scope_summary,contract_sum,retention_percentage
-"Apex MEP Engineering Ltd",Electrical,"Complete 1st and 2nd fix electrical and lighting",45000000,10.0
-"Julius Foundation Piling Ltd",Geotechnical,"Bored pile foundations (600mm dia) and contiguous secant pile wall",62000000,10.0
-"Total Façade & Glazing Systems",Finishes,"Unitized double-glazed curtain walling and structural aluminium louvres",38000000,10.0
-"Titan Formwork & Scaffolding",Structural,"System formwork rental, falsework engineering and heavy shoring gang",24000000,10.0`,
-
-  stock: `item_name,category,unit,current_stock,minimum_buffer,unit_cost
-"Dangote Cement Grade 42.5R (50kg)",Material,Bags,850,200,10500
-"Y16 High-Yield Deformed Rebar",Material,Tons,22,10,1450000
-"Y20 High-Yield Deformed Rebar",Material,Tons,18,8,1450000
-"Sharp Sand (Concrete Aggregate)",Material,m³,140,50,18500
-"Granite 20mm Chippings",Material,m³,190,60,22500
-"225mm Vibrated Sandcrete Blocks",Material,Units,4500,1000,650
-"Diesel AGO (Industrial Generators)",Fuel,Litres,3200,1000,1250`,
+const CSV_TEMPLATES: Record<DataType, string> = {
+  boq: "code,description,category,unit,quantity,rate,budget_amount\n",
+  suppliers: "company_name,trade_category,contact_person,phone,email,bank_name,account_number,tax_id\n",
+  subcontractors: "company_name,trade,scope_summary,contract_sum,retention_percentage\n",
+  stock: "item_name,category,unit,current_stock,minimum_buffer,unit_cost\n",
 };
 
 function parseCSVLine(line: string): string[] {
@@ -192,8 +165,8 @@ function formatNGN(amount: number): string {
 export function DataMigrationHub({ onNavigate }: { onNavigate?: (section: string, subSection?: string) => void }) {
   const { currentProject } = useApp();
   const [selectedType, setSelectedType] = useState<DataType>("boq");
-  const [csvContent, setCsvContent] = useState<string>(SAMPLE_DATA.boq);
-  const [fileName, setFileName] = useState<string>("01_boq_items_template.csv");
+  const [csvContent, setCsvContent] = useState<string>("");
+  const [fileName, setFileName] = useState<string>("");
   const [mappings, setMappings] = useState<ColumnMapping[]>(DEFAULT_MAPPINGS.boq);
   const [isImporting, setIsImporting] = useState(false);
   const [importStatus, setImportStatus] = useState<"idle" | "success" | "error">("idle");
@@ -207,11 +180,32 @@ export function DataMigrationHub({ onNavigate }: { onNavigate?: (section: string
   // Handle data type switch
   const handleTypeChange = (type: DataType) => {
     setSelectedType(type);
-    setCsvContent(SAMPLE_DATA[type]);
-    setFileName(`0${type === "boq" ? 1 : type === "suppliers" ? 2 : type === "subcontractors" ? 4 : 5}_${type}_template.csv`);
+    setCsvContent("");
+    setFileName("");
     setMappings(DEFAULT_MAPPINGS[type]);
     setImportStatus("idle");
     setImportReport(null);
+  };
+
+  const handleLoadHeaders = () => {
+    setCsvContent(CSV_TEMPLATES[selectedType]);
+    setFileName(`0${selectedType === "boq" ? 1 : selectedType === "suppliers" ? 2 : selectedType === "subcontractors" ? 4 : 5}_${selectedType}_headers.csv`);
+    setMappings(DEFAULT_MAPPINGS[selectedType]);
+    setImportStatus("idle");
+    setImportReport(null);
+  };
+
+  const handleDownloadTemplate = () => {
+    const content = CSV_TEMPLATES[selectedType];
+    const blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `0${selectedType === "boq" ? 1 : selectedType === "suppliers" ? 2 : selectedType === "subcontractors" ? 4 : 5}_${selectedType}_template.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   // Handle file drop / upload
@@ -482,21 +476,22 @@ export function DataMigrationHub({ onNavigate }: { onNavigate?: (section: string
 
           <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
             <button
-              onClick={() => handleTypeChange(selectedType)}
+              type="button"
+              onClick={handleLoadHeaders}
               className="px-4 py-2 bg-[#FAF9F5] hover:bg-[#F2F1EC] border-2 border-[#E5E5DE] text-[#0A2540] rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer"
             >
-              <RefreshCw className="w-3.5 h-3.5" />
-              <span>Reset to Standard Enterprise Sample</span>
+              <Table className="w-3.5 h-3.5" />
+              <span>Load Template Headers</span>
             </button>
 
-            <a
-              href={`/templates/migration/0${selectedType === "boq" ? 1 : selectedType === "suppliers" ? 2 : selectedType === "subcontractors" ? 4 : 5}_${selectedType}_template.csv`}
-              download
+            <button
+              type="button"
+              onClick={handleDownloadTemplate}
               className="px-4 py-2 bg-white hover:bg-slate-50 border-2 border-[#E5E5DE] text-[#0A2540] rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer"
             >
               <Download className="w-3.5 h-3.5 text-[#0A2540]" />
-              <span>Download Blank Template</span>
-            </a>
+              <span>Download Blank CSV Template</span>
+            </button>
           </div>
         </div>
 
@@ -675,39 +670,52 @@ export function DataMigrationHub({ onNavigate }: { onNavigate?: (section: string
               Reviewing parsed records ({rows.length} rows) prior to database commit.
             </p>
           </div>
-          <span className="text-xs font-mono font-bold bg-emerald-100 text-emerald-900 border border-emerald-200 px-2.5 py-1 rounded-lg">
-            Ready for Ingestion
+          <span className={`text-xs font-mono font-bold border px-2.5 py-1 rounded-lg ${
+            rows.length > 0
+              ? "bg-emerald-100 text-emerald-900 border-emerald-200"
+              : "bg-slate-100 text-slate-600 border-slate-200"
+          }`}>
+            {rows.length > 0 ? "Ready for Ingestion" : "Waiting for File"}
           </span>
         </div>
 
-        <div className="overflow-x-auto max-h-96 border border-[#E5E5DE] rounded-xl">
-          <table className="w-full text-left text-xs border-collapse">
-            <thead className="sticky top-0 bg-[#FAF9F5] border-b border-[#E5E5DE] text-[#0A2540] font-black uppercase tracking-wider">
-              <tr>
-                <th className="py-3 px-3 w-12 text-center">#</th>
-                {headers.map((h) => (
-                  <th key={h} className="py-3 px-3 whitespace-nowrap">
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[#E5E5DE] text-slate-800 font-medium">
-              {rows.map((row, idx) => (
-                <tr key={idx} className="hover:bg-[#FAF9F5] transition-colors">
-                  <td className="py-2.5 px-3 text-center font-mono text-[#0A2540]/60 font-bold">
-                    {idx + 1}
-                  </td>
+        {rows.length === 0 ? (
+          <div className="p-8 text-center bg-[#FAF9F5] rounded-xl border border-dashed border-[#E5E5DE]">
+            <p className="text-sm font-bold text-[#0A2540]">No data rows loaded</p>
+            <p className="text-xs text-[#0A2540]/60 mt-1">
+              Upload your CSV spreadsheet or click "Load Template Headers" above to preview and verify data.
+            </p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto max-h-96 border border-[#E5E5DE] rounded-xl">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead className="sticky top-0 bg-[#FAF9F5] border-b border-[#E5E5DE] text-[#0A2540] font-black uppercase tracking-wider">
+                <tr>
+                  <th className="py-3 px-3 w-12 text-center">#</th>
                   {headers.map((h) => (
-                    <td key={h} className="py-2.5 px-3 whitespace-nowrap font-sans">
-                      {row[h]}
-                    </td>
+                    <th key={h} className="py-3 px-3 whitespace-nowrap">
+                      {h}
+                    </th>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody className="divide-y divide-[#E5E5DE] text-slate-800 font-medium">
+                {rows.map((row, idx) => (
+                  <tr key={idx} className="hover:bg-[#FAF9F5] transition-colors">
+                    <td className="py-2.5 px-3 text-center font-mono text-[#0A2540]/60 font-bold">
+                      {idx + 1}
+                    </td>
+                    {headers.map((h) => (
+                      <td key={h} className="py-2.5 px-3 whitespace-nowrap font-sans">
+                        {row[h]}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );

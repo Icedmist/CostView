@@ -130,6 +130,7 @@ export function AICostEstimator({
   const [locationId, setLocationId] = useState<string>("lagos-island");
   const [finishTier, setFinishTier] = useState<string>("premium");
   const [foundationType, setFoundationType] = useState<string>("raft");
+  const [customBaseRate, setCustomBaseRate] = useState<number | "">(510000);
   const [contingencyPct, setContingencyPct] = useState<number>(7.5);
   const [inflationBufferPct, setInflationBufferPct] = useState<number>(12.0);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
@@ -140,6 +141,7 @@ export function AICostEstimator({
     setSelectedType(t.id);
     setGfa(t.defaultGFA);
     setStoreys(t.defaultFloors);
+    setCustomBaseRate(t.baseRatePerSqm);
   };
 
   const currentType = useMemo(() => {
@@ -160,7 +162,9 @@ export function AICostEstimator({
 
   // Dynamic cost calculation engine
   const calculations = useMemo(() => {
-    const baseRate = currentType.baseRatePerSqm;
+    const baseRate = customBaseRate !== "" && Number(customBaseRate) > 0
+      ? Number(customBaseRate)
+      : currentType.baseRatePerSqm;
     // Composite rate per sqm
     const compositeRate = baseRate * location.factor * finish.factor * foundation.factor;
     const baseTargetBudget = compositeRate * gfa;
@@ -251,7 +255,7 @@ export function AICostEstimator({
       contingencyAmount,
       inflationBuffer,
     };
-  }, [currentType, gfa, storeys, location, finish, foundation, contingencyPct, inflationBufferPct]);
+  }, [currentType, customBaseRate, gfa, storeys, location, finish, foundation, contingencyPct, inflationBufferPct]);
 
   const handleExportProForma = () => {
     window.print();
@@ -467,6 +471,38 @@ export function AICostEstimator({
               <span>150 m²</span>
               <span>15,000 m²</span>
             </div>
+          </div>
+
+          {/* Base Benchmark Rate (₦/m²) */}
+          <div className="space-y-1.5 p-3.5 rounded-2xl bg-[#FAF9F5] dark:bg-[#071324] border-2 border-[#E5E5DE] dark:border-[#1E3A5F]">
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-extrabold text-[#0A2540] dark:text-white flex items-center gap-1.5">
+                <Calculator className="w-4 h-4 text-[#0A2540] dark:text-[#FFD23F]" />
+                Base Benchmark Rate (₦/m²)
+              </label>
+              <button
+                type="button"
+                onClick={() => setCustomBaseRate(currentType.baseRatePerSqm)}
+                className="text-xs font-black text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
+              >
+                Reset to Benchmark
+              </button>
+            </div>
+            <div className="relative">
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 font-bold text-sm text-[#0A2540]/60 dark:text-slate-400">
+                ₦
+              </span>
+              <input
+                type="number"
+                value={customBaseRate !== "" ? customBaseRate : ""}
+                onChange={(e) => setCustomBaseRate(e.target.value === "" ? "" : Number(e.target.value))}
+                placeholder={currentType.baseRatePerSqm.toString()}
+                className="w-full h-11 pl-8 pr-3.5 bg-white dark:bg-[#0A1931] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-xl text-sm font-black font-mono text-[#0A2540] dark:text-white focus:outline-none focus:border-[#0A2540]"
+              />
+            </div>
+            <p className="text-[11px] text-[#0A2540]/70 dark:text-slate-400 font-semibold">
+              Fully customizable unit rate per m². Benchmark for {currentType.name} is ₦{currentType.baseRatePerSqm.toLocaleString()}/m².
+            </p>
           </div>
 
           {/* Storeys / Floors */}

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { formatCurrency } from "@/lib/utils";
 import { useApp } from "@/app/providers";
-import { UploadCloud, CheckCircle2, AlertCircle, FileText, Trash2, X } from "lucide-react";
+import { UploadCloud, CheckCircle2, AlertCircle, FileText, Trash2, X, Download } from "lucide-react";
 import type { BOQRecord } from "./boq-table";
 
 interface BOQImportModalProps {
@@ -17,8 +17,22 @@ export function BOQImportModal({ isOpen, onClose, onImportConfirmed }: BOQImport
   const [parsedItems, setParsedItems] = useState<BOQRecord[]>([]);
   const [fileName, setFileName] = useState<string | null>(null);
   const [step, setStep] = useState<"upload" | "review">("upload");
+  const [error, setError] = useState<string | null>(null);
 
   if (!isOpen) return null;
+
+  const handleDownloadTemplate = () => {
+    const csvContent = "code,description,category,unit,quantity,rate\n";
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "boq_items_template.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
   // Sample CSV / Excel text parser
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,6 +40,7 @@ export function BOQImportModal({ isOpen, onClose, onImportConfirmed }: BOQImport
     if (!file) return;
 
     setFileName(file.name);
+    setError(null);
 
     const reader = new FileReader();
     reader.onload = (evt) => {
@@ -64,37 +79,13 @@ export function BOQImportModal({ isOpen, onClose, onImportConfirmed }: BOQImport
       }
 
       if (items.length === 0) {
-        // Fallback sample parsed rows if uploaded file is raw or empty
-        setParsedItems([
-          {
-            id: `import-1`,
-            code: "STR-01.01",
-            description: "DPC Membrane damp proofing 1000 gauge polythene sheet",
-            category: "Material",
-            unit: "m²",
-            quantity: 850,
-            rate: 2200,
-            budgetAmount: 1870000,
-            committedAmount: 0,
-            actualAmount: 0,
-          },
-          {
-            id: `import-2`,
-            code: "PLN-01.03",
-            description: "ReadyMix transit mixer truck haulage and mobile boom pump charter",
-            category: "Plant",
-            unit: "Day",
-            quantity: 6,
-            rate: 450000,
-            budgetAmount: 2700000,
-            committedAmount: 0,
-            actualAmount: 0,
-          },
-        ]);
-      } else {
-        setParsedItems(items);
+        setError("No valid BOQ item rows found in the uploaded file. Please make sure the CSV has columns: Code, Description, Category, Unit, Quantity, Rate.");
+        setParsedItems([]);
+        return;
       }
 
+      setError(null);
+      setParsedItems(items);
       setStep("review");
     };
 
@@ -136,6 +127,13 @@ export function BOQImportModal({ isOpen, onClose, onImportConfirmed }: BOQImport
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto py-4">
+          {error && (
+            <div className="mb-4 p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-900 text-xs flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+              <span>{error}</span>
+            </div>
+          )}
+
           {step === "upload" ? (
             <div className="border border-dashed border-slate-200/80 hover:border-[#0067c0] rounded-xl p-8 text-center transition-colors bg-white">
               <UploadCloud className="w-10 h-10 text-emerald-500 mx-auto mb-3" />
@@ -145,15 +143,25 @@ export function BOQImportModal({ isOpen, onClose, onImportConfirmed }: BOQImport
               <p className="text-xs font-bold text-slate-900/60 mt-1 max-w-sm mx-auto">
                 Select an Excel, CSV, or exported rate sheet. The parser extracts Cost Code, Description, Category, Qty, and Rate.
               </p>
-              <label className="inline-block mt-4 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white border border-slate-200/80 text-xs font-bold tracking-wide cursor-pointer shadow-xs rounded-xl transition-all active:scale-[0.98]">
-                <span>Browse Local Files</span>
-                <input
-                  type="file"
-                  accept=".csv,.txt,.xlsx,.xls"
-                  onChange={handleFileUpload}
-                  className="hidden"
-                />
-              </label>
+              <div className="flex flex-wrap items-center justify-center gap-3 mt-4">
+                <label className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white border border-slate-200/80 text-xs font-bold tracking-wide cursor-pointer shadow-xs rounded-xl transition-all active:scale-[0.98]">
+                  <span>Browse Local Files</span>
+                  <input
+                    type="file"
+                    accept=".csv,.txt,.xlsx,.xls"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                  />
+                </label>
+                <button
+                  type="button"
+                  onClick={handleDownloadTemplate}
+                  className="px-4 py-2.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/80 text-xs font-bold tracking-wide shadow-xs rounded-xl transition-all active:scale-[0.98] flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Download className="w-3.5 h-3.5 text-slate-500" />
+                  <span>Download Blank CSV Template</span>
+                </button>
+              </div>
             </div>
           ) : (
             <div className="space-y-4">
@@ -210,24 +218,41 @@ export function BOQImportModal({ isOpen, onClose, onImportConfirmed }: BOQImport
         </div>
 
         {/* Footer Actions */}
-        <div className="pt-4 border-t border-slate-200/80 flex items-center justify-end gap-3">
-          <button
-            type="button"
-            onClick={onClose}
-            className="px-4 py-2 bg-white hover:bg-white text-slate-900 border border-slate-200/80 text-xs font-bold tracking-wide shadow-xs rounded-xl active:scale-[0.98]"
-          >
-            Cancel
-          </button>
-          {step === "review" && (
+        <div className="pt-4 border-t border-slate-200/80 flex items-center justify-between gap-3">
+          <div>
+            {step === "review" && (
+              <button
+                type="button"
+                onClick={() => {
+                  setStep("upload");
+                  setParsedItems([]);
+                  setFileName(null);
+                }}
+                className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold tracking-wide rounded-xl active:scale-[0.98] cursor-pointer"
+              >
+                ← Upload Different File
+              </button>
+            )}
+          </div>
+          <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={handleConfirm}
-              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white border border-slate-200/80 text-xs font-bold tracking-wide shadow-xs rounded-xl transition-all active:scale-[0.98] flex items-center gap-1.5"
+              onClick={onClose}
+              className="px-4 py-2 bg-white hover:bg-white text-slate-900 border border-slate-200/80 text-xs font-bold tracking-wide shadow-xs rounded-xl active:scale-[0.98] cursor-pointer"
             >
-              <CheckCircle2 className="w-4 h-4" />
-              <span>Confirm &amp; Commit to Budget</span>
+              Cancel
             </button>
-          )}
+            {step === "review" && parsedItems.length > 0 && (
+              <button
+                type="button"
+                onClick={handleConfirm}
+                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white border border-slate-200/80 text-xs font-bold tracking-wide shadow-xs rounded-xl transition-all active:scale-[0.98] flex items-center gap-1.5 cursor-pointer"
+              >
+                <CheckCircle2 className="w-4 h-4" />
+                <span>Confirm &amp; Commit to Budget</span>
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
