@@ -377,17 +377,17 @@ export function MyWorkQueue({ onSelectNav }: MyWorkQueueProps) {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setFilter("all")}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-sm font-bold transition-all cursor-pointer ${
               filter === "all"
                 ? "bg-[#0A2540] dark:bg-amber-400 text-white dark:text-[#0A2540] shadow-xs"
-                : "bg-white dark:bg-[#0D2137] text-[#0A2540]/70 dark:text-slate-300 hover:bg-[#FAF9F5] dark:hover:bg-white/5 border border-[#E5E5DE] dark:border-white/10"
+                : "bg-white dark:bg-[#0D2137] text-[#0A2540]/80 dark:text-slate-300 hover:bg-[#FAF9F5] dark:hover:bg-white/5 border border-[#E5E5DE] dark:border-white/10"
             }`}
           >
             All Action Items ({activeTasks.length})
           </button>
           <button
             onClick={() => setFilter("critical")}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-sm font-bold transition-all cursor-pointer ${
               filter === "critical"
                 ? "bg-rose-600 text-white shadow-xs"
                 : "bg-white dark:bg-[#0D2137] text-rose-700 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 border border-rose-200 dark:border-rose-900/60"
@@ -397,7 +397,7 @@ export function MyWorkQueue({ onSelectNav }: MyWorkQueueProps) {
           </button>
           <button
             onClick={() => setFilter("high")}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-sm font-bold transition-all cursor-pointer ${
               filter === "high"
                 ? "bg-amber-600 text-white shadow-xs"
                 : "bg-white dark:bg-[#0D2137] text-amber-800 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30 border border-amber-200 dark:border-amber-900/60"
@@ -407,7 +407,7 @@ export function MyWorkQueue({ onSelectNav }: MyWorkQueueProps) {
           </button>
         </div>
 
-        <span className="text-xs text-[#0A2540]/60 dark:text-slate-400 font-semibold hidden sm:inline">
+        <span className="text-sm text-[#0A2540]/70 dark:text-slate-300 font-semibold hidden sm:inline">
           Showing tasks assigned to {activeRole}
         </span>
       </div>
@@ -418,7 +418,7 @@ export function MyWorkQueue({ onSelectNav }: MyWorkQueueProps) {
           <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-10 text-center text-[#0A2540]/60 dark:text-slate-400">
             <CheckCircle2 className="w-10 h-10 text-emerald-600 dark:text-emerald-400 mx-auto mb-2 opacity-80" />
             <h3 className="font-extrabold text-base text-[#0A2540] dark:text-white">No pending actions</h3>
-            <p className="text-xs text-[#0A2540]/60 dark:text-slate-400 mt-1">All items in your queue are resolved.</p>
+            <p className="text-sm text-[#0A2540]/60 dark:text-slate-400 mt-1">All items in your queue are resolved.</p>
           </div>
         ) : (
           filteredTasks.map((task) => {
@@ -433,7 +433,7 @@ export function MyWorkQueue({ onSelectNav }: MyWorkQueueProps) {
               >
                 <div className="flex items-start gap-4 min-w-0">
                   <div
-                    className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 border ${
+                    className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border ${
                       isCritical
                         ? "bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-400 border-rose-200 dark:border-rose-900/60"
                         : isHigh
@@ -445,9 +445,9 @@ export function MyWorkQueue({ onSelectNav }: MyWorkQueueProps) {
                   </div>
 
                   <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-2 mb-1">
+                    <div className="flex flex-wrap items-center gap-2 mb-1.5">
                       <span
-                        className={`text-[10px] font-mono font-black uppercase tracking-wider px-2 py-0.5 rounded-md border ${
+                        className={`text-xs font-mono font-black uppercase tracking-wider px-2.5 py-0.5 rounded-md border ${
                           isCritical
                             ? "bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-800"
                             : isHigh
@@ -457,20 +457,20 @@ export function MyWorkQueue({ onSelectNav }: MyWorkQueueProps) {
                       >
                         {task.priority}
                       </span>
-                      <span className="text-[11px] font-mono font-extrabold text-[#0A2540]/70 dark:text-slate-300 bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-white/10 px-2 py-0.5 rounded-md">
+                      <span className="text-xs font-mono font-extrabold text-[#0A2540]/80 dark:text-slate-300 bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-white/10 px-2.5 py-0.5 rounded-md">
                         {task.flow} · {task.code}
                       </span>
                       {task.value && (
-                        <span className="text-xs font-black text-rose-600 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/60 px-2 py-0.5 rounded-md border border-rose-100 dark:border-rose-900/60">
+                        <span className="text-sm font-black text-rose-600 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/60 px-2.5 py-0.5 rounded-md border border-rose-100 dark:border-rose-900/60">
                           {task.value}
                         </span>
                       )}
                     </div>
 
-                    <h4 className="text-base font-extrabold text-[#0A2540] dark:text-white tracking-tight">
+                    <h4 className="text-lg font-black text-[#0A2540] dark:text-white tracking-tight">
                       {task.title}
                     </h4>
-                    <p className="text-xs text-[#0A2540]/70 dark:text-slate-300 mt-1 leading-relaxed">
+                    <p className="text-sm text-[#0A2540]/80 dark:text-slate-300 mt-1 leading-relaxed">
                       {task.description}
                     </p>
                   </div>
@@ -479,10 +479,10 @@ export function MyWorkQueue({ onSelectNav }: MyWorkQueueProps) {
                 <div className="shrink-0 flex items-center gap-3">
                   <button
                     onClick={() => onSelectNav(task.flow, task.subSection)}
-                    className="w-full md:w-auto px-5 py-2.5 bg-[#0A2540] hover:bg-[#003366] dark:bg-amber-400 dark:hover:bg-amber-300 text-white dark:text-[#0A2540] rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 shadow-xs transition-all active:scale-[0.98] cursor-pointer group-hover:shadow-md"
+                    className="w-full md:w-auto px-5 py-2.5 bg-[#0A2540] hover:bg-[#003366] dark:bg-amber-400 dark:hover:bg-amber-300 text-white dark:text-[#0A2540] rounded-xl text-sm font-black flex items-center justify-center gap-2 shadow-xs transition-all active:scale-[0.98] cursor-pointer group-hover:shadow-md"
                   >
                     <span>{task.actionText}</span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                   </button>
                 </div>
               </div>

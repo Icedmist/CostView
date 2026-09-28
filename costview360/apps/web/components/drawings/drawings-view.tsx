@@ -60,129 +60,9 @@ interface WorkItemVerify {
   dbId?: string;
 }
 
-const SAMPLE_DRAWINGS: Drawing[] = [
-  {
-    id: "drw-a101-v3",
-    discipline: "Architectural",
-    title: "Ground Floor General Arrangement",
-    drawingNumber: "A-101",
-    version: 3,
-    fileRef: "A-101_GA_Ground_v3.pdf",
-    isCurrent: true,
-    linkedBoqCode: "EAR-01.02",
-    uploadedBy: "David Okafor (Architect)",
-    uploadedAt: "2026-09-10",
-  },
-  {
-    id: "drw-a101-v2",
-    discipline: "Architectural",
-    title: "Ground Floor General Arrangement",
-    drawingNumber: "A-101",
-    version: 2,
-    fileRef: "A-101_GA_Ground_v2.pdf",
-    isCurrent: false,
-    linkedBoqCode: "EAR-01.02",
-    uploadedBy: "David Okafor (Architect)",
-    uploadedAt: "2026-08-02",
-  },
-  {
-    id: "drw-a101-v1",
-    discipline: "Architectural",
-    title: "Ground Floor General Arrangement",
-    drawingNumber: "A-101",
-    version: 1,
-    fileRef: "A-101_GA_Ground_v1.pdf",
-    isCurrent: false,
-    linkedBoqCode: "EAR-01.02",
-    uploadedBy: "David Okafor (Architect)",
-    uploadedAt: "2026-06-14",
-  },
-  {
-    id: "drw-s201-v2",
-    discipline: "Structural",
-    title: "Raft Foundation Details & Sections",
-    drawingNumber: "S-201",
-    version: 2,
-    fileRef: "S-201_Raft_Details_v2.pdf",
-    isCurrent: true,
-    linkedBoqCode: "CON-02.01",
-    uploadedBy: "David Okafor (Architect)",
-    uploadedAt: "2026-09-04",
-  },
-  {
-    id: "drw-s201-v1",
-    discipline: "Structural",
-    title: "Raft Foundation Details & Sections",
-    drawingNumber: "S-201",
-    version: 1,
-    fileRef: "S-201_Raft_Details_v1.pdf",
-    isCurrent: false,
-    linkedBoqCode: "CON-02.01",
-    uploadedBy: "David Okafor (Architect)",
-    uploadedAt: "2026-07-11",
-  },
-  {
-    id: "drw-m301-v1",
-    discipline: "Mechanical",
-    title: "Ground Floor Plumbing Layout",
-    drawingNumber: "M-301",
-    version: 1,
-    fileRef: "M-301_Plumbing_GF_v1.pdf",
-    isCurrent: true,
-    linkedBoqCode: "STL-02.03",
-    uploadedBy: "David Okafor (Architect)",
-    uploadedAt: "2026-08-20",
-  },
-];
-
-const SAMPLE_VARIATIONS: VariationReq[] = [
-  {
-    id: "vo-014",
-    voNumber: "VO-014",
-    title: "Rock encountered at Grid C4 — deepen raft by 600mm",
-    siteNote:
-      "Trial pit at Grid C4 hit hard rock above formation level. Foundation depth differs from S-201 v2. Request instruction before blinding.",
-    linkedBoq: "CON-02.01",
-    linkedDrawing: "S-201 v2",
-    raisedBy: "Engr. Tayo (Site Engineer)",
-    raisedAt: "2026-09-12",
-    stage: "Pending Architect",
-    costImpact: null,
-  },
-  {
-    id: "vo-013",
-    voNumber: "VO-013",
-    title: "Additional Y20 rebar at raft edge thickening",
-    siteNote: "Extra laps instructed per the revised bar bending schedule.",
-    linkedBoq: "STL-02.03",
-    linkedDrawing: "S-201 v2",
-    raisedBy: "Engr. Tayo (Site Engineer)",
-    raisedAt: "2026-08-28",
-    stage: "Priced — cost updated",
-    costImpact: 4000000,
-  },
-];
-
-const SAMPLE_WORK_ITEMS: WorkItemVerify[] = [
-  {
-    code: "CON-02.01",
-    description: "Grade 30 reinforced concrete raft",
-    linkedDrawing: "S-201 v2",
-    designVerified: true,
-  },
-  {
-    code: "STL-02.03",
-    description: "High-yield deformed rebar Y16 & Y20",
-    linkedDrawing: "S-201 v2",
-    designVerified: false,
-  },
-  {
-    code: "EAR-01.02",
-    description: "Bulk site excavation & cart-away",
-    linkedDrawing: "A-101 v3",
-    designVerified: true,
-  },
-];
+const SAMPLE_DRAWINGS: Drawing[] = [];
+const SAMPLE_VARIATIONS: VariationReq[] = [];
+const SAMPLE_WORK_ITEMS: WorkItemVerify[] = [];
 
 const DISCIPLINES: DrawingDiscipline[] = ["Architectural", "Structural", "Mechanical"];
 
@@ -194,11 +74,11 @@ interface DrawingsViewProps {
 export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) {
   const { activeRole, currentProject } = useApp();
   const [tab, setTab] = useState(initialSubTab || "current");
-  const [drawings, setDrawings] = useState<Drawing[]>(SAMPLE_DRAWINGS);
-  const [variations, setVariations] = useState<VariationReq[]>(SAMPLE_VARIATIONS);
-  const [workItems, setWorkItems] = useState<WorkItemVerify[]>(SAMPLE_WORK_ITEMS);
+  const [drawings, setDrawings] = useState<Drawing[]>([]);
+  const [variations, setVariations] = useState<VariationReq[]>([]);
+  const [workItems, setWorkItems] = useState<WorkItemVerify[]>([]);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
-  const [selectedWorkItem, setSelectedWorkItem] = useState(SAMPLE_WORK_ITEMS[0].code);
+  const [selectedWorkItem, setSelectedWorkItem] = useState("");
   const [priceInputs, setPriceInputs] = useState<Record<string, string>>({});
   const [syncNote, setSyncNote] = useState<string | null>(null);
 
@@ -703,32 +583,38 @@ export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) 
             <p className="text-xs text-slate-500 font-semibold mt-1">
               Pick a work item to see the current drawing that governs it.
             </p>
-            <div className="mt-3 flex flex-col sm:flex-row gap-3">
-              <select
-                value={selectedWorkItem}
-                onChange={(e) => setSelectedWorkItem(e.target.value)}
-                className="min-h-[48px] px-4 py-3 rounded-xl border-2 border-slate-200 text-sm font-bold bg-white focus:border-sky-500 focus:outline-none"
-              >
-                {workItems.map((w) => (
-                  <option key={w.code} value={w.code}>
-                    {w.code} — {w.description}
-                  </option>
-                ))}
-              </select>
-              {focusedDrawing ? (
-                <div className="flex-1 px-4 py-3 rounded-xl bg-sky-50 border-2 border-sky-200 text-sm">
-                  <span className="font-mono font-black text-sky-900">
-                    {focusedDrawing.drawingNumber} · v{focusedDrawing.version}
-                  </span>
-                  <span className="text-slate-700 font-semibold"> — {focusedDrawing.title} </span>
-                  <span className="text-slate-500 font-semibold">({focusedDrawing.fileRef})</span>
-                </div>
-              ) : (
-                <div className="flex-1 px-4 py-3 rounded-xl bg-amber-50 border-2 border-amber-200 text-sm font-bold text-amber-900">
-                  No current drawing linked to {focusedWorkItem?.code}. Ask the Architect to link one.
-                </div>
-              )}
-            </div>
+            {workItems.length === 0 ? (
+              <p className="mt-3 text-sm font-semibold text-slate-500">
+                No work items found in this project. Add items in Master BOQ to link drawings.
+              </p>
+            ) : (
+              <div className="mt-3 flex flex-col sm:flex-row gap-3">
+                <select
+                  value={selectedWorkItem}
+                  onChange={(e) => setSelectedWorkItem(e.target.value)}
+                  className="min-h-[48px] px-4 py-3 rounded-xl border-2 border-slate-200 text-sm font-bold bg-white focus:border-sky-500 focus:outline-none"
+                >
+                  {workItems.map((w) => (
+                    <option key={w.code} value={w.code}>
+                      {w.code} — {w.description}
+                    </option>
+                  ))}
+                </select>
+                {focusedDrawing ? (
+                  <div className="flex-1 px-4 py-3 rounded-xl bg-sky-50 border-2 border-sky-200 text-sm">
+                    <span className="font-mono font-black text-sky-900">
+                      {focusedDrawing.drawingNumber} · v{focusedDrawing.version}
+                    </span>
+                    <span className="text-slate-700 font-semibold"> — {focusedDrawing.title} </span>
+                    <span className="text-slate-500 font-semibold">({focusedDrawing.fileRef})</span>
+                  </div>
+                ) : (
+                  <div className="flex-1 px-4 py-3 rounded-xl bg-amber-50 border-2 border-amber-200 text-sm font-bold text-amber-900">
+                    No current drawing linked to {focusedWorkItem?.code || "selected item"}. Ask the Architect to link one.
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Design-verified work items */}
@@ -748,38 +634,46 @@ export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) 
                 </tr>
               </thead>
               <tbody>
-                {workItems.map((w) => (
-                  <tr key={w.code} className="border-t border-slate-100">
-                    <td className="py-3 pr-4 font-mono font-black text-slate-800">{w.code}</td>
-                    <td className="py-3 pr-4 font-semibold text-slate-700">{w.description}</td>
-                    <td className="py-3 pr-4 font-mono font-bold text-sky-800">{w.linkedDrawing || drawingLabelFor(w.code)}</td>
-                    <td className="py-3 pr-4">
-                      <span
-                        className={`text-[11px] font-black px-2.5 py-1 rounded-full border ${
-                          w.designVerified
-                            ? "bg-emerald-100 text-emerald-900 border-emerald-300"
-                            : "bg-slate-100 text-slate-600 border-slate-300"
-                        }`}
-                      >
-                        {w.designVerified ? "DESIGN-VERIFIED" : "NOT VERIFIED"}
-                      </span>
-                    </td>
-                    <td className="py-3">
-                      {canVerify ? (
-                        <button
-                          onClick={() => toggleVerified(w.code)}
-                          className="min-h-[40px] px-4 py-2 bg-white hover:bg-sky-50 text-sky-800 border-2 border-sky-300 rounded-xl text-xs font-black uppercase tracking-wider cursor-pointer"
-                        >
-                          {w.designVerified ? "Unmark" : "Mark verified"}
-                        </button>
-                      ) : (
-                        <span className="text-xs font-semibold text-slate-400">
-                          Architect only
-                        </span>
-                      )}
+                {workItems.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="py-6 text-center text-sm font-semibold text-slate-500">
+                      No work items loaded for design verification.
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  workItems.map((w) => (
+                    <tr key={w.code} className="border-t border-slate-100">
+                      <td className="py-3 pr-4 font-mono font-black text-slate-800">{w.code}</td>
+                      <td className="py-3 pr-4 font-semibold text-slate-700">{w.description}</td>
+                      <td className="py-3 pr-4 font-mono font-bold text-sky-800">{w.linkedDrawing || drawingLabelFor(w.code)}</td>
+                      <td className="py-3 pr-4">
+                        <span
+                          className={`text-[11px] font-black px-2.5 py-1 rounded-full border ${
+                            w.designVerified
+                              ? "bg-emerald-100 text-emerald-900 border-emerald-300"
+                              : "bg-slate-100 text-slate-600 border-slate-300"
+                          }`}
+                        >
+                          {w.designVerified ? "DESIGN-VERIFIED" : "NOT VERIFIED"}
+                        </span>
+                      </td>
+                      <td className="py-3">
+                        {canVerify ? (
+                          <button
+                            onClick={() => toggleVerified(w.code)}
+                            className="min-h-[40px] px-4 py-2 bg-white hover:bg-sky-50 text-sky-800 border-2 border-sky-300 rounded-xl text-xs font-black uppercase tracking-wider cursor-pointer"
+                          >
+                            {w.designVerified ? "Unmark" : "Mark verified"}
+                          </button>
+                        ) : (
+                          <span className="text-xs font-semibold text-slate-400">
+                            Architect only
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -834,6 +728,11 @@ export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) 
       {/* VARIATION APPROVALS — Site discrepancy → Architect → QS pricing */}
       {tab === "approvals" && (
         <div className="space-y-4">
+          {variations.length === 0 && (
+            <div className="bg-white border-2 border-slate-200 rounded-2xl p-8 text-center text-sm font-semibold text-slate-500">
+              No variation approvals or discrepancy requests pending.
+            </div>
+          )}
           {variations.map((v) => (
             <div
               key={v.id}

@@ -2,6 +2,8 @@
 
 import React, { useState, useMemo } from "react";
 import { formatCurrency } from "@/lib/utils";
+import { useAppData } from "@/lib/store/app-data";
+import { useApp } from "@/app/providers";
 import {
   Sparkles,
   Calculator,
@@ -21,12 +23,14 @@ import {
   DollarSign,
   Info,
   ArrowLeft,
+  Loader2,
+  Plus,
 } from "lucide-react";
 
-interface ProjectPreset {
+interface ConstructionType {
   id: string;
   name: string;
-  category: "Residential" | "Commercial" | "Industrial" | "Healthcare";
+  category: "Residential" | "Commercial" | "Industrial" | "Healthcare" | "Custom";
   defaultGFA: number;
   defaultFloors: number;
   baseRatePerSqm: number; // in NGN
@@ -34,20 +38,10 @@ interface ProjectPreset {
   description: string;
 }
 
-const PROJECT_PRESETS: ProjectPreset[] = [
+const CONSTRUCTION_TYPES: ConstructionType[] = [
   {
-    id: "duplex",
-    name: "5-Bedroom Detached Villa / Duplex",
-    category: "Residential",
-    defaultGFA: 450,
-    defaultFloors: 2,
-    baseRatePerSqm: 420000,
-    durationMonths: 9,
-    description: "High-end residential structure with reinforced raft, masonry enclosure, and premium domestic services.",
-  },
-  {
-    id: "apartments",
-    name: "Multi-Family Residential Apartments (6-Storey)",
+    id: "residential-multi",
+    name: "Multi-Family Residential Apartments",
     category: "Residential",
     defaultGFA: 2200,
     defaultFloors: 6,
@@ -56,8 +50,18 @@ const PROJECT_PRESETS: ProjectPreset[] = [
     description: "Suspended beam & slab frame, dual lifts, dedicated generator house, and perimeter drainage.",
   },
   {
-    id: "office",
-    name: "Commercial Office Complex (8-Storey)",
+    id: "residential-duplex",
+    name: "Detached Villa / Residential Duplex",
+    category: "Residential",
+    defaultGFA: 450,
+    defaultFloors: 2,
+    baseRatePerSqm: 420000,
+    durationMonths: 9,
+    description: "High-end residential structure with reinforced raft, masonry enclosure, and premium domestic services.",
+  },
+  {
+    id: "commercial-office",
+    name: "Commercial Office Complex",
     category: "Commercial",
     defaultGFA: 4800,
     defaultFloors: 8,
@@ -66,14 +70,24 @@ const PROJECT_PRESETS: ProjectPreset[] = [
     description: "Grade A office space, curtain walling, VRV HVAC, dual escalators, and basement parking.",
   },
   {
-    id: "warehouse",
-    name: "Industrial Logistics Warehouse & Shed",
+    id: "industrial-warehouse",
+    name: "Industrial Logistics Warehouse",
     category: "Industrial",
     defaultGFA: 3200,
     defaultFloors: 1,
     baseRatePerSqm: 290000,
     durationMonths: 8,
     description: "Portal steel frame, heavy-duty laser-screed floor slab, insulated sandwich roofing, loading docks.",
+  },
+  {
+    id: "healthcare-clinic",
+    name: "Healthcare Clinic / Medical Centre",
+    category: "Healthcare",
+    defaultGFA: 1500,
+    defaultFloors: 3,
+    baseRatePerSqm: 620000,
+    durationMonths: 14,
+    description: "Medical-grade MEP, sterile wall cladding, clean-room ventilation, and back-up power redundant systems.",
   },
 ];
 
@@ -84,6 +98,7 @@ const LOCATIONS = [
   { id: "rivers-ph", name: "Port Harcourt / Rivers (Trans-Amadi)", factor: 1.22, soilDesc: "Marsh/coastal silt, ground improvement & piling likely" },
   { id: "ibadan-oyo", name: "Ibadan / Oyo (Monetized logistics corridor)", factor: 0.95, soilDesc: "Competent laterite, standard footing foundation" },
   { id: "enugu-se", name: "Enugu / South-East Corridor", factor: 0.98, soilDesc: "Stable lateritic clay, standard strip foundation" },
+  { id: "kano-north", name: "Kano / Northern Commercial Zone", factor: 0.96, soilDesc: "Dry sandy laterite, shallow strip foundations" },
 ];
 
 const FINISH_TIERS = [
@@ -105,7 +120,11 @@ export function AICostEstimator({
   onGenerateBOQ?: () => void;
   onBack?: () => void;
 }) {
-  const [selectedPreset, setSelectedPreset] = useState<string>("apartments");
+  const { addBOQItem } = useAppData();
+  const { currency, currentProject } = useApp();
+
+  const [projectTitle, setProjectTitle] = useState(currentProject.name || "Commercial Project");
+  const [selectedType, setSelectedType] = useState<string>("residential-multi");
   const [gfa, setGfa] = useState<number>(2200);
   const [storeys, setStoreys] = useState<number>(6);
   const [locationId, setLocationId] = useState<string>("lagos-island");
@@ -113,18 +132,19 @@ export function AICostEstimator({
   const [foundationType, setFoundationType] = useState<string>("raft");
   const [contingencyPct, setContingencyPct] = useState<number>(7.5);
   const [inflationBufferPct, setInflationBufferPct] = useState<number>(12.0);
-  const [showDraftNotice, setShowDraftNotice] = useState<boolean>(false);
+  const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  const [successNotice, setSuccessNotice] = useState<string | null>(null);
 
-  // Apply preset default
-  const handlePresetSelect = (p: ProjectPreset) => {
-    setSelectedPreset(p.id);
-    setGfa(p.defaultGFA);
-    setStoreys(p.defaultFloors);
+  // Apply construction type default
+  const handleTypeSelect = (t: ConstructionType) => {
+    setSelectedType(t.id);
+    setGfa(t.defaultGFA);
+    setStoreys(t.defaultFloors);
   };
 
-  const preset = useMemo(() => {
-    return PROJECT_PRESETS.find((p) => p.id === selectedPreset) || PROJECT_PRESETS[0];
-  }, [selectedPreset]);
+  const currentType = useMemo(() => {
+    return CONSTRUCTION_TYPES.find((t) => t.id === selectedType) || CONSTRUCTION_TYPES[0];
+  }, [selectedType]);
 
   const location = useMemo(() => {
     return LOCATIONS.find((l) => l.id === locationId) || LOCATIONS[0];
@@ -138,9 +158,9 @@ export function AICostEstimator({
     return FOUNDATION_TYPES.find((f) => f.id === foundationType) || FOUNDATION_TYPES[0];
   }, [foundationType]);
 
-  // Dynamic cost calculation
+  // Dynamic cost calculation engine
   const calculations = useMemo(() => {
-    const baseRate = preset.baseRatePerSqm;
+    const baseRate = currentType.baseRatePerSqm;
     // Composite rate per sqm
     const compositeRate = baseRate * location.factor * finish.factor * foundation.factor;
     const baseTargetBudget = compositeRate * gfa;
@@ -148,59 +168,65 @@ export function AICostEstimator({
     const contingencyAmount = baseTargetBudget * (contingencyPct / 100);
     const inflationBuffer = baseTargetBudget * (inflationBufferPct / 100);
 
-    const targetTotal = baseTargetBudget + contingencyAmount + inflationBuffer;
-    const minTotal = targetTotal * 0.92;
-    const maxTotal = targetTotal * 1.12;
+    const targetTotal = Math.round(baseTargetBudget + contingencyAmount + inflationBuffer);
+    const minTotal = Math.round(targetTotal * 0.92);
+    const maxTotal = Math.round(targetTotal * 1.12);
 
-    const ratePerSqm = targetTotal / gfa;
+    const ratePerSqm = Math.round(targetTotal / (gfa || 1));
 
     // Construction duration estimate
-    const baseMonths = preset.durationMonths;
-    const scaleFactor = Math.sqrt(gfa / preset.defaultGFA);
-    const estimatedMonths = Math.round(baseMonths * scaleFactor);
+    const baseMonths = currentType.durationMonths;
+    const scaleFactor = Math.sqrt(gfa / currentType.defaultGFA);
+    const estimatedMonths = Math.max(3, Math.round(baseMonths * scaleFactor));
 
-    // Elemental Breakdown (Industry NRM/CESMM standard percentages)
+    // Elemental Breakdown (CESMM4 / NRM2 standard construction packages)
     const elements = [
       {
-        code: "SUB",
+        code: "EST-SUB-01",
         name: "Substructure & Ground Foundation",
+        category: "Substructure",
         pct: 18,
-        cost: targetTotal * 0.18,
-        details: `${foundation.name} with reinforced concrete & tanking`,
+        cost: Math.round(targetTotal * 0.18),
+        details: `${foundation.name} with reinforced concrete, excavation & tanking`,
       },
       {
-        code: "STR",
+        code: "EST-STR-02",
         name: "Reinforced Concrete Frame & Superstructure",
+        category: "Concrete",
         pct: 30,
-        cost: targetTotal * 0.30,
+        cost: Math.round(targetTotal * 0.30),
         details: `Columns, shear walls, lift cores, and suspended slabs (${storeys} storeys)`,
       },
       {
-        code: "ENV",
+        code: "EST-ENV-03",
         name: "External Envelope & Blockwork Masonry",
+        category: "Masonry",
         pct: 13,
-        cost: targetTotal * 0.13,
+        cost: Math.round(targetTotal * 0.13),
         details: "Sand-cement 225mm vibrated blocks, parapet coping, and external plastering",
       },
       {
-        code: "MEP",
+        code: "EST-MEP-04",
         name: "Mechanical, Electrical & Public Health (MEP)",
+        category: "MEP",
         pct: 17,
-        cost: targetTotal * 0.17,
+        cost: Math.round(targetTotal * 0.17),
         details: "Conduits, cable trays, piping, water supply, sewage treatment, earthing",
       },
       {
-        code: "FIN",
+        code: "EST-FIN-05",
         name: "Internal Architectural Finishes & Glazing",
+        category: "Finishes",
         pct: 14,
-        cost: targetTotal * 0.14,
+        cost: Math.round(targetTotal * 0.14),
         details: `${finish.name} specification (tiling, screeding, joinery, doors & windows)`,
       },
       {
-        code: "EXT",
+        code: "EST-EXT-06",
         name: "External Works, Drainage & Landscaping",
+        category: "External Works",
         pct: 8,
-        cost: targetTotal * 0.08,
+        cost: Math.round(targetTotal * 0.08),
         details: "Interlocking paving stones, perimeter security fence, gate house, drainage",
       },
     ];
@@ -225,38 +251,73 @@ export function AICostEstimator({
       contingencyAmount,
       inflationBuffer,
     };
-  }, [preset, gfa, storeys, location, finish, foundation, contingencyPct, inflationBufferPct]);
+  }, [currentType, gfa, storeys, location, finish, foundation, contingencyPct, inflationBufferPct]);
 
   const handleExportProForma = () => {
     window.print();
   };
 
-  const handleApplyDraftBOQ = () => {
-    setShowDraftNotice(true);
-    if (onGenerateBOQ) {
-      onGenerateBOQ();
+  // REAL ACTION: Populate actual Master BOQ items and navigate
+  const handleApplyDraftBOQ = async () => {
+    setIsGenerating(true);
+    setSuccessNotice(null);
+
+    try {
+      // Create real BOQ item objects and insert into store
+      for (const el of calculations.elements) {
+        const newItem = {
+          id: `est-${Date.now()}-${el.code.toLowerCase()}`,
+          code: el.code,
+          description: `${el.name} (${projectTitle}) — ${el.details}`,
+          category: el.category,
+          unit: "m²",
+          quantity: gfa,
+          rate: Math.round(el.cost / (gfa || 1)),
+          budgetAmount: el.cost,
+          committedAmount: 0,
+          actualAmount: 0,
+        };
+        addBOQItem(newItem);
+      }
+
+      setSuccessNotice(
+        `Generated ${calculations.elements.length} real elemental packages totaling ${formatCurrency(
+          calculations.targetTotal,
+          currency
+        )} to your BOQ Master! Redirecting...`
+      );
+
+      setTimeout(() => {
+        setIsGenerating(false);
+        if (onGenerateBOQ) {
+          onGenerateBOQ();
+        }
+      }, 900);
+    } catch (err) {
+      console.error("Error applying estimated BOQ items:", err);
+      setIsGenerating(false);
     }
   };
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto pb-12">
-      {/* Header Banner */}
-      <div className="bg-[#0A2540] rounded-3xl p-7 md:p-10 text-white shadow-xl border-2 border-[#0A2540] relative overflow-hidden">
+      {/* Top Header Banner */}
+      <div className="bg-[#0A2540] dark:bg-[#071324] rounded-3xl p-6 md:p-9 text-white shadow-xl border-2 border-[#0A2540] dark:border-[#1E3A5F] relative overflow-hidden">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
           <div>
-            <div className="flex items-center gap-3 mb-3">
+            <div className="flex items-center gap-3 mb-2.5">
               <span className="text-xs font-black uppercase tracking-wider px-3 py-1 bg-amber-400 text-[#0A2540] rounded-lg shadow-sm flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 fill-[#0A2540]" /> AI Early Feasibility Engine
+                <Sparkles className="w-3.5 h-3.5 fill-[#0A2540]" /> AI Parametric Estimator
               </span>
               <span className="text-white/70 text-xs font-bold">
-                · Pre-BOQ Parametric Cost Estimator
+                · Live Feasibility &amp; Budget Generator
               </span>
             </div>
-            <h1 className="text-2xl md:text-4xl font-black tracking-tight text-white">
-              Instant Parametric Feasibility &amp; Budget Forecaster
+            <h1 className="text-2xl md:text-3xl font-black tracking-tight text-white">
+              Instant Feasibility Forecaster &amp; BOQ Generator
             </h1>
-            <p className="text-base text-white/80 mt-2 max-w-2xl font-normal leading-relaxed">
-              Generate defensible early-stage cost estimates and delivery schedules across Nigerian geo-locations before detailed architectural drawings and bills are produced.
+            <p className="text-sm md:text-base text-white/80 mt-2 max-w-2xl font-normal leading-relaxed">
+              Calculate defensible cost estimates, delivery schedules, and raw material benchmarks for Nigerian construction projects, then commit them directly to your live BOQ Master.
             </p>
           </div>
 
@@ -280,24 +341,32 @@ export function AICostEstimator({
             </button>
             <button
               onClick={handleApplyDraftBOQ}
-              className="min-h-[46px] px-6 py-2.5 bg-[#047857] hover:bg-[#065f46] text-white rounded-xl text-sm font-black flex items-center gap-2 shadow-lg transition-all cursor-pointer"
+              disabled={isGenerating}
+              className="min-h-[46px] px-6 py-2.5 bg-[#047857] hover:bg-[#065f46] text-white rounded-xl text-sm font-black flex items-center gap-2 shadow-lg transition-all cursor-pointer disabled:opacity-50"
             >
-              <FileSpreadsheet className="w-4 h-4" />
-              <span>Convert to Draft BOQ Master</span>
+              {isGenerating ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Generating Items...</span>
+                </>
+              ) : (
+                <>
+                  <FileSpreadsheet className="w-4 h-4" />
+                  <span>Generate &amp; Add to Master BOQ</span>
+                </>
+              )}
             </button>
           </div>
         </div>
 
-        {showDraftNotice && (
-          <div className="mt-6 p-4 rounded-xl bg-emerald-950/80 border-2 border-emerald-400 text-emerald-100 flex items-center justify-between gap-4">
+        {successNotice && (
+          <div className="mt-5 p-4 rounded-xl bg-emerald-950/80 border-2 border-emerald-400 text-emerald-100 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
-              <div className="text-sm font-bold">
-                Elemental estimates ({calculations.elements.length} packages totalling {formatCurrency(calculations.targetTotal, "NGN")}) prepared as draft baseline!
-              </div>
+              <div className="text-sm font-bold">{successNotice}</div>
             </div>
             <button
-              onClick={() => setShowDraftNotice(false)}
+              onClick={() => setSuccessNotice(null)}
               className="text-xs font-black underline uppercase text-white hover:text-emerald-200"
             >
               Dismiss
@@ -306,49 +375,46 @@ export function AICostEstimator({
         )}
       </div>
 
-      {/* Preset Archetypes Grid */}
+      {/* Construction Archetype Selection */}
       <div className="space-y-3">
-        <div className="text-xs font-black uppercase tracking-wider text-[#0A2540]/70 flex items-center gap-2">
-          <Building2 className="w-4 h-4 text-[#0A2540]" /> 1. Select Construction Archetype Preset
+        <div className="text-xs font-black uppercase tracking-wider text-[#0A2540]/70 dark:text-white/70 flex items-center gap-2">
+          <Building2 className="w-4 h-4 text-[#0A2540] dark:text-[#FFD23F]" /> Construction Archetype
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {PROJECT_PRESETS.map((p) => {
-            const isSelected = selectedPreset === p.id;
+        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+          {CONSTRUCTION_TYPES.map((t) => {
+            const isSelected = selectedType === t.id;
             return (
               <button
-                key={p.id}
-                onClick={() => handlePresetSelect(p)}
-                className={`text-left p-5 rounded-2xl border-2 transition-all cursor-pointer ${
+                key={t.id}
+                onClick={() => handleTypeSelect(t)}
+                className={`text-left p-4 rounded-2xl border-2 transition-all cursor-pointer ${
                   isSelected
-                    ? "bg-[#0A2540] text-white border-[#0A2540] shadow-md scale-[1.01]"
-                    : "bg-white text-slate-800 border-[#E5E5DE] hover:border-[#0A2540]/40"
+                    ? "bg-[#0A2540] dark:bg-[#FFD23F] text-white dark:text-[#0A1931] border-[#0A2540] dark:border-[#FFD23F] shadow-md scale-[1.01]"
+                    : "bg-white dark:bg-[#0A1931] text-slate-800 dark:text-white border-[#E5E5DE] dark:border-[#1E3A5F] hover:border-[#0A2540]/40"
                 }`}
               >
                 <div className="flex items-center justify-between">
                   <span
                     className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md ${
-                      isSelected ? "bg-white/20 text-white" : "bg-slate-100 text-slate-700"
+                      isSelected
+                        ? "bg-white/20 dark:bg-[#0A1931]/20 text-white dark:text-[#0A1931]"
+                        : "bg-slate-100 dark:bg-[#071324] text-slate-700 dark:text-white/70"
                     }`}
                   >
-                    {p.category}
+                    {t.category}
                   </span>
-                  {isSelected && <CheckCircle2 className="w-4 h-4 text-emerald-400" />}
+                  {isSelected && <CheckCircle2 className="w-4 h-4 text-emerald-400 dark:text-[#0A1931]" />}
                 </div>
-                <div className="font-extrabold text-base mt-2.5 leading-snug">{p.name}</div>
-                <p
-                  className={`text-xs mt-2 line-clamp-2 leading-relaxed ${
-                    isSelected ? "text-white/80" : "text-slate-500"
-                  }`}
-                >
-                  {p.description}
-                </p>
+                <div className="font-extrabold text-sm mt-2 leading-snug">{t.name}</div>
                 <div
-                  className={`mt-4 pt-3 border-t text-xs font-mono font-bold flex justify-between ${
-                    isSelected ? "border-white/15 text-white/90" : "border-slate-100 text-slate-600"
+                  className={`mt-3 pt-2.5 border-t text-xs font-mono font-bold flex justify-between ${
+                    isSelected
+                      ? "border-white/15 dark:border-[#0A1931]/20 text-white/90 dark:text-[#0A1931]/90"
+                      : "border-slate-100 dark:border-[#1E3A5F] text-slate-600 dark:text-white/60"
                   }`}
                 >
-                  <span>{p.defaultGFA} m² default</span>
-                  <span>{p.durationMonths} months</span>
+                  <span>{t.defaultGFA} m²</span>
+                  <span>{t.durationMonths} mo</span>
                 </div>
               </button>
             );
@@ -356,22 +422,34 @@ export function AICostEstimator({
         </div>
       </div>
 
-      {/* Main Form & Results Grid */}
+      {/* Main Parameters & Output Layout */}
       <div className="grid lg:grid-cols-12 gap-8 items-start">
-        {/* Left: Input Parameters Panel (5 cols) */}
-        <div className="lg:col-span-5 bg-white border-2 border-[#E5E5DE] rounded-3xl p-6 md:p-7 shadow-sm space-y-6">
-          <div className="pb-4 border-b-2 border-[#E5E5DE] flex items-center justify-between">
-            <h3 className="text-lg font-black text-[#0A2540] flex items-center gap-2">
-              <Sliders className="w-5 h-5 text-[#0A2540]" /> Project Parameters
+        {/* Left Panel: Scope & Parameter Sliders (5 cols) */}
+        <div className="lg:col-span-5 bg-white dark:bg-[#0A1931] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-3xl p-6 md:p-7 shadow-sm space-y-6">
+          <div className="pb-4 border-b-2 border-[#E5E5DE] dark:border-[#1E3A5F] flex items-center justify-between">
+            <h3 className="text-lg font-black text-[#0A2540] dark:text-white flex items-center gap-2">
+              <Sliders className="w-5 h-5 text-[#0A2540] dark:text-[#FFD23F]" /> Project Parameters
             </h3>
-            <span className="text-xs font-bold text-slate-500">Real-time update</span>
+            <span className="text-xs font-bold text-slate-500 dark:text-white/50">Dynamic Recalculation</span>
+          </div>
+
+          {/* Project Title Input */}
+          <div className="space-y-1.5">
+            <label className="text-sm font-extrabold text-[#0A2540] dark:text-white">Project Title / Scope</label>
+            <input
+              type="text"
+              value={projectTitle}
+              onChange={(e) => setProjectTitle(e.target.value)}
+              placeholder="e.g. Lekki Commercial Plaza"
+              className="w-full h-11 px-3.5 bg-[#FAF9F5] dark:bg-[#071324] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-xl text-sm font-bold text-[#0A2540] dark:text-white focus:outline-none focus:border-[#0A2540]"
+            />
           </div>
 
           {/* GFA Slider & Input */}
           <div className="space-y-2">
-            <div className="flex justify-between items-center text-sm font-extrabold text-[#0A2540]">
+            <div className="flex justify-between items-center text-sm font-extrabold text-[#0A2540] dark:text-white">
               <label>Gross Floor Area (GFA)</label>
-              <div className="flex items-center gap-1 font-mono text-base font-black bg-[#FAF9F5] px-3 py-1 rounded-lg border border-[#E5E5DE]">
+              <div className="flex items-center gap-1 font-mono text-base font-black bg-[#FAF9F5] dark:bg-[#071324] px-3 py-1 rounded-lg border border-[#E5E5DE] dark:border-[#1E3A5F]">
                 <span>{gfa.toLocaleString()}</span>
                 <span className="text-xs text-slate-500">m²</span>
               </div>
@@ -383,19 +461,19 @@ export function AICostEstimator({
               step={50}
               value={gfa}
               onChange={(e) => setGfa(Number(e.target.value))}
-              className="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#0A2540]"
+              className="w-full h-2.5 bg-slate-200 dark:bg-[#1E3A5F] rounded-lg appearance-none cursor-pointer accent-[#0A2540] dark:accent-[#FFD23F]"
             />
             <div className="flex justify-between text-[11px] text-slate-500 font-mono">
-              <span>150 m² (Bungalow)</span>
-              <span>15,000 m² (High-rise)</span>
+              <span>150 m²</span>
+              <span>15,000 m²</span>
             </div>
           </div>
 
           {/* Storeys / Floors */}
           <div className="space-y-2">
-            <div className="flex justify-between items-center text-sm font-extrabold text-[#0A2540]">
-              <label>Number of Floors / Storeys</label>
-              <span className="font-mono text-sm font-black bg-[#FAF9F5] px-3 py-1 rounded-lg border border-[#E5E5DE]">
+            <div className="flex justify-between items-center text-sm font-extrabold text-[#0A2540] dark:text-white">
+              <label>Number of Floors</label>
+              <span className="font-mono text-sm font-black bg-[#FAF9F5] dark:bg-[#071324] px-3 py-1 rounded-lg border border-[#E5E5DE] dark:border-[#1E3A5F]">
                 {storeys} {storeys === 1 ? "Level" : "Levels"}
               </span>
             </div>
@@ -407,8 +485,8 @@ export function AICostEstimator({
                   onClick={() => setStoreys(lvl)}
                   className={`py-2 rounded-xl text-xs font-black font-mono border-2 transition-all ${
                     storeys === lvl
-                      ? "bg-[#0A2540] text-white border-[#0A2540]"
-                      : "bg-[#FAF9F5] text-slate-700 border-[#E5E5DE] hover:border-slate-400"
+                      ? "bg-[#0A2540] dark:bg-[#FFD23F] text-white dark:text-[#0A1931] border-[#0A2540] dark:border-[#FFD23F]"
+                      : "bg-[#FAF9F5] dark:bg-[#071324] text-slate-700 dark:text-white border-[#E5E5DE] dark:border-[#1E3A5F] hover:border-slate-400"
                   }`}
                 >
                   {lvl}F
@@ -419,17 +497,17 @@ export function AICostEstimator({
 
           {/* Location Dropdown */}
           <div className="space-y-2">
-            <label className="text-sm font-extrabold text-[#0A2540] flex items-center gap-1.5">
-              <MapPin className="w-4 h-4 text-rose-600" /> Geographic Location &amp; Local Zone
+            <label className="text-sm font-extrabold text-[#0A2540] dark:text-white flex items-center gap-1.5">
+              <MapPin className="w-4 h-4 text-rose-600" /> Geographic Location
             </label>
             <select
               value={locationId}
               onChange={(e) => setLocationId(e.target.value)}
-              className="w-full h-12 px-3.5 bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-xl text-sm font-bold text-[#0A2540] focus:outline-none focus:border-[#0A2540]"
+              className="w-full h-11 px-3.5 bg-[#FAF9F5] dark:bg-[#071324] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-xl text-sm font-bold text-[#0A2540] dark:text-white focus:outline-none focus:border-[#0A2540]"
             >
               {LOCATIONS.map((loc) => (
-                <option key={loc.id} value={loc.id}>
-                  {loc.name} (+{Math.round((loc.factor - 1) * 100)}% market factor)
+                <option key={loc.id} value={loc.id} className="dark:bg-[#0A1931]">
+                  {loc.name} ({loc.factor >= 1 ? `+${Math.round((loc.factor - 1) * 100)}%` : `-${Math.round((1 - loc.factor) * 100)}%`} factor)
                 </option>
               ))}
             </select>
@@ -438,7 +516,7 @@ export function AICostEstimator({
 
           {/* Specification Grade */}
           <div className="space-y-2">
-            <label className="text-sm font-extrabold text-[#0A2540] flex items-center gap-1.5">
+            <label className="text-sm font-extrabold text-[#0A2540] dark:text-white flex items-center gap-1.5">
               <Layers className="w-4 h-4 text-emerald-600" /> Architectural Finish Tier
             </label>
             <div className="space-y-2">
@@ -447,8 +525,8 @@ export function AICostEstimator({
                   key={tier.id}
                   className={`flex items-start gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all ${
                     finishTier === tier.id
-                      ? "bg-blue-50/70 border-[#0A2540] text-[#0A2540]"
-                      : "bg-[#FAF9F5] border-[#E5E5DE] text-slate-700 hover:bg-slate-50"
+                      ? "bg-blue-50/70 dark:bg-[#0F2137] border-[#0A2540] dark:border-[#FFD23F] text-[#0A2540] dark:text-white"
+                      : "bg-[#FAF9F5] dark:bg-[#071324] border-[#E5E5DE] dark:border-[#1E3A5F] text-slate-700 dark:text-white hover:bg-slate-50"
                   }`}
                 >
                   <input
@@ -456,11 +534,11 @@ export function AICostEstimator({
                     name="finishTier"
                     checked={finishTier === tier.id}
                     onChange={() => setFinishTier(tier.id)}
-                    className="mt-1 accent-[#0A2540]"
+                    className="mt-1 accent-[#0A2540] dark:accent-[#FFD23F]"
                   />
                   <div className="text-xs">
-                    <div className="font-bold text-sm text-[#0A2540]">{tier.name}</div>
-                    <div className="text-slate-500 mt-0.5">{tier.desc}</div>
+                    <div className="font-bold text-sm text-[#0A2540] dark:text-white">{tier.name}</div>
+                    <div className="text-slate-500 dark:text-white/60 mt-0.5">{tier.desc}</div>
                   </div>
                 </label>
               ))}
@@ -469,14 +547,14 @@ export function AICostEstimator({
 
           {/* Substructure Type */}
           <div className="space-y-2">
-            <label className="text-sm font-extrabold text-[#0A2540]">Substructure &amp; Soil Foundation</label>
+            <label className="text-sm font-extrabold text-[#0A2540] dark:text-white">Substructure Foundation</label>
             <select
               value={foundationType}
               onChange={(e) => setFoundationType(e.target.value)}
-              className="w-full h-11 px-3.5 bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-xl text-xs font-bold text-[#0A2540] focus:outline-none focus:border-[#0A2540]"
+              className="w-full h-11 px-3.5 bg-[#FAF9F5] dark:bg-[#071324] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-xl text-xs font-bold text-[#0A2540] dark:text-white focus:outline-none focus:border-[#0A2540]"
             >
               {FOUNDATION_TYPES.map((f) => (
-                <option key={f.id} value={f.id}>
+                <option key={f.id} value={f.id} className="dark:bg-[#0A1931]">
                   {f.name}
                 </option>
               ))}
@@ -484,11 +562,11 @@ export function AICostEstimator({
           </div>
 
           {/* Risk & Inflation Sliders */}
-          <div className="pt-4 border-t-2 border-[#E5E5DE] space-y-4">
+          <div className="pt-4 border-t-2 border-[#E5E5DE] dark:border-[#1E3A5F] space-y-4">
             <div className="space-y-1.5">
-              <div className="flex justify-between text-xs font-bold text-slate-700">
+              <div className="flex justify-between text-xs font-bold text-slate-700 dark:text-white/70">
                 <span>Contingency Reserve:</span>
-                <span className="font-mono text-[#0A2540] font-black">{contingencyPct}%</span>
+                <span className="font-mono text-[#0A2540] dark:text-[#FFD23F] font-black">{contingencyPct}%</span>
               </div>
               <input
                 type="range"
@@ -497,14 +575,14 @@ export function AICostEstimator({
                 step={0.5}
                 value={contingencyPct}
                 onChange={(e) => setContingencyPct(Number(e.target.value))}
-                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#0A2540]"
+                className="w-full h-2 bg-slate-200 dark:bg-[#1E3A5F] rounded-lg appearance-none cursor-pointer accent-[#0A2540] dark:accent-[#FFD23F]"
               />
             </div>
 
             <div className="space-y-1.5">
-              <div className="flex justify-between text-xs font-bold text-slate-700">
-                <span>Material Volatility Buffer (Cement/Steel):</span>
-                <span className="font-mono text-amber-700 font-black">+{inflationBufferPct}%</span>
+              <div className="flex justify-between text-xs font-bold text-slate-700 dark:text-white/70">
+                <span>Material Volatility Buffer:</span>
+                <span className="font-mono text-amber-700 dark:text-amber-400 font-black">+{inflationBufferPct}%</span>
               </div>
               <input
                 type="range"
@@ -513,51 +591,51 @@ export function AICostEstimator({
                 step={1}
                 value={inflationBufferPct}
                 onChange={(e) => setInflationBufferPct(Number(e.target.value))}
-                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-600"
+                className="w-full h-2 bg-slate-200 dark:bg-[#1E3A5F] rounded-lg appearance-none cursor-pointer accent-amber-600"
               />
             </div>
           </div>
         </div>
 
-        {/* Right: Real-time Output & Elemental Breakdown (7 cols) */}
+        {/* Right Panel: Real-time Calculated Outputs (7 cols) */}
         <div className="lg:col-span-7 space-y-6">
-          {/* Output KPI Cards */}
+          {/* KPI Output Cards */}
           <div className="grid sm:grid-cols-3 gap-4">
-            <div className="bg-white border-2 border-[#E5E5DE] rounded-2xl p-5 shadow-xs">
-              <div className="text-xs font-black uppercase tracking-wider text-slate-500">Target Estimated Budget</div>
-              <div className="text-2xl md:text-3xl font-black font-mono text-[#0A2540] mt-2">
-                {formatCurrency(calculations.targetTotal, "NGN")}
+            <div className="bg-white dark:bg-[#0A1931] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-2xl p-5 shadow-xs">
+              <div className="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-white/60">Estimated Target Budget</div>
+              <div className="text-2xl md:text-3xl font-black font-mono text-[#0A2540] dark:text-[#FFD23F] mt-2">
+                {formatCurrency(calculations.targetTotal, currency)}
               </div>
-              <div className="text-[11px] text-slate-500 font-medium mt-1">
-                Range: {formatCurrency(calculations.minTotal, "NGN")} - {formatCurrency(calculations.maxTotal, "NGN")}
+              <div className="text-[11px] text-slate-500 dark:text-white/50 font-medium mt-1">
+                Range: {formatCurrency(calculations.minTotal, currency)} - {formatCurrency(calculations.maxTotal, currency)}
               </div>
             </div>
 
-            <div className="bg-white border-2 border-[#E5E5DE] rounded-2xl p-5 shadow-xs">
-              <div className="text-xs font-black uppercase tracking-wider text-slate-500">Unit Construction Rate</div>
-              <div className="text-2xl md:text-3xl font-black font-mono text-emerald-700 mt-2">
-                {formatCurrency(calculations.ratePerSqm, "NGN")}
+            <div className="bg-white dark:bg-[#0A1931] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-2xl p-5 shadow-xs">
+              <div className="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-white/60">Unit Construction Rate</div>
+              <div className="text-2xl md:text-3xl font-black font-mono text-emerald-700 dark:text-emerald-400 mt-2">
+                {formatCurrency(calculations.ratePerSqm, currency)}
               </div>
-              <div className="text-[11px] text-emerald-800 font-bold mt-1">Per square metre (GFA)</div>
+              <div className="text-[11px] text-emerald-800 dark:text-emerald-300 font-bold mt-1">Per square metre (GFA)</div>
             </div>
 
-            <div className="bg-white border-2 border-[#E5E5DE] rounded-2xl p-5 shadow-xs">
-              <div className="text-xs font-black uppercase tracking-wider text-slate-500">Execution Schedule</div>
-              <div className="text-2xl md:text-3xl font-black font-mono text-[#0A2540] mt-2">
+            <div className="bg-white dark:bg-[#0A1931] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-2xl p-5 shadow-xs">
+              <div className="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-white/60">Estimated Duration</div>
+              <div className="text-2xl md:text-3xl font-black font-mono text-[#0A2540] dark:text-white mt-2">
                 {calculations.estimatedMonths} Months
               </div>
-              <div className="text-[11px] text-slate-500 font-medium mt-1">Substructure to Practical Completion</div>
+              <div className="text-[11px] text-slate-500 dark:text-white/50 font-medium mt-1">Groundbreak to Handover</div>
             </div>
           </div>
 
-          {/* Elemental Cost Breakdown Table */}
-          <div className="bg-white border-2 border-[#E5E5DE] rounded-3xl p-6 md:p-7 shadow-sm space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b-2 border-[#E5E5DE]">
+          {/* Elemental Breakdown Table */}
+          <div className="bg-white dark:bg-[#0A1931] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-3xl p-6 md:p-7 shadow-sm space-y-5">
+            <div className="flex items-center justify-between pb-3 border-b-2 border-[#E5E5DE] dark:border-[#1E3A5F]">
               <div>
-                <h3 className="text-lg font-black text-[#0A2540]">Elemental Cost Package Distribution</h3>
-                <p className="text-xs text-slate-500 mt-0.5">Aligned with CESMM4 / NRM2 commercial standards</p>
+                <h3 className="text-lg font-black text-[#0A2540] dark:text-white">Elemental Package Distribution</h3>
+                <p className="text-xs text-slate-500 dark:text-white/60 mt-0.5">Ready to be committed directly into your active BOQ Master</p>
               </div>
-              <span className="text-xs font-mono font-black px-3 py-1 bg-blue-50 text-blue-900 border border-blue-200 rounded-lg">
+              <span className="text-xs font-mono font-black px-3 py-1 bg-emerald-50 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 rounded-lg">
                 100% Allocated
               </span>
             </div>
@@ -566,67 +644,67 @@ export function AICostEstimator({
               {calculations.elements.map((el) => (
                 <div
                   key={el.code}
-                  className="p-4 rounded-xl bg-[#FAF9F5] border border-[#E5E5DE] hover:bg-slate-50 transition-colors"
+                  className="p-4 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] hover:bg-slate-50 dark:hover:bg-[#0F2137] transition-colors"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div className="flex items-center gap-2.5">
-                      <span className="font-mono text-xs font-black px-2 py-0.5 bg-[#0A2540] text-white rounded">
+                      <span className="font-mono text-xs font-black px-2 py-0.5 bg-[#0A2540] dark:bg-[#FFD23F] text-white dark:text-[#0A1931] rounded">
                         {el.code}
                       </span>
-                      <span className="font-bold text-sm text-slate-900">{el.name}</span>
+                      <span className="font-bold text-sm text-slate-900 dark:text-white">{el.name}</span>
                     </div>
                     <div className="flex items-center gap-3 self-end sm:self-auto">
-                      <span className="text-xs font-mono font-bold text-slate-500">{el.pct}%</span>
-                      <span className="font-mono font-black text-sm text-[#0A2540]">
-                        {formatCurrency(el.cost, "NGN")}
+                      <span className="text-xs font-mono font-bold text-slate-500 dark:text-white/60">{el.pct}%</span>
+                      <span className="font-mono font-black text-sm text-[#0A2540] dark:text-[#FFD23F]">
+                        {formatCurrency(el.cost, currency)}
                       </span>
                     </div>
                   </div>
-                  <div className="w-full bg-slate-200 h-1.5 rounded-full mt-2.5 overflow-hidden">
-                    <div className="bg-[#0A2540] h-full rounded-full" style={{ width: `${el.pct * 3}%` }} />
+                  <div className="w-full bg-slate-200 dark:bg-[#1E3A5F] h-1.5 rounded-full mt-2.5 overflow-hidden">
+                    <div className="bg-[#0A2540] dark:bg-[#FFD23F] h-full rounded-full" style={{ width: `${el.pct * 3}%` }} />
                   </div>
-                  <p className="text-xs text-slate-500 mt-2">{el.details}</p>
+                  <p className="text-xs text-slate-500 dark:text-white/60 mt-2">{el.details}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Key Material Quantities Benchmark */}
-          <div className="bg-white border-2 border-[#E5E5DE] rounded-3xl p-6 md:p-7 shadow-sm space-y-4">
-            <h4 className="text-sm font-black uppercase tracking-wider text-[#0A2540] flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-emerald-600" /> Theoretical Major Material Quantities Benchmark
+          {/* Material Quantities Benchmark */}
+          <div className="bg-white dark:bg-[#0A1931] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-3xl p-6 md:p-7 shadow-sm space-y-4">
+            <h4 className="text-sm font-black uppercase tracking-wider text-[#0A2540] dark:text-white flex items-center gap-2">
+              <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /> Key Material Quantities Benchmark
             </h4>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-500 dark:text-white/60">
               Rule-of-thumb consumption estimates for procurement planning before structural bar bending schedules (BBS).
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-              <div className="p-3.5 rounded-xl bg-[#FAF9F5] border border-[#E5E5DE] text-center">
-                <div className="text-[11px] font-bold text-slate-500 uppercase">Cement (50kg)</div>
-                <div className="text-xl font-black font-mono text-[#0A2540] mt-1">
+              <div className="p-3.5 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] text-center">
+                <div className="text-[11px] font-bold text-slate-500 dark:text-white/60 uppercase">Cement (50kg)</div>
+                <div className="text-xl font-black font-mono text-[#0A2540] dark:text-[#FFD23F] mt-1">
                   {calculations.cementBags.toLocaleString()}
                 </div>
                 <div className="text-[10px] text-slate-400 mt-0.5">~{Math.round(calculations.cementBags / 600)} trailers</div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-[#FAF9F5] border border-[#E5E5DE] text-center">
-                <div className="text-[11px] font-bold text-slate-500 uppercase">TMT High-Yield Rebar</div>
-                <div className="text-xl font-black font-mono text-[#0A2540] mt-1">
+              <div className="p-3.5 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] text-center">
+                <div className="text-[11px] font-bold text-slate-500 dark:text-white/60 uppercase">TMT High-Yield Rebar</div>
+                <div className="text-xl font-black font-mono text-[#0A2540] dark:text-[#FFD23F] mt-1">
                   {calculations.rebarTonnes.toLocaleString()} T
                 </div>
                 <div className="text-[10px] text-slate-400 mt-0.5">Y12 - Y25 structural</div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-[#FAF9F5] border border-[#E5E5DE] text-center">
-                <div className="text-[11px] font-bold text-slate-500 uppercase">Sharp Sand</div>
-                <div className="text-xl font-black font-mono text-[#0A2540] mt-1">
+              <div className="p-3.5 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] text-center">
+                <div className="text-[11px] font-bold text-slate-500 dark:text-white/60 uppercase">Sharp Sand</div>
+                <div className="text-xl font-black font-mono text-[#0A2540] dark:text-[#FFD23F] mt-1">
                   {calculations.sandTrips.toLocaleString()}
                 </div>
                 <div className="text-[10px] text-slate-400 mt-0.5">20-Tonne tipper trips</div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-[#FAF9F5] border border-[#E5E5DE] text-center">
-                <div className="text-[11px] font-bold text-slate-500 uppercase">Granite Aggregates</div>
-                <div className="text-xl font-black font-mono text-[#0A2540] mt-1">
+              <div className="p-3.5 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] text-center">
+                <div className="text-[11px] font-bold text-slate-500 dark:text-white/60 uppercase">Granite Aggregates</div>
+                <div className="text-xl font-black font-mono text-[#0A2540] dark:text-[#FFD23F] mt-1">
                   {calculations.graniteTrips.toLocaleString()}
                 </div>
                 <div className="text-[10px] text-slate-400 mt-0.5">30-Tonne trailer loads</div>
@@ -634,17 +712,17 @@ export function AICostEstimator({
             </div>
           </div>
 
-          {/* AI Risk & Advisory Notes */}
-          <div className="p-5 rounded-2xl bg-amber-50/90 border-2 border-amber-300 text-amber-950 space-y-2.5">
-            <div className="text-xs font-black uppercase tracking-wider text-amber-800 flex items-center gap-1.5">
-              <ShieldAlert className="w-4 h-4 text-amber-600" /> Commercial Risk Advisory for {location.name}
+          {/* Risk Advisory Card */}
+          <div className="p-5 rounded-2xl bg-amber-50/90 dark:bg-[#071324] border-2 border-amber-300 dark:border-amber-500/40 text-amber-950 dark:text-amber-200 space-y-2.5">
+            <div className="text-xs font-black uppercase tracking-wider text-amber-800 dark:text-amber-400 flex items-center gap-1.5">
+              <ShieldAlert className="w-4 h-4 text-amber-600 dark:text-amber-400" /> Commercial Risk Advisory for {location.name}
             </div>
-            <ul className="text-xs space-y-1.5 text-amber-900 leading-relaxed list-disc list-inside">
+            <ul className="text-xs space-y-1.5 text-amber-900 dark:text-amber-300 leading-relaxed list-disc list-inside">
               <li>
-                <strong>Geotechnical Prerequisite:</strong> Coastal sand &amp; mud conditions in {location.name} require standard cone penetration test (CPT) and borehole soil mechanics reports before executing foundation concrete.
+                <strong>Geotechnical Prerequisite:</strong> Soil conditions in {location.name} require standard cone penetration test (CPT) and borehole soil mechanics reports before executing foundation concrete.
               </li>
               <li>
-                <strong>Material Inflation Buffer:</strong> A ₦{(calculations.inflationBuffer / 1000000).toFixed(1)}M volatility allowance is provisioned to hedge against cement price spikes and foreign exchange fluctuation on imported MEP plant.
+                <strong>Material Inflation Buffer:</strong> A {formatCurrency(calculations.inflationBuffer, currency)} volatility allowance is provisioned to hedge against cement price spikes and foreign exchange fluctuation on imported MEP plant.
               </li>
               <li>
                 <strong>Procurement Gating:</strong> All physical deliveries should be routed through CostView&apos;s automated 3-Way Match gate to enforce quoted unit rates.

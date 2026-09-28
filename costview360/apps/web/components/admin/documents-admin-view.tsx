@@ -117,349 +117,11 @@ export interface ComplianceRecord {
   relevance: string;
 }
 
-const INITIAL_DOCUMENTS: CorporateDocument[] = [
-  {
-    id: "doc-01",
-    docNumber: "DOC-CAC-2024-001",
-    title: "CAC Certificate of Incorporation & Form CAC 1.1",
-    category: "Company Documents",
-    description: "Corporate Affairs Commission statutory incorporation and memorandum of association.",
-    version: "v1.0",
-    fileSize: "3.4 MB",
-    fileType: "PDF",
-    uploadedBy: "Barr. Adaeze (Legal Counsel)",
-    uploadedAt: "2024-01-15",
-    flowStage: "Use",
-    status: "Active",
-    accessLevel: "Company-Wide",
-    department: "Executive & Legal",
-    historyCount: 3,
-  },
-  {
-    id: "doc-02",
-    docNumber: "DOC-LASBCA-2025-014",
-    title: "LASBCA Approved Building Development Permit",
-    category: "Legal Documents",
-    description: "Lagos State Building Control Agency official developmental and structural approval for Horizon Commercial Towers.",
-    version: "v2.2",
-    fileSize: "14.8 MB",
-    fileType: "PDF",
-    uploadedBy: "Engr. Tayo (Site Director)",
-    uploadedAt: "2025-04-10",
-    expiryDate: "2027-04-10",
-    flowStage: "Use",
-    status: "Active",
-    accessLevel: "Site Operations",
-    department: "Project Engineering",
-    historyCount: 5,
-  },
-  {
-    id: "doc-03",
-    docNumber: "DOC-FIRS-TCC-2026",
-    title: "FIRS Federal Tax Clearance Certificate (TCC)",
-    category: "Company Documents",
-    description: "Valid federal tax compliance certificate for corporate income tax (CIT) and education tax clearance.",
-    version: "v2026.1",
-    fileSize: "1.2 MB",
-    fileType: "PDF",
-    uploadedBy: "Ngozi (Financial Controller)",
-    uploadedAt: "2026-01-20",
-    expiryDate: "2026-12-31",
-    flowStage: "Use",
-    status: "Active",
-    accessLevel: "Executive & Commercial",
-    department: "Finance & Accounts",
-    historyCount: 4,
-  },
-  {
-    id: "doc-04",
-    docNumber: "DOC-MSA-DANGOTE-09",
-    title: "Dangote Cement Master Supply & Rebate Agreement",
-    category: "Contracts & Agreements",
-    description: "Annual bulk supply agreement with negotiated discount rates and delivery terms to Lekki site depot.",
-    version: "v1.3",
-    fileSize: "5.1 MB",
-    fileType: "PDF",
-    uploadedBy: "Kelechi (Procurement Lead)",
-    uploadedAt: "2026-02-01",
-    expiryDate: "2027-01-31",
-    flowStage: "Use",
-    status: "Active",
-    accessLevel: "Executive & Commercial",
-    department: "Procurement & Supply",
-    historyCount: 2,
-  },
-  {
-    id: "doc-05",
-    docNumber: "DOC-APG-ZENITH-082",
-    title: "Zenith Bank Advance Payment Guarantee (APG) Bond",
-    category: "Financial Documents",
-    description: "Bank guarantee protecting 15% mobilization payment on Horizon Commercial Towers.",
-    version: "v1.0",
-    fileSize: "2.7 MB",
-    fileType: "PDF",
-    uploadedBy: "Ngozi (Financial Controller)",
-    uploadedAt: "2025-11-12",
-    expiryDate: "2026-11-12",
-    flowStage: "Store",
-    status: "Active",
-    accessLevel: "Board & Legal",
-    department: "Finance & Accounts",
-    historyCount: 2,
-  },
-  {
-    id: "doc-06",
-    docNumber: "DOC-COR-CONS-041",
-    title: "Structural Engineer Transmittal: Raft Rebar Amendment",
-    category: "Correspondence",
-    description: "Formal transmittal from S&M Consultants with sealed clarification on column reinforcement laps at Grid 4-E.",
-    version: "v1.0",
-    fileSize: "4.3 MB",
-    fileType: "PDF",
-    uploadedBy: "Engr. Tayo (Site Director)",
-    uploadedAt: "2026-09-18",
-    flowStage: "Use",
-    status: "Active",
-    accessLevel: "Site Operations",
-    department: "Project Engineering",
-    historyCount: 1,
-  },
-  {
-    id: "doc-07",
-    docNumber: "DOC-EIA-FEDMIN-2024",
-    title: "Federal Ministry of Environment EIA Final Certificate",
-    category: "Legal Documents",
-    description: "Environmental Impact Assessment certificate and environmental management plan (EMP) compliance.",
-    version: "v1.0",
-    fileSize: "8.9 MB",
-    fileType: "PDF",
-    uploadedBy: "Barr. Adaeze (Legal Counsel)",
-    uploadedAt: "2024-08-04",
-    flowStage: "Archive",
-    status: "Active",
-    accessLevel: "Company-Wide",
-    department: "Executive & Legal",
-    historyCount: 3,
-  },
-  {
-    id: "doc-08",
-    docNumber: "DOC-COREN-FIRM-2026",
-    title: "COREN Corporate Engineering Practicing License",
-    category: "Company Documents",
-    description: "Council for the Regulation of Engineering in Nigeria valid corporate practice registration.",
-    version: "v2026.1",
-    fileSize: "1.8 MB",
-    fileType: "PDF",
-    uploadedBy: "Engr. Tayo (Site Director)",
-    uploadedAt: "2026-01-05",
-    expiryDate: "2026-12-31",
-    flowStage: "Use",
-    status: "Active",
-    accessLevel: "Company-Wide",
-    department: "Project Engineering",
-    historyCount: 6,
-  },
-];
-
-const INITIAL_APPROVALS: ApprovalItem[] = [
-  {
-    id: "app-01",
-    title: "Rebar Supply PO-2026-092 Pulkit Steels (30 Tons)",
-    type: "Capital Expenditure",
-    amount: 34500000,
-    submittedBy: "Kelechi (Procurement Lead)",
-    submittedDate: "2026-09-24",
-    department: "Procurement & Supply",
-    priority: "Urgent",
-    status: "Pending Review",
-    approvers: [
-      { name: "Kelechi (Procurement)", role: "Originator", signed: true },
-      { name: "Babajide (Chief QS)", role: "Commercial Gate", signed: true },
-      { name: "Snow (Managing Director)", role: "Final Sign-off", signed: false },
-    ],
-    description: "Requires board-level authorization as requisition exceeds N10,000,000 corporate threshold.",
-  },
-  {
-    id: "app-02",
-    title: "Site Instruction SI-014: Basement Pump Sump Relocation",
-    type: "Variation Order",
-    amount: 4200000,
-    submittedBy: "Engr. Tayo (Site Director)",
-    submittedDate: "2026-09-23",
-    department: "Project Engineering",
-    priority: "High",
-    status: "Pending Review",
-    approvers: [
-      { name: "Engr. Tayo", role: "Site Engineer", signed: true },
-      { name: "Babajide (Chief QS)", role: "Cost Verification", signed: false },
-    ],
-    description: "Architectural alignment requested by MEP consultant to avoid high-voltage cable trench.",
-  },
-  {
-    id: "app-03",
-    title: "Interim Payment Certificate IPC-03 (Apex MEP Services)",
-    type: "Subcontractor Claim",
-    amount: 18900000,
-    submittedBy: "Babajide (Chief QS)",
-    submittedDate: "2026-09-22",
-    department: "Commercial & QS",
-    priority: "Normal",
-    status: "Approved",
-    approvers: [
-      { name: "Babajide (Chief QS)", role: "Measurement Certifier", signed: true },
-      { name: "Ngozi (Financial Controller)", role: "Treasury Release", signed: true },
-    ],
-    description: "10% retention withheld (N1.89M) per Subcontract Agreement terms. Net payout N17.01M.",
-  },
-];
-
-const INITIAL_DEPARTMENTS: DepartmentNode[] = [
-  {
-    id: "dept-01",
-    name: "Commercial & Quantity Surveying",
-    code: "CQS",
-    headOfDept: "Babajide (Chief Quantity Surveyor)",
-    staffCount: 6,
-    location: "Head Office / Victoria Island",
-    keyResponsibilities: ["BOQ preparation & measurement", "Rate analysis & cost control", "Subcontractor valuations & IPCs", "Final account closeout"],
-  },
-  {
-    id: "dept-02",
-    name: "Project Engineering & Site Ops",
-    code: "ENG",
-    headOfDept: "Engr. Tayo (Site Director)",
-    staffCount: 18,
-    location: "Horizon Towers Site Office",
-    keyResponsibilities: ["Daily site execution & diary", "Structural QA/QC inspections", "Trade coordination & productivity", "HSE safety enforcement"],
-  },
-  {
-    id: "dept-03",
-    name: "Procurement & Supply Chain",
-    code: "PRC",
-    headOfDept: "Kelechi (Head of Procurement)",
-    staffCount: 5,
-    location: "Central Depot & Head Office",
-    keyResponsibilities: ["3-way match validation", "Vetted vendor prequalification", "Bulk buying & rebates", "Logistics & site delivery dispatch"],
-  },
-  {
-    id: "dept-04",
-    name: "Finance, Treasury & Accounts",
-    code: "FIN",
-    headOfDept: "Ngozi (Financial Controller)",
-    staffCount: 4,
-    location: "Head Office / Victoria Island",
-    keyResponsibilities: ["Disbursement ledger management", "Bank guarantees (APG) & escrow", "Statutory tax & FIRS filings", "Cash flow forecasting"],
-  },
-  {
-    id: "dept-05",
-    name: "Executive & Legal Governance",
-    code: "EXEC",
-    headOfDept: "Snow Ibrahim Imam (Managing Director)",
-    staffCount: 3,
-    location: "Boardroom & Regional Offices",
-    keyResponsibilities: ["Corporate strategy & capital allocation", "Regulatory compliance & licensing", "High-tier client relationships", "Company-wide approvals"],
-  },
-];
-
-const INITIAL_POLICIES: PolicyDocument[] = [
-  {
-    id: "pol-01",
-    code: "POL-PRC-3WAY",
-    title: "Mandatory 3-Way Match & Procurement Gate Policy",
-    category: "Procurement & Commercial",
-    effectiveDate: "2024-02-01",
-    version: "v3.2",
-    reviewCycle: "Annual",
-    complianceRate: 100,
-    summary: "No invoice may be settled by Treasury unless matched against an approved PO and a verified physical Goods Received Note (GRN) stamped by the site storekeeper.",
-  },
-  {
-    id: "pol-02",
-    code: "POL-FIN-CAPEX",
-    title: "Capital Expenditure & Delegation of Financial Authority (DOA)",
-    category: "Financial Controls",
-    effectiveDate: "2024-01-10",
-    version: "v2.0",
-    reviewCycle: "Annual",
-    complianceRate: 98,
-    summary: "Site purchases up to N250,000 require Site Manager signoff; N250K-N2M requires Chief QS; N2M-N10M requires Financial Controller; above N10M requires Managing Director authorization.",
-  },
-  {
-    id: "pol-03",
-    code: "POL-HSE-ZERO",
-    title: "Site Health, Safety & Environmental Zero-Harm Standard",
-    category: "HSE & Site Safety",
-    effectiveDate: "2024-03-15",
-    version: "v4.0",
-    reviewCycle: "Quarterly",
-    complianceRate: 95,
-    summary: "Mandatory daily toolbox briefings, full PPE enforcement, zero toleration for working at heights without certified harnesses and scuffled scaffolding.",
-  },
-  {
-    id: "pol-04",
-    code: "POL-CON-RETENTION",
-    title: "Subcontractor 10% Defect Liability Retention Protocol",
-    category: "Procurement & Commercial",
-    effectiveDate: "2024-06-01",
-    version: "v1.8",
-    reviewCycle: "Bi-Annual",
-    complianceRate: 100,
-    summary: "Standard 10% retention withheld from all interim claims. 50% released at Practical Completion; 50% released following 6-month defects liability inspection.",
-  },
-];
-
-const INITIAL_COMPLIANCE: ComplianceRecord[] = [
-  {
-    id: "comp-01",
-    statutoryBody: "Lagos State Building Control Agency (LASBCA)",
-    permitTitle: "Development Construction Permit #LASBCA/ET/2024/091",
-    certificateNumber: "LAS-2024-0914-ET",
-    status: "Valid & Current",
-    expiryDate: "2027-04-10",
-    daysRemaining: 562,
-    relevance: "Permits structural superstructure erection on Horizon Towers site.",
-  },
-  {
-    id: "comp-02",
-    statutoryBody: "Council for Regulation of Engineering in Nigeria (COREN)",
-    permitTitle: "Corporate Practicing Certificate (Civil & Structural)",
-    certificateNumber: "COREN/FIRM/2026/0881",
-    status: "Valid & Current",
-    expiryDate: "2026-12-31",
-    daysRemaining: 97,
-    relevance: "Mandatory corporate registration for consulting and contracting in Nigeria.",
-  },
-  {
-    id: "comp-03",
-    statutoryBody: "Federal Inland Revenue Service (FIRS)",
-    permitTitle: "Corporate Tax Clearance Certificate (TCC)",
-    certificateNumber: "TCC-FIRS-2026-092284",
-    status: "Valid & Current",
-    expiryDate: "2026-12-31",
-    daysRemaining: 97,
-    relevance: "Required for state and federal tender prequalification and banking credit lines.",
-  },
-  {
-    id: "comp-04",
-    statutoryBody: "Federal Ministry of Environment",
-    permitTitle: "Environmental Impact Assessment (EIA) Approval",
-    certificateNumber: "FMENV/EIA/2024/LKG-011",
-    status: "Valid & Current",
-    expiryDate: "2029-08-01",
-    daysRemaining: 1040,
-    relevance: "Covers coastal drainage, soil stability, and acoustic threshold limits.",
-  },
-  {
-    id: "comp-05",
-    statutoryBody: "Nigeria Social Insurance Trust Fund (NSITF)",
-    permitTitle: "Employees Compensation Scheme Compliance Certificate",
-    certificateNumber: "NSITF-ECS-2026-38291",
-    status: "Expiring Soon",
-    expiryDate: "2026-11-01",
-    daysRemaining: 37,
-    relevance: "Statutory mandatory coverage for all site tradesmen, artisans, and supervisory staff.",
-  },
-];
+const INITIAL_DOCUMENTS: CorporateDocument[] = [];
+const INITIAL_APPROVALS: ApprovalItem[] = [];
+const INITIAL_DEPARTMENTS: DepartmentNode[] = [];
+const INITIAL_POLICIES: PolicyDocument[] = [];
+const INITIAL_COMPLIANCE: ComplianceRecord[] = [];
 
 export function DocumentsAdminView() {
   const { activeRole } = useApp();
@@ -470,6 +132,9 @@ export function DocumentsAdminView() {
   const [showUploadModal, setShowUploadModal] = useState<boolean>(false);
   const [documents, setDocuments] = useState<CorporateDocument[]>(INITIAL_DOCUMENTS);
   const [approvals, setApprovals] = useState<ApprovalItem[]>(INITIAL_APPROVALS);
+  const [departments, setDepartments] = useState<DepartmentNode[]>(INITIAL_DEPARTMENTS);
+  const [policies, setPolicies] = useState<PolicyDocument[]>(INITIAL_POLICIES);
+  const [compliance, setCompliance] = useState<ComplianceRecord[]>(INITIAL_COMPLIANCE);
 
   // New Document Form
   const [newTitle, setNewTitle] = useState("");
@@ -614,9 +279,9 @@ export function DocumentsAdminView() {
         {[
           { id: "documents", label: "Documents & Records Control", icon: FileText, count: documents.length },
           { id: "approvals", label: "Company Approvals Hub", icon: FileCheck2, count: approvals.filter(a => a.status === "Pending Review").length },
-          { id: "structure", label: "Company Structure", icon: Building2 },
-          { id: "policies", label: "Policies & Procedures", icon: BookOpen, count: INITIAL_POLICIES.length },
-          { id: "compliance", label: "Statutory Compliance", icon: ShieldCheck, count: INITIAL_COMPLIANCE.length },
+          { id: "structure", label: "Company Structure", icon: Building2, count: departments.length },
+          { id: "policies", label: "Policies & Procedures", icon: BookOpen, count: policies.length },
+          { id: "compliance", label: "Statutory Compliance", icon: ShieldCheck, count: compliance.length },
         ].map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -709,7 +374,17 @@ export function DocumentsAdminView() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#E5E5DE] dark:divide-white/10 text-xs font-semibold">
-                  {filteredDocuments.map((doc) => {
+                  {filteredDocuments.length === 0 ? (
+                    <tr>
+                      <td colSpan={7} className="py-12 text-center text-sm font-bold text-[#0A2540]/60 dark:text-slate-400">
+                        <FileText className="w-10 h-10 mx-auto mb-2 text-[#0A2540]/30 dark:text-white/20" />
+                        {searchQuery
+                          ? `No matching documents found for "${searchQuery}".`
+                          : "No corporate documents registered yet. Click 'Upload Document' to add a record."}
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredDocuments.map((doc) => {
                     const isSelected = selectedDoc?.id === doc.id;
                     return (
                       <tr
@@ -797,7 +472,8 @@ export function DocumentsAdminView() {
                         </td>
                       </tr>
                     );
-                  })}
+                  })
+                )}
                 </tbody>
               </table>
             </div>
@@ -876,96 +552,103 @@ export function DocumentsAdminView() {
             </p>
           </div>
 
-          <div className="grid gap-4">
-            {approvals.map((app) => (
-              <div
-                key={app.id}
-                className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-6 shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-6"
-              >
-                <div className="space-y-2 max-w-2xl">
-                  <div className="flex flex-wrap items-center gap-2.5">
-                    <span className="px-2.5 py-0.5 rounded-md text-[11px] font-black uppercase bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-white/10 text-[#0A2540] dark:text-slate-300">
-                      {app.type}
-                    </span>
-                    <span className="text-xs font-mono font-bold text-slate-500">
-                      Submitted: {app.submittedDate} by {app.submittedBy}
-                    </span>
-                    <span
-                      className={`px-2 py-0.5 rounded text-[10px] font-black uppercase ${
-                        app.priority === "Urgent"
-                          ? "bg-rose-500 text-white"
-                          : "bg-amber-400 text-[#0A2540]"
-                      }`}
-                    >
-                      {app.priority}
-                    </span>
-                  </div>
-
-                  <h4 className="text-lg font-black text-[#0A2540] dark:text-white">
-                    {app.title}
-                  </h4>
-                  <p className="text-xs text-[#0A2540]/70 dark:text-slate-300">
-                    {app.description}
-                  </p>
-
-                  {/* Multi-tier Approval Chain */}
-                  <div className="pt-2 flex flex-wrap items-center gap-3">
-                    <span className="text-[11px] font-black text-slate-400 uppercase">Approval Chain:</span>
-                    {app.approvers.map((apr, i) => (
-                      <div
-                        key={i}
-                        className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold border ${
-                          apr.signed
-                            ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800"
-                            : "bg-slate-50 dark:bg-slate-800/40 text-slate-500 border-slate-200 dark:border-slate-700"
+          {approvals.length === 0 ? (
+            <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-12 text-center text-sm font-bold text-[#0A2540]/60 dark:text-slate-400">
+              <FileCheck2 className="w-10 h-10 mx-auto mb-2 text-[#0A2540]/30 dark:text-white/20" />
+              No pending approval requests in the governance queue.
+            </div>
+          ) : (
+            <div className="grid gap-4">
+              {approvals.map((app) => (
+                <div
+                  key={app.id}
+                  className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-6 shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-6"
+                >
+                  <div className="space-y-2 max-w-2xl">
+                    <div className="flex flex-wrap items-center gap-2.5">
+                      <span className="px-2.5 py-0.5 rounded-md text-[11px] font-black uppercase bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-white/10 text-[#0A2540] dark:text-slate-300">
+                        {app.type}
+                      </span>
+                      <span className="text-xs font-mono font-bold text-slate-500">
+                        Submitted: {app.submittedDate} by {app.submittedBy}
+                      </span>
+                      <span
+                        className={`px-2 py-0.5 rounded text-[10px] font-black uppercase ${
+                          app.priority === "Urgent"
+                            ? "bg-rose-500 text-white"
+                            : "bg-amber-400 text-[#0A2540]"
                         }`}
                       >
-                        {apr.signed ? (
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                        ) : (
-                          <Clock className="w-3.5 h-3.5 text-amber-500" />
-                        )}
-                        <span>{apr.name} ({apr.role})</span>
+                        {app.priority}
+                      </span>
+                    </div>
+
+                    <h4 className="text-lg font-black text-[#0A2540] dark:text-white">
+                      {app.title}
+                    </h4>
+                    <p className="text-xs text-[#0A2540]/70 dark:text-slate-300">
+                      {app.description}
+                    </p>
+
+                    {/* Multi-tier Approval Chain */}
+                    <div className="pt-2 flex flex-wrap items-center gap-3">
+                      <span className="text-[11px] font-black text-slate-400 uppercase">Approval Chain:</span>
+                      {app.approvers.map((apr, i) => (
+                        <div
+                          key={i}
+                          className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold border ${
+                            apr.signed
+                              ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800"
+                              : "bg-slate-50 dark:bg-slate-800/40 text-slate-500 border-slate-200 dark:border-slate-700"
+                          }`}
+                        >
+                          {apr.signed ? (
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                          ) : (
+                            <Clock className="w-3.5 h-3.5 text-amber-500" />
+                          )}
+                          <span>{apr.name} ({apr.role})</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col items-end gap-3 min-w-[200px]">
+                    {app.amount !== undefined && (
+                      <div className="text-right">
+                        <div className="text-[10px] uppercase font-black text-[#0A2540]/60 dark:text-slate-400">Total Commitment</div>
+                        <div className="text-2xl font-black font-mono text-[#0A2540] dark:text-white">
+                          {formatCurrency(app.amount)}
+                        </div>
                       </div>
-                    ))}
+                    )}
+
+                    {app.status === "Pending Review" ? (
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => handleReject(app.id)}
+                          className="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 dark:bg-rose-950/30 dark:hover:bg-rose-900/40 border border-rose-300 dark:border-rose-800 rounded-xl text-xs font-black cursor-pointer"
+                        >
+                          Reject / Revise
+                        </button>
+                        <button
+                          onClick={() => handleApprove(app.id)}
+                          className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-sm flex items-center gap-1.5 cursor-pointer"
+                        >
+                          <Check className="w-4 h-4" />
+                          <span>Authorize &amp; Sign</span>
+                        </button>
+                      </div>
+                    ) : (
+                      <span className="px-3 py-1.5 rounded-xl text-xs font-black uppercase bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+                        Status: {app.status}
+                      </span>
+                    )}
                   </div>
                 </div>
-
-                <div className="flex flex-col items-end gap-3 min-w-[200px]">
-                  {app.amount !== undefined && (
-                    <div className="text-right">
-                      <div className="text-[10px] uppercase font-black text-[#0A2540]/60 dark:text-slate-400">Total Commitment</div>
-                      <div className="text-2xl font-black font-mono text-[#0A2540] dark:text-white">
-                        {formatCurrency(app.amount)}
-                      </div>
-                    </div>
-                  )}
-
-                  {app.status === "Pending Review" ? (
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => handleReject(app.id)}
-                        className="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 dark:bg-rose-950/30 dark:hover:bg-rose-900/40 border border-rose-300 dark:border-rose-800 rounded-xl text-xs font-black cursor-pointer"
-                      >
-                        Reject / Revise
-                      </button>
-                      <button
-                        onClick={() => handleApprove(app.id)}
-                        className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-sm flex items-center gap-1.5 cursor-pointer"
-                      >
-                        <Check className="w-4 h-4" />
-                        <span>Authorize &amp; Sign</span>
-                      </button>
-                    </div>
-                  ) : (
-                    <span className="px-3 py-1.5 rounded-xl text-xs font-black uppercase bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
-                      Status: {app.status}
-                    </span>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
@@ -982,45 +665,52 @@ export function DocumentsAdminView() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {INITIAL_DEPARTMENTS.map((dept) => (
-              <div
-                key={dept.id}
-                className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-6 shadow-xs space-y-4 hover:border-[#0A2540]/40 transition-all"
-              >
-                <div className="flex items-center justify-between pb-3 border-b border-[#E5E5DE] dark:border-white/10">
-                  <span className="px-2.5 py-0.5 rounded text-xs font-mono font-black bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-white/10 text-[#0A2540] dark:text-slate-300">
-                    Dept: {dept.code}
-                  </span>
-                  <span className="text-xs font-bold text-slate-500 flex items-center gap-1">
-                    <Users className="w-3.5 h-3.5" /> {dept.staffCount} Staff
-                  </span>
-                </div>
+          {departments.length === 0 ? (
+            <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-12 text-center text-sm font-bold text-[#0A2540]/60 dark:text-slate-400">
+              <Building2 className="w-10 h-10 mx-auto mb-2 text-[#0A2540]/30 dark:text-white/20" />
+              No departmental operational units configured yet.
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {departments.map((dept) => (
+                <div
+                  key={dept.id}
+                  className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-6 shadow-xs space-y-4 hover:border-[#0A2540]/40 transition-all"
+                >
+                  <div className="flex items-center justify-between pb-3 border-b border-[#E5E5DE] dark:border-white/10">
+                    <span className="px-2.5 py-0.5 rounded text-xs font-mono font-black bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-white/10 text-[#0A2540] dark:text-slate-300">
+                      Dept: {dept.code}
+                    </span>
+                    <span className="text-xs font-bold text-slate-500 flex items-center gap-1">
+                      <Users className="w-3.5 h-3.5" /> {dept.staffCount} Staff
+                    </span>
+                  </div>
 
-                <div>
-                  <h4 className="text-lg font-black text-[#0A2540] dark:text-white">
-                    {dept.name}
-                  </h4>
-                  <p className="text-xs font-bold text-amber-600 dark:text-amber-400 mt-1">
-                    HOD: {dept.headOfDept}
-                  </p>
-                  <p className="text-[11px] text-slate-400 mt-0.5">
-                    Location: {dept.location}
-                  </p>
-                </div>
+                  <div>
+                    <h4 className="text-lg font-black text-[#0A2540] dark:text-white">
+                      {dept.name}
+                    </h4>
+                    <p className="text-xs font-bold text-amber-600 dark:text-amber-400 mt-1">
+                      HOD: {dept.headOfDept}
+                    </p>
+                    <p className="text-[11px] text-slate-400 mt-0.5">
+                      Location: {dept.location}
+                    </p>
+                  </div>
 
-                <div className="pt-2 border-t border-[#E5E5DE] dark:border-white/10 space-y-1.5">
-                  <div className="text-[10px] font-black uppercase text-slate-400">Core Functions</div>
-                  {dept.keyResponsibilities.map((resp, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-xs text-[#0A2540]/80 dark:text-slate-300">
-                      <ChevronRight className="w-3 h-3 text-amber-500 shrink-0" />
-                      <span>{resp}</span>
-                    </div>
-                  ))}
+                  <div className="pt-2 border-t border-[#E5E5DE] dark:border-white/10 space-y-1.5">
+                    <div className="text-[10px] font-black uppercase text-slate-400">Core Functions</div>
+                    {dept.keyResponsibilities.map((resp, idx) => (
+                      <div key={idx} className="flex items-center gap-2 text-xs text-[#0A2540]/80 dark:text-slate-300">
+                        <ChevronRight className="w-3 h-3 text-amber-500 shrink-0" />
+                        <span>{resp}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
@@ -1037,40 +727,47 @@ export function DocumentsAdminView() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {INITIAL_POLICIES.map((pol) => (
-              <div
-                key={pol.id}
-                className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-6 shadow-xs space-y-4"
-              >
-                <div className="flex items-center justify-between pb-3 border-b border-[#E5E5DE] dark:border-white/10">
-                  <span className="font-mono text-xs font-bold text-slate-500">
-                    {pol.code} · {pol.version}
-                  </span>
-                  <span className="px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300">
-                    {pol.complianceRate}% Compliance
-                  </span>
-                </div>
-
-                <div>
-                  <div className="text-[10px] font-black uppercase text-amber-600 dark:text-amber-400">
-                    {pol.category}
+          {policies.length === 0 ? (
+            <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-12 text-center text-sm font-bold text-[#0A2540]/60 dark:text-slate-400">
+              <BookOpen className="w-10 h-10 mx-auto mb-2 text-[#0A2540]/30 dark:text-white/20" />
+              No standard operating procedures published yet.
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 gap-6">
+              {policies.map((pol) => (
+                <div
+                  key={pol.id}
+                  className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-6 shadow-xs space-y-4"
+                >
+                  <div className="flex items-center justify-between pb-3 border-b border-[#E5E5DE] dark:border-white/10">
+                    <span className="font-mono text-xs font-bold text-slate-500">
+                      {pol.code} · {pol.version}
+                    </span>
+                    <span className="px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300">
+                      {pol.complianceRate}% Compliance
+                    </span>
                   </div>
-                  <h4 className="text-lg font-black text-[#0A2540] dark:text-white mt-0.5">
-                    {pol.title}
-                  </h4>
-                  <p className="text-xs text-[#0A2540]/80 dark:text-slate-300 mt-2 leading-relaxed">
-                    {pol.summary}
-                  </p>
-                </div>
 
-                <div className="pt-3 border-t border-[#E5E5DE] dark:border-white/10 flex items-center justify-between text-xs text-slate-400 font-semibold">
-                  <span>Review Cycle: {pol.reviewCycle}</span>
-                  <span>Effective: {pol.effectiveDate}</span>
+                  <div>
+                    <div className="text-[10px] font-black uppercase text-amber-600 dark:text-amber-400">
+                      {pol.category}
+                    </div>
+                    <h4 className="text-lg font-black text-[#0A2540] dark:text-white mt-0.5">
+                      {pol.title}
+                    </h4>
+                    <p className="text-xs text-[#0A2540]/80 dark:text-slate-300 mt-2 leading-relaxed">
+                      {pol.summary}
+                    </p>
+                  </div>
+
+                  <div className="pt-3 border-t border-[#E5E5DE] dark:border-white/10 flex items-center justify-between text-xs text-slate-400 font-semibold">
+                    <span>Review Cycle: {pol.reviewCycle}</span>
+                    <span>Effective: {pol.effectiveDate}</span>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
@@ -1087,51 +784,58 @@ export function DocumentsAdminView() {
             </p>
           </div>
 
-          <div className="grid gap-4">
-            {INITIAL_COMPLIANCE.map((comp) => (
-              <div
-                key={comp.id}
-                className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4"
-              >
-                <div className="space-y-1.5 max-w-2xl">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-black text-amber-600 dark:text-amber-400 uppercase">
-                      {comp.statutoryBody}
+          {compliance.length === 0 ? (
+            <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-12 text-center text-sm font-bold text-[#0A2540]/60 dark:text-slate-400">
+              <ShieldCheck className="w-10 h-10 mx-auto mb-2 text-[#0A2540]/30 dark:text-white/20" />
+              No statutory compliance records registered yet.
+            </div>
+          ) : (
+            <div className="grid gap-4">
+              {compliance.map((comp) => (
+                <div
+                  key={comp.id}
+                  className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4"
+                >
+                  <div className="space-y-1.5 max-w-2xl">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-black text-amber-600 dark:text-amber-400 uppercase">
+                        {comp.statutoryBody}
+                      </span>
+                      <span className="text-slate-400 font-mono text-xs">· Cert #{comp.certificateNumber}</span>
+                    </div>
+                    <h4 className="text-base font-black text-[#0A2540] dark:text-white">
+                      {comp.permitTitle}
+                    </h4>
+                    <p className="text-xs text-[#0A2540]/70 dark:text-slate-300">
+                      {comp.relevance}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-4">
+                    <div className="text-right">
+                      <div className="text-[10px] font-black uppercase text-slate-400">Validity Expiry</div>
+                      <div className="text-sm font-black font-mono text-[#0A2540] dark:text-white">
+                        {comp.expiryDate}
+                      </div>
+                      <div className="text-xs font-bold text-slate-500 mt-0.5">
+                        {comp.daysRemaining} days remaining
+                      </div>
+                    </div>
+
+                    <span
+                      className={`px-3 py-1.5 rounded-xl text-xs font-black uppercase border ${
+                        comp.status === "Valid & Current"
+                          ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800"
+                          : "bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-800"
+                      }`}
+                    >
+                      {comp.status}
                     </span>
-                    <span className="text-slate-400 font-mono text-xs">· Cert #{comp.certificateNumber}</span>
                   </div>
-                  <h4 className="text-base font-black text-[#0A2540] dark:text-white">
-                    {comp.permitTitle}
-                  </h4>
-                  <p className="text-xs text-[#0A2540]/70 dark:text-slate-300">
-                    {comp.relevance}
-                  </p>
                 </div>
-
-                <div className="flex items-center gap-4">
-                  <div className="text-right">
-                    <div className="text-[10px] font-black uppercase text-slate-400">Validity Expiry</div>
-                    <div className="text-sm font-black font-mono text-[#0A2540] dark:text-white">
-                      {comp.expiryDate}
-                    </div>
-                    <div className="text-xs font-bold text-slate-500 mt-0.5">
-                      {comp.daysRemaining} days remaining
-                    </div>
-                  </div>
-
-                  <span
-                    className={`px-3 py-1.5 rounded-xl text-xs font-black uppercase border ${
-                      comp.status === "Valid & Current"
-                        ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800"
-                        : "bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-800"
-                    }`}
-                  >
-                    {comp.status}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 

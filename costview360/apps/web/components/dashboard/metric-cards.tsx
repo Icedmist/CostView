@@ -22,7 +22,7 @@ export function MetricCards({ approvedBudget, committedCost, actualCost }: Metri
       {/* Approved Budget */}
       <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-6 shadow-sm hover:border-[#0A2540] dark:hover:border-amber-400 transition-all min-h-[160px] flex flex-col justify-between">
         <div className="flex items-start justify-between gap-3">
-          <span className="text-xs font-black uppercase tracking-wider text-[#0A2540]/70 dark:text-slate-300">
+          <span className="text-sm font-black uppercase tracking-wider text-[#0A2540]/80 dark:text-slate-200">
             Approved Budget
           </span>
           <div className="w-11 h-11 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-white/10 text-[#0A2540] dark:text-amber-400 flex items-center justify-center shrink-0 shadow-xs">
@@ -32,9 +32,9 @@ export function MetricCards({ approvedBudget, committedCost, actualCost }: Metri
         <div className="mt-4 text-3xl md:text-4xl font-black font-mono tracking-tight text-[#0A2540] dark:text-white">
           {formatCurrency(approvedBudget, currency)}
         </div>
-        <div className="mt-4 flex items-center gap-2 text-xs font-bold">
-          <span className="bg-[#0A2540] dark:bg-amber-400 text-white dark:text-[#0A2540] px-2.5 py-0.5 rounded-md">100% Baseline</span>
-          <span className="text-[#0A2540]/60 dark:text-slate-400 font-semibold">· Contractual BOQ</span>
+        <div className="mt-4 flex items-center gap-2 text-sm font-bold">
+          <span className="bg-[#0A2540] dark:bg-amber-400 text-white dark:text-[#0A1931] px-2.5 py-0.5 rounded-md">100% Baseline</span>
+          <span className="text-[#0A2540]/70 dark:text-slate-300 font-semibold">· Contractual BOQ</span>
         </div>
         <div className="mt-3.5 h-2.5 w-full bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-white/10 rounded-full overflow-hidden">
           <div className="h-full bg-[#0A2540] dark:bg-amber-400 rounded-full" style={{ width: "100%" }} />
@@ -44,7 +44,7 @@ export function MetricCards({ approvedBudget, committedCost, actualCost }: Metri
       {/* Committed Spend */}
       <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-6 shadow-sm hover:border-[#0A2540] dark:hover:border-amber-400 transition-all min-h-[160px] flex flex-col justify-between">
         <div className="flex items-start justify-between gap-3">
-          <span className="text-xs font-black uppercase tracking-wider text-[#0A2540]/70 dark:text-slate-300">
+          <span className="text-sm font-black uppercase tracking-wider text-[#0A2540]/80 dark:text-slate-200">
             Committed (POs)
           </span>
           <div className="w-11 h-11 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-white/10 text-[#0A2540] dark:text-amber-400 flex items-center justify-center shrink-0 shadow-xs">
@@ -54,11 +54,11 @@ export function MetricCards({ approvedBudget, committedCost, actualCost }: Metri
         <div className="mt-4 text-3xl md:text-4xl font-black font-mono tracking-tight text-[#0A2540] dark:text-white">
           {formatCurrency(committedCost, currency)}
         </div>
-        <div className="mt-4 flex items-center gap-2 text-xs font-bold">
+        <div className="mt-4 flex items-center gap-2 text-sm font-bold">
           <span className="bg-[#0A2540]/10 dark:bg-amber-400/20 text-[#0A2540] dark:text-amber-300 border border-[#0A2540]/30 dark:border-amber-400/30 px-2.5 py-0.5 rounded-md">
             {committedPercentage}%
           </span>
-          <span className="text-[#0A2540]/60 dark:text-slate-400 font-semibold">of baseline committed</span>
+          <span className="text-[#0A2540]/70 dark:text-slate-300 font-semibold">of baseline committed</span>
         </div>
         <div className="mt-3.5 h-2.5 w-full bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-white/10 rounded-full overflow-hidden">
           <div
@@ -71,7 +71,7 @@ export function MetricCards({ approvedBudget, committedCost, actualCost }: Metri
       {/* Actual Spend */}
       <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-6 shadow-sm hover:border-[#0A2540] dark:hover:border-amber-400 transition-all min-h-[160px] flex flex-col justify-between">
         <div className="flex items-start justify-between gap-3">
-          <span className="text-xs font-black uppercase tracking-wider text-[#0A2540]/70 dark:text-slate-300">
+          <span className="text-sm font-black uppercase tracking-wider text-[#0A2540]/80 dark:text-slate-200">
             Actual Certified
           </span>
           <div className="w-11 h-11 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-white/10 text-[#0A2540] dark:text-amber-400 flex items-center justify-center shrink-0 shadow-xs">
@@ -81,11 +81,11 @@ export function MetricCards({ approvedBudget, committedCost, actualCost }: Metri
         <div className="mt-4 text-3xl md:text-4xl font-black font-mono tracking-tight text-[#0A2540] dark:text-white">
           {formatCurrency(actualCost, currency)}
         </div>
-        <div className="mt-4 flex items-center gap-2 text-xs font-bold">
+        <div className="mt-4 flex items-center gap-2 text-sm font-bold">
           <span className="bg-[#0A2540]/10 dark:bg-amber-400/20 text-[#0A2540] dark:text-amber-300 border border-[#0A2540]/30 dark:border-amber-400/30 px-2.5 py-0.5 rounded-md">
             {actualPercentage}%
           </span>
-          <span className="text-[#0A2540]/60 dark:text-slate-400 font-semibold">disbursed &amp; certified</span>
+          <span className="text-[#0A2540]/70 dark:text-slate-300 font-semibold">disbursed &amp; certified</span>
         </div>
         <div className="mt-3.5 h-2.5 w-full bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-white/10 rounded-full overflow-hidden">
           <div
@@ -98,7 +98,7 @@ export function MetricCards({ approvedBudget, committedCost, actualCost }: Metri
       {/* Remaining Contingency */}
       <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-6 shadow-sm hover:border-[#0A2540] dark:hover:border-amber-400 transition-all min-h-[160px] flex flex-col justify-between">
         <div className="flex items-start justify-between gap-3">
-          <span className="text-xs font-black uppercase tracking-wider text-[#0A2540]/70 dark:text-slate-300">
+          <span className="text-sm font-black uppercase tracking-wider text-[#0A2540]/80 dark:text-slate-200">
             Uncommitted Balance
           </span>
           <div
@@ -118,17 +118,17 @@ export function MetricCards({ approvedBudget, committedCost, actualCost }: Metri
         >
           {formatCurrency(uncommittedBalance, currency)}
         </div>
-        <div className="mt-4 flex items-center gap-2 text-xs font-bold">
+        <div className="mt-4 flex items-center gap-2 text-sm font-bold">
           <span
             className={`px-2.5 py-0.5 rounded-md ${
               uncommittedBalance >= 0
-                ? "bg-[#0A2540] dark:bg-emerald-500 text-white dark:text-[#0A2540]"
+                ? "bg-[#0A2540] dark:bg-emerald-500 text-white dark:text-[#0A1931]"
                 : "bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-800"
             }`}
           >
             {uncommittedBalance >= 0 ? "Under Cap" : "Cap Exceeded"}
           </span>
-          <span className="text-[#0A2540]/60 dark:text-slate-400 font-semibold">remaining cushion</span>
+          <span className="text-[#0A2540]/70 dark:text-slate-300 font-semibold">remaining cushion</span>
         </div>
         <div className="mt-3.5 h-2.5 w-full bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-white/10 rounded-full overflow-hidden">
           <div

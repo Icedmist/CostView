@@ -48,112 +48,11 @@ export interface AssetRecord {
   nextServiceHours: number;
 }
 
-const INITIAL_ASSETS: AssetRecord[] = [
-  {
-    id: "ast-01",
-    code: "PL-CAT-320",
-    name: "Caterpillar 320D Hydraulic Crawler Excavator",
-    category: "Earthmoving",
-    serialNumber: "CAT320D-NG-88912",
-    acquisitionDate: "2024-03-15",
-    acquisitionCost: 185000000,
-    salvageValue: 25000000,
-    usefulLifeYears: 7,
-    depreciationMethod: "Straight-Line",
-    currentHours: 3420,
-    fuelRatePerHourLtrs: 22,
-    allocatedProject: "Horizon Commercial Towers",
-    allocatedSection: "Basement Excavation & Shoring",
-    custodian: "Engr. Tayo (Site Engineer)",
-    status: "Active",
-    lastServicedDate: "2026-08-10",
-    nextServiceHours: 3600,
-  },
-  {
-    id: "ast-02",
-    code: "PL-PERK-150",
-    name: "Perkins 150kVA Heavy-Duty Soundproof Generator",
-    category: "Power Generation",
-    serialNumber: "PK150-LKG-4410",
-    acquisitionDate: "2024-06-01",
-    acquisitionCost: 38500000,
-    salvageValue: 5000000,
-    usefulLifeYears: 5,
-    depreciationMethod: "Straight-Line",
-    currentHours: 4890,
-    fuelRatePerHourLtrs: 18,
-    allocatedProject: "Horizon Commercial Towers",
-    allocatedSection: "Primary Site Workstation Power",
-    custodian: "Musa Storekeeper",
-    status: "Active",
-    lastServicedDate: "2026-09-02",
-    nextServiceHours: 5000,
-  },
-  {
-    id: "ast-03",
-    code: "PL-WING-500",
-    name: "Winget 500L Reversing Drum Concrete Mixer",
-    category: "Concrete & Batching",
-    serialNumber: "WG500-REV-0912",
-    acquisitionDate: "2025-01-10",
-    acquisitionCost: 19800000,
-    salvageValue: 2000000,
-    usefulLifeYears: 5,
-    depreciationMethod: "Straight-Line",
-    currentHours: 1840,
-    fuelRatePerHourLtrs: 8,
-    allocatedProject: "Horizon Commercial Towers",
-    allocatedSection: "Ground Floor Slab & Columns",
-    custodian: "Engr. Tayo (Site Engineer)",
-    status: "Active",
-    lastServicedDate: "2026-07-28",
-    nextServiceHours: 2000,
-  },
-  {
-    id: "ast-04",
-    code: "PL-MACK-01",
-    name: "Mack Granite 20-Tonne Tipper Dump Truck",
-    category: "Haulage & Transport",
-    serialNumber: "MK-GRAN-20T-004",
-    acquisitionDate: "2023-11-20",
-    acquisitionCost: 54000000,
-    salvageValue: 8000000,
-    usefulLifeYears: 6,
-    depreciationMethod: "Straight-Line",
-    currentHours: 6100,
-    fuelRatePerHourLtrs: 28,
-    allocatedProject: "Horizon Commercial Towers",
-    allocatedSection: "Granite Aggregate Haulage",
-    custodian: "Chidi Procurement",
-    status: "Maintenance",
-    lastServicedDate: "2026-09-18",
-    nextServiceHours: 6200,
-  },
-  {
-    id: "ast-05",
-    code: "PL-LEICA-01",
-    name: "Leica FlexLine TS07 Total Station Survey Kit",
-    category: "Survey & Testing",
-    serialNumber: "LCA-TS07-9921",
-    acquisitionDate: "2025-04-12",
-    acquisitionCost: 12500000,
-    salvageValue: 1500000,
-    usefulLifeYears: 4,
-    depreciationMethod: "Straight-Line",
-    currentHours: 720,
-    fuelRatePerHourLtrs: 0,
-    allocatedProject: "Horizon Commercial Towers",
-    allocatedSection: "Superstructure Grid & Plumb Alignment",
-    custodian: "Mrs. Nkechi (QS)",
-    status: "Active",
-    lastServicedDate: "2026-06-15",
-    nextServiceHours: 1200,
-  },
-];
+const INITIAL_ASSETS: AssetRecord[] = [];
 
 export function AssetManagementView() {
-  const { currency, activeRole } = useApp();
-  const [assets, setAssets] = useState<AssetRecord[]>(INITIAL_ASSETS);
+  const { currency, activeRole, currentProject } = useApp();
+  const [assets, setAssets] = useState<AssetRecord[]>([]);
   const [activeTab, setActiveTab] = useState<"fleet" | "depreciation" | "maintenance" | "calculator">("fleet");
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string>("All");
@@ -282,7 +181,7 @@ export function AssetManagementView() {
       depreciationMethod: formMethod,
       currentHours: 0,
       fuelRatePerHourLtrs: 15,
-      allocatedProject: "Horizon Commercial Towers",
+      allocatedProject: currentProject?.name || "Active Project",
       allocatedSection: formSection || "General Site Allocation",
       custodian: activeRole,
       status: "Active",
@@ -470,7 +369,13 @@ export function AssetManagementView() {
 
           {/* Asset Cards */}
           <div className="grid md:grid-cols-2 gap-4">
-            {filteredAssets.map((ast) => {
+            {filteredAssets.length === 0 ? (
+              <div className="col-span-full bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-12 text-center text-sm font-bold text-[#0A2540]/60 dark:text-slate-400">
+                <Truck className="w-10 h-10 mx-auto mb-2 text-[#0A2540]/30 dark:text-white/20" />
+                {searchQuery ? `No assets matching "${searchQuery}".` : "No plant or heavy equipment assets registered yet."}
+              </div>
+            ) : (
+              filteredAssets.map((ast) => {
               const dep = calculateDepreciation(ast);
               const isMaintenance = ast.status === "Maintenance";
 
@@ -547,7 +452,8 @@ export function AssetManagementView() {
                   </div>
                 </div>
               );
-            })}
+            })
+          )}
           </div>
         </div>
       )}
@@ -587,7 +493,14 @@ export function AssetManagementView() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#E5E5DE] dark:divide-white/10 font-bold text-slate-800 dark:text-slate-200">
-                {assets.map((ast) => {
+                {assets.length === 0 ? (
+                  <tr>
+                    <td colSpan={9} className="p-8 text-center text-sm font-bold text-[#0A2540]/60 dark:text-slate-400">
+                      No asset depreciation schedules recorded.
+                    </td>
+                  </tr>
+                ) : (
+                  assets.map((ast) => {
                   const dep = calculateDepreciation(ast);
                   const remainingMonths = Math.max(0, ast.usefulLifeYears * 12 - dep.monthsElapsed);
 
@@ -623,7 +536,8 @@ export function AssetManagementView() {
                       </td>
                     </tr>
                   );
-                })}
+                })
+              )}
               </tbody>
             </table>
           </div>
@@ -645,7 +559,13 @@ export function AssetManagementView() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-4">
-            {assets.map((ast) => {
+            {assets.length === 0 ? (
+              <div className="col-span-full bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-12 text-center text-sm font-bold text-[#0A2540]/60 dark:text-slate-400">
+                <Wrench className="w-10 h-10 mx-auto mb-2 text-[#0A2540]/30 dark:text-white/20" />
+                No active equipment requiring maintenance schedules.
+              </div>
+            ) : (
+              assets.map((ast) => {
               const hoursUntilService = ast.nextServiceHours - ast.currentHours;
               const isUrgent = hoursUntilService <= 150;
 
@@ -700,7 +620,8 @@ export function AssetManagementView() {
                   </div>
                 </div>
               );
-            })}
+            })
+          )}
           </div>
         </div>
       )}

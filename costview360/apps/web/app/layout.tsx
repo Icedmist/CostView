@@ -2,7 +2,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 
 export const metadata = {
-  title: "CostView — Construction Cost Intelligence",
+  title: "CostView",
   description: "Unified system of record for budget, procurement, site progress, and project margins.",
   icons: {
     icon: [

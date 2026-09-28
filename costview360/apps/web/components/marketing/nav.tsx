@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Logo } from "@/components/brand/logo";
 import { ArrowUpRight, Menu, X, LogOut, User } from "lucide-react";
-import { ThemeSwitcher } from "@/components/theme/theme-switcher";
 
 export function MarketingNav() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -86,8 +85,6 @@ export function MarketingNav() {
           </Link>
         </div>
         <div className="hidden sm:flex items-center gap-3">
-          {/* Theme Switcher */}
-          <ThemeSwitcher />
 
           {loading ? (
             <div className="w-28 h-11 bg-slate-200/60 dark:bg-slate-800 rounded-xl animate-pulse" />
@@ -131,7 +128,6 @@ export function MarketingNav() {
           )}
         </div>
         <div className="flex sm:hidden items-center gap-2">
-          <ThemeSwitcher />
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="w-11 h-11 border-2 border-[#E5E5DE] dark:border-[#1E3A5F] bg-white dark:bg-[#0A1931] rounded-xl flex items-center justify-center text-[#0A2540] dark:text-white hover:bg-[#FAF9F5] dark:hover:bg-[#0F2137] transition-colors cursor-pointer shadow-xs"

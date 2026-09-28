@@ -99,7 +99,7 @@ export function MobileBottomNav({
               </div>
 
               <span
-                className={`text-[10px] mt-0.5 tracking-tight truncate max-w-[54px] ${
+                className={`text-xs mt-0.5 tracking-tight truncate max-w-[60px] ${
                   isActive ? "font-black text-[#0A2540]" : "font-bold text-[#0A2540]/70"
                 }`}
               >
@@ -125,7 +125,7 @@ export function MobileBottomNav({
             }`}
           />
           <span
-            className={`text-[10px] mt-0.5 tracking-tight truncate max-w-[54px] ${
+            className={`text-xs mt-0.5 tracking-tight truncate max-w-[60px] ${
               isMenuOpen ? "font-black text-white" : "font-bold text-[#0A2540]/70"
             }`}
           >
