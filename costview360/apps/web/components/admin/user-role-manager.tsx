@@ -8,6 +8,7 @@ import {
   loadRuntimePermissions,
   type PermissionKey,
 } from "@/lib/auth/permissions";
+import { useApp } from "@/app/providers";
 import {
   UserPlus,
   Shield,
@@ -88,6 +89,7 @@ export function UserRoleManager({
       setActiveTab(initialTab);
     }
   }, [initialTab]);
+  const { currentProject } = useApp();
   const [users, setUsers] = useState<UserRecord[]>([]);
   const [matrix, setMatrix] = useState<Record<RoleName, Record<PermissionKey, boolean>>>(getFullMatrix());
   const [searchQuery, setSearchQuery] = useState("");
@@ -104,11 +106,11 @@ export function UserRoleManager({
   const [formRole, setFormRole] = useState<RoleName>("Site Engineer");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Fetch Users & Roles
+  // Fetch Users & Roles tied strictly to this project
   const fetchUsers = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/admin/users");
+      const res = await fetch(`/api/admin/users?projectId=${currentProject.id}`);
       const data = await res.json();
       if (data.users) {
         setUsers(data.users);
@@ -126,7 +128,7 @@ export function UserRoleManager({
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [currentProject.id]);
 
   const showNotification = (message: string, type: "success" | "error" = "success") => {
     setNotification({ message, type });
@@ -211,6 +213,7 @@ export function UserRoleManager({
           password: formPassword,
           phone: formPhone,
           role: formRole,
+          projectId: currentProject.id,
         }),
       });
       const data = await res.json();
@@ -277,15 +280,20 @@ export function UserRoleManager({
       <div className="bg-[#0A2540] rounded-2xl p-6 md:p-8 text-white shadow-xl relative overflow-hidden">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 px-3.5 py-1.5 rounded-full text-xs font-bold text-white mb-3 backdrop-blur-md">
-              <ShieldCheck className="w-4 h-4 text-white" />
-              <span>Enterprise RBAC &amp; Identity Engine</span>
+            <div className="flex flex-wrap items-center gap-2 mb-3">
+              <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 px-3.5 py-1.5 rounded-full text-xs font-bold text-white backdrop-blur-md">
+                <ShieldCheck className="w-4 h-4 text-white" />
+                <span>Enterprise RBAC</span>
+              </div>
+              <div className="inline-flex items-center gap-1.5 bg-[#FFD23F] text-[#0A1931] px-3 py-1.5 rounded-full text-xs font-black uppercase tracking-wider">
+                <span>Project: {currentProject.name}</span>
+              </div>
             </div>
             <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">
-              User &amp; Role Management Hub
+              Project Team &amp; Role Management
             </h1>
             <p className="text-slate-200 text-sm mt-2 max-w-2xl leading-relaxed">
-              Create and provision workspace users, adjust role assignments with instant effect, and customize the module-by-module permission matrix.
+              Manage users explicitly assigned to <strong>{currentProject.name}</strong>, assign project roles, and configure runtime permission gates.
             </p>
           </div>
 
@@ -360,7 +368,9 @@ export function UserRoleManager({
                 {filteredUsers.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="py-12 text-center text-slate-500 font-medium">
-                      No users found matching your search.
+                      {searchQuery
+                        ? `No users found matching "${searchQuery}".`
+                        : "No users assigned to this project yet. Click '+ Create New User' to provision a project member."}
                     </td>
                   </tr>
                 ) : (

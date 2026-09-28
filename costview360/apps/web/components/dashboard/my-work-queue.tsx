@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useApp } from "@/app/providers";
+import { useAppData } from "@/lib/store/app-data";
+import { formatCurrency } from "@/lib/utils";
 import type { RoleName } from "@/lib/supabase/database.types";
 import {
   AlertTriangle,
@@ -34,287 +36,44 @@ interface ActionTask {
   actionText: string;
 }
 
-const ACTION_TASKS: ActionTask[] = [
-  // --- QUANTITY SURVEYOR ---
-  {
-    id: "qs-1",
-    role: "Quantity Surveyor",
-    priority: "Critical",
-    flow: "Cost Plan",
-    subSection: "risks",
-    code: "BOQ 02-310",
-    title: "High Tensile Steel Rebars (16mm) Variance Alert",
-    description: "Committed cost exceeds baseline BOQ allocation by ₦1,840,000 due to mill price escalation.",
-    value: "+₦1.84M Variance",
-    actionText: "Resolve BOQ Risk in Cost Plan",
-  },
-  {
-    id: "qs-2",
-    role: "Quantity Surveyor",
-    priority: "High",
-    flow: "Cost Plan",
-    subSection: "revisions",
-    code: "REV-2026-04",
-    title: "Ready-Mix Concrete Grade C30/37 Rate Revision",
-    description: "Supplier quote delta of +20% requested by Lafarge Africa Plc. Needs QS sign-off.",
-    value: "₦138,000 / m³",
-    actionText: "Review Rate Delta",
-  },
-  {
-    id: "qs-3",
-    role: "Quantity Surveyor",
-    priority: "Medium",
-    flow: "Contracts",
-    subSection: "claims",
-    code: "VAL-SUB-03",
-    title: "Interim Valuation for MEP Electrical First-Fix",
-    description: "Subcontractor submitted interim valuation claim #03 for ₦14,200,000; QS assessment recommended at ₦12,800,000.",
-    value: "₦12.8M Assessed",
-    actionText: "Certify Valuation",
-  },
-
-  // --- PROCUREMENT OFFICER ---
-  {
-    id: "proc-1",
-    role: "Procurement Officer",
-    priority: "Critical",
-    flow: "Buy & Supply",
-    subSection: "match",
-    code: "3WM-088",
-    title: "3-Way Match Gate Discrepancy on Dangote Cement",
-    description: "Invoice #9914 (600 bags @ ₦9,850) differs from approved PO #2026-088 unit rate (₦9,500). Payment gate blocked.",
-    value: "₦210,000 Discrepancy",
-    actionText: "Resolve 3-Way Match Gate",
-  },
-  {
-    id: "proc-2",
-    role: "Procurement Officer",
-    priority: "High",
-    flow: "Buy & Supply",
-    subSection: "requisitions",
-    code: "REQ-042",
-    title: "Material Requisition: Hardwood 2x4 Timber Formwork",
-    description: "Site requisition submitted by Site Engineer. Awaiting creation of RFQ to vetted lumber suppliers.",
-    value: "250 Lengths",
-    actionText: "Open RFQ in Buy & Supply",
-  },
-  {
-    id: "proc-3",
-    role: "Procurement Officer",
-    priority: "Medium",
-    flow: "Buy & Supply",
-    subSection: "stock",
-    code: "GRN-019",
-    title: "Goods Received Note: BRC Mesh A142 Delivery Confirmation",
-    description: "Delivery truck arrived at site gate. Physical stock tally and store receipt acknowledgment pending.",
-    value: "50 Rolls Received",
-    actionText: "Acknowledge Stock Receipt",
-  },
-
-  // --- ACCOUNTANT ---
-  {
-    id: "acct-1",
-    role: "Accountant",
-    priority: "Critical",
-    flow: "Buy & Supply",
-    subSection: "invoices",
-    code: "INV-4102",
-    title: "Berger Paints Nigeria Plc Approved Invoice Clearance",
-    description: "3-way matched and certified by QS. Due for release from project disbursement account.",
-    value: "₦3,450,000 Due",
-    actionText: "Clear Invoice in Buy & Supply",
-  },
-  {
-    id: "acct-2",
-    role: "Accountant",
-    priority: "High",
-    flow: "Buy & Supply",
-    subSection: "payments",
-    code: "DISB-051",
-    title: "Foundation Piling Interim Certificate #02",
-    description: "Certified interim amount of ₦8,900,000 with 5% contractual retention (₦445,000) withheld.",
-    value: "₦8,455,000 Net Payout",
-    actionText: "Record Payout in Ledger",
-  },
-  {
-    id: "acct-3",
-    role: "Accountant",
-    priority: "Medium",
-    flow: "Contracts",
-    subSection: "contracts",
-    code: "RET-2025-11",
-    title: "Structural Frame Subcontractor 5% Retention Milestone",
-    description: "Defects Liability Period milestone due in 18 days. Review final retention release certificate.",
-    value: "₦2,180,000 Retention",
-    actionText: "Inspect Retention Ledger",
-  },
-
-  // --- SITE ENGINEER ---
-  {
-    id: "site-1",
-    role: "Site Engineer",
-    priority: "Critical",
-    flow: "Site",
-    subSection: "diary",
-    code: "SHIFT #143",
-    title: "Daily Site Diary & Shift Log Incomplete",
-    description: "Shift #143 weather, concrete pour times, and equipment idle hours require electronic submission.",
-    value: "Today's Log",
-    actionText: "Complete Shift Diary in Site",
-  },
-  {
-    id: "site-2",
-    role: "Site Engineer",
-    priority: "High",
-    flow: "Site",
-    subSection: "snags",
-    code: "NCR-07",
-    title: "Column C3 Alignment Non-Conformance Notice",
-    description: "Post-pour survey detected column face out-of-plumb by 14mm. Remedial action plan pending.",
-    value: "Grid C3 Column",
-    actionText: "Resolve NCR in Site",
-  },
-  {
-    id: "site-3",
-    role: "Site Engineer",
-    priority: "Medium",
-    flow: "Site",
-    subSection: "drawings",
-    code: "REV-C",
-    title: "First Floor Structural Slab Rebar Working Drawing Update",
-    description: "Architect issued Revision C with adjusted cantilever steel spacing. Review before tomorrow's pour.",
-    value: "Drawing #ST-104",
-    actionText: "View Working Drawing",
-  },
-
-  // --- PROJECT MANAGER ---
-  {
-    id: "pm-1",
-    role: "Project Manager",
-    priority: "Critical",
-    flow: "Contracts",
-    subSection: "variations",
-    code: "VO-04",
-    title: "Variation Order VO-04: Substructure Deepening",
-    description: "Geotechnical condition required +1.2m foundation excavation. Subcontractor variation claim of ₦4,850,000 awaiting PM approval.",
-    value: "₦4,850,000",
-    actionText: "Review Variation Order",
-  },
-  {
-    id: "pm-2",
-    role: "Project Manager",
-    priority: "High",
-    flow: "Cost Plan",
-    subSection: "risks",
-    code: "BUDGET",
-    title: "Macro Baseline Budget Tracking: 96.8% Committed",
-    description: "Total project committed costs approaching ceiling. Review remaining contingency headroom.",
-    value: "₦292.2M / ₦301.8M",
-    actionText: "Inspect Cost Control",
-  },
-  {
-    id: "pm-3",
-    role: "Project Manager",
-    priority: "Medium",
-    flow: "Oversight",
-    subSection: "telemetry",
-    code: "CPI 1.04",
-    title: "Financial Health & Telemetry Executive Review",
-    description: "Review current Cost Performance Index, active workforce muster, and milestone progress curves.",
-    value: "62% Physical Progress",
-    actionText: "Open Telemetry View",
-  },
-
-  // --- ARCHITECT ---
-  {
-    id: "arch-1",
-    role: "Architect",
-    priority: "High",
-    flow: "Site",
-    subSection: "drawings",
-    code: "RFI-12",
-    title: "Service Shaft Penetration Drawing Revision",
-    description: "Site Engineer query regarding HVAC riser dimensions through floor slab Grid B2.",
-    value: "Grid B2 Penetration",
-    actionText: "Review Drawing Query",
-  },
-  {
-    id: "arch-2",
-    role: "Architect",
-    priority: "Medium",
-    flow: "Site",
-    subSection: "snags",
-    code: "SNAG-18",
-    title: "Facade Glazing Reveal Tolerance Inspection",
-    description: "Visual inspection sign-off required for perimeter mullion alignment on Ground Floor Entrance.",
-    value: "Entrance Facade",
-    actionText: "Sign-off Snag Item",
-  },
-
-  // --- STOREKEEPER ---
-  {
-    id: "store-1",
-    role: "Storekeeper",
-    priority: "Critical",
-    flow: "Buy & Supply",
-    subSection: "stock",
-    code: "STK-LOW",
-    title: "Dangote 42.5R Cement Stock Level Below Minimum Buffer",
-    description: "Current warehouse balance: 45 bags (Threshold: 100 bags). Upcoming slab pour requires 350 bags.",
-    value: "45 Bags Remaining",
-    actionText: "Check Stock Ledger",
-  },
-  {
-    id: "store-2",
-    role: "Storekeeper",
-    priority: "High",
-    flow: "Buy & Supply",
-    subSection: "stock",
-    code: "GRN-020",
-    title: "PVC Electrical Conduit Pipes Gate Pass & Delivery",
-    description: "Delivery acknowledged at physical gate. Complete inspection and update site store ledger.",
-    value: "1,200 Metres",
-    actionText: "Record Stock Receipt",
-  },
-
-  // --- ADMIN ---
-  {
-    id: "adm-1",
-    role: "Admin",
-    priority: "High",
-    flow: "Oversight",
-    subSection: "admin",
-    code: "SEC-USR",
-    title: "User Role Assignment for 2 New Site Engineers",
-    description: "New team members created via Supabase Auth without active project permissions.",
-    value: "2 Accounts Pending",
-    actionText: "Configure User Roles",
-  },
-  {
-    id: "adm-2",
-    role: "Admin",
-    priority: "Medium",
-    flow: "Oversight",
-    subSection: "admin",
-    code: "AUD-SYS",
-    title: "Immutable System Audit Trail Verification",
-    description: "28 security and financial ledger events recorded in last 24 hours.",
-    value: "28 Log Events",
-    actionText: "Inspect Audit Trail",
-  },
-];
-
 interface MyWorkQueueProps {
   onSelectNav: (section: string, subSection?: string) => void;
 }
 
 export function MyWorkQueue({ onSelectNav }: MyWorkQueueProps) {
-  const { activeRole } = useApp();
+  const { activeRole, currency } = useApp();
+  const { boqItems } = useAppData();
   const [filter, setFilter] = useState<"all" | "critical" | "high">("all");
 
-  // Get tasks for the current active role (or default to Project Manager if not found)
-  const roleTasks = ACTION_TASKS.filter((task) => task.role === activeRole);
-  const activeTasks = roleTasks.length > 0 ? roleTasks : ACTION_TASKS.slice(0, 3);
+  // Dynamically compute real project action items based on live commitments and variances
+  const dynamicTasks: ActionTask[] = useMemo(() => {
+    const tasks: ActionTask[] = [];
+
+    (boqItems || []).forEach((item) => {
+      const overCommitment = (item.committedAmount || 0) - (item.budgetAmount || 0);
+      if (overCommitment > 0) {
+        tasks.push({
+          id: `boq-var-${item.id}`,
+          role: "Quantity Surveyor",
+          priority: "Critical",
+          flow: "Cost Plan",
+          subSection: "risks",
+          code: item.code,
+          title: `${item.description} Over-Commitment Alert`,
+          description: `Committed cost exceeds baseline BOQ allocation by ${formatCurrency(overCommitment, currency)}.`,
+          value: `+${formatCurrency(overCommitment, currency)} Variance`,
+          actionText: "Resolve BOQ Risk in Cost Plan",
+        });
+      }
+    });
+
+    return tasks;
+  }, [boqItems, currency]);
+
+  // Filter tasks by active role (Executive Admin / PM see all tasks)
+  const activeTasks = dynamicTasks.filter(
+    (task) => activeRole === "Admin" || activeRole === "Project Manager" || task.role === activeRole
+  );
 
   const filteredTasks = activeTasks.filter((t) => {
     if (filter === "critical") return t.priority === "Critical";
