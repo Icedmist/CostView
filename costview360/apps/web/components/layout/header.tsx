@@ -29,7 +29,7 @@ export function Header({
   onSelectNav,
   onOpenSearch,
 }: HeaderProps) {
-  const { currentProject } = useApp();
+  const { currentProject, setCurrentProject, availableProjects } = useApp();
   const [notifOpen, setNotifOpen] = useState(false);
 
   // Normalize active section to one of the 5 flows
@@ -58,11 +58,33 @@ export function Header({
 
         {/* Project Switcher Pill */}
         <div className="hidden sm:flex items-center gap-3">
-          <div className="inline-flex items-center gap-2.5 bg-[#FAF9F5] dark:bg-[#071324] hover:bg-[#F2F1EC] dark:hover:bg-[#0F2137] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] px-4 py-2.5 rounded-xl text-base font-bold text-[#0A2540] dark:text-white transition-all cursor-pointer shadow-xs">
-            <Building2 className="w-4.5 h-4.5 text-[#0A2540] dark:text-[#FFD23F]" />
-            <span className="truncate max-w-[190px] sm:max-w-none">{currentProject.name}</span>
-            <span className="text-xs text-[#0A2540]/60 dark:text-white/60 font-mono font-semibold">({currentProject.code})</span>
-          </div>
+          {availableProjects && availableProjects.length > 1 ? (
+            <div className="inline-flex items-center gap-2 bg-[#FAF9F5] dark:bg-[#071324] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] px-3.5 py-2 rounded-xl text-sm font-bold text-[#0A2540] dark:text-white shadow-xs">
+              <Building2 className="w-4 h-4 text-[#0A2540] dark:text-[#FFD23F] shrink-0" />
+              <select
+                value={currentProject.id}
+                onChange={(e) => {
+                  const selected = availableProjects.find((p) => p.id === e.target.value);
+                  if (selected && setCurrentProject) {
+                    setCurrentProject(selected);
+                  }
+                }}
+                className="bg-transparent text-sm font-black text-[#0A2540] dark:text-white focus:outline-none cursor-pointer pr-1"
+              >
+                {availableProjects.map((p) => (
+                  <option key={p.id} value={p.id} className="text-[#0A2540] bg-white dark:bg-[#0A1931] dark:text-white">
+                    {p.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ) : (
+            <div className="inline-flex items-center gap-2.5 bg-[#FAF9F5] dark:bg-[#071324] hover:bg-[#F2F1EC] dark:hover:bg-[#0F2137] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] px-4 py-2.5 rounded-xl text-base font-bold text-[#0A2540] dark:text-white transition-all cursor-pointer shadow-xs">
+              <Building2 className="w-4.5 h-4.5 text-[#0A2540] dark:text-[#FFD23F]" />
+              <span className="truncate max-w-[190px] sm:max-w-none">{currentProject.name}</span>
+              <span className="text-xs text-[#0A2540]/60 dark:text-white/60 font-mono font-semibold">({currentProject.code})</span>
+            </div>
+          )}
         </div>
 
         {/* Contextual Nav Breadcrumbs */}

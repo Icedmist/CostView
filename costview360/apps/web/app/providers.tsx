@@ -18,6 +18,14 @@ const ALL_VALID_ROLES: RoleName[] = [
   "Storekeeper",
 ];
 
+interface ProjectInfo {
+  id: string;
+  name: string;
+  code: string;
+  location: string;
+  budgetTotal: number;
+}
+
 interface AppContextType {
   activeMode: "site" | "commercial";
   setActiveMode: (mode: "site" | "commercial") => void;
@@ -25,13 +33,9 @@ interface AppContextType {
   setActiveRole: (role: RoleName) => void;
   currency: string;
   setCurrency: (c: string) => void;
-  currentProject: {
-    id: string;
-    name: string;
-    code: string;
-    location: string;
-    budgetTotal: number;
-  };
+  currentProject: ProjectInfo;
+  setCurrentProject: (p: ProjectInfo) => void;
+  availableProjects: ProjectInfo[];
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -61,6 +65,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const [activeRole, setActiveRoleState] = useState<RoleName>("Project Manager");
   const [currency, setCurrency] = useState("NGN");
 
+  const [currentProject, setCurrentProject] = useState<ProjectInfo>({
+    id: "817a8197-11b4-4223-9122-aaa01eb86c4a",
+    name: "CostView Construction Group Primary Site",
+    code: "PRJ-01",
+    location: "Lagos, Nigeria",
+    budgetTotal: 0,
+  });
+  const [availableProjects, setAvailableProjects] = useState<ProjectInfo[]>([]);
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedRole = localStorage.getItem("costview_demo_role") as RoleName | null;
@@ -70,25 +83,80 @@ export function Providers({ children }: { children: React.ReactNode }) {
     }
 
     const supabase = createClient();
-    supabase.auth.getUser().then(({ data }) => {
-      const userRole = (data.user?.user_metadata?.default_role as RoleName) || null;
-      if (userRole && ALL_VALID_ROLES.includes(userRole)) {
-        setActiveRoleState(userRole);
-        if (typeof window !== "undefined") {
-          localStorage.setItem("costview_demo_role", userRole);
-          document.cookie = `costview_demo_role=${encodeURIComponent(userRole)}; path=/; max-age=7200; SameSite=Lax`;
+
+    const loadUserProjects = async (userId: string) => {
+      try {
+        const { data: members } = await supabase
+          .from("project_members")
+          .select("project_id, role, projects(id, name, code, location, budget_total, currency)")
+          .eq("user_id", userId);
+
+        if (members && members.length > 0) {
+          const projs: ProjectInfo[] = members
+            .map((m: any) => m.projects)
+            .filter(Boolean)
+            .map((p: any) => ({
+              id: p.id,
+              name: p.name,
+              code: p.code || "PRJ-01",
+              location: p.location || "Lagos, Nigeria",
+              budgetTotal: Number(p.budget_total || 0),
+            }));
+
+          if (projs.length > 0) {
+            setAvailableProjects(projs);
+            setCurrentProject(projs[0]);
+            return;
+          }
         }
+
+        // Fallback: load workspace projects
+        const { data: projs } = await supabase
+          .from("projects")
+          .select("id, name, code, location, budget_total")
+          .limit(5);
+
+        if (projs && projs.length > 0) {
+          const mapped: ProjectInfo[] = projs.map((p: any) => ({
+            id: p.id,
+            name: p.name,
+            code: p.code || "PRJ-01",
+            location: p.location || "Lagos, Nigeria",
+            budgetTotal: Number(p.budget_total || 0),
+          }));
+          setAvailableProjects(mapped);
+          setCurrentProject(mapped[0]);
+        }
+      } catch (err) {
+        console.warn("Could not load user projects from Supabase", err);
+      }
+    };
+
+    supabase.auth.getUser().then(({ data }) => {
+      if (data.user) {
+        const userRole = (data.user.user_metadata?.default_role as RoleName) || null;
+        if (userRole && ALL_VALID_ROLES.includes(userRole)) {
+          setActiveRoleState(userRole);
+          if (typeof window !== "undefined") {
+            localStorage.setItem("costview_demo_role", userRole);
+            document.cookie = `costview_demo_role=${encodeURIComponent(userRole)}; path=/; max-age=7200; SameSite=Lax`;
+          }
+        }
+        loadUserProjects(data.user.id);
       }
     });
 
     const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
-      const userRole = (session?.user?.user_metadata?.default_role as RoleName) || null;
-      if (userRole && ALL_VALID_ROLES.includes(userRole)) {
-        setActiveRoleState(userRole);
-        if (typeof window !== "undefined") {
-          localStorage.setItem("costview_demo_role", userRole);
-          document.cookie = `costview_demo_role=${encodeURIComponent(userRole)}; path=/; max-age=7200; SameSite=Lax`;
+      if (session?.user) {
+        const userRole = (session.user.user_metadata?.default_role as RoleName) || null;
+        if (userRole && ALL_VALID_ROLES.includes(userRole)) {
+          setActiveRoleState(userRole);
+          if (typeof window !== "undefined") {
+            localStorage.setItem("costview_demo_role", userRole);
+            document.cookie = `costview_demo_role=${encodeURIComponent(userRole)}; path=/; max-age=7200; SameSite=Lax`;
+          }
         }
+        loadUserProjects(session.user.id);
       }
     });
 
@@ -105,14 +173,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const [currentProject] = useState({
-    id: "22222222-2222-2222-2222-222222222222",
-    name: "Eko Atlantic Horizon Towers",
-    code: "CV-EAH-2026",
-    location: "Victoria Island, Lagos",
-    budgetTotal: 301815000, // ₦301,815,000 baseline
-  });
-
   return (
     <QueryClientProvider client={queryClient}>
       <AppContext.Provider
@@ -124,10 +184,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
           currency,
           setCurrency,
           currentProject,
+          setCurrentProject,
+          availableProjects,
         }}
       >
         <ThemeProvider>
-          <AppDataProvider>{children}</AppDataProvider>
+          <AppDataProvider projectId={currentProject.id}>{children}</AppDataProvider>
         </ThemeProvider>
       </AppContext.Provider>
     </QueryClientProvider>

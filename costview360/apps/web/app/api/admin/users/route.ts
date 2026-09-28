@@ -15,7 +15,7 @@ interface DefaultUser {
 
 const DEFAULT_USERS: DefaultUser[] = [];
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   const admin = createAdminClient();
 
   if (!admin) {
@@ -23,16 +23,45 @@ export async function GET() {
   }
 
   try {
-    // 1. Fetch profiles
-    const { data: profiles, error: profileError } = await (admin as any)
+    const projectId = req.nextUrl.searchParams.get("projectId");
+
+    // 1. Fetch role_access permissions
+    const { data: roleAccess } = await (admin as any)
+      .from("role_access")
+      .select("id, role, permission_key, allowed");
+
+    // 2. Determine target user IDs if projectId is specified
+    let targetUserIds: string[] | null = null;
+    const projectRoleMap = new Map<string, RoleName>();
+
+    if (projectId) {
+      const { data: members, error: memberError } = await (admin as any)
+        .from("project_members")
+        .select("user_id, role")
+        .eq("project_id", projectId);
+
+      if (memberError || !members || members.length === 0) {
+        // Explicitly return empty if no members exist for this project
+        return NextResponse.json({ users: [], roleAccess: roleAccess || [] });
+      }
+
+      targetUserIds = members.map((m: any) => m.user_id);
+      members.forEach((m: any) => {
+        if (m.role) projectRoleMap.set(m.user_id, m.role as RoleName);
+      });
+    }
+
+    // 3. Fetch profiles (filtered by project members if projectId is provided)
+    let query = (admin as any)
       .from("profiles")
       .select("id, full_name, phone, default_role, avatar_url, created_at")
       .order("created_at", { ascending: true });
 
-    // 2. Fetch role_access permissions
-    const { data: roleAccess } = await (admin as any)
-      .from("role_access")
-      .select("id, role, permission_key, allowed");
+    if (targetUserIds !== null) {
+      query = query.in("id", targetUserIds);
+    }
+
+    const { data: profiles, error: profileError } = await query;
 
     if (profileError || !profiles || (profiles as any[]).length === 0) {
       return NextResponse.json({ users: DEFAULT_USERS, roleAccess: roleAccess || [] });
@@ -54,7 +83,7 @@ export async function GET() {
       full_name: p.full_name,
       email: emailMap.get(p.id) || `${p.full_name.toLowerCase().replace(/[^a-z0-9]/g, ".")}@costview.app`,
       phone: p.phone,
-      default_role: p.default_role as RoleName,
+      default_role: (projectRoleMap.get(p.id) || p.default_role) as RoleName,
       avatar_url: p.avatar_url,
       created_at: p.created_at,
     }));
@@ -69,7 +98,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { email, password, full_name, phone, role } = body;
+    const { email, password, full_name, phone, role, projectId } = body;
 
     if (!email || !password || !full_name || !role) {
       return NextResponse.json(
@@ -124,11 +153,15 @@ export async function POST(req: NextRequest) {
       default_role: role as RoleName,
     });
 
-    // 4. Fetch first project and link member
-    const { data: proj } = await (admin as any).from("projects").select("id").limit(1).single();
-    if (proj?.id) {
+    // 4. Link member to explicit project
+    let targetProjectId = projectId;
+    if (!targetProjectId) {
+      const { data: proj } = await (admin as any).from("projects").select("id").limit(1).single();
+      targetProjectId = proj?.id;
+    }
+    if (targetProjectId) {
       await (admin as any).from("project_members").upsert({
-        project_id: proj.id,
+        project_id: targetProjectId,
         user_id: userId,
         role: role as RoleName,
       });

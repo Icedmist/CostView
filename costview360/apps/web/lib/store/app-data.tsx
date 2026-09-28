@@ -32,18 +32,22 @@ const AppDataContext = createContext<AppDataContextType | null>(null);
 
 const INITIAL_BOQ: BOQItem[] = [];
 
-export function AppDataProvider({ children }: { children: React.ReactNode }) {
+export function AppDataProvider({ children, projectId }: { children: React.ReactNode; projectId?: string }) {
   const [boqItems, setBoqItems] = useState<BOQItem[]>(INITIAL_BOQ);
   const [procurementCount, setProcurementCount] = useState(0);
   const [stockRefreshKey, setStockRefreshKey] = useState(0);
   const [reportsRefreshKey, setReportsRefreshKey] = useState(0);
 
-  // Load live BOQ from Supabase on mount and share
+  // Load live BOQ from Supabase on mount and project change
   useEffect(() => {
     (async () => {
       try {
         const supabase = createClient();
-        const { data } = await supabase.from("boq_items").select("*").order("code");
+        let query = supabase.from("boq_items").select("*").order("code");
+        if (projectId) {
+          query = query.eq("project_id", projectId);
+        }
+        const { data } = await query;
         if (data && data.length > 0) {
           const mapped: BOQItem[] = data.map((d: any) => ({
             id: d.id,
@@ -59,12 +63,14 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
           }));
           setBoqItems(mapped);
           setReportsRefreshKey((k) => k + 1);
+        } else {
+          setBoqItems([]);
         }
       } catch (e) {
-        console.warn("AppData BOQ live fetch failed, using seed", e);
+        console.warn("AppData BOQ live fetch failed", e);
       }
     })();
-  }, []);
+  }, [projectId]);
 
   const addBOQItem = (item: BOQItem) => {
     setBoqItems((prev) => [item, ...prev]);
@@ -74,7 +80,7 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
       try {
         const supabase = createClient();
         await supabase.from("boq_items").insert({
-          project_id: "22222222-2222-2222-2222-222222222222",
+          project_id: projectId || "22222222-2222-2222-2222-222222222222",
           code: item.code,
           description: item.description,
           category: item.category,

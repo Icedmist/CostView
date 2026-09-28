@@ -116,18 +116,33 @@ export function SiteHub() {
           if (isMounted) setPosts(mapped);
         }
 
-        // Fetch real team members from profiles
-        const { data: profilesData } = await supabase
-          .from("profiles")
-          .select("id, full_name, default_role");
-        if (isMounted && profilesData && profilesData.length > 0) {
-          setProjectMembers(
-            profilesData.map((p: any) => ({
-              id: p.id,
-              name: p.full_name || "Team Member",
-              role: p.default_role || "Staff",
-            }))
-          );
+        // Fetch explicitly the team members assigned to this specific project
+        const { data: memberRows } = await supabase
+          .from("project_members")
+          .select("user_id, role")
+          .eq("project_id", currentProject.id);
+
+        if (isMounted) {
+          if (memberRows && memberRows.length > 0) {
+            const userIds = memberRows.map((m: any) => m.user_id);
+            const { data: profilesData } = await supabase
+              .from("profiles")
+              .select("id, full_name, default_role")
+              .in("id", userIds);
+
+            const profileMap = new Map((profilesData || []).map((p: any) => [p.id, p]));
+            const projectSpecificMembers = memberRows.map((m: any) => {
+              const prof = profileMap.get(m.user_id);
+              return {
+                id: m.user_id,
+                name: prof?.full_name || "Project Member",
+                role: m.role || prof?.default_role || "Staff",
+              };
+            });
+            setProjectMembers(projectSpecificMembers);
+          } else {
+            setProjectMembers([]);
+          }
         }
       } catch (err) {
         console.warn("Using local state for Site Hub", err);
