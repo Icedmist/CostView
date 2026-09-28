@@ -355,29 +355,29 @@ export function BOQTable({
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="hidden sm:flex items-center gap-2 text-xs font-bold text-[#0A2540] bg-[#FAF9F5] border-2 border-[#E5E5DE] px-3.5 h-11 rounded-xl shadow-xs">
-                <span className="uppercase tracking-wider text-[#0A2540]/60 text-[10px]">Threshold:</span>
+              <div className="hidden sm:flex items-center gap-2 text-sm font-bold text-[#0A2540] bg-[#FAF9F5] border-2 border-[#E5E5DE] px-3.5 h-11 rounded-xl shadow-xs">
+                <span className="uppercase tracking-wider text-[#0A2540]/60 text-xs">Threshold:</span>
                 <span className="text-emerald-700 font-mono font-black">±{thresholdPercent}%</span>
               </div>
               <button
                 type="button"
                 onClick={() => onTabChange?.("estimator")}
                 title="Launch AI Parametric Feasibility Estimator"
-                className="flex items-center gap-2 bg-amber-50 hover:bg-amber-100 text-amber-950 border-2 border-amber-300 rounded-xl px-4 h-11 text-xs font-black uppercase tracking-wider shadow-xs transition-all cursor-pointer"
+                className="flex items-center gap-2 bg-amber-50 hover:bg-amber-100 text-amber-950 border-2 border-amber-300 rounded-xl px-4 h-11 text-sm font-black uppercase tracking-wider shadow-xs transition-all cursor-pointer"
               >
                 <Sparkles className="w-4 h-4 text-amber-600 fill-amber-500" />
                 <span>AI Estimator</span>
               </button>
               <button
                 onClick={() => setIsImportModalOpen(true)}
-                className="flex items-center gap-2 bg-[#FAF9F5] hover:bg-[#F2F1EC] text-[#0A2540] border-2 border-[#E5E5DE] rounded-xl px-4 h-11 text-xs font-black uppercase tracking-wider shadow-xs transition-all cursor-pointer"
+                className="flex items-center gap-2 bg-[#FAF9F5] hover:bg-[#F2F1EC] text-[#0A2540] border-2 border-[#E5E5DE] rounded-xl px-4 h-11 text-sm font-black uppercase tracking-wider shadow-xs transition-all cursor-pointer"
               >
                 <Download className="w-4 h-4 text-[#0A2540] rotate-180" />
-                <span>Import BOQ / CSV</span>
+                <span>Import BOQ</span>
               </button>
               <button
                 onClick={() => setIsAddModalOpen(true)}
-                className="flex items-center gap-2 bg-[#0A2540] hover:bg-[#003366] text-white rounded-xl px-5 h-11 text-xs font-black uppercase tracking-wider shadow-md transition-all cursor-pointer"
+                className="flex items-center gap-2 bg-[#0A2540] hover:bg-[#003366] text-white rounded-xl px-5 h-11 text-sm font-black uppercase tracking-wider shadow-md transition-all cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
                 <span>Add BOQ Item</span>

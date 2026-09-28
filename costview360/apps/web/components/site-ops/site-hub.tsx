@@ -268,29 +268,29 @@ export function SiteHub() {
             <span className="px-2.5 py-0.5 rounded-md text-xs font-black bg-[#FFD23F] text-[#0A1931]">
               PROJECT HUB
             </span>
-            <span className="text-xs font-bold text-[#0A2540]/60 dark:text-slate-400">
+            <span className="text-sm font-bold text-[#0A2540]/70 dark:text-slate-300">
               {currentProject.name}
             </span>
           </div>
-          <h1 className="text-2xl font-black text-[#0A2540] dark:text-white tracking-tight">
+          <h1 className="text-2xl md:text-3xl font-black text-[#0A2540] dark:text-white tracking-tight">
             Site Progress &amp; Activity Hub
           </h1>
-          <p className="text-xs text-[#0A2540]/70 dark:text-slate-300 mt-0.5">
+          <p className="text-sm text-[#0A2540]/80 dark:text-slate-300 mt-1">
             Real-time field updates, daily logs, expenditure tracking, and team collaboration.
           </p>
         </div>
 
         {/* Quick Hub Stats */}
         <div className="flex items-center gap-4 text-xs font-black">
-          <div className="px-3.5 py-2 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F]">
-            <span className="text-[#0A2540]/60 dark:text-slate-400 block text-[10px] uppercase">Logged Spent</span>
-            <span className="font-mono text-emerald-600 dark:text-emerald-400 font-extrabold text-sm">
+          <div className="px-4 py-2.5 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F]">
+            <span className="text-[#0A2540]/60 dark:text-slate-400 block text-xs uppercase font-extrabold">Logged Spent</span>
+            <span className="font-mono text-emerald-600 dark:text-emerald-400 font-extrabold text-base">
               {formatCurrency(totalSpentInHub, currency)}
             </span>
           </div>
-          <div className="px-3.5 py-2 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F]">
-            <span className="text-[#0A2540]/60 dark:text-slate-400 block text-[10px] uppercase">Updates</span>
-            <span className="font-mono text-[#0A2540] dark:text-white font-extrabold text-sm">
+          <div className="px-4 py-2.5 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F]">
+            <span className="text-[#0A2540]/60 dark:text-slate-400 block text-xs uppercase font-extrabold">Updates</span>
+            <span className="font-mono text-[#0A2540] dark:text-white font-extrabold text-base">
               {posts.length} Posts
             </span>
           </div>
@@ -303,22 +303,22 @@ export function SiteHub() {
         <div className="lg:col-span-1 space-y-4">
           <div className="bg-white dark:bg-[#0A1931] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-2xl p-5 shadow-xs space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-[#E5E5DE] dark:border-[#1E3A5F]">
-              <span className="text-xs font-black uppercase tracking-wider text-[#0A2540] dark:text-white flex items-center gap-2">
+              <span className="text-sm font-black uppercase tracking-wider text-[#0A2540] dark:text-white flex items-center gap-2">
                 <HardHat className="w-4 h-4 text-[#FFD23F]" />
                 Share Site Update
               </span>
-              <span className="text-xs font-bold text-[#0A2540]/60 dark:text-slate-400 font-mono">
+              <span className="text-xs font-bold text-[#0A2540]/70 dark:text-slate-300 font-mono">
                 Posting as: <strong>{activeRole}</strong>
               </span>
             </div>
 
-            <form onSubmit={handleCreatePost} className="space-y-3.5">
+            <form onSubmit={handleCreatePost} className="space-y-4">
               {/* Post Type Selector */}
               <div>
-                <label className="block text-xs font-black text-[#0A2540] dark:text-white uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-black text-[#0A2540] dark:text-white uppercase tracking-wider mb-2">
                   Update Type
                 </label>
-                <div className="grid grid-cols-2 gap-1.5">
+                <div className="grid grid-cols-2 gap-2">
                   {[
                     { id: "progress", label: "🏗️ Progress", desc: "Work completed" },
                     { id: "expense", label: "💰 Spent Cost", desc: "Materials / Labour" },
@@ -329,14 +329,14 @@ export function SiteHub() {
                       key={t.id}
                       type="button"
                       onClick={() => setPostType(t.id as any)}
-                      className={`p-2 rounded-xl text-xs font-black border text-left transition-all cursor-pointer ${
+                      className={`p-2.5 rounded-xl text-xs font-black border text-left transition-all cursor-pointer ${
                         postType === t.id
                           ? "bg-[#0A2540] text-white border-[#0A2540] shadow-xs dark:bg-[#FFD23F] dark:text-[#0A1931] dark:border-[#FFD23F]"
                           : "bg-[#FAF9F5] dark:bg-[#071324] text-[#0A2540] dark:text-white border-[#E5E5DE] dark:border-[#1E3A5F] hover:bg-slate-100"
                       }`}
                     >
-                      <div>{t.label}</div>
-                      <div className={`text-[10px] font-semibold mt-0.5 ${postType === t.id ? "opacity-80" : "text-[#0A2540]/60 dark:text-slate-400"}`}>
+                      <div className="text-sm">{t.label}</div>
+                      <div className={`text-xs font-medium mt-0.5 ${postType === t.id ? "opacity-90" : "text-[#0A2540]/70 dark:text-slate-400"}`}>
                         {t.desc}
                       </div>
                     </button>
@@ -697,23 +697,23 @@ export function SiteHub() {
                     )}
 
                     {/* Main Post Content */}
-                    <div className="text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
+                    <div className="text-base text-slate-800 dark:text-slate-200 leading-relaxed font-normal">
                       {post.content}
                     </div>
 
                     {/* Expense Callout Box if spent */}
                     {post.postType === "expense" && post.amountSpent > 0 && (
-                      <div className="p-3.5 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] flex items-center justify-between">
+                      <div className="p-4 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] flex items-center justify-between">
                         <div>
-                          <div className="text-[10px] font-black uppercase tracking-wider text-[#0A2540]/60 dark:text-slate-400">
+                          <div className="text-xs font-black uppercase tracking-wider text-[#0A2540]/70 dark:text-slate-300">
                             Disbursement / Cost Outflow
                           </div>
-                          <div className="text-lg font-black font-mono text-[#0A2540] dark:text-white mt-0.5">
+                          <div className="text-xl font-black font-mono text-[#0A2540] dark:text-white mt-0.5">
                             {formatCurrency(post.amountSpent, currency)}
                           </div>
                         </div>
                         {post.expenseCategory && (
-                          <span className="px-3 py-1 rounded-lg text-xs font-bold bg-white dark:bg-[#0A1931] border border-[#E5E5DE] dark:border-[#1E3A5F] text-[#0A2540] dark:text-white">
+                          <span className="px-3.5 py-1.5 rounded-lg text-sm font-bold bg-white dark:bg-[#0A1931] border border-[#E5E5DE] dark:border-[#1E3A5F] text-[#0A2540] dark:text-white">
                             Category: {post.expenseCategory}
                           </span>
                         )}

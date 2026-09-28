@@ -10,6 +10,7 @@ import { CommandPalette } from "@/components/layout/command-palette";
 import { BOQTable } from "@/components/budget/boq-table";
 import { DrawingsView } from "@/components/drawings/drawings-view";
 import { ThreeWayMatchView } from "@/components/procurement/three-way-match";
+import { SiteDiaryView } from "@/components/site-ops/site-diary-view";
 import { MaterialsStockView } from "@/components/materials/materials-stock-view";
 import { LabourView } from "@/components/labour/labour-view";
 import { SubcontractorView } from "@/components/subcontractors/subcontractor-view";
@@ -17,6 +18,7 @@ import { UserRoleManager } from "@/components/admin/user-role-manager";
 import { DataMigrationHub } from "@/components/admin/data-migration-hub";
 import { AuditLogView } from "@/components/admin/audit-log-view";
 import { WorkspaceSettingsView } from "@/components/settings/workspace-settings";
+import { ReportsView } from "@/components/reports/reports-view";
 import { AICostEstimator } from "@/components/budget/ai-cost-estimator";
 import { TradeDirectoryView } from "@/components/procurement/trade-directory-view";
 import { ClientPortalView } from "@/components/portal/client-portal-view";
@@ -153,6 +155,8 @@ export default function DashboardPage() {
                 />
               ) : activeSubSection === "labour" ? (
                 <LabourView />
+              ) : activeSubSection === "diary" ? (
+                <SiteDiaryView />
               ) : (
                 <SiteHub />
               )}
@@ -178,6 +182,8 @@ export default function DashboardPage() {
             <div className="space-y-6">
               {activeSubSection === "telemetry" ? (
                 <ManagementDecisionCenter onNavigate={handleNavSelect} />
+              ) : activeSubSection === "reports" ? (
+                <ReportsView />
               ) : activeSubSection === "portal" ? (
                 <ClientPortalView
                   standalone={false}

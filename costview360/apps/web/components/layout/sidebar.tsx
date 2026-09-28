@@ -81,14 +81,26 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
     subSections: [
       {
         id: "boq",
-        name: "BOQ Register",
+        name: "BOQ Master Register",
         code: "1.1",
         icon: Calculator,
       },
       {
+        id: "risks",
+        name: "Cost Control & Risks",
+        code: "1.2",
+        icon: ShieldAlert,
+      },
+      {
+        id: "revisions",
+        name: "Rate Revisions & Deltas",
+        code: "1.3",
+        icon: FileSpreadsheet,
+      },
+      {
         id: "estimator",
         name: "AI Cost Estimator",
-        code: "1.2",
+        code: "1.4",
         icon: Sparkles,
         badge: "AI",
       },
@@ -111,15 +123,33 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
         icon: BadgeCheck,
       },
       {
+        id: "requisitions",
+        name: "Material Requisitions",
+        code: "2.2",
+        icon: Clock,
+      },
+      {
+        id: "enquiries",
+        name: "Supplier Quotes",
+        code: "2.3",
+        icon: Truck,
+      },
+      {
+        id: "invoices",
+        name: "Invoices & Payments",
+        code: "2.4",
+        icon: Receipt,
+      },
+      {
         id: "stock",
         name: "Stock & Materials",
-        code: "2.2",
+        code: "2.5",
         icon: Boxes,
       },
       {
         id: "directory",
         name: "Trade Directory",
-        code: "2.3",
+        code: "2.6",
         icon: Store,
       },
     ],
@@ -153,6 +183,12 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
         code: "3.3",
         icon: Users,
       },
+      {
+        id: "diary",
+        name: "Daily Site Diary",
+        code: "3.4",
+        icon: Calendar,
+      },
     ],
   },
 
@@ -170,6 +206,24 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
         name: "Subcontractor Ledger",
         code: "4.1",
         icon: Briefcase,
+      },
+      {
+        id: "claims",
+        name: "Interim Claims & Certs",
+        code: "4.2",
+        icon: Receipt,
+      },
+      {
+        id: "instructions",
+        name: "Site Instructions",
+        code: "4.3",
+        icon: ScrollText,
+      },
+      {
+        id: "variations",
+        name: "Variation Orders",
+        code: "4.4",
+        icon: FileSpreadsheet,
       },
     ],
   },
@@ -195,9 +249,15 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
         icon: TrendingUp,
       },
       {
+        id: "reports",
+        name: "Reports Studio",
+        code: "5.3",
+        icon: FileText,
+      },
+      {
         id: "admin",
         name: "Workspace Governance",
-        code: "5.3",
+        code: "5.4",
         icon: ShieldCheck,
         badge: "Admin",
         permission: "Admin",
@@ -205,7 +265,7 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
       {
         id: "portal",
         name: "Client Portal",
-        code: "5.4",
+        code: "5.5",
         icon: Globe,
         badge: "Live",
       },
@@ -288,6 +348,18 @@ export function Sidebar({
       [currentFlowId]: true,
     }));
   }, [currentFlowId]);
+
+  // Auto-launch onboarding on first visit
+  useEffect(() => {
+    try {
+      const hasCompleted = localStorage.getItem("costview_onboarding_completed");
+      if (!hasCompleted) {
+        setIsOnboardingOpen(true);
+      }
+    } catch (e) {
+      // ignore
+    }
+  }, []);
 
   const toggleFlow = (flowId: string) => {
     setExpandedFlows((prev) => ({
@@ -446,15 +518,15 @@ export function Sidebar({
                           <button
                             key={sub.id}
                             onClick={() => handleSubSelect(flow.id, sub.id)}
-                            className={`w-full px-3 py-2 rounded-xl text-xs flex items-center justify-between gap-2.5 transition-all cursor-pointer ${
+                            className={`w-full px-3 py-2.5 rounded-xl text-sm flex items-center justify-between gap-2.5 transition-all cursor-pointer ${
                               isSubActive
-                                ? "bg-[#0A2540] dark:bg-[#FFD23F] text-white dark:text-[#0A1931] font-extrabold shadow-sm"
-                                : "text-[#0A2540]/75 dark:text-white/75 hover:bg-white dark:hover:bg-[#0F2137] hover:text-[#0A2540] dark:hover:text-white font-bold"
+                                ? "bg-[#0A2540] dark:bg-[#FFD23F] text-white dark:text-[#0A1931] font-black shadow-sm"
+                                : "text-[#0A2540]/80 dark:text-white/80 hover:bg-white dark:hover:bg-[#0F2137] hover:text-[#0A2540] dark:hover:text-white font-bold"
                             }`}
                           >
                             <div className="flex items-center gap-2.5 min-w-0">
                               <SubIcon
-                                className={`w-3.5 h-3.5 shrink-0 ${
+                                className={`w-4 h-4 shrink-0 ${
                                   isSubActive ? "text-white dark:text-[#0A1931]" : "text-[#0A2540]/60 dark:text-white/60"
                                 }`}
                               />
@@ -463,7 +535,7 @@ export function Sidebar({
 
                             {sub.badge && (
                               <span
-                                className={`px-1.5 py-0.5 rounded text-[9px] font-mono font-black uppercase ${
+                                className={`px-2 py-0.5 rounded text-[10px] font-mono font-black uppercase ${
                                   isSubActive
                                     ? "bg-white/20 dark:bg-[#0A1931]/20 text-white dark:text-[#0A1931]"
                                     : "bg-[#FAF9F5] dark:bg-[#071324] text-[#0A2540]/70 dark:text-white/70 border border-[#E5E5DE] dark:border-[#1E3A5F]"
@@ -485,6 +557,15 @@ export function Sidebar({
 
         {/* Bottom Control Bar */}
         <div className="p-3.5 border-t-2 border-[#E5E5DE] dark:border-[#1E3A5F] bg-[#FAF9F5] dark:bg-[#071324] space-y-3">
+          {/* Quick Onboarding Tour Button */}
+          <button
+            onClick={() => setIsOnboardingOpen(true)}
+            className="w-full flex items-center justify-center gap-2 px-3.5 py-2.5 bg-white dark:bg-[#0A1931] hover:bg-[#F2F1EC] dark:hover:bg-[#0F2137] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-xl text-xs md:text-sm font-black text-[#0A2540] dark:text-white transition-all shadow-xs cursor-pointer"
+          >
+            <Sparkles className="w-4 h-4 text-amber-500" />
+            <span>Welcome Tour &amp; Guide</span>
+          </button>
+
           {/* Active Role Selector (Simulator) */}
           <div className="bg-white dark:bg-[#0A1931] border border-[#E5E5DE] dark:border-[#1E3A5F] rounded-xl p-2.5 shadow-2xs">
             <div className="text-[10px] font-bold uppercase tracking-wider text-[#0A2540]/60 dark:text-white/60 mb-1 flex items-center justify-between">
@@ -640,18 +721,18 @@ export function Sidebar({
                           <button
                             key={sub.id}
                             onClick={() => handleSubSelect(flow.id, sub.id)}
-                            className={`w-full px-3 py-2 rounded-lg text-xs flex items-center justify-between ${
+                            className={`w-full px-3 py-2.5 rounded-lg text-sm flex items-center justify-between ${
                               isSubActive
-                                ? "bg-[#0A2540] dark:bg-[#FFD23F] text-white dark:text-[#0A1931] font-extrabold"
+                                ? "bg-[#0A2540] dark:bg-[#FFD23F] text-white dark:text-[#0A1931] font-black"
                                 : "text-[#0A2540]/80 dark:text-white/80 font-bold hover:bg-white dark:hover:bg-[#0F2137]"
                             }`}
                           >
                             <div className="flex items-center gap-2">
-                              <SubIcon className="w-3.5 h-3.5" />
+                              <SubIcon className="w-4 h-4" />
                               <span>{sub.name}</span>
                             </div>
                             {sub.badge && (
-                              <span className="text-[9px] px-1 bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 rounded">
+                              <span className="text-[10px] px-2 py-0.5 bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 font-bold rounded">
                                 {sub.badge}
                               </span>
                             )}
@@ -683,6 +764,7 @@ export function Sidebar({
       <OnboardingModal
         isOpen={isOnboardingOpen}
         onClose={() => setIsOnboardingOpen(false)}
+        onNavigate={(sec, sub) => handleSubSelect(sec, sub || "")}
       />
     </>
   );
