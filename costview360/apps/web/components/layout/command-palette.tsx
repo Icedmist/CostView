@@ -51,16 +51,6 @@ export interface CommandItem {
 export const COMMAND_ITEMS: CommandItem[] = [
   // 1. Cost Plan
   {
-    id: "cp-est",
-    title: "AI Feasibility & Cost Estimator",
-    category: "Flow",
-    section: "Cost Plan",
-    subSection: "estimator",
-    description: "Generate instant BOQ line items and cost forecasts from project parameters",
-    flowLabel: "Cost Plan · Estimate",
-    icon: Sparkles,
-  },
-  {
     id: "cp-boq",
     title: "BOQ Master Register",
     category: "BOQ & Cost",
@@ -488,7 +478,7 @@ export function CommandPalette({ isOpen, onClose, onSelectNav }: CommandPaletteP
               <Search className="w-8 h-8 mx-auto mb-2 opacity-30 text-[#0A2540]" />
               <p className="font-bold text-sm">No workflows or records found</p>
               <p className="text-xs mt-1 text-[#0A2540]/50">
-                Try searching for &quot;BOQ&quot;, &quot;Match&quot;, &quot;Diary&quot;, &quot;Claim&quot;, or &quot;Estimator&quot;
+                Try searching for &quot;BOQ&quot;, &quot;Match&quot;, &quot;Diary&quot;, or &quot;Claim&quot;
               </p>
             </div>
           ) : (

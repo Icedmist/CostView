@@ -154,7 +154,7 @@ export function Header({
           </button>
 
           {notifOpen && (
-            <div className="absolute right-0 top-full mt-2 w-88 bg-white dark:bg-[#0A1931] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-2xl shadow-2xl p-4 z-50 animate-in fade-in">
+            <div className="absolute right-0 top-full mt-2 w-[calc(100vw-32px)] sm:w-88 max-w-sm bg-white dark:bg-[#0A1931] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-2xl shadow-2xl p-4 z-50 animate-in fade-in">
               <div className="text-xs font-extrabold uppercase tracking-wider text-[#0A2540]/70 dark:text-white/70 pb-2.5 border-b-2 border-[#E5E5DE] dark:border-[#1E3A5F] flex items-center justify-between">
                 <span>Attention Alerts</span>
                 <span className="bg-rose-100 text-rose-800 border border-rose-300 px-2 py-0.5 rounded-full text-xs font-black">
