@@ -59,7 +59,7 @@ const PERMISSION_MODULES: { key: PermissionKey; label: string; desc: string }[] 
 ];
 
 export default function AccountPage() {
-  const { activeRole, setActiveRole } = useApp();
+  const { activeRole, setActiveRole, currentProject, availableProjects } = useApp();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<"profile" | "security" | "role_access" | "notifications">("profile");
@@ -67,9 +67,9 @@ export default function AccountPage() {
   // Profile Form Fields
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("+234 803 555 0192");
-  const [jobTitle, setJobTitle] = useState("Lead Project Manager");
-  const [organization, setOrganization] = useState("CostView Construction Consortium");
+  const [phone, setPhone] = useState("");
+  const [jobTitle, setJobTitle] = useState<string>(activeRole);
+  const [organization, setOrganization] = useState("");
   const [timezone, setTimezone] = useState("Africa/Lagos (WAT, GMT+1)");
   const [copiedId, setCopiedId] = useState(false);
   const [profileSaved, setProfileSaved] = useState(false);
@@ -104,8 +104,11 @@ export default function AccountPage() {
       }
       setUser(data.user);
       setEmail(data.user.email || "");
-      const metaName = (data.user.user_metadata as any)?.full_name || "CostView User";
+      const meta = (data.user.user_metadata as any) || {};
+      const metaName = meta.full_name || meta.name || data.user.email?.split("@")[0] || "CostView User";
       setFullName(metaName);
+      if (meta.company_name) setOrganization(meta.company_name);
+      if (data.user.phone) setPhone(data.user.phone);
     });
   }, []);
 
@@ -387,7 +390,7 @@ export default function AccountPage() {
                         {copiedId ? "Copied" : "Copy"}
                       </button>
                     </div>
-                    <p className="font-mono text-xs font-bold text-slate-800 dark:text-slate-200 mt-1 truncate">11111111-1111-1111-1111-111111111111</p>
+                    <p className="font-mono text-xs font-bold text-slate-800 dark:text-slate-200 mt-1 truncate">{user?.id || currentProject?.id || "N/A"}</p>
                   </div>
 
                   <div className="mt-4 space-y-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
@@ -397,7 +400,7 @@ export default function AccountPage() {
                     </div>
                     <div className="flex justify-between py-1 border-b border-slate-100 dark:border-[#1E3A5F]">
                       <span className="text-slate-500 dark:text-slate-400">Active Sites</span>
-                      <span className="font-bold text-[#0A2540] dark:text-white">2 (Eko Atlantic, Lekki)</span>
+                      <span className="font-bold text-[#0A2540] dark:text-white">{availableProjects.length > 0 ? `${availableProjects.length} (${currentProject.name})` : currentProject.name || "1 Site"}</span>
                     </div>
                     <div className="flex justify-between py-1">
                       <span className="text-slate-500 dark:text-slate-400">Role Authority</span>

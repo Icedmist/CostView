@@ -20,13 +20,18 @@ export default function LoginPage() {
     setLoading(true);
     setErrorMsg(null);
 
+    const cleanEmail = email.trim().toLowerCase();
     const { error } = await supabase.auth.signInWithPassword({
-      email,
+      email: cleanEmail,
       password,
     });
 
     if (error) {
-      setErrorMsg(error.message);
+      if (error.message.toLowerCase().includes("invalid login credentials")) {
+        setErrorMsg("Invalid email or password. If you haven't registered your workspace account yet, please click 'Register Workspace' below.");
+      } else {
+        setErrorMsg(error.message);
+      }
       setLoading(false);
     } else {
       if (typeof window !== "undefined") {

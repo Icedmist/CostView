@@ -66,8 +66,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const [currency, setCurrency] = useState("NGN");
 
   const [currentProject, setCurrentProject] = useState<ProjectInfo>({
-    id: "817a8197-11b4-4223-9122-aaa01eb86c4a",
-    name: "CostView Construction Group Primary Site",
+    id: "",
+    name: "Primary Construction Site",
     code: "PRJ-01",
     location: "Lagos, Nigeria",
     budgetTotal: 0,

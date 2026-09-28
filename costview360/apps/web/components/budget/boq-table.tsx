@@ -74,7 +74,7 @@ export function BOQTable({
   initialSubTab?: string;
   onTabChange?: (tab: string) => void;
 } = {}) {
-  const { currency, activeRole } = useApp();
+  const { currency, activeRole, currentProject } = useApp();
   const normalizedInitial =
     initialSubTab === "boq" ? "master" : (initialSubTab as any) || "master";
   const [activeSubTab, setActiveSubTab] = useState<"master" | "risks" | "revisions" | "finalAccount">(
@@ -193,17 +193,19 @@ export function BOQTable({
 
     // Persist to Supabase if connected
     try {
-      const supabase = createClient();
-      await supabase.from("boq_items").insert({
-        project_id: "22222222-2222-2222-2222-222222222222",
-        item_code: newCode,
-        description: newDesc,
-        category: newCategory,
-        unit: newUnit,
-        quantity: Number(newQty),
-        rate: Number(newRate),
-        budget_amount: Number(newQty) * Number(newRate),
-      });
+      if (currentProject?.id) {
+        const supabase = createClient();
+        await supabase.from("boq_items").insert({
+          project_id: currentProject.id,
+          code: newCode,
+          description: newDesc,
+          category: newCategory,
+          unit: newUnit,
+          quantity: Number(newQty),
+          rate: Number(newRate),
+          budget_amount: Number(newQty) * Number(newRate),
+        });
+      }
     } catch (e) {
       console.error(e);
     }
