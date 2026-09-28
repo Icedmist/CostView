@@ -97,12 +97,6 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
         code: "1.3",
         icon: FileSpreadsheet,
       },
-      {
-        id: "estimator",
-        name: "AI Cost Estimator",
-        code: "1.4",
-        icon: Sparkles,
-      },
     ],
   },
 

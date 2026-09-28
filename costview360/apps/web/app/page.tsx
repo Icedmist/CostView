@@ -44,58 +44,54 @@ export default function LandingPage() {
       <MarketingNav />
 
       {/* HERO — Bright Navy & White/Milk Hero Canvas */}
-      <section className="relative overflow-hidden border-b-2 border-[#E5E5DE] bg-white">
-        <div className="relative max-w-7xl mx-auto px-4 md:px-6 py-16 md:py-28">
-          <div className="grid xl:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <section className="relative overflow-hidden border-b-2 border-[#E5E5DE] bg-white pt-4 sm:pt-6">
+        <div className="relative max-w-7xl mx-auto px-4 md:px-6 py-12 sm:py-16 md:py-24">
+          <div className="grid xl:grid-cols-2 gap-10 lg:gap-16 items-center">
             <div>
-              <div className="inline-flex items-center gap-2.5 bg-[#FAF9F5] border-2 border-[#E5E5DE] text-[#0A2540] px-5 py-2 rounded-full text-sm font-black tracking-wide mb-8 shadow-xs">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0A2540] opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#0A2540]" />
-                </span>
+              <div className="inline-flex items-center gap-2.5 bg-[#FAF9F5] border-2 border-[#E5E5DE] text-[#0A2540] px-5 py-2 rounded-full text-xs sm:text-sm font-black tracking-wide mb-6 sm:mb-8 shadow-xs">
                 <span>Construction Cost Intelligence — v2.0</span>
               </div>
 
-              <h1 className="text-[48px] sm:text-[60px] md:text-[72px] lg:text-[78px] font-black leading-[1.05] tracking-tight text-[#0A2540]">
+              <h1 className="text-[34px] xs:text-[40px] sm:text-[54px] md:text-[68px] lg:text-[76px] font-black leading-[1.08] sm:leading-[1.05] tracking-tight text-[#0A2540]">
                 Analyse. Plan.<br />
                 <span className="text-[#004080]">
                   Build Smarter.
                 </span>
               </h1>
 
-              <p className="mt-7 text-lg sm:text-xl font-normal leading-relaxed text-[#0A2540]/80 max-w-xl">
+              <p className="mt-5 sm:mt-7 text-base sm:text-lg md:text-xl font-normal leading-relaxed text-[#0A2540]/80 max-w-xl">
                 The unified intelligent system of record for <span className="font-bold text-[#0A2540]">budget, procurement, site progress</span>, and contractor valuations. Eliminate spreadsheet drift — command every naira from BOQ master to final account with defensible audit trails.
               </p>
 
-              <div className="mt-10 flex flex-wrap items-center gap-4">
+              <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4">
                 <Link
                   href="/dashboard"
-                  className="group min-h-[52px] px-8 py-4 bg-[#0A2540] hover:bg-[#003366] text-white rounded-xl font-black text-base shadow-lg shadow-[#0A2540]/25 flex items-center gap-3 transition-all active:scale-[0.98]"
+                  className="group min-h-[52px] px-8 py-4 bg-[#0A2540] hover:bg-[#003366] text-white rounded-xl font-black text-base shadow-lg shadow-[#0A2540]/25 flex items-center justify-center gap-3 transition-all active:scale-[0.98]"
                 >
                   Start Building Free <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                 </Link>
                 <Link
                   href="/register"
-                  className="min-h-[52px] px-8 py-4 bg-[#FAF9F5] hover:bg-white text-[#0A2540] border-2 border-[#E5E5DE] hover:border-[#0A2540] rounded-xl font-black text-base shadow-xs transition-all flex items-center"
+                  className="min-h-[52px] px-8 py-4 bg-[#FAF9F5] hover:bg-white text-[#0A2540] border-2 border-[#E5E5DE] hover:border-[#0A2540] rounded-xl font-black text-base shadow-xs transition-all flex items-center justify-center"
                 >
                   Create Workspace
                 </Link>
               </div>
 
-              <div className="mt-10 flex flex-wrap items-center gap-5 text-base font-extrabold text-[#0A2540]/80">
+              <div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-3 sm:gap-5 text-sm sm:text-base font-extrabold text-[#0A2540]/80">
                 <span className="flex items-center gap-2 text-[#0A2540]">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600" /> No credit card required
+                  <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" /> No credit card required
                 </span>
-                <span className="w-2 h-2 bg-[#E5E5DE] rounded-full" />
+                <span className="hidden sm:inline w-2 h-2 bg-[#E5E5DE] rounded-full" />
                 <span className="text-[#0A2540]">₦ NGN Native</span>
-                <span className="w-2 h-2 bg-[#E5E5DE] rounded-full" />
+                <span className="hidden sm:inline w-2 h-2 bg-[#E5E5DE] rounded-full" />
                 <span className="text-[#0A2540]">8 Pre-Seeded RBAC Roles</span>
-                <span className="w-2 h-2 bg-[#E5E5DE] rounded-full" />
+                <span className="hidden sm:inline w-2 h-2 bg-[#E5E5DE] rounded-full" />
                 <span className="text-[#0A2540]">Audit Trail RLS</span>
               </div>
 
-              <div className="mt-8 flex items-center gap-4 p-5 bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl shadow-sm max-w-lg">
-                <div className="flex -space-x-3">
+              <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 sm:p-5 bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl shadow-sm max-w-lg">
+                <div className="flex -space-x-3 shrink-0">
                   {[
                     { label: "PM", bg: "bg-[#0A2540]" },
                     { label: "QS", bg: "bg-[#003366]" },
@@ -104,15 +100,15 @@ export default function LandingPage() {
                   ].map((item) => (
                     <div
                       key={item.label}
-                      className={`w-12 h-12 rounded-full border-2 border-white flex items-center justify-center text-sm font-black text-white shadow-xs ${item.bg}`}
+                      className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white flex items-center justify-center text-xs sm:text-sm font-black text-white shadow-xs ${item.bg}`}
                     >
                       {item.label}
                     </div>
                   ))}
                 </div>
                 <div>
-                  <div className="text-base font-black text-[#0A2540]">Trusted by 120+ active site &amp; finance teams</div>
-                  <div className="text-sm font-semibold text-[#0A2540]/70 mt-0.5">Victoria Island · Lekki · Eko Atlantic · Abuja</div>
+                  <div className="text-sm sm:text-base font-black text-[#0A2540]">Trusted by 120+ active site &amp; finance teams</div>
+                  <div className="text-xs sm:text-sm font-semibold text-[#0A2540]/70 mt-0.5">Victoria Island · Lekki · Eko Atlantic · Abuja</div>
                 </div>
               </div>
             </div>
@@ -121,41 +117,37 @@ export default function LandingPage() {
             <div className="relative group">
               <div className="bg-white border-2 border-[#E5E5DE] rounded-3xl shadow-xl overflow-hidden transition-all duration-300">
                 {/* Window Header */}
-                <div className="h-16 bg-[#FAF9F5] border-b-2 border-[#E5E5DE] flex items-center justify-between px-6 py-3">
-                  <div className="flex items-center gap-2.5">
-                    <span className="w-3.5 h-3.5 bg-rose-400 rounded-full" />
-                    <span className="w-3.5 h-3.5 bg-amber-400 rounded-full" />
-                    <span className="w-3.5 h-3.5 bg-emerald-400 rounded-full" />
-                    <span className="ml-3 text-sm font-mono font-black text-[#0A2540] tracking-wider hidden sm:inline">
+                <div className="h-14 sm:h-16 bg-[#FAF9F5] border-b-2 border-[#E5E5DE] flex items-center justify-between px-4 sm:px-6 py-3">
+                  <div className="flex items-center gap-2 sm:gap-2.5">
+                    <span className="w-3 h-3 sm:w-3.5 sm:h-3.5 bg-rose-400 rounded-full" />
+                    <span className="w-3 h-3 sm:w-3.5 sm:h-3.5 bg-amber-400 rounded-full" />
+                    <span className="w-3 h-3 sm:w-3.5 sm:h-3.5 bg-emerald-400 rounded-full" />
+                    <span className="ml-2 sm:ml-3 text-xs sm:text-sm font-mono font-black text-[#0A2540] tracking-wider hidden xs:inline">
                       COSTVIEW · HORIZON TOWERS
                     </span>
                   </div>
-                  <span className="inline-flex items-center gap-2 text-xs md:text-sm font-black px-3.5 py-1.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300">
-                    <span className="relative flex h-2.5 w-2.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-600" />
-                    </span>
+                  <span className="inline-flex items-center text-xs md:text-sm font-black px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300">
                     Live System Active
                   </span>
                 </div>
 
                 {/* Card Content Body */}
-                <div className="p-7 md:p-9 bg-white space-y-6">
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl p-5 md:p-6 shadow-xs">
-                      <div className="text-xs md:text-sm font-black text-[#0A2540]/60 uppercase tracking-wider">Approved Budget</div>
-                      <div className="text-2xl md:text-3xl font-black font-mono text-[#0A2540] mt-2">₦301.8M</div>
-                      <div className="h-2.5 bg-[#0A2540] rounded-full mt-3" />
+                <div className="p-4 sm:p-7 md:p-9 bg-white space-y-4 sm:space-y-6">
+                  <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                    <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl p-3 sm:p-5 md:p-6 shadow-xs">
+                      <div className="text-[10px] sm:text-xs md:text-sm font-black text-[#0A2540]/60 uppercase tracking-wider truncate">Approved</div>
+                      <div className="text-base sm:text-2xl md:text-3xl font-black font-mono text-[#0A2540] mt-1 sm:mt-2">₦301.8M</div>
+                      <div className="h-2 sm:h-2.5 bg-[#0A2540] rounded-full mt-2 sm:mt-3" />
                     </div>
-                    <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl p-5 md:p-6 shadow-xs">
-                      <div className="text-xs md:text-sm font-black text-[#0A2540]/60 uppercase tracking-wider">Committed POs</div>
-                      <div className="text-2xl md:text-3xl font-black font-mono text-[#0A2540] mt-2">₦292.2M</div>
-                      <div className="h-2.5 bg-[#004080] rounded-full mt-3" />
+                    <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl p-3 sm:p-5 md:p-6 shadow-xs">
+                      <div className="text-[10px] sm:text-xs md:text-sm font-black text-[#0A2540]/60 uppercase tracking-wider truncate">Committed</div>
+                      <div className="text-base sm:text-2xl md:text-3xl font-black font-mono text-[#0A2540] mt-1 sm:mt-2">₦292.2M</div>
+                      <div className="h-2 sm:h-2.5 bg-[#004080] rounded-full mt-2 sm:mt-3" />
                     </div>
-                    <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl p-5 md:p-6 shadow-xs">
-                      <div className="text-xs md:text-sm font-black text-emerald-800 uppercase tracking-wider">Actual Certified</div>
-                      <div className="text-2xl md:text-3xl font-black font-mono text-emerald-800 mt-2">₦216.4M</div>
-                      <div className="h-2.5 bg-emerald-600 rounded-full mt-3" />
+                    <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl p-3 sm:p-5 md:p-6 shadow-xs">
+                      <div className="text-[10px] sm:text-xs md:text-sm font-black text-emerald-800 uppercase tracking-wider truncate">Actual</div>
+                      <div className="text-base sm:text-2xl md:text-3xl font-black font-mono text-emerald-800 mt-1 sm:mt-2">₦216.4M</div>
+                      <div className="h-2 sm:h-2.5 bg-emerald-600 rounded-full mt-2 sm:mt-3" />
                     </div>
                   </div>
 
@@ -217,19 +209,19 @@ export default function LandingPage() {
       </section>
 
       {/* STATS BAR — High-Contrast Scaled Figures */}
-      <section className="bg-[#FAF9F5] border-y-2 border-[#E5E5DE] py-14 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+      <section className="bg-[#FAF9F5] border-y-2 border-[#E5E5DE] py-10 sm:py-14 shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 text-center">
           {[
             { k: "₦450M+", v: "Avg Budget Managed Per Project" },
             { k: "3-WAY", v: "PO ⇄ GRN ⇄ Invoice Match Engine" },
             { k: "8 ROLES", v: "Pre-Configured RBAC Permissions" },
             { k: "99.9%", v: "Audit Trail Compliance Coverage" },
           ].map((s) => (
-            <div key={s.k} className="p-4">
-              <div className="text-4xl md:text-5xl lg:text-6xl font-black font-mono tracking-tight text-[#0A2540]">
+            <div key={s.k} className="p-2 sm:p-4">
+              <div className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black font-mono tracking-tight text-[#0A2540]">
                 {s.k}
               </div>
-              <div className="text-sm md:text-base font-black text-[#0A2540]/80 mt-2.5 uppercase tracking-wider">{s.v}</div>
+              <div className="text-xs sm:text-sm md:text-base font-black text-[#0A2540]/80 mt-2 sm:mt-2.5 uppercase tracking-wider">{s.v}</div>
             </div>
           ))}
         </div>
@@ -479,32 +471,34 @@ export default function LandingPage() {
             <p className="text-base md:text-lg text-[#0A2540]/80 font-normal mt-3">Why modern construction projects transition to an integrated system of record.</p>
           </div>
 
-          <div className="bg-white border-2 border-[#E5E5DE] rounded-3xl shadow-lg overflow-hidden">
-            <div className="grid grid-cols-3 bg-[#FAF9F5] text-[#0A2540] font-black text-sm md:text-base uppercase tracking-wider border-b-2 border-[#E5E5DE]">
-              <div className="p-6">Operational Capability</div>
-              <div className="p-6 text-center text-slate-500">Excel / WhatsApp / Paper</div>
-              <div className="p-6 text-center bg-blue-50/80 text-[#0A2540]">CostView</div>
-            </div>
-            {[
-              ["BOQ Variance Threshold Alerts", "Manual checks after month-end close", "Automated ±5% real-time flag"],
-              ["PO ⇄ GRN ⇄ Invoice Three-Way Match", "Manual eyeball checks, error prone", "Automated payment gatekeeper"],
-              ["Live Material Inventory Levels", "End-of-day guesswork & site visits", "Real-time on-hand / reserved gauges"],
-              ["Immutable Audit Trail & Permissions", "Files overwritten or shared via email", "Postgres RLS with complete actor logs"],
-              ["Role Segregation & Controls", "Full spreadsheet shared or hidden", "8 strict RBAC profile roles"],
-              ["Contractor Valuation & Retention", "Messy separate spreadsheets", "Automated 10% escrow & certs"],
-            ].map((row) => (
-              <div
-                key={row[0]}
-                className="grid grid-cols-3 border-b-2 border-[#E5E5DE] text-base font-semibold hover:bg-[#FAF9F5]/70 transition-colors"
-              >
-                <div className="p-6 font-black text-[#0A2540] border-r-2 border-[#E5E5DE]">{row[0]}</div>
-                <div className="p-6 text-center text-slate-500 border-r-2 border-[#E5E5DE] font-medium">{row[1]}</div>
-                <div className="p-6 text-center bg-blue-50/30 text-[#0A2540] font-black flex items-center justify-center gap-2.5">
-                  <CheckCircle2 className="w-6 h-6 text-emerald-600 shrink-0" />
-                  <span>{row[2]}</span>
-                </div>
+          <div className="overflow-x-auto pb-4 -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div className="min-w-[580px] bg-white border-2 border-[#E5E5DE] rounded-3xl shadow-lg overflow-hidden">
+              <div className="grid grid-cols-3 bg-[#FAF9F5] text-[#0A2540] font-black text-xs sm:text-sm md:text-base uppercase tracking-wider border-b-2 border-[#E5E5DE]">
+                <div className="p-4 sm:p-6">Operational Capability</div>
+                <div className="p-4 sm:p-6 text-center text-slate-500">Excel / WhatsApp / Paper</div>
+                <div className="p-4 sm:p-6 text-center bg-blue-50/80 text-[#0A2540]">CostView</div>
               </div>
-            ))}
+              {[
+                ["BOQ Variance Threshold Alerts", "Manual checks after month-end close", "Automated ±5% real-time flag"],
+                ["PO ⇄ GRN ⇄ Invoice Three-Way Match", "Manual eyeball checks, error prone", "Automated payment gatekeeper"],
+                ["Live Material Inventory Levels", "End-of-day guesswork & site visits", "Real-time on-hand / reserved gauges"],
+                ["Immutable Audit Trail & Permissions", "Files overwritten or shared via email", "Postgres RLS with complete actor logs"],
+                ["Role Segregation & Controls", "Full spreadsheet shared or hidden", "8 strict RBAC profile roles"],
+                ["Contractor Valuation & Retention", "Messy separate spreadsheets", "Automated 10% escrow & certs"],
+              ].map((row) => (
+                <div
+                  key={row[0]}
+                  className="grid grid-cols-3 border-b-2 border-[#E5E5DE] text-sm sm:text-base font-semibold hover:bg-[#FAF9F5]/70 transition-colors"
+                >
+                  <div className="p-4 sm:p-6 font-black text-[#0A2540] border-r-2 border-[#E5E5DE]">{row[0]}</div>
+                  <div className="p-4 sm:p-6 text-center text-slate-500 border-r-2 border-[#E5E5DE] font-medium">{row[1]}</div>
+                  <div className="p-4 sm:p-6 text-center bg-blue-50/30 text-[#0A2540] font-black flex items-center justify-center gap-2 sm:gap-2.5">
+                    <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-600 shrink-0" />
+                    <span>{row[2]}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -559,16 +553,16 @@ export default function LandingPage() {
               <p className="text-base md:text-lg text-white/80 leading-relaxed max-w-lg font-normal">
                 Join forward-thinking builders managing over ₦450M in project budgets with zero spreadsheet drift.
               </p>
-              <div className="pt-3 flex flex-wrap gap-4">
+              <div className="pt-3 flex flex-col sm:flex-row gap-3.5 sm:gap-4">
                 <Link
                   href="/register"
-                  className="min-h-[52px] px-8 py-4 bg-white hover:bg-slate-100 text-[#0A2540] rounded-xl font-black text-base shadow-lg transition-all active:scale-[0.98] flex items-center gap-2 cursor-pointer"
+                  className="min-h-[52px] px-8 py-4 bg-white hover:bg-slate-100 text-[#0A2540] rounded-xl font-black text-base shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
                 >
                   Create Free Workspace <ArrowRight className="w-5 h-5" />
                 </Link>
                 <Link
                   href="/dashboard"
-                  className="min-h-[52px] px-8 py-4 bg-white/10 hover:bg-white/20 text-white border-2 border-white/30 rounded-xl font-black text-base backdrop-blur-sm transition-all flex items-center cursor-pointer"
+                  className="min-h-[52px] px-8 py-4 bg-white/10 hover:bg-white/20 text-white border-2 border-white/30 rounded-xl font-black text-base backdrop-blur-sm transition-all flex items-center justify-center cursor-pointer"
                 >
                   Explore Demo Project →
                 </Link>

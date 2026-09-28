@@ -19,7 +19,6 @@ import { DataMigrationHub } from "@/components/admin/data-migration-hub";
 import { AuditLogView } from "@/components/admin/audit-log-view";
 import { WorkspaceSettingsView } from "@/components/settings/workspace-settings";
 import { ReportsView } from "@/components/reports/reports-view";
-import { AICostEstimator } from "@/components/budget/ai-cost-estimator";
 import { TradeDirectoryView } from "@/components/procurement/trade-directory-view";
 import { ClientPortalView } from "@/components/portal/client-portal-view";
 import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav";
@@ -103,23 +102,16 @@ export default function DashboardPage() {
           onOpenSearch={() => setCommandPaletteOpen(true)}
         />
 
-        <main className="flex-1 overflow-y-auto p-5 md:p-8 space-y-6 bg-[#FAF9F5] dark:bg-[#071324] pb-24 lg:pb-8">
+        <main className="flex-1 overflow-y-auto p-3 sm:p-5 md:p-8 space-y-6 bg-[#FAF9F5] dark:bg-[#071324] pb-24 lg:pb-8">
           {/* ========================================================= */}
           {/* SECTION 1: COST PLAN                                      */}
           {/* ========================================================= */}
           {activeSection === "Cost Plan" && (
             <RoleGuard permission="Budget">
-              {activeSubSection === "estimator" ? (
-                <AICostEstimator
-                  onBack={() => handleNavSelect("Cost Plan", "boq")}
-                  onGenerateBOQ={() => handleNavSelect("Cost Plan", "boq")}
-                />
-              ) : (
-                <BOQTable
-                  initialSubTab={activeSubSection as any}
-                  onTabChange={(tab) => setActiveSubSection(tab)}
-                />
-              )}
+              <BOQTable
+                initialSubTab={activeSubSection as any}
+                onTabChange={(tab) => setActiveSubSection(tab)}
+              />
             </RoleGuard>
           )}
 

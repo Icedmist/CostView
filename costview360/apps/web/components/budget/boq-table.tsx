@@ -362,15 +362,6 @@ export function BOQTable({
                 <span className="text-emerald-700 font-mono font-black">±{thresholdPercent}%</span>
               </div>
               <button
-                type="button"
-                onClick={() => onTabChange?.("estimator")}
-                title="Launch AI Parametric Feasibility Estimator"
-                className="flex items-center gap-2 bg-amber-50 hover:bg-amber-100 text-amber-950 border-2 border-amber-300 rounded-xl px-4 h-11 text-sm font-black uppercase tracking-wider shadow-xs transition-all cursor-pointer"
-              >
-                <Sparkles className="w-4 h-4 text-amber-600 fill-amber-500" />
-                <span>AI Estimator</span>
-              </button>
-              <button
                 onClick={() => setIsImportModalOpen(true)}
                 className="flex items-center gap-2 bg-[#FAF9F5] hover:bg-[#F2F1EC] text-[#0A2540] border-2 border-[#E5E5DE] rounded-xl px-4 h-11 text-sm font-black uppercase tracking-wider shadow-xs transition-all cursor-pointer"
               >
