@@ -12,7 +12,11 @@ import {
   FileCheck2,
   BadgeCheck,
   Eye,
+  UploadCloud,
+  Loader2,
+  ExternalLink,
 } from "lucide-react";
+import { uploadToStorage } from "@/lib/storage/client";
 import type { DrawingDiscipline } from "@/lib/supabase/database.types";
 
 // PRD Section 3 (Architect) + Section 5 (Site Engineer):
@@ -88,6 +92,33 @@ export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) 
   const [formDiscipline, setFormDiscipline] = useState<DrawingDiscipline>("Architectural");
   const [formBoq, setFormBoq] = useState("");
   const [formFile, setFormFile] = useState("");
+  const [isUploadingDrawing, setIsUploadingDrawing] = useState(false);
+  const [drawingUploadNote, setDrawingUploadNote] = useState<string | null>(null);
+
+  const handleDrawingFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setIsUploadingDrawing(true);
+    setDrawingUploadNote(null);
+    try {
+      const res = await uploadToStorage(file, "drawings");
+      if (res.error) {
+        setDrawingUploadNote(`Upload failed: ${res.error}`);
+      } else if (res.url) {
+        setFormFile(res.url);
+        if (!formTitle) {
+          const cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
+          setFormTitle(cleanName);
+        }
+        setDrawingUploadNote(`Uploaded ${file.name} to storage bucket!`);
+      }
+    } catch (err: any) {
+      setDrawingUploadNote(err?.message || "Failed to upload drawing to storage.");
+    } finally {
+      setIsUploadingDrawing(false);
+      e.target.value = "";
+    }
+  };
 
   const canUpload = activeRole === "Admin" || activeRole === "Architect" || activeRole === "Project Manager";
   const canApprove = activeRole === "Admin" || activeRole === "Architect";
@@ -498,17 +529,42 @@ export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) 
                 className="mt-1.5 w-full min-h-[48px] px-4 py-3 rounded-xl border-2 border-slate-200 text-sm font-mono font-bold focus:border-sky-500 focus:outline-none"
               />
             </label>
-            <label className="block sm:col-span-2">
-              <span className="text-xs font-black uppercase tracking-wider text-slate-500">
-                File reference
+            <div className="sm:col-span-2 space-y-1.5">
+              <span className="text-xs font-black uppercase tracking-wider text-slate-500 block">
+                Drawing File Reference (Storage Bucket / PDF / CAD / Image)
               </span>
-              <input
-                value={formFile}
-                onChange={(e) => setFormFile(e.target.value)}
-                placeholder="e.g. A-102_GA_FirstFloor_v1.pdf"
-                className="mt-1.5 w-full min-h-[48px] px-4 py-3 rounded-xl border-2 border-slate-200 text-sm font-semibold focus:border-sky-500 focus:outline-none"
-              />
-            </label>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <label className="inline-flex items-center justify-center gap-2 px-4 py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-bold cursor-pointer transition-all shrink-0">
+                  {isUploadingDrawing ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" /> Uploading to Bucket...
+                    </>
+                  ) : (
+                    <>
+                      <UploadCloud className="w-4 h-4" /> Upload File (.pdf, .dwg, image)
+                    </>
+                  )}
+                  <input
+                    type="file"
+                    accept=".pdf,.dwg,.dxf,.png,.jpg,.jpeg,.svg"
+                    disabled={isUploadingDrawing}
+                    onChange={handleDrawingFileUpload}
+                    className="hidden"
+                  />
+                </label>
+                <input
+                  value={formFile}
+                  onChange={(e) => setFormFile(e.target.value)}
+                  placeholder="e.g. A-102_GA_v1.pdf or uploaded storage URL"
+                  className="flex-1 min-h-[48px] px-4 py-3 rounded-xl border-2 border-slate-200 text-xs sm:text-sm font-mono focus:border-sky-500 focus:outline-none"
+                />
+              </div>
+              {drawingUploadNote && (
+                <p className="text-[11px] font-bold text-sky-800 bg-sky-50 border border-sky-200 rounded-lg p-2">
+                  {drawingUploadNote}
+                </p>
+              )}
+            </div>
           </div>
           <div className="mt-4 flex flex-wrap gap-3">
             <button
@@ -550,7 +606,19 @@ export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) 
                   </div>
                   <div className="text-base font-extrabold text-slate-900 mt-1.5">{d.title}</div>
                   <div className="text-xs text-slate-500 font-semibold mt-1">
-                    {d.fileRef} · Linked work item:{" "}
+                    {d.fileRef.startsWith("http") ? (
+                      <a
+                        href={d.fileRef}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-sky-700 hover:text-sky-900 underline font-bold inline-flex items-center gap-1 mr-1"
+                      >
+                        View File ({d.fileRef.split("/").pop()}) <ExternalLink className="w-3 h-3" />
+                      </a>
+                    ) : (
+                      <span>{d.fileRef} · </span>
+                    )}
+                    Linked work item:{" "}
                     <span className="font-mono font-bold text-slate-700">
                       {d.linkedBoqCode || "—"}
                     </span>{" "}
