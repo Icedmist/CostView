@@ -75,140 +75,11 @@ interface SafetyObservation {
   status: "Open" | "Remediated";
 }
 
-const INITIAL_LOGS: DailyLog[] = [
-  {
-    id: "log-142",
-    logNumber: 142,
-    date: "Monday, 7 September 2026",
-    weather: "Sunny",
-    temperature: "31°C",
-    delayHours: 0,
-    workerHeadcount: 48,
-    title: "Superstructure Concrete Pour & Blockwork Muster",
-    summary: [
-      "Cast 65m³ of Grade 30 reinforced concrete on Floor 2 beam & slab section 1.",
-      "Completed 180m² of 225mm hollow sandcrete blockwork perimeter walling on Grid line A-E.",
-      "Received delivery of 600 bags Dangote cement (matched against PO-2026-088).",
-      "Zero lost-time safety incidents recorded (Day 114 incident-free streak).",
-    ],
-  },
-  {
-    id: "log-141",
-    logNumber: 141,
-    date: "Saturday, 5 September 2026",
-    weather: "Overcast",
-    temperature: "28°C",
-    delayHours: 1,
-    workerHeadcount: 44,
-    title: "Rebar Fixing for Column Plinths & MEP First-Fix Riser",
-    summary: [
-      "Tied 14 tons of 16mm/20mm high tensile TMT steel on second floor shear wall.",
-      "MEP subcontractor completed conduit pipe layout on Block B riser.",
-      "Heavy morning drizzle caused 1-hour delay in formwork erection.",
-    ],
-  },
-];
-
-const INITIAL_PHOTOS: SitePhoto[] = [
-  {
-    id: "photo-1",
-    title: "Floor 2 Beam & Slab Concrete Pour Inspection",
-    category: "Structure",
-    timestamp: "2026-09-07 11:30",
-    uploadedBy: "Engr. Tayo (Site Eng)",
-    url: "/images/site-pour.jpg",
-  },
-  {
-    id: "photo-2",
-    title: "Column C4 Rebar Spacing & Cover Block Placement",
-    category: "Quality",
-    timestamp: "2026-09-07 09:15",
-    uploadedBy: "Architect David",
-    url: "/images/rebar-check.jpg",
-  },
-  {
-    id: "photo-3",
-    title: "Sandcrete Blockwork Alignment Check Grid Line A",
-    category: "Finishing",
-    timestamp: "2026-09-06 15:40",
-    uploadedBy: "Engr. Tayo (Site Eng)",
-    url: "/images/blockwork.jpg",
-  },
-];
-
-const INITIAL_INSPECTIONS: Inspection[] = [
-  {
-    id: "insp-1",
-    title: "Pre-Pour Reinforcement & Formwork Sign-Off",
-    element: "Floor 2 Slab Grid 1-6",
-    inspector: "Consultant Structural Engr",
-    date: "2026-09-07 08:00",
-    status: "Passed",
-    notes: "Bar diameters and lap lengths match structural engineering drawings.",
-  },
-  {
-    id: "insp-2",
-    title: "Column C4 Plinth Concrete Surface Quality",
-    element: "Block B Plinth",
-    inspector: "Architect David",
-    date: "2026-09-06 14:30",
-    status: "Failed",
-    notes: "Identified honeycomb voiding due to inadequate poker vibrator compaction.",
-  },
-];
-
-const SAMPLE_SNAGS: SnagRecord[] = [
-  {
-    id: "snag-1",
-    title: "Honeycomb voiding on column C4 plinth level",
-    location: "Block B, Ground Floor",
-    severity: "High",
-    status: "Open",
-    assignedTo: "Engr. Tayo (Site Eng)",
-    raisedBy: "Architect David",
-  },
-  {
-    id: "snag-2",
-    title: "Reinforcement cover spacing inadequate (<25mm)",
-    location: "Raft Slab Grid 3-4",
-    severity: "Critical",
-    status: "In Progress",
-    assignedTo: "Bar Benders Foreman",
-    raisedBy: "Consultant QS / PM",
-  },
-  {
-    id: "snag-3",
-    title: "Conduit piping misalignment in riser shaft",
-    location: "First Floor Riser A",
-    severity: "Medium",
-    status: "Remediated",
-    assignedTo: "MEP Subcontractor",
-    raisedBy: "Site Engineer",
-  },
-];
-
-const INITIAL_SAFETY: SafetyObservation[] = [
-  {
-    id: "safe-1",
-    type: "Good Practice",
-    description: "Full edge protection scaffolding and safety netting installed on Floor 2 perimeter.",
-    severity: "Low",
-    location: "Perimeter Floor 2",
-    reportedBy: "HSE Officer",
-    timestamp: "2026-09-07 08:30",
-    status: "Remediated",
-  },
-  {
-    id: "safe-2",
-    type: "Unsafe Act",
-    description: "Two carpentry helpers observed working on scaffolding without chin-strapped hard hats.",
-    severity: "Medium",
-    location: "Block A Formwork Area",
-    reportedBy: "Engr. Babatunde (PM)",
-    timestamp: "2026-09-06 11:00",
-    status: "Remediated",
-  },
-];
+const INITIAL_LOGS: DailyLog[] = [];
+const INITIAL_PHOTOS: SitePhoto[] = [];
+const INITIAL_INSPECTIONS: Inspection[] = [];
+const SAMPLE_SNAGS: SnagRecord[] = [];
+const INITIAL_SAFETY: SafetyObservation[] = [];
 
 export function SiteDiaryView({
   initialSubTab = "diary",
@@ -455,8 +326,21 @@ export function SiteDiaryView({
             </button>
           </div>
 
-          <div className="space-y-4">
-            {logs.map((log) => (
+          {logs.length === 0 ? (
+            <div className="bg-white border-2 border-[#E5E5DE] rounded-2xl p-10 text-center">
+              <Calendar className="w-10 h-10 text-slate-300 mx-auto mb-3" />
+              <h4 className="text-base font-bold text-slate-800">No daily site logs recorded yet</h4>
+              <p className="text-xs text-slate-500 mt-1">Record weather conditions, workforce attendance, and shift milestones.</p>
+              <button
+                onClick={() => setIsNewLogOpen(true)}
+                className="mt-4 px-4 py-2 bg-[#0A2540] text-white text-xs font-black rounded-xl hover:opacity-90 cursor-pointer shadow-sm"
+              >
+                + New Daily Entry
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {logs.map((log) => (
               <div key={log.id} className="bg-white border border-slate-200/80 border border-slate-200/80 p-4 space-y-3">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-200/80 pb-3">
                   <div>
@@ -490,7 +374,8 @@ export function SiteDiaryView({
               </div>
             ))}
           </div>
-        </div>
+        )}
+      </div>
       )}
 
       {/* SUBTAB 2: PHOTO GALLERY (PRD Item 16) */}
@@ -515,24 +400,38 @@ export function SiteDiaryView({
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {photos.map((p) => (
-              <div key={p.id} className="bg-white border border-slate-200/80 shadow-card overflow-hidden group">
-                <div className="h-36 bg-white flex items-center justify-center border-b border-slate-200/80 relative">
-                  <Camera className="w-8 h-8 text-slate-900" />
-                  <span className="absolute top-2 left-2 px-2 py-0.5 text-xs font-bold bg-slate-900 text-white border border-slate-200/80">
-                    {p.category}
-                  </span>
+          {photos.length === 0 ? (
+            <div className="bg-white border-2 border-[#E5E5DE] rounded-2xl p-10 text-center">
+              <Camera className="w-10 h-10 text-slate-300 mx-auto mb-3" />
+              <h4 className="text-base font-bold text-slate-800">No progress photos uploaded yet</h4>
+              <p className="text-xs text-slate-500 mt-1">Attach geo-stamped site inspection and progress photos for verification.</p>
+              <button
+                onClick={() => setIsUploadPhotoOpen(true)}
+                className="mt-4 px-4 py-2 bg-[#0A2540] text-white text-xs font-black rounded-xl hover:opacity-90 cursor-pointer shadow-sm"
+              >
+                + Upload Photo
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {photos.map((p) => (
+                <div key={p.id} className="bg-white border border-slate-200/80 shadow-card overflow-hidden group">
+                  <div className="h-36 bg-white flex items-center justify-center border-b border-slate-200/80 relative">
+                    <Camera className="w-8 h-8 text-slate-900" />
+                    <span className="absolute top-2 left-2 px-2 py-0.5 text-xs font-bold bg-slate-900 text-white border border-slate-200/80">
+                      {p.category}
+                    </span>
+                  </div>
+                  <div className="p-3 bg-white">
+                    <h5 className="text-sm font-bold text-slate-900 line-clamp-1">{p.title}</h5>
+                    <p className="text-sm text-slate-900/60 mt-1">
+                      Uploaded by {p.uploadedBy} · {p.timestamp}
+                    </p>
+                  </div>
                 </div>
-                <div className="p-3 bg-white">
-                  <h5 className="text-sm font-bold text-slate-900 line-clamp-1">{p.title}</h5>
-                  <p className="text-sm text-slate-900/60 mt-1">
-                    Uploaded by {p.uploadedBy} · {p.timestamp}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
@@ -558,33 +457,47 @@ export function SiteDiaryView({
             </button>
           </div>
 
-          <div className="divide-y divide-navy-800/10">
-            {inspections.map((insp) => (
-              <div key={insp.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-white/20 px-2 border border-slate-200/80 transition-colors">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-semibold text-slate-900 text-xs">{insp.title}</span>
-                    <span className="text-slate-900/40">·</span>
-                    <span className="text-slate-900/60 text-xs">Element: <strong className="text-slate-900">{insp.element}</strong></span>
+          {inspections.length === 0 ? (
+            <div className="bg-white border-2 border-[#E5E5DE] rounded-2xl p-10 text-center">
+              <FileCheck2 className="w-10 h-10 text-slate-300 mx-auto mb-3" />
+              <h4 className="text-base font-bold text-slate-800">No QA/QC inspections logged</h4>
+              <p className="text-xs text-slate-500 mt-1">Record concrete pre-pour sign-offs, rebar checks, and MEP inspections.</p>
+              <button
+                onClick={() => setIsNewInspectionOpen(true)}
+                className="mt-4 px-4 py-2 bg-[#0A2540] text-white text-xs font-black rounded-xl hover:opacity-90 cursor-pointer shadow-sm"
+              >
+                + Add Inspection
+              </button>
+            </div>
+          ) : (
+            <div className="divide-y divide-navy-800/10">
+              {inspections.map((insp) => (
+                <div key={insp.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-white/20 px-2 border border-slate-200/80 transition-colors">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-semibold text-slate-900 text-xs">{insp.title}</span>
+                      <span className="text-slate-900/40">·</span>
+                      <span className="text-slate-900/60 text-xs">Element: <strong className="text-slate-900">{insp.element}</strong></span>
+                    </div>
+                    <p className="text-xs text-slate-900">{insp.notes}</p>
+                    <p className="text-xs text-slate-900/60 mt-1">
+                      Inspector: {insp.inspector} · {insp.date}
+                    </p>
                   </div>
-                  <p className="text-xs text-slate-900">{insp.notes}</p>
-                  <p className="text-xs text-slate-900/60 mt-1">
-                    Inspector: {insp.inspector} · {insp.date}
-                  </p>
-                </div>
 
-                <div className="flex items-center gap-2">
-                  <span className={`px-2.5 py-1 text-xs font-bold border border-slate-200/80 ${
-                    insp.status === "Passed"
-                      ? "bg-emerald-100 text-emerald-800"
-                      : "bg-red-100 text-red-800"
-                  }`}>
-                    {insp.status}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className={`px-2.5 py-1 text-xs font-bold border border-slate-200/80 ${
+                      insp.status === "Passed"
+                        ? "bg-emerald-100 text-emerald-800"
+                        : "bg-red-100 text-red-800"
+                    }`}>
+                      {insp.status}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
@@ -603,42 +516,56 @@ export function SiteDiaryView({
             </div>
           </div>
 
-          <div className="divide-y divide-navy-800/10">
-            {snags.map((snag) => (
-              <div key={snag.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-white/20 px-2 border border-slate-200/80 transition-colors">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className={`px-2 py-0.5 text-xs font-bold border border-slate-200/80 ${
-                      snag.severity === "Critical"
-                        ? "bg-red-100 text-red-800"
-                        : snag.severity === "High"
-                        ? "bg-amber-100 text-amber-800"
-                        : "bg-white text-slate-900"
-                    }`}>
-                      {snag.severity}
-                    </span>
-                    <span className="font-semibold text-slate-900 text-xs">{snag.title}</span>
+          {snags.length === 0 ? (
+            <div className="bg-white border-2 border-[#E5E5DE] rounded-2xl p-10 text-center">
+              <AlertTriangle className="w-10 h-10 text-slate-300 mx-auto mb-3" />
+              <h4 className="text-base font-bold text-slate-800">No open snags flagged</h4>
+              <p className="text-xs text-slate-500 mt-1">Quality defects, remedial actions, and punch list items will appear here.</p>
+              <button
+                onClick={() => setIsNewSnagOpen(true)}
+                className="mt-4 px-4 py-2 bg-[#0A2540] text-white text-xs font-black rounded-xl hover:opacity-90 cursor-pointer shadow-sm"
+              >
+                + Flag Quality Snag
+              </button>
+            </div>
+          ) : (
+            <div className="divide-y divide-navy-800/10">
+              {snags.map((snag) => (
+                <div key={snag.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-white/20 px-2 border border-slate-200/80 transition-colors">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className={`px-2 py-0.5 text-xs font-bold border border-slate-200/80 ${
+                        snag.severity === "Critical"
+                          ? "bg-red-100 text-red-800"
+                          : snag.severity === "High"
+                          ? "bg-amber-100 text-amber-800"
+                          : "bg-white text-slate-900"
+                      }`}>
+                        {snag.severity}
+                      </span>
+                      <span className="font-semibold text-slate-900 text-xs">{snag.title}</span>
+                    </div>
+                    <div className="text-xs text-slate-900/60">
+                      Location: <strong className="text-slate-900">{snag.location}</strong> · Assigned: <strong className="text-slate-900">{snag.assignedTo}</strong> · Raised by: {snag.raisedBy}
+                    </div>
                   </div>
-                  <div className="text-xs text-slate-900/60">
-                    Location: <strong className="text-slate-900">{snag.location}</strong> · Assigned: <strong className="text-slate-900">{snag.assignedTo}</strong> · Raised by: {snag.raisedBy}
-                  </div>
-                </div>
 
-                <div className="flex items-center gap-2">
-                  <select
-                    value={snag.status}
-                    onChange={(e) => handleUpdateSnagStatus(snag.id, e.target.value as SnagRecord["status"])}
-                    className="bg-white border border-slate-200/80 px-2 py-1 text-xs text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-navy-800"
-                  >
-                    <option value="Open">Open</option>
-                    <option value="In Progress">In Progress</option>
-                    <option value="Remediated">Remediated</option>
-                    <option value="Closed">Closed</option>
-                  </select>
+                  <div className="flex items-center gap-2">
+                    <select
+                      value={snag.status}
+                      onChange={(e) => handleUpdateSnagStatus(snag.id, e.target.value as SnagRecord["status"])}
+                      className="bg-white border border-slate-200/80 px-2 py-1 text-xs text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-navy-800"
+                    >
+                      <option value="Open">Open</option>
+                      <option value="In Progress">In Progress</option>
+                      <option value="Remediated">Remediated</option>
+                      <option value="Closed">Closed</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
@@ -664,33 +591,47 @@ export function SiteDiaryView({
             </button>
           </div>
 
-          <div className="divide-y divide-navy-800/10">
-            {safetyLogs.map((s) => (
-              <div key={s.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-white/20 px-2 border border-slate-200/80 transition-colors">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className={`px-2 py-0.5 text-xs font-bold border border-slate-200/80 ${
-                      s.type === "Incident"
-                        ? "bg-red-100 text-red-800"
-                        : s.type === "Unsafe Act"
-                        ? "bg-amber-100 text-amber-800"
-                        : "bg-emerald-100 text-emerald-800"
-                    }`}>
-                      {s.type}
-                    </span>
-                    <span className="font-semibold text-slate-900 text-xs">{s.description}</span>
+          {safetyLogs.length === 0 ? (
+            <div className="bg-white border-2 border-[#E5E5DE] rounded-2xl p-10 text-center">
+              <ShieldAlert className="w-10 h-10 text-slate-300 mx-auto mb-3" />
+              <h4 className="text-base font-bold text-slate-800">No HSE safety observations logged</h4>
+              <p className="text-xs text-slate-500 mt-1">Track near misses, safety toolbox talks, and preventative actions.</p>
+              <button
+                onClick={() => setIsNewSafetyOpen(true)}
+                className="mt-4 px-4 py-2 bg-[#0A2540] text-white text-xs font-black rounded-xl hover:opacity-90 cursor-pointer shadow-sm"
+              >
+                + Log Observation / Incident
+              </button>
+            </div>
+          ) : (
+            <div className="divide-y divide-navy-800/10">
+              {safetyLogs.map((s) => (
+                <div key={s.id} className="py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-white/20 px-2 border border-slate-200/80 transition-colors">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className={`px-2 py-0.5 text-xs font-bold border border-slate-200/80 ${
+                        s.type === "Incident"
+                          ? "bg-red-100 text-red-800"
+                          : s.type === "Unsafe Act"
+                          ? "bg-amber-100 text-amber-800"
+                          : "bg-emerald-100 text-emerald-800"
+                      }`}>
+                        {s.type}
+                      </span>
+                      <span className="font-semibold text-slate-900 text-xs">{s.description}</span>
+                    </div>
+                    <div className="text-xs text-slate-900/60">
+                      Location: <strong className="text-slate-900">{s.location}</strong> · Reported by: {s.reportedBy} · {s.timestamp}
+                    </div>
                   </div>
-                  <div className="text-xs text-slate-900/60">
-                    Location: <strong className="text-slate-900">{s.location}</strong> · Reported by: {s.reportedBy} · {s.timestamp}
-                  </div>
-                </div>
 
-                <span className="px-2.5 py-1 bg-white border border-slate-200/80 text-slate-900 text-xs font-semibold">
-                  {s.status}
-                </span>
-              </div>
-            ))}
-          </div>
+                  <span className="px-2.5 py-1 bg-white border border-slate-200/80 text-slate-900 text-xs font-semibold">
+                    {s.status}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 

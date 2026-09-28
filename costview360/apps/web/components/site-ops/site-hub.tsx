@@ -61,18 +61,9 @@ export interface SitePost {
   createdAt: string;
 }
 
-const DEFAULT_PROJECT_MEMBERS: TaggedUser[] = [
-  { id: "u-pm", name: "Babatunde Alabi", role: "Project Manager" },
-  { id: "u-se", name: "Engr. Tayo Adeleke", role: "Site Engineer" },
-  { id: "u-qs", name: "Nkechi Okonkwo", role: "Quantity Surveyor" },
-  { id: "u-arch", name: "David Olanrewaju", role: "Architect" },
-  { id: "u-proc", name: "Zainab Bello", role: "Procurement Officer" },
-  { id: "u-acc", name: "Emeka Nwosu", role: "Accountant" },
-  { id: "u-store", name: "Haruna Garba", role: "Storekeeper" },
-];
-
 export function SiteHub() {
   const { currentProject, currency, activeRole } = useApp();
+  const [projectMembers, setProjectMembers] = useState<TaggedUser[]>([]);
   const [posts, setPosts] = useState<SitePost[]>([]);
   const [filterType, setFilterType] = useState<"all" | "progress" | "expense" | "issue">("all");
   const [activeTab, setActiveTab] = useState<"feed" | "photos">("feed");
@@ -123,6 +114,20 @@ export function SiteHub() {
             createdAt: p.created_at,
           }));
           if (isMounted) setPosts(mapped);
+        }
+
+        // Fetch real team members from profiles
+        const { data: profilesData } = await supabase
+          .from("profiles")
+          .select("id, full_name, default_role");
+        if (isMounted && profilesData && profilesData.length > 0) {
+          setProjectMembers(
+            profilesData.map((p: any) => ({
+              id: p.id,
+              name: p.full_name || "Team Member",
+              role: p.default_role || "Staff",
+            }))
+          );
         }
       } catch (err) {
         console.warn("Using local state for Site Hub", err);
@@ -297,59 +302,64 @@ export function SiteHub() {
         </div>
       </div>
 
-      {/* Main Grid: Composer & Feed */}
-      <div className="grid lg:grid-cols-3 gap-6">
-        {/* Left Column: Post Composer */}
-        <div className="lg:col-span-1 space-y-4">
-          <div className="bg-white dark:bg-[#0A1931] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-2xl p-5 shadow-xs space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E5E5DE] dark:border-[#1E3A5F]">
-              <span className="text-sm font-black uppercase tracking-wider text-[#0A2540] dark:text-white flex items-center gap-2">
-                <HardHat className="w-4 h-4 text-[#FFD23F]" />
-                Share Site Update
-              </span>
-              <span className="text-xs font-bold text-[#0A2540]/70 dark:text-slate-300 font-mono">
-                Posting as: <strong>{activeRole}</strong>
-              </span>
+      {/* Unified Social Stream: Social Post Composer and Feed combined as a single continuous timeline */}
+      <div className="max-w-3xl mx-auto space-y-6">
+        {/* Social Composer Card */}
+        <div className="bg-white dark:bg-[#0A1931] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-2xl p-5 shadow-xs space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-[#E5E5DE] dark:border-[#1E3A5F]">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-full bg-[#0A2540] text-white flex items-center justify-center font-black text-xs">
+                {activeRole.substring(0, 2).toUpperCase()}
+              </div>
+              <div>
+                <span className="text-xs font-black uppercase tracking-wider text-[#0A2540] dark:text-white flex items-center gap-1.5">
+                  <HardHat className="w-3.5 h-3.5 text-[#FFD23F]" />
+                  Create Site Update
+                </span>
+                <span className="text-[11px] font-semibold text-[#0A2540]/60 dark:text-slate-400 block">
+                  Posting as <strong>{activeRole}</strong>
+                </span>
+              </div>
+            </div>
+            <span className="px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-[#FFD23F] text-[#0A1931]">
+              Social Feed
+            </span>
+          </div>
+
+          <form onSubmit={handleCreatePost} className="space-y-4">
+            {/* Post Type Selector Pills */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {[
+                { id: "progress", label: "🏗️ Progress", desc: "Work completed" },
+                { id: "expense", label: "💰 Spent Cost", desc: "Materials / Labour" },
+                { id: "issue", label: "⚠️ Site Alert", desc: "Blocker / Safety" },
+                { id: "log", label: "📋 Daily Log", desc: "Shift summary" },
+              ].map((t) => (
+                <button
+                  key={t.id}
+                  type="button"
+                  onClick={() => setPostType(t.id as any)}
+                  className={`p-2.5 rounded-xl text-xs font-black border text-left transition-all cursor-pointer ${
+                    postType === t.id
+                      ? "bg-[#0A2540] text-white border-[#0A2540] shadow-xs dark:bg-[#FFD23F] dark:text-[#0A1931] dark:border-[#FFD23F]"
+                      : "bg-[#FAF9F5] dark:bg-[#071324] text-[#0A2540] dark:text-white border-[#E5E5DE] dark:border-[#1E3A5F] hover:bg-slate-100"
+                  }`}
+                >
+                  <div className="text-xs sm:text-sm font-black">{t.label}</div>
+                  <div className={`text-[10px] sm:text-xs font-medium mt-0.5 truncate ${postType === t.id ? "opacity-90" : "text-[#0A2540]/70 dark:text-slate-400"}`}>
+                    {t.desc}
+                  </div>
+                </button>
+              ))}
             </div>
 
-            <form onSubmit={handleCreatePost} className="space-y-4">
-              {/* Post Type Selector */}
-              <div>
-                <label className="block text-xs font-black text-[#0A2540] dark:text-white uppercase tracking-wider mb-2">
-                  Update Type
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  {[
-                    { id: "progress", label: "🏗️ Progress", desc: "Work completed" },
-                    { id: "expense", label: "💰 Spent Cost", desc: "Materials / Labour" },
-                    { id: "issue", label: "⚠️ Site Alert", desc: "Blocker / Safety" },
-                    { id: "log", label: "📋 Shift Log", desc: "Daily summary" },
-                  ].map((t) => (
-                    <button
-                      key={t.id}
-                      type="button"
-                      onClick={() => setPostType(t.id as any)}
-                      className={`p-2.5 rounded-xl text-xs font-black border text-left transition-all cursor-pointer ${
-                        postType === t.id
-                          ? "bg-[#0A2540] text-white border-[#0A2540] shadow-xs dark:bg-[#FFD23F] dark:text-[#0A1931] dark:border-[#FFD23F]"
-                          : "bg-[#FAF9F5] dark:bg-[#071324] text-[#0A2540] dark:text-white border-[#E5E5DE] dark:border-[#1E3A5F] hover:bg-slate-100"
-                      }`}
-                    >
-                      <div className="text-sm">{t.label}</div>
-                      <div className={`text-xs font-medium mt-0.5 ${postType === t.id ? "opacity-90" : "text-[#0A2540]/70 dark:text-slate-400"}`}>
-                        {t.desc}
-                      </div>
-                    </button>
-                  ))}
+            {/* If Expense: Show Amount and Category */}
+            {postType === "expense" && (
+              <div className="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-800 space-y-2.5">
+                <div className="text-xs font-black text-amber-900 dark:text-amber-300 flex items-center gap-1.5">
+                  <DollarSign className="w-3.5 h-3.5" /> What Was Spent
                 </div>
-              </div>
-
-              {/* If Expense: Show Amount and Category */}
-              {postType === "expense" && (
-                <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-800 space-y-2.5">
-                  <div className="text-xs font-black text-amber-900 dark:text-amber-300 flex items-center gap-1.5">
-                    <DollarSign className="w-3.5 h-3.5" /> What Was Spent
-                  </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="block text-[11px] font-bold text-amber-900 dark:text-amber-300 mb-1">
                       Amount Spent ({currency})
@@ -380,198 +390,205 @@ export function SiteHub() {
                     </select>
                   </div>
                 </div>
-              )}
+              </div>
+            )}
 
-              {/* Textarea for Update Content */}
+            {/* Textarea for Update Content */}
+            <div>
+              <textarea
+                rows={3}
+                required
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="What happened on site? Describe progress, log what was spent, or tag teammates..."
+                className="w-full p-3.5 bg-[#FAF9F5] dark:bg-[#071324] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-xl text-xs sm:text-sm font-semibold text-[#0A2540] dark:text-white placeholder-[#0A2540]/40 focus:outline-none focus:border-[#0A2540] transition-all resize-none"
+              />
+            </div>
+
+            {/* Tagged members preview chips */}
+            {selectedTags.length > 0 && (
+              <div className="flex flex-wrap gap-1.5">
+                {selectedTags.map((t) => (
+                  <span
+                    key={t.id}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-100 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 rounded-lg text-xs font-black text-amber-950 dark:text-amber-200"
+                  >
+                    @{t.name}
+                    <button
+                      type="button"
+                      onClick={() => handleToggleTag(t)}
+                      className="hover:text-rose-600 ml-0.5"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {/* Tag picker list */}
+            {showTagPicker && (
+              <div className="p-2.5 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] space-y-1 max-h-36 overflow-y-auto">
+                {projectMembers.length === 0 ? (
+                  <div className="p-2 text-xs text-slate-500 italic text-center">
+                    No team members registered yet
+                  </div>
+                ) : (
+                  projectMembers.map((m) => {
+                    const isTagged = selectedTags.some((t) => t.id === m.id);
+                    return (
+                      <button
+                        key={m.id}
+                        type="button"
+                        onClick={() => handleToggleTag(m)}
+                        className={`w-full px-2.5 py-1.5 rounded-lg text-left text-xs font-bold flex items-center justify-between transition-all ${
+                          isTagged
+                            ? "bg-[#0A2540] text-white"
+                            : "hover:bg-slate-200/70 text-[#0A2540] dark:text-slate-200"
+                        }`}
+                      >
+                        <span>{m.name}</span>
+                        <span className={`text-[10px] ${isTagged ? "text-white/80" : "text-[#0A2540]/60 dark:text-slate-400"}`}>
+                          {m.role}
+                        </span>
+                      </button>
+                    );
+                  })
+                )}
+              </div>
+            )}
+
+            {/* Photo Attachment URL Input */}
+            {showPhotoInput && (
               <div>
-                <label className="block text-xs font-black text-[#0A2540] dark:text-white uppercase tracking-wider mb-1">
-                  Update Description
-                </label>
-                <textarea
-                  rows={3}
-                  required
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  placeholder="What happened on site? Describe progress, log expenses, or alert team..."
-                  className="w-full p-3 bg-[#FAF9F5] dark:bg-[#071324] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-xl text-xs font-semibold text-[#0A2540] dark:text-white placeholder-[#0A2540]/40 focus:outline-none focus:border-[#0A2540] transition-all resize-none"
+                <input
+                  type="url"
+                  placeholder="Paste site photo URL (e.g. https://.../capture.jpg)"
+                  value={photoUrl}
+                  onChange={(e) => setPhotoUrl(e.target.value)}
+                  className="w-full px-3 py-2 bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] rounded-lg text-xs font-mono text-[#0A2540] dark:text-white focus:outline-none"
                 />
               </div>
+            )}
 
-              {/* Team Tagging (@mentions) */}
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-xs font-black uppercase tracking-wider text-[#0A2540] dark:text-white flex items-center gap-1.5">
-                    <Tag className="w-3.5 h-3.5 text-[#0A2540]/70 dark:text-slate-300" />
-                    Tag Teammates (@)
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => setShowTagPicker(!showTagPicker)}
-                    className="text-[11px] font-bold text-amber-700 dark:text-amber-400 hover:underline cursor-pointer"
-                  >
-                    {showTagPicker ? "Hide List" : "+ Select Members"}
-                  </button>
-                </div>
+            {/* Social Action Toolbar */}
+            <div className="pt-2 border-t border-[#E5E5DE] dark:border-[#1E3A5F] flex flex-wrap items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center gap-2">
+                {/* Photo Toggle */}
+                <button
+                  type="button"
+                  onClick={() => setShowPhotoInput(!showPhotoInput)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                    showPhotoInput || photoUrl
+                      ? "bg-amber-100 text-amber-900 border border-amber-300 dark:bg-amber-950/60 dark:text-amber-200"
+                      : "bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] text-[#0A2540] dark:text-white hover:bg-slate-100"
+                  }`}
+                >
+                  <ImageIcon className="w-3.5 h-3.5" />
+                  <span>Photo</span>
+                </button>
 
-                {/* Tagged members preview chips */}
-                {selectedTags.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 mb-2">
-                    {selectedTags.map((t) => (
-                      <span
-                        key={t.id}
-                        className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-100 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 rounded-lg text-xs font-black text-amber-950 dark:text-amber-200"
-                      >
-                        @{t.name}
-                        <button
-                          type="button"
-                          onClick={() => handleToggleTag(t)}
-                          className="hover:text-rose-600 ml-0.5"
-                        >
-                          ×
-                        </button>
-                      </span>
-                    ))}
-                  </div>
-                )}
+                {/* Tag Teammates Toggle */}
+                <button
+                  type="button"
+                  onClick={() => setShowTagPicker(!showTagPicker)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                    showTagPicker || selectedTags.length > 0
+                      ? "bg-amber-100 text-amber-900 border border-amber-300 dark:bg-amber-950/60 dark:text-amber-200"
+                      : "bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] text-[#0A2540] dark:text-white hover:bg-slate-100"
+                  }`}
+                >
+                  <Tag className="w-3.5 h-3.5" />
+                  <span>Tag {selectedTags.length > 0 ? `(${selectedTags.length})` : "@"}</span>
+                </button>
 
-                {/* Tag picker list */}
-                {showTagPicker && (
-                  <div className="p-2.5 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] space-y-1 max-h-36 overflow-y-auto">
-                    {DEFAULT_PROJECT_MEMBERS.map((m) => {
-                      const isTagged = selectedTags.some((t) => t.id === m.id);
-                      return (
-                        <button
-                          key={m.id}
-                          type="button"
-                          onClick={() => handleToggleTag(m)}
-                          className={`w-full px-2.5 py-1.5 rounded-lg text-left text-xs font-bold flex items-center justify-between transition-all ${
-                            isTagged
-                              ? "bg-[#0A2540] text-white"
-                              : "hover:bg-slate-200/70 text-[#0A2540] dark:text-slate-200"
-                          }`}
-                        >
-                          <span>{m.name}</span>
-                          <span className={`text-[10px] ${isTagged ? "text-white/80" : "text-[#0A2540]/60 dark:text-slate-400"}`}>
-                            {m.role}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-
-              {/* Worksite & Photo Controls */}
-              <div className="grid grid-cols-2 gap-2 text-xs">
-                <div>
-                  <label className="block text-[10px] font-black uppercase text-[#0A2540]/70 dark:text-slate-400 mb-1">
-                    Weather
-                  </label>
+                {/* Weather Pill */}
+                <div className="flex items-center gap-1 bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] px-2.5 py-1.5 rounded-lg text-xs font-bold text-[#0A2540] dark:text-white">
+                  <Sun className="w-3.5 h-3.5 text-amber-500" />
                   <select
                     value={weather}
                     onChange={(e) => setWeather(e.target.value)}
-                    className="w-full px-2.5 py-1.5 bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] rounded-lg text-xs font-bold text-[#0A2540] dark:text-white"
+                    className="bg-transparent text-xs font-bold focus:outline-none cursor-pointer"
                   >
-                    <option value="Sunny">☀️ Sunny</option>
-                    <option value="Rainy">🌧️ Rainy</option>
-                    <option value="Overcast">⛅ Overcast</option>
+                    <option value="Sunny">Sunny</option>
+                    <option value="Rainy">Rainy</option>
+                    <option value="Overcast">Overcast</option>
                   </select>
                 </div>
-                <div>
-                  <label className="block text-[10px] font-black uppercase text-[#0A2540]/70 dark:text-slate-400 mb-1">
-                    Crew Headcount
-                  </label>
+
+                {/* Crew Count Pill */}
+                <div className="flex items-center gap-1 bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] px-2.5 py-1.5 rounded-lg text-xs font-bold text-[#0A2540] dark:text-white">
+                  <Users className="w-3.5 h-3.5 text-blue-500" />
                   <input
                     type="number"
                     value={headcount}
                     onChange={(e) => setHeadcount(Number(e.target.value))}
-                    className="w-full px-2.5 py-1.5 bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] rounded-lg text-xs font-mono font-bold text-[#0A2540] dark:text-white"
+                    className="w-10 bg-transparent text-xs font-mono font-bold focus:outline-none"
+                    title="Workers on site"
                   />
+                  <span className="text-[10px] text-slate-500">crew</span>
                 </div>
-              </div>
-
-              {/* Photo Attachment URL */}
-              <div>
-                <button
-                  type="button"
-                  onClick={() => setShowPhotoInput(!showPhotoInput)}
-                  className="text-xs font-bold text-[#0A2540] dark:text-white flex items-center gap-1.5 hover:underline cursor-pointer"
-                >
-                  <ImageIcon className="w-3.5 h-3.5" />
-                  {showPhotoInput ? "Cancel Photo Attachment" : "+ Attach Photo / Proof URL"}
-                </button>
-                {showPhotoInput && (
-                  <input
-                    type="url"
-                    placeholder="https://.../site-photo.jpg"
-                    value={photoUrl}
-                    onChange={(e) => setPhotoUrl(e.target.value)}
-                    className="mt-2 w-full px-3 py-2 bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] rounded-lg text-xs font-mono text-[#0A2540] dark:text-white focus:outline-none"
-                  />
-                )}
               </div>
 
               {/* Submit Post Button */}
               <button
                 type="submit"
                 disabled={isSubmitting || !content.trim()}
-                className="w-full h-11 bg-[#0A2540] hover:bg-[#003366] dark:bg-[#FFD23F] dark:hover:bg-[#FFD23F]/90 text-white dark:text-[#0A1931] rounded-xl text-xs font-black uppercase tracking-wider shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                className="min-h-[40px] px-6 bg-[#0A2540] hover:bg-[#003366] dark:bg-[#FFD23F] dark:hover:bg-[#FFD23F]/90 text-white dark:text-[#0A1931] rounded-xl text-xs font-black uppercase tracking-wider shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 ml-auto"
               >
-                <Send className="w-4 h-4" />
-                <span>Post Update to Hub</span>
+                <Send className="w-3.5 h-3.5" />
+                <span>Post Update</span>
               </button>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
 
-        {/* Right 2 Columns: Feed & Media */}
-        <div className="lg:col-span-2 space-y-4">
-          {/* Feed Filter Bar */}
-          <div className="flex items-center justify-between gap-3 bg-white dark:bg-[#0A1931] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-2xl p-3 shadow-xs">
-            <div className="flex items-center gap-1.5 overflow-x-auto">
-              {[
-                { id: "all", label: `All Updates (${posts.length})` },
-                { id: "progress", label: "🏗️ Progress" },
-                { id: "expense", label: "💰 Expenses" },
-                { id: "issue", label: "⚠️ Alerts" },
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setFilterType(tab.id as any)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer whitespace-nowrap ${
-                    filterType === tab.id
-                      ? "bg-[#0A2540] text-white shadow-xs dark:bg-[#FFD23F] dark:text-[#0A1931]"
-                      : "text-[#0A2540]/70 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#071324]"
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-
-            <div className="flex items-center gap-1 shrink-0">
+        {/* Feed Filter Bar */}
+        <div className="flex items-center justify-between gap-3 bg-white dark:bg-[#0A1931] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-2xl p-3 shadow-xs">
+          <div className="flex items-center gap-1.5 overflow-x-auto">
+            {[
+              { id: "all", label: `All Updates (${posts.length})` },
+              { id: "progress", label: "🏗️ Progress" },
+              { id: "expense", label: "💰 Expenses" },
+              { id: "issue", label: "⚠️ Alerts" },
+            ].map((tab) => (
               <button
-                onClick={() => setActiveTab("feed")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-black ${
-                  activeTab === "feed"
-                    ? "bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] text-[#0A2540] dark:text-white"
-                    : "text-[#0A2540]/60 dark:text-slate-400"
+                key={tab.id}
+                onClick={() => setFilterType(tab.id as any)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer whitespace-nowrap ${
+                  filterType === tab.id
+                    ? "bg-[#0A2540] text-white shadow-xs dark:bg-[#FFD23F] dark:text-[#0A1931]"
+                    : "text-[#0A2540]/70 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#071324]"
                 }`}
               >
-                Feed
+                {tab.label}
               </button>
-              <button
-                onClick={() => setActiveTab("photos")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-black ${
-                  activeTab === "photos"
-                    ? "bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] text-[#0A2540] dark:text-white"
-                    : "text-[#0A2540]/60 dark:text-slate-400"
-                }`}
-              >
-                Photos ({allPhotos.length})
-              </button>
-            </div>
+            ))}
           </div>
+
+          <div className="flex items-center gap-1 shrink-0">
+            <button
+              onClick={() => setActiveTab("feed")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-black ${
+                activeTab === "feed"
+                  ? "bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] text-[#0A2540] dark:text-white"
+                  : "text-[#0A2540]/60 dark:text-slate-400"
+              }`}
+            >
+              Feed
+            </button>
+            <button
+              onClick={() => setActiveTab("photos")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-black ${
+                activeTab === "photos"
+                  ? "bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] text-[#0A2540] dark:text-white"
+                  : "text-[#0A2540]/60 dark:text-slate-400"
+              }`}
+            >
+              Photos ({allPhotos.length})
+            </button>
+          </div>
+        </div>
 
           {/* Photos Tab View */}
           {activeTab === "photos" && (
@@ -832,6 +849,5 @@ export function SiteHub() {
           )}
         </div>
       </div>
-    </div>
   );
 }

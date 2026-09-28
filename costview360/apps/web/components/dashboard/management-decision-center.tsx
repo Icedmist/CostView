@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { formatCurrency } from "@/lib/utils";
+import { useApp } from "@/app/providers";
+import { useAppData } from "@/lib/store/app-data";
 import {
   TrendingUp,
   DollarSign,
@@ -42,58 +44,43 @@ interface ProjectMatrixItem {
   primaryRisk: string;
 }
 
-const PROJECTS_DATA: ProjectMatrixItem[] = [
-  {
-    id: "prj-01",
-    name: "Horizon Commercial Towers",
-    location: "Lekki Phase 1, Lagos",
-    contractSum: 1250000000,
-    certifiedToDate: 780000000,
-    actualCostToDate: 750000000,
-    cpi: 1.04,
-    spi: 0.98,
-    progressPct: 62,
-    status: "Healthy",
-    primaryRisk: "Rebar delivery delay (PO-092 discrepancy hold)",
-  },
-  {
-    id: "prj-02",
-    name: "Victoria Island Corporate HQ",
-    location: "Victoria Island, Lagos",
-    contractSum: 850000000,
-    certifiedToDate: 748000000,
-    actualCostToDate: 740000000,
-    cpi: 1.01,
-    spi: 1.00,
-    progressPct: 88,
-    status: "Healthy",
-    primaryRisk: "Curtain wall glazing import clearance",
-  },
-  {
-    id: "prj-03",
-    name: "Ikoyi Luxury Waterfront Residences",
-    location: "Banana Island, Ikoyi, Lagos",
-    contractSum: 2100000000,
-    certifiedToDate: 504000000,
-    actualCostToDate: 525000000,
-    cpi: 0.96,
-    spi: 0.94,
-    progressPct: 24,
-    status: "Attention",
-    primaryRisk: "Sheet piling dewatering groundwater surge",
-  },
-];
-
 interface ManagementDecisionProps {
   onNavigate: (section: string, subSection: string) => void;
 }
 
 export function ManagementDecisionCenter({ onNavigate }: ManagementDecisionProps) {
+  const { currentProject } = useApp();
+  const { boqItems } = useAppData();
   const [activeDomain, setActiveDomain] = useState<
     "company" | "financial" | "projects" | "business" | "people" | "assets" | "decisions"
   >("company");
 
   const [selectedFlowStep, setSelectedFlowStep] = useState<number>(1);
+
+  const totalBudget = useMemo(() => {
+    if (boqItems && boqItems.length > 0) {
+      return boqItems.reduce((acc, item) => acc + (Number(item.budgetAmount) || 0), 0);
+    }
+    return currentProject.budgetTotal || 0;
+  }, [boqItems, currentProject]);
+
+  const projectsData: ProjectMatrixItem[] = useMemo(() => {
+    return [
+      {
+        id: currentProject.id,
+        name: currentProject.name,
+        location: currentProject.location,
+        contractSum: totalBudget,
+        certifiedToDate: 0,
+        actualCostToDate: 0,
+        cpi: 1.0,
+        spi: 1.0,
+        progressPct: 0,
+        status: "Healthy",
+        primaryRisk: "No critical bottlenecks reported",
+      },
+    ];
+  }, [currentProject, totalBudget]);
 
   const flowSteps = [
     { step: 1, label: "Information", desc: "Raw site logs, GRNs, invoices, and attendance captured." },
@@ -122,23 +109,25 @@ export function ManagementDecisionCenter({ onNavigate }: ManagementDecisionProps
             onClick={() => setActiveDomain("decisions")}
             className="px-4 py-2 bg-[#0A2540] hover:bg-[#003366] dark:bg-[#FFD23F] dark:text-[#0A1931] text-white rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-1.5 shadow-xs transition-all cursor-pointer"
           >
-            <AlertTriangle className="w-3.5 h-3.5" />
-            <span>Pending Decisions (3)</span>
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Decisions Queue (0)</span>
           </button>
         </div>
       </div>
 
       {/* 2. Seven Management Performance Domains Switcher */}
       <div className="flex items-center gap-2 border-b-2 border-[#E5E5DE] dark:border-white/10 pb-1 overflow-x-auto">
-        {[
-          { id: "company", label: "Company Performance", icon: Building2 },
-          { id: "financial", label: "Financial & Treasury", icon: DollarSign },
-          { id: "projects", label: "Project Performance", icon: BarChart3, count: PROJECTS_DATA.length },
-          { id: "business", label: "Business & Tenders", icon: Target },
-          { id: "people", label: "People & Workforce", icon: Users },
-          { id: "assets", label: "Plant & Fleet Assets", icon: Truck },
-          { id: "decisions", label: "Action Decision Queue", icon: AlertTriangle, count: 3, alert: true },
-        ].map((tab) => {
+        {(
+          [
+            { id: "company", label: "Company Performance", icon: Building2 },
+            { id: "financial", label: "Financial & Treasury", icon: DollarSign },
+            { id: "projects", label: "Project Performance", icon: BarChart3, count: projectsData.length },
+            { id: "business", label: "Business & Tenders", icon: Target },
+            { id: "people", label: "People & Workforce", icon: Users },
+            { id: "assets", label: "Plant & Fleet Assets", icon: Truck },
+            { id: "decisions", label: "Action Decision Queue", icon: AlertTriangle, count: 0, alert: false },
+          ] as { id: string; label: string; icon: any; count?: number; alert?: boolean }[]
+        ).map((tab) => {
           const Icon = tab.icon;
           const isActive = activeDomain === tab.id;
           return (
@@ -227,7 +216,7 @@ export function ManagementDecisionCenter({ onNavigate }: ManagementDecisionProps
             </div>
 
             <div className="grid gap-4">
-              {PROJECTS_DATA.map((p) => (
+              {projectsData.map((p) => (
                 <div
                   key={p.id}
                   className="p-5 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-4"
@@ -283,21 +272,21 @@ export function ManagementDecisionCenter({ onNavigate }: ManagementDecisionProps
         <div className="space-y-6">
           <div className="grid sm:grid-cols-3 gap-6">
             <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-6 shadow-xs">
-              <div className="text-[10px] font-black uppercase text-[#0A2540]/60 dark:text-slate-400">Cumulative Revenue Certified</div>
-              <div className="text-3xl font-black font-mono text-[#0A2540] dark:text-white mt-1">₦2.03B</div>
-              <div className="text-xs text-slate-500 mt-1 font-semibold">Across all active milestone certificates</div>
+              <div className="text-[10px] font-black uppercase text-[#0A2540]/60 dark:text-slate-400">Total Authorized Budget</div>
+              <div className="text-2xl font-black font-mono text-[#0A2540] dark:text-white mt-1">{formatCurrency(totalBudget)}</div>
+              <div className="text-xs text-slate-500 mt-1 font-semibold">Active project BOQ allocation</div>
             </div>
 
             <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-6 shadow-xs">
               <div className="text-[10px] font-black uppercase text-[#0A2540]/60 dark:text-slate-400">Total Disbursements Settled</div>
-              <div className="text-3xl font-black font-mono text-[#0A2540] dark:text-white mt-1">₦1.78B</div>
+              <div className="text-2xl font-black font-mono text-[#0A2540] dark:text-white mt-1">₦0</div>
               <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 font-bold">100% 3-way matched against GRNs</div>
             </div>
 
             <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-6 shadow-xs">
-              <div className="text-[10px] font-black uppercase text-[#0A2540]/60 dark:text-slate-400">Treasury Liquid Runway</div>
-              <div className="text-3xl font-black font-mono text-emerald-600 dark:text-emerald-400 mt-1">₦342M</div>
-              <div className="text-xs text-slate-500 mt-1 font-semibold">3.8 months runway at current site burn</div>
+              <div className="text-[10px] font-black uppercase text-[#0A2540]/60 dark:text-slate-400">Committed Variance</div>
+              <div className="text-2xl font-black font-mono text-emerald-600 dark:text-emerald-400 mt-1">₦0</div>
+              <div className="text-xs text-slate-500 mt-1 font-semibold">Operating on track within plan</div>
             </div>
           </div>
 
@@ -345,7 +334,7 @@ export function ManagementDecisionCenter({ onNavigate }: ManagementDecisionProps
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#E5E5DE] dark:divide-white/10 text-xs font-semibold">
-                  {PROJECTS_DATA.map((p) => (
+                  {projectsData.map((p) => (
                     <tr key={p.id} className="hover:bg-amber-500/5 transition-colors">
                       <td className="p-4">
                         <div className="font-black text-sm text-[#0A2540] dark:text-white">{p.name}</div>
@@ -528,82 +517,12 @@ export function ManagementDecisionCenter({ onNavigate }: ManagementDecisionProps
           </div>
 
           <div className="grid gap-4">
-            <div className="p-6 rounded-2xl bg-white dark:bg-[#0D2137] border-2 border-rose-200 dark:border-rose-900/60 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div className="space-y-2 max-w-2xl">
-                <div className="flex items-center gap-2">
-                  <span className="px-2.5 py-0.5 rounded text-[10px] font-black uppercase bg-rose-500 text-white">
-                    Urgent Procurement Block
-                  </span>
-                  <span className="font-mono text-xs font-bold text-slate-500">PO-2026-092 · Pulkit Steels</span>
-                </div>
-                <h4 className="text-lg font-black text-[#0A2540] dark:text-white">
-                  Invoice billed 30T vs 27T physical GRN receipt delivered
-                </h4>
-                <p className="text-xs text-[#0A2540]/70 dark:text-slate-300">
-                  ₦3.45M variance locked in 3-way match gate. Requires management decision: approve short shipment debit note or reject entire invoice.
-                </p>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => onNavigate("Buy & Supply", "match")}
-                  className="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-sm cursor-pointer"
-                >
-                  Resolve 3-Way Match →
-                </button>
-              </div>
-            </div>
-
-            <div className="p-6 rounded-2xl bg-white dark:bg-[#0D2137] border-2 border-amber-200 dark:border-amber-900/60 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div className="space-y-2 max-w-2xl">
-                <div className="flex items-center gap-2">
-                  <span className="px-2.5 py-0.5 rounded text-[10px] font-black uppercase bg-amber-400 text-[#0A2540]">
-                    Variation Order Sign-Off
-                  </span>
-                  <span className="font-mono text-xs font-bold text-slate-500">VO-014 · ₦4.20M Commitment</span>
-                </div>
-                <h4 className="text-lg font-black text-[#0A2540] dark:text-white">
-                  Basement Pump Sump Relocation &amp; Waterproofing
-                </h4>
-                <p className="text-xs text-[#0A2540]/70 dark:text-slate-300">
-                  MEP alignment required to avoid high-voltage utility easement. Approved by Site Director, awaiting commercial budget authorization.
-                </p>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => onNavigate("Contracts", "variations")}
-                  className="px-5 py-2.5 bg-[#0A2540] hover:bg-[#003366] dark:bg-amber-400 dark:hover:bg-amber-300 text-white dark:text-[#0A2540] rounded-xl text-xs font-black uppercase tracking-wider shadow-sm cursor-pointer"
-                >
-                  Authorize Variation →
-                </button>
-              </div>
-            </div>
-
-            <div className="p-6 rounded-2xl bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div className="space-y-2 max-w-2xl">
-                <div className="flex items-center gap-2">
-                  <span className="px-2.5 py-0.5 rounded text-[10px] font-black uppercase bg-emerald-500 text-white">
-                    Subcontractor Valuation
-                  </span>
-                  <span className="font-mono text-xs font-bold text-slate-500">IPC-03 · Apex MEP Services</span>
-                </div>
-                <h4 className="text-lg font-black text-[#0A2540] dark:text-white">
-                  ₦18.90M Interim Payment Certificate (Net ₦17.01M after 10% retention)
-                </h4>
-                <p className="text-xs text-[#0A2540]/70 dark:text-slate-300">
-                  First fix electrical and drainage roughing-in completed and passed QA/QC inspection. Ready for treasury disbursement release.
-                </p>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => onNavigate("Contracts", "claims")}
-                  className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-sm cursor-pointer"
-                >
-                  Release Payment →
-                </button>
-              </div>
+            <div className="p-10 rounded-2xl bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 shadow-xs text-center space-y-3">
+              <CheckCircle2 className="w-12 h-12 text-emerald-600 dark:text-emerald-400 mx-auto" />
+              <h4 className="text-lg font-black text-[#0A2540] dark:text-white">Action Decision Queue Clear</h4>
+              <p className="text-xs text-[#0A2540]/70 dark:text-slate-300 max-w-md mx-auto">
+                No blocked purchase orders, disputed site variation orders, or uncertified subcontractor valuations currently requiring executive sign-off.
+              </p>
             </div>
           </div>
         </div>

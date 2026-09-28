@@ -15,40 +15,7 @@ interface WorkerRecord {
   overtimeHours: number;
 }
 
-const INITIAL_WORKERS: WorkerRecord[] = [
-  {
-    id: "wrk-1",
-    name: "Musa Ibrahim",
-    trade: "Chief Mason",
-    dailyRate: 14000,
-    daysPresent: 5,
-    overtimeHours: 6,
-  },
-  {
-    id: "wrk-2",
-    name: "Emeka Okafor",
-    trade: "Steel Fixer Lead",
-    dailyRate: 15000,
-    daysPresent: 6,
-    overtimeHours: 10,
-  },
-  {
-    id: "wrk-3",
-    name: "Sunday Balogun",
-    trade: "Formwork Carpenter",
-    dailyRate: 13500,
-    daysPresent: 5,
-    overtimeHours: 4,
-  },
-  {
-    id: "wrk-4",
-    name: "Aliyu Garba",
-    trade: "Site Labourer",
-    dailyRate: 7500,
-    daysPresent: 6,
-    overtimeHours: 2,
-  },
-];
+const INITIAL_WORKERS: WorkerRecord[] = [];
 
 export function LabourView() {
   const { currency } = useApp();
@@ -210,7 +177,22 @@ export function LabourView() {
               </tr>
             </thead>
             <tbody className="divide-y divide-navy-800/10 text-slate-900">
-              {workers.map((w) => {
+              {workers.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="py-12 text-center">
+                    <Users className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
+                    <p className="text-sm font-bold text-slate-700 dark:text-slate-300">No workers on site muster yet</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Register craftsmen and labourers to track daily attendance and wage calculations.</p>
+                    <button
+                      onClick={() => setIsAddWorkerOpen(true)}
+                      className="mt-4 px-4 py-2 bg-[#0A2540] dark:bg-[#FFD23F] text-white dark:text-[#0A1931] text-xs font-black rounded-xl hover:opacity-90 shadow-sm cursor-pointer"
+                    >
+                      + Add Worker
+                    </button>
+                  </td>
+                </tr>
+              ) : (
+                workers.map((w) => {
                 const hourlyRate = w.dailyRate / 8;
                 const grossPay = w.daysPresent * w.dailyRate + w.overtimeHours * hourlyRate * 1.5;
 
@@ -244,7 +226,7 @@ export function LabourView() {
                     </td>
                   </tr>
                 );
-              })}
+              }))}
             </tbody>
           </table>
         </div>

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import { useApp } from "@/app/providers";
+import { useAppData } from "@/lib/store/app-data";
 import { formatCurrency } from "@/lib/utils";
 import {
   FileText,
@@ -55,7 +56,7 @@ export const REPORTS_REGISTRY: ReportMeta[] = [
     slug: "cost-control",
     desc: "Baseline budget, committed, actuals, headroom & CPI",
     icon: DollarSign,
-    badge: "1.04 CPI",
+    badge: "Finance",
     badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-300",
   },
   {
@@ -63,7 +64,7 @@ export const REPORTS_REGISTRY: ReportMeta[] = [
     slug: "variance",
     desc: "BOQ line items tracked against contractual baseline",
     icon: Layers,
-    badge: "5 BOQ Lines",
+    badge: "BOQ Items",
     badgeColor: "bg-blue-100 text-blue-800 border-blue-300",
   },
   {
@@ -71,7 +72,7 @@ export const REPORTS_REGISTRY: ReportMeta[] = [
     slug: "forecast",
     desc: "Estimate at completion (EAC) & estimate to complete (ETC)",
     icon: FileSpreadsheet,
-    badge: "₦313.5M EAC",
+    badge: "Forecast",
     badgeColor: "bg-purple-100 text-purple-800 border-purple-300",
   },
   {
@@ -79,7 +80,7 @@ export const REPORTS_REGISTRY: ReportMeta[] = [
     slug: "procurement",
     desc: "Requisitions → POs → GRNs → Invoices → Disbursements",
     icon: FileDown,
-    badge: "1 Discrepancy",
+    badge: "Supply Chain",
     badgeColor: "bg-rose-100 text-rose-800 border-rose-300",
   },
   {
@@ -87,7 +88,7 @@ export const REPORTS_REGISTRY: ReportMeta[] = [
     slug: "suppliers",
     desc: "On-time delivery (OTD), quality rating & pricing indices",
     icon: Briefcase,
-    badge: "Top: 96% OTD",
+    badge: "Vendors",
     badgeColor: "bg-teal-100 text-teal-800 border-teal-300",
   },
   {
@@ -95,7 +96,7 @@ export const REPORTS_REGISTRY: ReportMeta[] = [
     slug: "inventory",
     desc: "Materials on-hand, reserved, issued & reorder thresholds",
     icon: Boxes,
-    badge: "3 Tracked SKUs",
+    badge: "Inventory",
     badgeColor: "bg-amber-100 text-amber-800 border-amber-300",
   },
   {
@@ -103,7 +104,7 @@ export const REPORTS_REGISTRY: ReportMeta[] = [
     slug: "labour",
     desc: "Muster attendance, trades, overtime hours & gross pay",
     icon: Users,
-    badge: "48 Active Crew",
+    badge: "Labour",
     badgeColor: "bg-blue-100 text-blue-800 border-blue-300",
   },
   {
@@ -111,7 +112,7 @@ export const REPORTS_REGISTRY: ReportMeta[] = [
     slug: "site-diary",
     desc: "Shift logs, weather, photos, QA/QC tests & snags",
     icon: Calendar,
-    badge: "Shift #142",
+    badge: "Site Logs",
     badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-300",
   },
   {
@@ -119,7 +120,7 @@ export const REPORTS_REGISTRY: ReportMeta[] = [
     slug: "subcontractors",
     desc: "Contract sums, interim claims, certified work & 10% retention",
     icon: Building,
-    badge: "₦21.6M Escrow",
+    badge: "Contracts",
     badgeColor: "bg-purple-100 text-purple-800 border-purple-300",
   },
   {
@@ -127,7 +128,7 @@ export const REPORTS_REGISTRY: ReportMeta[] = [
     slug: "variations",
     desc: "Approved & pending VOs, cost additions & schedule extensions",
     icon: FileText,
-    badge: "+₦11.7M Net",
+    badge: "Variations",
     badgeColor: "bg-orange-100 text-orange-800 border-orange-300",
   },
 ];
@@ -165,6 +166,7 @@ interface ReportsViewProps {
 
 export function ReportsView({ initialReportId, onReportChange }: ReportsViewProps) {
   const { currency: globalCurrency, currentProject } = useApp();
+  const { boqItems } = useAppData();
 
   // Resolve initial selected report
   const resolvedInitial = useMemo<ReportId>(() => {
@@ -175,10 +177,16 @@ export function ReportsView({ initialReportId, onReportChange }: ReportsViewProp
   }, [initialReportId]);
 
   const [selectedReport, setSelectedReport] = useState<ReportId>(resolvedInitial);
-  const [reportProject, setReportProject] = useState(currentProject?.name || "Eko Atlantic Horizon Towers");
+  const [reportProject, setReportProject] = useState(currentProject?.name || "Active Project");
   const [isGenerating, setIsGenerating] = useState(false);
   const [showCustomize, setShowCustomize] = useState(false);
   const [searchFilter, setSearchFilter] = useState("");
+
+  useEffect(() => {
+    if (currentProject?.name) {
+      setReportProject(currentProject.name);
+    }
+  }, [currentProject?.name]);
 
   // Sync when prop changes
   useEffect(() => {
@@ -306,98 +314,61 @@ export function ReportsView({ initialReportId, onReportChange }: ReportsViewProp
 
   const isColVisible = (report: ReportId, key: string) => visibleCols[report]?.includes(key);
 
-  // Construction domain dataset
-  const reportData = {
-    originalBudget: 301815000,
-    approvedVariations: 11700000,
-    revisedBudget: 313515000,
-    committedPOs: 292250000,
-    certifiedActuals: 216400000,
-    uncommittedHeadroom: 21265000,
-    costPerformanceIndex: 1.04,
-  };
+  // Dynamic BOQ calculations
+  const totalBudget = useMemo(() => boqItems.reduce((acc, i) => acc + (i.budgetAmount || 0), 0), [boqItems]);
+  const totalCommitted = useMemo(() => boqItems.reduce((acc, i) => acc + (i.committedAmount || 0), 0), [boqItems]);
+  const totalActual = useMemo(() => boqItems.reduce((acc, i) => acc + (i.actualAmount || 0), 0), [boqItems]);
+  const totalVariance = totalBudget - totalActual;
 
-  const costControlRows = [
-    { element: "Original Contract Base Budget", amount: formatCurrency(reportData.originalBudget, currency), percent: "96.3%", status: "Contract Locked" },
-    { element: "Approved Variations & Additions", amount: `+${formatCurrency(reportData.approvedVariations, currency)}`, percent: "3.7%", status: "QS Certified" },
-    { element: "Revised Contract Working Budget", amount: formatCurrency(reportData.revisedBudget, currency), percent: "100.0%", status: "Active Ceiling" },
-    { element: "Committed Orders (POs Issued)", amount: formatCurrency(reportData.committedPOs, currency), percent: "93.2%", status: "Legally Bound" },
-    { element: "Certified Work Done (Actuals Paid)", amount: formatCurrency(reportData.certifiedActuals, currency), percent: "69.0%", status: "Valuated & Paid" },
-    { element: "Uncommitted Contingency Buffer", amount: formatCurrency(reportData.uncommittedHeadroom, currency), percent: "6.8%", status: "Available Buffer" },
-  ];
+  const costControlRows = useMemo(() => {
+    if (boqItems.length === 0) return [];
+    return [
+      { element: "Original Contract Base Budget", amount: formatCurrency(totalBudget, currency), percent: "100.0%", status: "Active Ceiling" },
+      { element: "Committed Orders (POs Issued)", amount: formatCurrency(totalCommitted, currency), percent: totalBudget > 0 ? `${((totalCommitted / totalBudget) * 100).toFixed(1)}%` : "0%", status: "Legally Bound" },
+      { element: "Certified Work Done (Actuals Paid)", amount: formatCurrency(totalActual, currency), percent: totalBudget > 0 ? `${((totalActual / totalBudget) * 100).toFixed(1)}%` : "0%", status: "Valuated & Paid" },
+      { element: "Uncommitted Contingency Buffer", amount: formatCurrency(Math.max(0, totalVariance), currency), percent: totalBudget > 0 ? `${Math.max(0, ((totalVariance / totalBudget) * 100)).toFixed(1)}%` : "0%", status: "Available Buffer" },
+    ];
+  }, [boqItems, totalBudget, totalCommitted, totalActual, totalVariance, currency]);
 
-  const boqVarianceRows = [
-    { code: "EAR-01.02", desc: "Bulk site excavation & cart-away", budget: formatCurrency(42000000, currency), committed: formatCurrency(38500000, currency), actual: formatCurrency(38500000, currency), variance: `+${formatCurrency(3500000, currency)}`, status: "Under Budget" },
-    { code: "SUB-01.01", desc: "Substructure earthwork & hardcore", budget: formatCurrency(23125000, currency), committed: formatCurrency(21500000, currency), actual: formatCurrency(19800000, currency), variance: `+${formatCurrency(1625000, currency)}`, status: "Under Budget" },
-    { code: "CON-02.01", desc: "Grade 30 reinforced concrete raft", budget: formatCurrency(93600000, currency), committed: formatCurrency(94000000, currency), actual: formatCurrency(62000000, currency), variance: `-${formatCurrency(400000, currency)}`, status: "Over Budget" },
-    { code: "STL-02.03", desc: "High-yield deformed rebar Y16 & Y20", budget: formatCurrency(94250000, currency), committed: formatCurrency(94250000, currency), actual: formatCurrency(85000000, currency), variance: formatCurrency(0, currency), status: "On Budget" },
-    { code: "BLK-03.01", desc: "225mm vibrated hollow sandcrete blocks", budget: formatCurrency(35840000, currency), committed: formatCurrency(33000000, currency), actual: formatCurrency(24500000, currency), variance: `+${formatCurrency(2840000, currency)}`, status: "Under Budget" },
-    { code: "MEP-04.01", desc: "Electrical first fix conduit & boxes", budget: formatCurrency(45000000, currency), committed: formatCurrency(42000000, currency), actual: formatCurrency(20000000, currency), variance: `+${formatCurrency(3000000, currency)}`, status: "Under Budget" },
-  ];
+  const boqVarianceRows = useMemo(() => {
+    return boqItems.map((item) => {
+      const varianceVal = item.budgetAmount - item.actualAmount;
+      const status = item.actualAmount > item.budgetAmount ? "Over Budget" : item.actualAmount === item.budgetAmount ? "On Budget" : "Under Budget";
+      return {
+        code: item.code,
+        desc: item.description,
+        budget: formatCurrency(item.budgetAmount, currency),
+        committed: formatCurrency(item.committedAmount, currency),
+        actual: formatCurrency(item.actualAmount, currency),
+        variance: `${varianceVal >= 0 ? "+" : ""}${formatCurrency(varianceVal, currency)}`,
+        status,
+      };
+    });
+  }, [boqItems, currency]);
 
-  const forecastRows = [
-    { item: "EAR-01.02 Bulk Excavation", budget: formatCurrency(42000000, currency), actual: formatCurrency(38500000, currency), etc: formatCurrency(0, currency), eac: formatCurrency(38500000, currency), variance: `+${formatCurrency(3500000, currency)}` },
-    { item: "SUB-01.01 Substructure Earthwork", budget: formatCurrency(23125000, currency), actual: formatCurrency(19800000, currency), etc: formatCurrency(3200000, currency), eac: formatCurrency(23000000, currency), variance: `+${formatCurrency(125000, currency)}` },
-    { item: "CON-02.01 Grade 30 Raft Concrete", budget: formatCurrency(93600000, currency), actual: formatCurrency(62000000, currency), etc: formatCurrency(34000000, currency), eac: formatCurrency(96000000, currency), variance: `-${formatCurrency(2400000, currency)}` },
-    { item: "STL-02.03 High-Yield Rebar", budget: formatCurrency(94250000, currency), actual: formatCurrency(85000000, currency), etc: formatCurrency(9000000, currency), eac: formatCurrency(94000000, currency), variance: `+${formatCurrency(250000, currency)}` },
-    { item: "BLK-03.01 Sandcrete Blockwork", budget: formatCurrency(35840000, currency), actual: formatCurrency(24500000, currency), etc: formatCurrency(9500000, currency), eac: formatCurrency(34000000, currency), variance: `+${formatCurrency(1840000, currency)}` },
-  ];
+  const forecastRows = useMemo(() => {
+    return boqItems.map((item) => {
+      const etc = Math.max(0, item.budgetAmount - item.actualAmount);
+      const eac = item.actualAmount + etc;
+      const varianceVal = item.budgetAmount - eac;
+      return {
+        item: `${item.code} ${item.description}`,
+        budget: formatCurrency(item.budgetAmount, currency),
+        actual: formatCurrency(item.actualAmount, currency),
+        etc: formatCurrency(etc, currency),
+        eac: formatCurrency(eac, currency),
+        variance: `${varianceVal >= 0 ? "+" : ""}${formatCurrency(varianceVal, currency)}`,
+      };
+    });
+  }, [boqItems, currency]);
 
-  const procurementRows = [
-    { stage: "Material Requisitions Raised", count: "14", value: "14 Requisitions Logged", variance: "All Verified by Site Engr" },
-    { stage: "Supplier RFQs & Enquiries", count: "9", value: "9 Tenders Dispatched", variance: "3 Quotes per Package Met" },
-    { stage: "Approved Purchase Orders", count: "6", value: formatCurrency(292250000, currency), variance: "PO-2026-081 to 092 Active" },
-    { stage: "Physical Goods Receipts (GRN)", count: "6", value: "6 Batches Received on Site", variance: "Gate Weighed & Counted" },
-    { stage: "3-Way Match Verified Invoices", count: "5", value: formatCurrency(285350000, currency), variance: "PO ⇄ GRN ⇄ Invoice Aligned" },
-    { stage: "Discrepancy Locked Invoices", count: "1", value: "PO-2026-092 (Pulkit Steels)", variance: "Shortfall: 3T Rebar (Disburse Held)" },
-    { stage: "Disbursements Executed", count: "4", value: formatCurrency(216400000, currency), variance: "Wire Remitted via Bank" },
-  ];
-
-  const supplierRows = [
-    { supplier: "Dangote Cement PLC", otd: "96%", quality: "4.8 / 5.0", price: "Tier-1 Direct Rate", score: "4.7 / 5.0", status: "Preferred Vendor" },
-    { supplier: "Lafarge Readymix Ltd", otd: "91%", quality: "4.6 / 5.0", price: "Standard Commercial", score: "4.4 / 5.0", status: "Approved" },
-    { supplier: "Pulkit Steels Ltd", otd: "82%", quality: "4.2 / 5.0", price: "High (Escalated)", score: "3.9 / 5.0", status: "Under Audit Review" },
-    { supplier: "BUA Cement Industries", otd: "94%", quality: "4.7 / 5.0", price: "Competitive Rate", score: "4.6 / 5.0", status: "Preferred Vendor" },
-    { supplier: "Nigerite Building Products", otd: "89%", quality: "4.5 / 5.0", price: "Fixed Agreement", score: "4.3 / 5.0", status: "Approved" },
-  ];
-
-  const inventoryRows = [
-    { sku: "MAT-CEM-01", name: "Dangote Cement 42.5R (Bags)", onhand: "840 bags", reserved: "200 bags", consumed: "1,200 bags", reorder: "300 bags", status: "Adequate Stock" },
-    { sku: "MAT-STL-16", name: "16mm TMT High-Yield Rebar (Tons)", onhand: "22 tons", reserved: "15 tons", consumed: "45 tons", reorder: "20 tons", status: "Low - Reorder Triggered" },
-    { sku: "MAT-BLK-225", name: "225mm Vibrated Sandcrete Blocks", onhand: "450 units", reserved: "400 units", consumed: "4,200 units", reorder: "500 units", status: "Critical - Batch Arriving" },
-    { sku: "MAT-AGG-20", name: "20mm Crushed Granite Aggregate", onhand: "85 tons", reserved: "30 tons", consumed: "210 tons", reorder: "50 tons", status: "Adequate Stock" },
-    { sku: "MAT-SND-01", name: "Sharp Clean Washed River Sand", onhand: "60 tons", reserved: "20 tons", consumed: "180 tons", reorder: "40 tons", status: "Adequate Stock" },
-  ];
-
-  const labourRows = [
-    { name: "Musa Ibrahim", trade: "Chief Mason Lead", days: "5 shifts", overtime: "6 hrs", prod: "105% of Target", pay: formatCurrency(78200, currency) },
-    { name: "Emeka Okafor", trade: "Steel Fixer Foreperson", days: "6 shifts", overtime: "10 hrs", prod: "112% of Target", pay: formatCurrency(118125, currency) },
-    { name: "Sunday Balogun", trade: "Formwork Carpenter Lead", days: "5 shifts", overtime: "4 hrs", prod: "98% of Target", pay: formatCurrency(75656, currency) },
-    { name: "Yakubu Danladi", trade: "Licensed MEP Plumber", days: "5 shifts", overtime: "8 hrs", prod: "104% of Target", pay: formatCurrency(86400, currency) },
-    { name: "Chinedu Eze", trade: "First-Fix Electrician", days: "6 shifts", overtime: "7 hrs", prod: "101% of Target", pay: formatCurrency(92750, currency) },
-  ];
-
-  const siteDiaryRows = [
-    { metric: "Daily Shift Logs", target: "142 shifts", actual: "142 shifts", detail: "Day 142 · Clear 31°C · Superstructure Phase", status: "Fully Reconciled" },
-    { metric: "Site Photographic Proof", target: "120 photos", actual: "148 photos", detail: "Geo-stamped with lat/long & weather tags", status: "Verified on Chain" },
-    { metric: "QA/QC Concrete Cube Tests", target: "20 batches", actual: "18 tested", detail: "7-day & 28-day crushing strengths recorded", status: "15 Passed, 3 Pending" },
-    { metric: "Active Quality Snags", target: "0 open", actual: "3 open", detail: "Beam honeycomb & rebar cover spacers flagged", status: "Remediation Active" },
-    { metric: "HSE Toolbox Safety Talks", target: "100%", actual: "100%", detail: "Zero lost-time injuries (LTI) over 142 shifts", status: "Compliant" },
-  ];
-
-  const subcontractorRows = [
-    { sub: "MEP Precision Services Ltd", pkg: "Electrical & Plumbing", contract: formatCurrency(45000000, currency), claimed: formatCurrency(22000000, currency), certified: formatCurrency(20000000, currency), retention: formatCurrency(2000000, currency) },
-    { sub: "Piling & Geotechnical Co", pkg: "Bored Piles & Shoring", contract: formatCurrency(32000000, currency), claimed: formatCurrency(15000000, currency), certified: formatCurrency(14500000, currency), retention: formatCurrency(1450000, currency) },
-    { sub: "Aluminum & Curtain Wall Ltd", pkg: "Façade & Glazing", contract: formatCurrency(28000000, currency), claimed: formatCurrency(8000000, currency), certified: formatCurrency(7600000, currency), retention: formatCurrency(760000, currency) },
-    { sub: "Apex Drywall & Finishes", pkg: "Plaster & Screeding", contract: formatCurrency(18500000, currency), claimed: formatCurrency(6000000, currency), certified: formatCurrency(5500000, currency), retention: formatCurrency(550000, currency) },
-  ];
-
-  const variationRows = [
-    { vo: "VO-2026-001", title: "Water pump annex relocation to North perimeter", boq: "MEP-04.01", cost: `+${formatCurrency(3500000, currency)}`, time: "+5 Days", status: "Architect & PM Approved" },
-    { vo: "VO-2026-002", title: "Diesel inflation rate adjustment on ready-mix concrete", boq: "CON-02.01", cost: `+${formatCurrency(4000000, currency)}`, time: "0 Days", status: "QS Certified Valuation" },
-    { vo: "VO-2026-003", title: "Additional 1.2m foundation excavation depth in clay zone", boq: "EAR-01.02", cost: `+${formatCurrency(2200000, currency)}`, time: "+3 Days", status: "Client Signed Off" },
-    { vo: "VO-2026-004", title: "Upgrade lobby glazing to double-glazed acoustic panes", boq: "ARC-05.02", cost: `+${formatCurrency(2000000, currency)}`, time: "+7 Days", status: "Pending Client Signoff" },
-  ];
+  const procurementRows: any[] = [];
+  const supplierRows: any[] = [];
+  const inventoryRows: any[] = [];
+  const labourRows: any[] = [];
+  const siteDiaryRows: any[] = [];
+  const subcontractorRows: any[] = [];
+  const variationRows: any[] = [];
 
   const effectiveTitle = customTitle || selectedReport;
   const effectiveSubtitle = customSubtitle || `Project: ${reportProject} · ${dateFrom} → ${dateTo} · ${currency}`;
@@ -664,9 +635,7 @@ export function ReportsView({ initialReportId, onReportChange }: ReportsViewProp
                 aria-label="Active Project"
                 className="bg-transparent text-sm font-extrabold text-[#0A2540] focus:outline-none cursor-pointer"
               >
-                <option value="Eko Atlantic Horizon Towers">Eko Atlantic Horizon Towers</option>
-                <option value="Lekki Commercial Complex">Lekki Commercial Complex</option>
-                <option value="Victoria Island Residential Tower">Victoria Island Residential Tower</option>
+                {currentProject?.name && <option value={currentProject.name}>{currentProject.name}</option>}
                 <option value="All Active Workspaces">All Workspaces Combined</option>
               </select>
             </div>
@@ -915,25 +884,25 @@ export function ReportsView({ initialReportId, onReportChange }: ReportsViewProp
             <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] p-5 rounded-xl">
               <div className="text-xs font-black uppercase tracking-wider text-[#0A2540]/60">Original Baseline Budget</div>
               <div className="text-2xl font-black font-mono text-[#0A2540] mt-2">
-                {formatCurrency(reportData.originalBudget, currency)}
+                {formatCurrency(totalBudget, currency)}
               </div>
-              <div className="text-xs font-bold text-[#0A2540]/60 mt-1">Approved contract baseline</div>
+              <div className="text-xs font-bold text-[#0A2540]/60 mt-1">Master BOQ allocation</div>
             </div>
 
             <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] p-5 rounded-xl">
-              <div className="text-xs font-black uppercase tracking-wider text-[#0A2540]/60">Approved Variations (Net)</div>
-              <div className="text-2xl font-black font-mono text-emerald-700 mt-2">
-                +{formatCurrency(reportData.approvedVariations, currency)}
+              <div className="text-xs font-black uppercase tracking-wider text-[#0A2540]/60">Committed Orders</div>
+              <div className="text-2xl font-black font-mono text-[#0A2540] mt-2">
+                {formatCurrency(totalCommitted, currency)}
               </div>
-              <div className="text-xs font-bold text-[#0A2540]/60 mt-1">2 VO certificates applied</div>
+              <div className="text-xs font-bold text-[#0A2540]/60 mt-1">Legally bound contracts</div>
             </div>
 
             <div className="bg-[#0A2540] text-white border-2 border-[#0A2540] p-5 rounded-xl">
-              <div className="text-xs font-black uppercase tracking-wider text-white/70">Revised Working Budget</div>
+              <div className="text-xs font-black uppercase tracking-wider text-white/70">Certified Actuals</div>
               <div className="text-2xl font-black font-mono text-white mt-2">
-                {formatCurrency(reportData.revisedBudget, currency)}
+                {formatCurrency(totalActual, currency)}
               </div>
-              <div className="text-xs font-bold text-white/80 mt-1">Live authorized spending cap</div>
+              <div className="text-xs font-bold text-white/80 mt-1">Valuated and paid work</div>
             </div>
           </div>
         )}
@@ -958,9 +927,11 @@ export function ReportsView({ initialReportId, onReportChange }: ReportsViewProp
                   <tr>
                     <td
                       colSpan={columnDefs[selectedReport].filter((c) => isColVisible(selectedReport, c.key)).length}
-                      className="py-8 text-center text-sm font-bold text-[#0A2540]/60"
+                      className="py-12 text-center text-sm font-bold text-[#0A2540]/60"
                     >
-                      No matching records found for "{searchFilter}".
+                      {searchFilter
+                        ? `No matching records found for "${searchFilter}".`
+                        : "No records found for this register. Data will appear as items are logged in the project."}
                     </td>
                   </tr>
                 ) : (

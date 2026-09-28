@@ -15,71 +15,10 @@ interface AuditEntry {
   timestamp: string;
 }
 
-const SAMPLE_LOGS: AuditEntry[] = [
-  {
-    id: "log-1",
-    actor: "Engr. Babatunde (PM)",
-    role: "Project Manager",
-    action: "Discrepancy Lock Applied",
-    module: "Procurement",
-    entity: "PO-2026-092",
-    delta: "Locked payment disbursement for Pulkit Steels. Shortfall: 3 Tons rebar.",
-    timestamp: "2026-09-07 14:15:22",
-  },
-  {
-    id: "log-2",
-    actor: "Mrs. Nkechi (QS)",
-    role: "Quantity Surveyor",
-    action: "Budget Rate Revision Submitted",
-    module: "Budget",
-    entity: "CON-02.01",
-    delta: "Adjusted rate from ₦195,000 to ₦203,000/m³ (+₦4,000,000 total).",
-    timestamp: "2026-09-07 11:42:09",
-  },
-  {
-    id: "log-3",
-    actor: "Tayo (Storekeeper)",
-    role: "Storekeeper",
-    action: "Material Consumption Recorded",
-    module: "Materials",
-    entity: "MAT-CEM-01",
-    delta: "Issued 50 bags cement to Block B Ground Floor raft slab.",
-    timestamp: "2026-09-07 09:30:00",
-  },
-  {
-    id: "log-4",
-    actor: "Admin (icedmist)",
-    role: "Admin",
-    action: "User Permissions Updated",
-    module: "Contracts",
-    entity: "Role Matrix",
-    delta: "Granted Quantity Surveyor access to Subcontractor certification.",
-    timestamp: "2026-09-06 16:55:12",
-  },
-  {
-    id: "log-5",
-    actor: "Engr. Babatunde (PM)",
-    role: "Project Manager",
-    action: "Purchase Order Authorized",
-    module: "Procurement",
-    entity: "PO-2026-088",
-    delta: "Authorized ₦5,880,000 order to Dangote Cement Plc.",
-    timestamp: "2026-09-05 10:20:41",
-  },
-  {
-    id: "log-6",
-    actor: "Engr. Babatunde (PM)",
-    role: "Project Manager",
-    action: "Interim Claim Certified",
-    module: "Contracts",
-    entity: "CLM-2026-014",
-    delta: "Certified ₦20,000,000 net valuation with 10% retention withheld.",
-    timestamp: "2026-09-04 15:10:00",
-  },
-];
+const SAMPLE_LOGS: AuditEntry[] = [];
 
 export function AuditLogView() {
-  const [logs, setLogs] = useState<AuditEntry[]>(SAMPLE_LOGS);
+  const [logs, setLogs] = useState<AuditEntry[]>([]);
   const [search, setSearch] = useState("");
   const [moduleFilter, setModuleFilter] = useState("All");
 
@@ -110,8 +49,8 @@ export function AuditLogView() {
             };
             return {
               id: d.id,
-              actor: d.profiles?.full_name || "Engr. Babatunde (PM)",
-              role: d.profiles?.default_role || "Project Manager",
+              actor: d.profiles?.full_name || "System",
+              role: d.profiles?.default_role || "Staff",
               action: actMap[d.action] || d.action,
               module: moduleMap[d.entity_type] || "Contracts",
               entity: d.entity_type,
@@ -209,7 +148,7 @@ export function AuditLogView() {
             {filteredLogs.length === 0 ? (
               <tr>
                 <td colSpan={6} className="py-8 text-center text-sm font-bold text-[#0A2540]/60">
-                  No matching audit entries found for "{search}".
+                  {search ? `No matching audit entries found for "${search}".` : "No audit logs recorded yet."}
                 </td>
               </tr>
             ) : (

@@ -50,10 +50,7 @@ export function Header({
         {/* Mobile Active Section Pill */}
         {currentPrimary && (
           <div className="flex lg:hidden items-center gap-2 min-w-0">
-            <span className="px-2.5 py-1 rounded-md text-xs font-mono font-black shrink-0 bg-[#FAF9F5] dark:bg-[#071324] text-[#0A2540] dark:text-white border border-[#E5E5DE] dark:border-[#1E3A5F]">
-              {currentSub ? currentSub.code : currentPrimary.code}
-            </span>
-            <span className="text-sm font-black text-[#0A2540] dark:text-white truncate max-w-[150px] sm:max-w-none">
+            <span className="text-sm font-black text-[#0A2540] dark:text-white truncate max-w-[170px] sm:max-w-none">
               {currentSub ? currentSub.name : currentPrimary.name}
             </span>
           </div>

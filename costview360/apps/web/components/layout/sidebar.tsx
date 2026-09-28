@@ -102,7 +102,6 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
         name: "AI Cost Estimator",
         code: "1.4",
         icon: Sparkles,
-        badge: "AI",
       },
     ],
   },
@@ -166,10 +165,9 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
     subSections: [
       {
         id: "hub",
-        name: "Project Site Hub",
+        name: "Site Updates & Feed",
         code: "3.1",
         icon: HardHat,
-        badge: "Hub",
       },
       {
         id: "drawings",
@@ -259,7 +257,6 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
         name: "Workspace Governance",
         code: "5.4",
         icon: ShieldCheck,
-        badge: "Admin",
         permission: "Admin",
       },
       {
@@ -267,7 +264,6 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
         name: "Client Portal",
         code: "5.5",
         icon: Globe,
-        badge: "Live",
       },
     ],
   },
@@ -532,18 +528,6 @@ export function Sidebar({
                               />
                               <span className="truncate">{sub.name}</span>
                             </div>
-
-                            {sub.badge && (
-                              <span
-                                className={`px-2 py-0.5 rounded text-[10px] font-mono font-black uppercase ${
-                                  isSubActive
-                                    ? "bg-white/20 dark:bg-[#0A1931]/20 text-white dark:text-[#0A1931]"
-                                    : "bg-[#FAF9F5] dark:bg-[#071324] text-[#0A2540]/70 dark:text-white/70 border border-[#E5E5DE] dark:border-[#1E3A5F]"
-                                }`}
-                              >
-                                {sub.badge}
-                              </span>
-                            )}
                           </button>
                         );
                       })}
