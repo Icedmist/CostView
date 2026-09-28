@@ -309,6 +309,88 @@ export interface Database {
           created_at: string;
         };
       };
+      site_posts: {
+        Row: {
+          id: string;
+          project_id: string;
+          author_id: string;
+          author_name: string;
+          author_role: string;
+          content: string;
+          post_type: "progress" | "expense" | "log" | "issue";
+          amount_spent: number;
+          expense_category: string | null;
+          tagged_users: Json;
+          media_urls: Json;
+          metadata: Json;
+          likes_count: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          project_id: string;
+          author_id: string;
+          author_name: string;
+          author_role?: string;
+          content: string;
+          post_type?: "progress" | "expense" | "log" | "issue";
+          amount_spent?: number;
+          expense_category?: string | null;
+          tagged_users?: Json;
+          media_urls?: Json;
+          metadata?: Json;
+          likes_count?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          project_id?: string;
+          author_id?: string;
+          author_name?: string;
+          author_role?: string;
+          content?: string;
+          post_type?: "progress" | "expense" | "log" | "issue";
+          amount_spent?: number;
+          expense_category?: string | null;
+          tagged_users?: Json;
+          media_urls?: Json;
+          metadata?: Json;
+          likes_count?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      site_post_comments: {
+        Row: {
+          id: string;
+          post_id: string;
+          author_id: string;
+          author_name: string;
+          author_role: string;
+          content: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          post_id: string;
+          author_id: string;
+          author_name: string;
+          author_role?: string;
+          content: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          post_id?: string;
+          author_id?: string;
+          author_name?: string;
+          author_role?: string;
+          content?: string;
+          created_at?: string;
+        };
+      };
     };
   };
 }

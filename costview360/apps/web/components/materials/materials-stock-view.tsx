@@ -25,52 +25,7 @@ interface StockItem {
   location: string;
 }
 
-const SAMPLE_STOCK: StockItem[] = [
-  {
-    id: "stk-1",
-    sku: "MAT-CEM-01",
-    name: "Dangote Portland Cement 42.5R (50kg bags)",
-    unit: "Bags",
-    qtyOnHand: 840,
-    qtyReserved: 200,
-    qtyConsumed: 1200,
-    minReorderLevel: 300,
-    location: "Main Store A",
-  },
-  {
-    id: "stk-2",
-    sku: "MAT-STL-16",
-    name: "16mm High-Yield TMT Steel Rebar (12m rods)",
-    unit: "Tons",
-    qtyOnHand: 22,
-    qtyReserved: 15,
-    qtyConsumed: 45,
-    minReorderLevel: 10,
-    location: "Rebar Yard",
-  },
-  {
-    id: "stk-3",
-    sku: "MAT-BLK-225",
-    name: "225mm Hollow Sandcrete Blocks",
-    unit: "Pcs",
-    qtyOnHand: 450,
-    qtyReserved: 400,
-    qtyConsumed: 4200,
-    minReorderLevel: 800, // Trigger low stock!
-    location: "Block Stacking Area 2",
-  },
-  {
-    id: "stk-4",
-    sku: "MAT-AGG-20",
-    name: "20mm Crushed Granite Aggregate",
-    unit: "Tons",
-    qtyOnHand: 180,
-    qtyReserved: 60,
-    qtyConsumed: 320,
-    minReorderLevel: 50,
-    location: "Bulk Materials Bunker",
-  },
-];
+const SAMPLE_STOCK: StockItem[] = [];
 
 export function MaterialsStockView() {
   const [stock, setStock] = useState<StockItem[]>(SAMPLE_STOCK);
@@ -209,8 +164,14 @@ export function MaterialsStockView() {
       </div>
 
       {/* Live Stock Gauges Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stock.map((item) => {
+      {stock.length === 0 ? (
+        <div className="bg-white border-2 border-[#E5E5DE] rounded-2xl p-12 text-center">
+          <p className="font-bold text-sm text-[#0A2540]">No inventory items recorded</p>
+          <p className="text-xs text-[#0A2540]/60 mt-1">Stock ledger balances will appear here as materials are delivered and receipted to site.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {stock.map((item) => {
           const isLow = item.qtyOnHand <= item.minReorderLevel;
           const available = Math.max(0, item.qtyOnHand - item.qtyReserved);
           const totalCirculation = item.qtyOnHand + item.qtyConsumed;
@@ -280,6 +241,7 @@ export function MaterialsStockView() {
           );
         })}
       </div>
+      )}
 
       {/* Record Consumption Modal */}
       {isConsumptionModalOpen && selectedItem && (

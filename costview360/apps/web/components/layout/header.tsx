@@ -84,7 +84,7 @@ export function Header({
             <>
               <ChevronRight className="w-4 h-4 text-[#0A2540]/40 dark:text-white/40" />
               <span className="font-bold px-3 py-1 rounded-lg text-xs tracking-wide shadow-xs bg-[#0A2540] dark:bg-[#FFD23F] text-white dark:text-[#0A1931]">
-                {currentSub.code} {currentSub.name}
+                {currentSub.name}
               </span>
             </>
           )}

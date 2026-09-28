@@ -75,108 +75,10 @@ interface Variation {
   linkedBOQItem: string;
 }
 
-const INITIAL_SUBS: Subcontractor[] = [
-  {
-    id: "sub-1",
-    name: "Apex MEP Engineering Ltd",
-    trade: "Electrical & Piping",
-    contractSum: 45000000,
-    certifiedAmount: 22000000,
-    retentionHeld: 2200000, // 10%
-    paidAmount: 19800000,
-    scoreQuality: 4.8,
-    scoreSchedule: 4.2,
-    scoreSafety: 5.0,
-    scoreResponse: 4.5,
-  },
-  {
-    id: "sub-2",
-    name: "Horizon Fenestration & Aluminium",
-    trade: "Glazing & Curtain Walls",
-    contractSum: 38000000,
-    certifiedAmount: 12000000,
-    retentionHeld: 1200000,
-    paidAmount: 10800000,
-    scoreQuality: 4.5,
-    scoreSchedule: 4.0,
-    scoreSafety: 4.8,
-    scoreResponse: 4.2,
-  },
-];
-
-const INITIAL_CLAIMS: InterimClaim[] = [
-  {
-    id: "clm-1",
-    claimNumber: "CLM-APEX-04",
-    subcontractorId: "sub-1",
-    subcontractorName: "Apex MEP Engineering Ltd",
-    claimPeriod: "August 2026",
-    claimedAmount: 6500000,
-    certifiedAmount: 6000000,
-    retentionDeduction: 600000,
-    status: "Certified",
-    submittedAt: "2026-08-30",
-    certifiedAt: "2026-09-03",
-    workDescription: "Conduit piping and DB trunking on Floor 1 & 2.",
-  },
-  {
-    id: "clm-2",
-    claimNumber: "CLM-HORIZ-02",
-    subcontractorId: "sub-2",
-    subcontractorName: "Horizon Fenestration & Aluminium",
-    claimPeriod: "September 2026",
-    claimedAmount: 4200000,
-    status: "Submitted",
-    submittedAt: "2026-09-06",
-    workDescription: "Extruded aluminium mullions installation on East facade.",
-  },
-];
-
-const INITIAL_INSTRUCTIONS: SiteInstruction[] = [
-  {
-    id: "si-1",
-    instructionNumber: "SI-2026-011",
-    issuedBy: "Architect David",
-    issueDate: "2026-09-02",
-    subject: "Relocate basement water treatment plant",
-    description: "Re-route piping to service annex room B-04 per client revision.",
-    linkedVoNumber: "VO-2026-001",
-  },
-  {
-    id: "si-2",
-    instructionNumber: "SI-2026-012",
-    issuedBy: "Structural Consultant",
-    issueDate: "2026-09-05",
-    subject: "Elevator core rebar upgrade",
-    description: "Upgrade rebar specification to Grade 460 steel for lift pit shear walls.",
-    linkedVoNumber: "VO-2026-002",
-  },
-];
-
-const INITIAL_VOS: Variation[] = [
-  {
-    id: "vo-1",
-    voNumber: "VO-2026-001",
-    title: "Relocate basement water treatment plant to service annex",
-    instructionId: "si-1",
-    stage: "PM Review",
-    costImpact: 3500000,
-    timeImpactDays: 5,
-    raisedBy: "Architect David",
-    linkedBOQItem: "MEP-04.01",
-  },
-  {
-    id: "vo-2",
-    voNumber: "VO-2026-002",
-    title: "Upgrade elevator core rebar to Grade 460 steel specification",
-    instructionId: "si-2",
-    stage: "Approved",
-    costImpact: 8200000,
-    timeImpactDays: 0,
-    raisedBy: "Structural Engr",
-    linkedBOQItem: "STL-02.03",
-  },
-];
+const INITIAL_SUBS: Subcontractor[] = [];
+const INITIAL_CLAIMS: InterimClaim[] = [];
+const INITIAL_INSTRUCTIONS: SiteInstruction[] = [];
+const INITIAL_VOS: Variation[] = [];
 
 export function SubcontractorView({
   initialSubTab = "contracts",
@@ -301,7 +203,7 @@ export function SubcontractorView({
   const [scoreSafe, setScoreSafe] = useState<number>(5.0);
   const [scoreResp, setScoreResp] = useState<number>(5.0);
 
-  const [claimSubId, setClaimSubId] = useState(INITIAL_SUBS[0].id);
+  const [claimSubId, setClaimSubId] = useState(INITIAL_SUBS[0]?.id || "");
   const [claimPeriod, setClaimPeriod] = useState("September 2026");
   const [claimAmount, setClaimAmount] = useState<number>(3500000);
   const [claimDesc, setClaimDesc] = useState("");
@@ -520,7 +422,24 @@ export function SubcontractorView({
                 </tr>
               </thead>
               <tbody className="divide-y divide-navy-800/10 text-slate-900">
-                {subs.map((s) => {
+                {subs.length === 0 ? (
+                  <tr>
+                    <td colSpan={8} className="py-12 px-4 text-center text-[#0A2540]/60">
+                      <div className="flex flex-col items-center justify-center max-w-sm mx-auto">
+                        <p className="font-bold text-sm text-[#0A2540]">No subcontractors registered</p>
+                        <p className="text-xs text-[#0A2540]/60 mt-1">Add trade contracts, certified valuations, and retention funds for your project.</p>
+                        <button
+                          type="button"
+                          onClick={() => setIsAddSubOpen(true)}
+                          className="mt-4 px-4 py-2 bg-[#0A2540] hover:bg-[#003366] text-white rounded-xl text-xs font-black uppercase tracking-wider cursor-pointer"
+                        >
+                          + Add Subcontractor
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  subs.map((s) => {
                   const avgScore = ((s.scoreQuality + s.scoreSchedule + s.scoreSafety + s.scoreResponse) / 4).toFixed(1);
                   return (
                     <tr key={s.id} className="hover:bg-white/30 transition-colors">
@@ -564,7 +483,7 @@ export function SubcontractorView({
                       </td>
                     </tr>
                   );
-                })}
+                }))}
               </tbody>
             </table>
           </div>

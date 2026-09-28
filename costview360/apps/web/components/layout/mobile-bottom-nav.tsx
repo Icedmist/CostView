@@ -35,7 +35,6 @@ const BOTTOM_NAV_ITEMS: BottomNavItem[] = [
     id: "Buy & Supply",
     name: "Buy",
     icon: ShoppingCart,
-    badge: "3",
   },
   {
     id: "Site",

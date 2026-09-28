@@ -105,79 +105,26 @@ export function ManagementDecisionCenter({ onNavigate }: ManagementDecisionProps
   ];
 
   return (
-    <div className="space-y-8">
-      {/* 1. Header & Stated Management Flow */}
-      <div className="bg-[#0A2540] dark:bg-[#071324] border-2 border-[#0A2540] dark:border-white/10 rounded-2xl p-7 md:p-9 text-white shadow-xl relative overflow-hidden">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
-          <div>
-            <div className="flex flex-wrap items-center gap-3 mb-3">
-              <span className="text-xs font-black uppercase tracking-wider px-3 py-1 bg-white/10 text-white rounded-lg border border-white/20 flex items-center gap-1.5">
-                <Target className="w-3.5 h-3.5" />
-                Flow 5.2 · Management Decision Center
-              </span>
-              <span className="text-amber-400 text-xs font-bold bg-amber-400/10 px-2.5 py-1 rounded-md border border-amber-400/20">
-                Executive Control
-              </span>
-            </div>
-            <h1 className="text-3xl md:text-4xl font-black tracking-tight leading-tight">
-              Management Performance &amp; Decision Center
-            </h1>
-            <p className="text-sm md:text-base text-white/80 mt-2 max-w-3xl leading-relaxed">
-              Consolidated enterprise oversight across portfolio profitability, treasury cash liquidity, plant fleet efficiency, workforce throughput, and executive decisions.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-3">
-            <button
-              onClick={() => onNavigate("Oversight", "reports-all")}
-              className="min-h-[46px] px-5 py-3 bg-white/10 hover:bg-white/20 text-white border-2 border-white/30 rounded-xl text-xs md:text-sm font-black flex items-center gap-2 transition-all cursor-pointer"
-            >
-              <FileText className="w-4 h-4 text-white" />
-              <span>Executive Reports Studio</span>
-            </button>
-            <button
-              onClick={() => setActiveDomain("decisions")}
-              className="min-h-[46px] px-5 py-3 bg-amber-400 hover:bg-amber-300 text-[#0A2540] rounded-xl text-xs md:text-sm font-black flex items-center gap-2 shadow-md transition-all active:scale-[0.98] cursor-pointer"
-            >
-              <AlertTriangle className="w-4 h-4 fill-[#0A2540]" />
-              <span>Pending Decisions (3)</span>
-            </button>
-          </div>
+    <div className="space-y-6">
+      {/* 1. Clean Header */}
+      <div className="bg-white dark:bg-[#0A1931] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-2xl p-5 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-black text-[#0A2540] dark:text-white tracking-tight">
+            Management Performance &amp; Decisions
+          </h1>
+          <p className="text-xs text-[#0A2540]/70 dark:text-slate-300 mt-0.5">
+            Portfolio profitability, liquidity runway, and executive sign-offs.
+          </p>
         </div>
 
-        {/* The Management Flow: Information → Dashboard → Reports → Review → Decision → Action */}
-        <div className="mt-8 pt-6 border-t-2 border-white/10">
-          <div className="text-xs uppercase font-black tracking-wider text-white/60 mb-3 flex items-center gap-2">
-            <span>The Management Flow:</span>
-            <span className="text-amber-400 font-mono">
-              Information → Dashboard → Reports → Review → Decision → Action
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
-            {flowSteps.map((s) => {
-              const isSelected = selectedFlowStep === s.step;
-              return (
-                <button
-                  key={s.step}
-                  onClick={() => setSelectedFlowStep(s.step)}
-                  className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
-                    isSelected
-                      ? "bg-amber-400 text-[#0A2540] border-amber-400 font-black shadow-md scale-102"
-                      : "bg-white/5 border-white/10 text-white/80 hover:bg-white/10"
-                  }`}
-                >
-                  <div className="text-[10px] font-mono uppercase opacity-75">
-                    Step 0{s.step}
-                  </div>
-                  <div className="text-sm font-black mt-0.5">{s.label}</div>
-                  <div className="text-[11px] opacity-80 mt-1 line-clamp-2 leading-tight">
-                    {s.desc}
-                  </div>
-                </button>
-              );
-            })}
-          </div>
+        <div className="flex items-center gap-2.5">
+          <button
+            onClick={() => setActiveDomain("decisions")}
+            className="px-4 py-2 bg-[#0A2540] hover:bg-[#003366] dark:bg-[#FFD23F] dark:text-[#0A1931] text-white rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-1.5 shadow-xs transition-all cursor-pointer"
+          >
+            <AlertTriangle className="w-3.5 h-3.5" />
+            <span>Pending Decisions (3)</span>
+          </button>
         </div>
       </div>
 

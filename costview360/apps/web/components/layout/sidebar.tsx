@@ -74,47 +74,23 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
   {
     id: "Cost Plan",
     name: "Cost Plan",
-    code: "1.0",
+    code: "1",
     icon: Calculator,
-    flowStatement: "Estimate → BOQ → Cost Control → Close-out",
+    flowStatement: "Estimate & BOQ Control",
     permission: "Budget",
     subSections: [
       {
-        id: "estimator",
-        name: "AI Cost Estimator",
-        code: "1.1",
-        icon: Sparkles,
-        badge: "AI",
-      },
-      {
         id: "boq",
-        name: "BOQ Master Register",
-        code: "1.2",
+        name: "BOQ Register",
+        code: "1.1",
         icon: Calculator,
       },
       {
-        id: "risks",
-        name: "Cost Control & Risks",
-        code: "1.3",
-        icon: ShieldAlert,
-      },
-      {
-        id: "revisions",
-        name: "Rate Revisions & Deltas",
-        code: "1.4",
-        icon: FileSpreadsheet,
-      },
-      {
-        id: "finalAccount",
-        name: "Final Account Closeout",
-        code: "1.5",
-        icon: FileText,
-      },
-      {
-        id: "reports-cost",
-        name: "Budget vs Actual Reports",
-        code: "1.6",
-        icon: DollarSign,
+        id: "estimator",
+        name: "AI Cost Estimator",
+        code: "1.2",
+        icon: Sparkles,
+        badge: "AI",
       },
     ],
   },
@@ -123,68 +99,28 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
   {
     id: "Buy & Supply",
     name: "Buy & Supply",
-    code: "2.0",
+    code: "2",
     icon: ShoppingCart,
-    flowStatement: "Requisition → Quote → 3-Way Match → Pay → Deliver",
+    flowStatement: "Procurement & Materials",
     permission: "Procurement",
-    badge: "3",
     subSections: [
       {
-        id: "requisitions",
-        name: "Material Requisitions",
-        code: "2.1",
-        icon: Clock,
-        badge: "3",
-      },
-      {
-        id: "enquiries",
-        name: "Supplier Enquiries & Quotes",
-        code: "2.2",
-        icon: Truck,
-      },
-      {
         id: "match",
-        name: "Three-Way Match Gate",
-        code: "2.3",
+        name: "Orders & 3-Way Match",
+        code: "2.1",
         icon: BadgeCheck,
       },
       {
-        id: "invoices",
-        name: "Invoices & Payments",
-        code: "2.4",
-        icon: Receipt,
-      },
-      {
-        id: "payments",
-        name: "Disbursement Ledger",
-        code: "2.5",
-        icon: CreditCard,
-      },
-      {
         id: "stock",
-        name: "Materials & Stock Ledger",
-        code: "2.6",
+        name: "Stock & Materials",
+        code: "2.2",
         icon: Boxes,
       },
       {
-        id: "assets",
-        name: "Plant, Equipment & Assets",
-        code: "2.7",
-        icon: Truck,
-        badge: "Assets",
-      },
-      {
         id: "directory",
-        name: "Vetted Trade Directory",
-        code: "2.8",
+        name: "Trade Directory",
+        code: "2.3",
         icon: Store,
-        badge: "Vetted",
-      },
-      {
-        id: "reports-procurement",
-        name: "Procurement Reports",
-        code: "2.9",
-        icon: FileText,
       },
     ],
   },
@@ -193,58 +129,29 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
   {
     id: "Site",
     name: "Site",
-    code: "3.0",
+    code: "3",
     icon: HardHat,
-    flowStatement: "Log → Progress → Inspect → Resolve",
+    flowStatement: "Site Hub & Progress",
     permission: "Progress",
     subSections: [
       {
-        id: "diary",
-        name: "Daily Site Diary & Log",
+        id: "hub",
+        name: "Project Site Hub",
         code: "3.1",
-        icon: Calendar,
-      },
-      {
-        id: "photos",
-        name: "Progress Photos & Proof",
-        code: "3.2",
-        icon: ImageIcon,
-      },
-      {
-        id: "labour",
-        name: "Labour & Productivity",
-        code: "3.3",
-        icon: Users,
+        icon: HardHat,
+        badge: "Hub",
       },
       {
         id: "drawings",
-        name: "Drawings & Revisions",
-        code: "3.4",
+        name: "Drawings & Plans",
+        code: "3.2",
         icon: DraftingCompass,
       },
       {
-        id: "inspections",
-        name: "QA/QC Inspections & Tests",
-        code: "3.5",
-        icon: FileCheck2,
-      },
-      {
-        id: "snags",
-        name: "Snags & NCRs",
-        code: "3.6",
-        icon: AlertCircle,
-      },
-      {
-        id: "safety",
-        name: "HSE Safety Observations",
-        code: "3.7",
-        icon: HardHat,
-      },
-      {
-        id: "reports-site",
-        name: "Site Progress Reports",
-        code: "3.8",
-        icon: FileText,
+        id: "labour",
+        name: "Labour Attendance",
+        code: "3.3",
+        icon: Users,
       },
     ],
   },
@@ -253,40 +160,16 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
   {
     id: "Contracts",
     name: "Contracts",
-    code: "4.0",
+    code: "4",
     icon: Briefcase,
-    flowStatement: "Instruct → Claim → Certify → Retain",
+    flowStatement: "Subcontractor Ledger & Claims",
     permission: "Subcontractors",
     subSections: [
       {
-        id: "instructions",
-        name: "Site Instructions Register",
-        code: "4.1",
-        icon: ScrollText,
-      },
-      {
-        id: "claims",
-        name: "Interim Claims & Certs",
-        code: "4.2",
-        icon: Receipt,
-      },
-      {
-        id: "variations",
-        name: "Variation Orders Register",
-        code: "4.3",
-        icon: FileSpreadsheet,
-      },
-      {
         id: "contracts",
-        name: "Subcontractor Ledger & Retention",
-        code: "4.4",
+        name: "Subcontractor Ledger",
+        code: "4.1",
         icon: Briefcase,
-      },
-      {
-        id: "reports-contracts",
-        name: "Valuation Reports",
-        code: "4.5",
-        icon: DollarSign,
       },
     ],
   },
@@ -295,64 +178,36 @@ export const NAVIGATION_SECTIONS: PrimarySection[] = [
   {
     id: "Oversight",
     name: "Oversight",
-    code: "5.0",
+    code: "5",
     icon: LayoutDashboard,
-    flowStatement: "Watch → Decide → Approve → Share",
+    flowStatement: "Dashboard & Governance",
     subSections: [
       {
         id: "my-work",
-        name: "My Work Action Queue",
+        name: "Action Items & KPIs",
         code: "5.1",
         icon: Activity,
-        badge: "Action",
       },
       {
         id: "telemetry",
-        name: "Management Decision Center",
+        name: "Executive Decisions",
         code: "5.2",
         icon: TrendingUp,
-        badge: "Executive",
-      },
-      {
-        id: "alerts",
-        name: "Attention & Variance Alerts",
-        code: "5.3",
-        icon: AlertTriangle,
-        badge: "3",
-      },
-      {
-        id: "health",
-        name: "Baseline Financial Health",
-        code: "5.4",
-        icon: DollarSign,
-      },
-      {
-        id: "portal",
-        name: "Client & Investor Portal",
-        code: "5.5",
-        icon: Globe,
-        badge: "Live",
-      },
-      {
-        id: "reports-all",
-        name: "Executive Reports Studio",
-        code: "5.6",
-        icon: FileText,
       },
       {
         id: "admin",
-        name: "Governance & Settings",
-        code: "5.7",
+        name: "Workspace Governance",
+        code: "5.3",
         icon: ShieldCheck,
         badge: "Admin",
         permission: "Admin",
       },
       {
-        id: "documents-admin",
-        name: "Documents & Administration",
-        code: "5.8",
-        icon: FileCheck2,
-        badge: "Docs",
+        id: "portal",
+        name: "Client Portal",
+        code: "5.4",
+        icon: Globe,
+        badge: "Live",
       },
     ],
   },
@@ -556,12 +411,7 @@ export function Sidebar({
                     </div>
 
                     <div className="min-w-0">
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-mono font-black text-[#0A2540]/50">
-                          {flow.code}
-                        </span>
-                        <span className="text-sm font-black truncate">{flow.name}</span>
-                      </div>
+                      <span className="text-sm font-black truncate">{flow.name}</span>
                     </div>
                   </div>
 
@@ -581,16 +431,9 @@ export function Sidebar({
                   </div>
                 </button>
 
-                {/* Expanded: Flow Stated Statement + Sub-Items */}
+                {/* Expanded: Sub-Items */}
                 {isExpanded && isAllowed && (
                   <div className="px-2 pb-2.5 pt-1 space-y-1">
-                    {/* Stated Sequence Pill */}
-                    <div className="mx-1 mb-2 px-2.5 py-1.5 bg-white dark:bg-[#0A1931] border border-[#E5E5DE] dark:border-[#1E3A5F] rounded-xl text-[10px] font-mono font-bold text-[#0A2540]/70 dark:text-white/70 flex items-center gap-1.5 shadow-2xs">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
-                      <span className="truncate">{flow.flowStatement}</span>
-                    </div>
-
-                    {/* Sub-Items (One Level Deep) */}
                     <div className="space-y-1">
                       {flow.subSections.map((sub) => {
                         const isSubActive =
@@ -788,9 +631,6 @@ export function Sidebar({
 
                   {isExpanded && isAllowed && (
                     <div className="px-2 pb-2 space-y-1">
-                      <div className="px-2 py-1 bg-white dark:bg-[#0A1931] border border-[#E5E5DE] dark:border-[#1E3A5F] rounded-md text-[10px] font-mono font-bold text-[#0A2540]/70 dark:text-white/70 truncate">
-                        {flow.flowStatement}
-                      </div>
 
                       {flow.subSections.map((sub) => {
                         const isSubActive = isCurrent && activeSubSection === sub.id;
