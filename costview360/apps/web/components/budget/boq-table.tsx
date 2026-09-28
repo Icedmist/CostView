@@ -63,132 +63,9 @@ export interface BudgetRevision {
   createdAt: string;
 }
 
-const INITIAL_BOQ: BOQRecord[] = [
-  {
-    id: "boq-1",
-    code: "SUB-01.01",
-    description: "Excavation and earthwork disposal offsite",
-    category: "Plant",
-    unit: "m³",
-    quantity: 1250,
-    rate: 18500,
-    budgetAmount: 23125000,
-    committedAmount: 21500000,
-    actualAmount: 19800000,
-  },
-  {
-    id: "boq-2",
-    code: "CON-02.01",
-    description: "Grade 30 reinforced concrete for foundation raft & plinth beams",
-    category: "Material",
-    unit: "m³",
-    quantity: 480,
-    rate: 195000,
-    budgetAmount: 93600000,
-    committedAmount: 94000000,
-    actualAmount: 62000000,
-  },
-  {
-    id: "boq-3",
-    code: "STL-02.03",
-    description: "High-yield deformed reinforcement bars (12mm, 16mm, 20mm)",
-    category: "Material",
-    unit: "Tons",
-    quantity: 65,
-    rate: 1450000,
-    budgetAmount: 94250000,
-    committedAmount: 94250000,
-    actualAmount: 85000000,
-  },
-  {
-    id: "boq-4",
-    code: "BLK-03.01",
-    description: "225mm vibrated hollow sandcrete blockwork in cement mortar (1:4)",
-    category: "Material",
-    unit: "m²",
-    quantity: 3200,
-    rate: 11200,
-    budgetAmount: 35840000,
-    committedAmount: 33000000,
-    actualAmount: 24500000,
-  },
-  {
-    id: "boq-5",
-    code: "LAB-01.02",
-    description: "Structural steel fixing and formwork carpenters gang attendance",
-    category: "Labour",
-    unit: "Man-days",
-    quantity: 600,
-    rate: 12500,
-    budgetAmount: 7500000,
-    committedAmount: 7500000,
-    actualAmount: 5100000,
-  },
-  {
-    id: "boq-6",
-    code: "MEP-04.01",
-    description: "First fix electrical conduit pipes & heavy-duty distribution boards",
-    category: "Subcontractor",
-    unit: "Item",
-    quantity: 1,
-    rate: 45000000,
-    budgetAmount: 45000000,
-    committedAmount: 42000000,
-    actualAmount: 20000000,
-  },
-];
-
-const INITIAL_RISKS: RiskAlert[] = [
-  {
-    id: "risk-1",
-    itemCode: "CON-02.01",
-    description: "Concrete market rate surging due to diesel delivery surcharge (+5.8%).",
-    variancePercentage: 5.8,
-    severity: "High",
-    isHandled: false,
-  },
-  {
-    id: "risk-2",
-    itemCode: "STL-02.03",
-    description: "Foreign exchange volatility on imported billet rebar quotes (+4.2%).",
-    variancePercentage: 4.2,
-    severity: "Medium",
-    isHandled: false,
-  },
-  {
-    id: "risk-3",
-    itemCode: "BLK-03.01",
-    description: "Blockwork breakages during unloading on Grid Line C exceeds 3% allowance.",
-    variancePercentage: 3.1,
-    severity: "Low",
-    isHandled: true,
-    handledBy: "Engr. Tayo (Site Eng)",
-    handledAt: "2026-09-06 14:20",
-  },
-];
-
-const INITIAL_REVISIONS: BudgetRevision[] = [
-  {
-    id: "rev-1",
-    boqItemId: "boq-2",
-    boqItemCode: "CON-02.01",
-    deltaAmount: 4000000,
-    reason: "Escalation in ReadyMix batching plant tariff signed by Consultant QS.",
-    requestedBy: "Mrs. Nkechi (QS)",
-    status: "Pending",
-    createdAt: "2026-09-07 11:42",
-  },
-  {
-    id: "rev-2",
-    boqItemId: "boq-6",
-    boqItemCode: "MEP-04.01",
-    deltaAmount: 3500000,
-    reason: "Approved Variation VO-2026-001 relocation of water treatment annex.",
-    requestedBy: "Architect David",
-    status: "Approved",
-    createdAt: "2026-09-05 09:15",
-  },
-];
+const INITIAL_BOQ: BOQRecord[] = [];
+const INITIAL_RISKS: RiskAlert[] = [];
+const INITIAL_REVISIONS: BudgetRevision[] = [];
 
 export function BOQTable({
   initialSubTab = "master",
@@ -527,7 +404,24 @@ export function BOQTable({
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#E5E5DE] text-slate-900">
-                {filteredItems.map((item) => {
+                {filteredItems.length === 0 ? (
+                  <tr>
+                    <td colSpan={11} className="py-12 px-4 text-center text-[#0A2540]/60">
+                      <div className="flex flex-col items-center justify-center max-w-sm mx-auto">
+                        <p className="font-bold text-sm text-[#0A2540]">No BOQ items found</p>
+                        <p className="text-xs text-[#0A2540]/60 mt-1">Get started by creating your first bill of quantities item.</p>
+                        <button
+                          type="button"
+                          onClick={() => setIsAddModalOpen(true)}
+                          className="mt-4 px-4 py-2 bg-[#0A2540] hover:bg-[#003366] text-white rounded-xl text-xs font-black uppercase tracking-wider cursor-pointer"
+                        >
+                          + Add BOQ Item
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  filteredItems.map((item) => {
                   const variance = item.budgetAmount - item.committedAmount;
                   const varianceRatio = item.budgetAmount > 0 ? (item.committedAmount - item.budgetAmount) / item.budgetAmount : 0;
                   
@@ -620,7 +514,7 @@ export function BOQTable({
                       </td>
                     </tr>
                   );
-                })}
+                }))}
               </tbody>
             </table>
           </div>

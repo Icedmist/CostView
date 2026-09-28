@@ -10,7 +10,6 @@ import { CommandPalette } from "@/components/layout/command-palette";
 import { BOQTable } from "@/components/budget/boq-table";
 import { DrawingsView } from "@/components/drawings/drawings-view";
 import { ThreeWayMatchView } from "@/components/procurement/three-way-match";
-import { SiteDiaryView } from "@/components/site-ops/site-diary-view";
 import { MaterialsStockView } from "@/components/materials/materials-stock-view";
 import { LabourView } from "@/components/labour/labour-view";
 import { SubcontractorView } from "@/components/subcontractors/subcontractor-view";
@@ -18,37 +17,29 @@ import { UserRoleManager } from "@/components/admin/user-role-manager";
 import { DataMigrationHub } from "@/components/admin/data-migration-hub";
 import { AuditLogView } from "@/components/admin/audit-log-view";
 import { WorkspaceSettingsView } from "@/components/settings/workspace-settings";
-import { ReportsView } from "@/components/reports/reports-view";
 import { AICostEstimator } from "@/components/budget/ai-cost-estimator";
 import { TradeDirectoryView } from "@/components/procurement/trade-directory-view";
 import { ClientPortalView } from "@/components/portal/client-portal-view";
 import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav";
-import { AssetManagementView } from "@/components/assets/asset-management-view";
-import { DocumentsAdminView } from "@/components/admin/documents-admin-view";
 import { ManagementDecisionCenter } from "@/components/dashboard/management-decision-center";
-import {
-  AlertTriangle,
-  Sparkles,
-  ChevronRight,
-  Calculator,
-  ShoppingCart,
-  Globe,
-  Store,
-} from "lucide-react";
 import { RoleGuard } from "@/components/auth/role-guard";
 import { canAccess } from "@/lib/auth/permissions";
+import { useAppData } from "@/lib/store/app-data";
+import { SiteHub } from "@/components/site-ops/site-hub";
 import { useSessionExpiry } from "@/lib/auth/session";
 
 export default function DashboardPage() {
   const { activeRole } = useApp();
+  const { boqItems } = useAppData();
   const [activeSection, setActiveSection] = useState("Oversight");
   const [activeSubSection, setActiveSubSection] = useState("my-work");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
 
-  const approvedBudget = 301815000;
-  const committedCost = 292250000;
-  const actualCost = 216400000;
+  // Dynamic budget KPIs calculated from live project BOQ data
+  const approvedBudget = boqItems.reduce((acc, it) => acc + (it.budgetAmount || 0), 0);
+  const committedCost = boqItems.reduce((acc, it) => acc + (it.committedAmount || 0), 0);
+  const actualCost = boqItems.reduce((acc, it) => acc + (it.actualAmount || 0), 0);
 
   useSessionExpiry();
 
@@ -110,10 +101,9 @@ export default function DashboardPage() {
           onOpenSearch={() => setCommandPaletteOpen(true)}
         />
 
-        <main className="flex-1 overflow-y-auto p-5 md:p-8 space-y-8 bg-[#FAF9F5] dark:bg-[#071324] pb-24 lg:pb-8">
+        <main className="flex-1 overflow-y-auto p-5 md:p-8 space-y-6 bg-[#FAF9F5] dark:bg-[#071324] pb-24 lg:pb-8">
           {/* ========================================================= */}
-          {/* FLOW 1: COST PLAN                                         */}
-          {/* Stated sequence: Estimate → BOQ → Cost Control → Close-out */}
+          {/* SECTION 1: COST PLAN                                      */}
           {/* ========================================================= */}
           {activeSection === "Cost Plan" && (
             <RoleGuard permission="Budget">
@@ -122,21 +112,6 @@ export default function DashboardPage() {
                   onBack={() => handleNavSelect("Cost Plan", "boq")}
                   onGenerateBOQ={() => handleNavSelect("Cost Plan", "boq")}
                 />
-              ) : activeSubSection === "reports-cost" ? (
-                <div className="space-y-6">
-                  <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-5 shadow-xs flex items-center justify-between">
-                    <div>
-                      <h3 className="text-xl font-black text-[#0A2540] dark:text-white">Cost Plan Analytics &amp; Reports</h3>
-                      <p className="text-xs text-[#0A2540]/60 dark:text-slate-400 mt-0.5">
-                        Flow 1.0 · Budget vs Actual Variance, CPI, and Forecasts
-                      </p>
-                    </div>
-                  </div>
-                  <ReportsView
-                    initialReportId="variance"
-                    onReportChange={(reportSlug) => setActiveSubSection("reports-cost")}
-                  />
-                </div>
               ) : (
                 <BOQTable
                   initialSubTab={activeSubSection as any}
@@ -147,34 +122,16 @@ export default function DashboardPage() {
           )}
 
           {/* ========================================================= */}
-          {/* FLOW 2: BUY & SUPPLY                                      */}
-          {/* Stated sequence: Requisition → Quote → 3-Way Match → Pay → Deliver */}
+          {/* SECTION 2: BUY & SUPPLY                                   */}
           {/* ========================================================= */}
           {activeSection === "Buy & Supply" && (
             <RoleGuard permission="Procurement">
-              {activeSubSection === "assets" ? (
-                <AssetManagementView />
-              ) : activeSubSection === "directory" ? (
+              {activeSubSection === "directory" ? (
                 <TradeDirectoryView
                   onBack={() => handleNavSelect("Buy & Supply", "match")}
                 />
               ) : activeSubSection === "stock" ? (
                 <MaterialsStockView />
-              ) : activeSubSection === "reports-procurement" ? (
-                <div className="space-y-6">
-                  <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-5 shadow-xs flex items-center justify-between">
-                    <div>
-                      <h3 className="text-xl font-black text-[#0A2540] dark:text-white">Procurement &amp; Materials Reports</h3>
-                      <p className="text-xs text-[#0A2540]/60 dark:text-slate-400 mt-0.5">
-                        Flow 2.0 · 3-Way Match discrepancy audit, supplier performance, and warehouse stock movement
-                      </p>
-                    </div>
-                  </div>
-                  <ReportsView
-                    initialReportId="procurement"
-                    onReportChange={(reportSlug) => setActiveSubSection("reports-procurement")}
-                  />
-                </div>
               ) : (
                 <ThreeWayMatchView
                   initialSubTab={activeSubSection as any}
@@ -185,8 +142,7 @@ export default function DashboardPage() {
           )}
 
           {/* ========================================================= */}
-          {/* FLOW 3: SITE                                              */}
-          {/* Stated sequence: Log → Progress → Inspect → Resolve        */}
+          {/* SECTION 3: SITE (COLLABORATIVE SITE HUB)                  */}
           {/* ========================================================= */}
           {activeSection === "Site" && (
             <RoleGuard permission="Progress">
@@ -197,90 +153,44 @@ export default function DashboardPage() {
                 />
               ) : activeSubSection === "labour" ? (
                 <LabourView />
-              ) : activeSubSection === "reports-site" ? (
-                <div className="space-y-6">
-                  <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-5 shadow-xs flex items-center justify-between">
-                    <div>
-                      <h3 className="text-xl font-black text-[#0A2540] dark:text-white">Site Progress &amp; Shift Reports</h3>
-                      <p className="text-xs text-[#0A2540]/60 dark:text-slate-400 mt-0.5">
-                        Flow 3.0 · Site diary logs, weather impacts, and trade productivity
-                      </p>
-                    </div>
-                  </div>
-                  <ReportsView
-                    initialReportId="site-diary"
-                    onReportChange={(reportSlug) => setActiveSubSection("reports-site")}
-                  />
-                </div>
               ) : (
-                <SiteDiaryView
-                  initialSubTab={activeSubSection as any}
-                  onTabChange={(tab) => setActiveSubSection(tab)}
-                />
+                <SiteHub />
               )}
             </RoleGuard>
           )}
 
           {/* ========================================================= */}
-          {/* FLOW 4: CONTRACTS                                         */}
-          {/* Stated sequence: Instruct → Claim → Certify → Retain      */}
+          {/* SECTION 4: CONTRACTS                                      */}
           {/* ========================================================= */}
           {activeSection === "Contracts" && (
             <RoleGuard permission="Subcontractors">
-              {activeSubSection === "reports-contracts" ? (
-                <div className="space-y-6">
-                  <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-5 shadow-xs flex items-center justify-between">
-                    <div>
-                      <h3 className="text-xl font-black text-[#0A2540] dark:text-white">Contracts &amp; Valuation Reports</h3>
-                      <p className="text-xs text-[#0A2540]/60 dark:text-slate-400 mt-0.5">
-                        Flow 4.0 · Subcontractor ledger, retention tracking, and variation order impacts
-                      </p>
-                    </div>
-                  </div>
-                  <ReportsView
-                    initialReportId="subcontractors"
-                    onReportChange={(reportSlug) => setActiveSubSection("reports-contracts")}
-                  />
-                </div>
-              ) : (
-                <SubcontractorView
-                  initialSubTab={activeSubSection as any}
-                  onTabChange={(tab) => setActiveSubSection(tab)}
-                />
-              )}
+              <SubcontractorView
+                initialSubTab={activeSubSection as any}
+                onTabChange={(tab) => setActiveSubSection(tab)}
+              />
             </RoleGuard>
           )}
 
           {/* ========================================================= */}
-          {/* FLOW 5: OVERSIGHT                                         */}
-          {/* Stated sequence: Watch → Decide → Approve → Share         */}
+          {/* SECTION 5: OVERSIGHT                                      */}
           {/* ========================================================= */}
           {activeSection === "Oversight" && (
-            <div className="space-y-8">
-              {activeSubSection === "documents-admin" ? (
-                <DocumentsAdminView />
-              ) : activeSubSection === "telemetry" ? (
+            <div className="space-y-6">
+              {activeSubSection === "telemetry" ? (
                 <ManagementDecisionCenter onNavigate={handleNavSelect} />
               ) : activeSubSection === "portal" ? (
                 <ClientPortalView
                   standalone={false}
-                  onReturn={() => handleNavSelect("Oversight", "telemetry")}
+                  onReturn={() => handleNavSelect("Oversight", "my-work")}
                 />
-              ) : activeSubSection === "reports-all" ? (
-                <RoleGuard permission="Reports">
-                  <ReportsView
-                    initialReportId="cost-control"
-                    onReportChange={(reportSlug) => setActiveSubSection("reports-all")}
-                  />
-                </RoleGuard>
               ) : activeSubSection === "admin" ? (
                 <RoleGuard permission="Admin">
-                  <div className="space-y-8">
-                    <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-6 shadow-sm">
-                      <h2 className="text-2xl font-black text-[#0A2540] dark:text-white tracking-tight">
+                  <div className="space-y-6">
+                    <div className="bg-white dark:bg-[#0A1931] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-2xl p-5 shadow-xs">
+                      <h2 className="text-xl font-black text-[#0A2540] dark:text-white tracking-tight">
                         Workspace Governance &amp; Administration
                       </h2>
-                      <p className="text-sm text-[#0A2540]/70 dark:text-slate-300 mt-1">
+                      <p className="text-xs text-[#0A2540]/70 dark:text-slate-300 mt-1">
                         Manage security credentials, custom user roles, database migration syncs, and immutable audit logs.
                       </p>
                     </div>
@@ -291,232 +201,17 @@ export default function DashboardPage() {
                   </div>
                 </RoleGuard>
               ) : (
-                <>
-                  {/* Hero Banner */}
-                  <div className="bg-[#0A2540] rounded-2xl p-7 md:p-10 text-white shadow-xl relative overflow-hidden border-2 border-[#0A2540]">
-                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
-                      <div>
-                        <div className="flex flex-wrap items-center gap-3 mb-3.5">
-                          <span className="text-xs font-black uppercase tracking-wider px-3.5 py-1 bg-white/10 text-white rounded-lg border border-white/20">
-                            Flow 5.0 · Executive Oversight
-                          </span>
-                          <span className="text-white/80 text-xs font-bold">
-                            · Simulator Role: <strong className="text-white underline">{activeRole}</strong>
-                          </span>
-                        </div>
-                        <h1 className="text-3xl md:text-4xl font-black tracking-tight leading-tight">
-                          Construction Cost &amp; Operations Intelligence
-                        </h1>
-                        <p className="text-base text-white/80 mt-2.5 max-w-2xl leading-relaxed font-normal">
-                          Watch → Decide → Approve → Share. Continuous 5-flow cost control across baseline BOQs, 3-way match, and subcontractor claims.
-                        </p>
-                      </div>
-
-                      <div className="flex flex-wrap items-center gap-3.5">
-                        <button
-                          onClick={() => handleNavSelect("Cost Plan", "estimator")}
-                          className="min-h-[46px] px-5 py-3 bg-amber-400 hover:bg-amber-300 text-[#0A2540] rounded-xl text-sm font-black flex items-center gap-2 shadow-md transition-all active:scale-[0.98] cursor-pointer"
-                        >
-                          <Sparkles className="w-4 h-4 fill-[#0A2540]" />
-                          <span>AI Cost Estimator</span>
-                        </button>
-                        <button
-                          onClick={() => handleNavSelect("Buy & Supply", "directory")}
-                          className="min-h-[46px] px-5 py-3 bg-white/10 hover:bg-white/20 text-white border-2 border-white/30 rounded-xl text-sm font-extrabold flex items-center gap-2 transition-all shadow-xs cursor-pointer"
-                        >
-                          <Store className="w-4 h-4 text-white" />
-                          <span>Vetted Trade Directory</span>
-                        </button>
-                        <button
-                          onClick={() => handleNavSelect("Oversight", "portal")}
-                          className="min-h-[46px] px-5 py-3 bg-emerald-500 hover:bg-emerald-400 text-[#0A2540] rounded-xl text-sm font-black flex items-center gap-2 shadow-sm transition-all cursor-pointer"
-                        >
-                          <Globe className="w-4 h-4 text-[#0A2540]" />
-                          <span>Client Investor Portal</span>
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Quick Telemetry Strip */}
-                    <div className="mt-8 pt-6 border-t-2 border-white/10 flex flex-wrap gap-10 text-sm text-white/80">
-                      <div>
-                        <div className="text-xs uppercase tracking-wider text-white/60 font-black">Execution Progress</div>
-                        <div className="text-xl md:text-2xl font-black text-white mt-1">62% Superstructure</div>
-                      </div>
-                      <div className="h-10 w-[2px] bg-white/10 hidden sm:block" />
-                      <div>
-                        <div className="text-xs uppercase tracking-wider text-white/60 font-black">Financial Health</div>
-                        <div className="text-xl md:text-2xl font-black text-emerald-400 mt-1">Healthy (1.04 CPI)</div>
-                      </div>
-                      <div className="h-10 w-[2px] bg-white/10 hidden sm:block" />
-                      <div>
-                        <div className="text-xs uppercase tracking-wider text-white/60 font-black">Active Worksite</div>
-                        <div className="text-xl md:text-2xl font-black text-white mt-1">Shift #142 · 48 Active Crew</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Metric KPI Cards */}
+                <div className="space-y-6">
+                  {/* Clean Metric KPI Cards */}
                   <MetricCards
                     approvedBudget={approvedBudget}
                     committedCost={committedCost}
                     actualCost={actualCost}
                   />
 
-                  {/* My Work Queue vs Sub-Views */}
-                  {activeSubSection === "my-work" ? (
-                    <MyWorkQueue onSelectNav={handleNavSelect} />
-                  ) : activeSubSection === "alerts" ? (
-                    <div className="space-y-5">
-                      <div className="p-6 rounded-2xl bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 shadow-sm">
-                        <h3 className="text-lg font-black text-[#0A2540] dark:text-white flex items-center gap-2 mb-4">
-                          <AlertTriangle className="w-5 h-5 text-rose-600 dark:text-rose-400" /> Active Attention &amp; Variance Alerts
-                        </h3>
-                        <div className="grid md:grid-cols-2 gap-4">
-                          <div className="p-5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border-2 border-rose-200 dark:border-rose-900/60 text-rose-950 dark:text-rose-200">
-                            <div className="text-sm font-black uppercase tracking-wider text-rose-700 dark:text-rose-400">Procurement Discrepancy</div>
-                            <div className="text-base font-extrabold mt-1">PO-2026-092 (Pulkit Steels) Locked</div>
-                            <p className="text-sm text-rose-800 dark:text-rose-300 mt-1 leading-relaxed">
-                              Invoice billed 30T vs 27T physical GRN receipt delivered to site. Automatic payment disbursement hold active.
-                            </p>
-                            <button
-                              onClick={() => handleNavSelect("Buy & Supply", "match")}
-                              className="mt-3.5 px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-black uppercase tracking-wider shadow-xs cursor-pointer"
-                            >
-                              Resolve Discrepancy in Buy &amp; Supply →
-                            </button>
-                          </div>
-
-                          <div className="p-5 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border-2 border-[#E5E5DE] dark:border-white/10 text-[#0A2540] dark:text-slate-100">
-                            <div className="text-sm font-black uppercase tracking-wider text-[#0A2540]/60 dark:text-slate-400">BOQ Baseline Drift</div>
-                            <div className="text-base font-extrabold mt-1">CON-02.01 (+₦4M Variance Pending)</div>
-                            <p className="text-sm text-[#0A2540]/80 dark:text-slate-300 mt-1 leading-relaxed">
-                              Substructure ready-mix concrete pump rates updated. Awaiting formal Quantity Surveyor delta sign-off.
-                            </p>
-                            <button
-                              onClick={() => handleNavSelect("Cost Plan", "revisions")}
-                              className="mt-3.5 px-4 py-2 bg-[#0A2540] hover:bg-[#003366] dark:bg-amber-400 dark:hover:bg-amber-300 text-white dark:text-[#0A2540] rounded-lg text-xs font-black uppercase tracking-wider shadow-xs cursor-pointer"
-                            >
-                              Review Revision Delta in Cost Plan →
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ) : activeSubSection === "health" ? (
-                    <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-7 shadow-sm">
-                      <h3 className="text-xl font-black text-[#0A2540] dark:text-white mb-3">Baseline Financial Health &amp; Earned Value</h3>
-                      <p className="text-sm text-[#0A2540]/70 dark:text-slate-300 mb-6">
-                        Real-time index comparing planned schedule value against certified work performance and physical delivery receipts.
-                      </p>
-                      <div className="grid sm:grid-cols-3 gap-6">
-                        <div className="p-5 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border-2 border-[#E5E5DE] dark:border-white/10">
-                          <div className="text-xs font-black uppercase tracking-wider text-[#0A2540]/60 dark:text-slate-400">Cost Performance Index (CPI)</div>
-                          <div className="text-3xl font-black font-mono text-emerald-700 dark:text-emerald-400 mt-2">1.04</div>
-                          <div className="text-xs text-emerald-800 dark:text-emerald-300 font-bold mt-1">Under budget by 4% per naira spent</div>
-                        </div>
-                        <div className="p-5 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border-2 border-[#E5E5DE] dark:border-white/10">
-                          <div className="text-xs font-black uppercase tracking-wider text-[#0A2540]/60 dark:text-slate-400">Schedule Performance Index (SPI)</div>
-                          <div className="text-3xl font-black font-mono text-[#0A2540] dark:text-white mt-2">0.98</div>
-                          <div className="text-xs text-[#0A2540]/70 dark:text-slate-400 font-bold mt-1">2% schedule delay on rebar fixing</div>
-                        </div>
-                        <div className="p-5 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border-2 border-[#E5E5DE] dark:border-white/10">
-                          <div className="text-xs font-black uppercase tracking-wider text-[#0A2540]/60 dark:text-slate-400">Certified Retention Escrow</div>
-                          <div className="text-3xl font-black font-mono text-[#0A2540] dark:text-white mt-2">₦21.6M</div>
-                          <div className="text-xs text-[#0A2540]/70 dark:text-slate-400 font-bold mt-1">10% retained until defects liability signoff</div>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    /* Telemetry Overview: BOQ & 3-Way Match Quick Modules */
-                    <div className="grid lg:grid-cols-2 gap-8">
-                      {/* BOQ Summary Card */}
-                      <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-6 md:p-8 shadow-sm space-y-6">
-                        <div className="flex items-center justify-between pb-4 border-b-2 border-[#E5E5DE] dark:border-white/10">
-                          <div>
-                            <h3 className="text-lg font-black text-[#0A2540] dark:text-white flex items-center gap-2.5">
-                              <Calculator className="w-5 h-5 text-[#0A2540] dark:text-amber-400" /> Contractual BOQ Master
-                            </h3>
-                            <p className="text-xs font-semibold text-[#0A2540]/60 dark:text-slate-400 mt-1">Active items tracked against contractual budget cap</p>
-                          </div>
-                          <button
-                            onClick={() => handleNavSelect("Cost Plan", "boq")}
-                            className="px-4 py-2 bg-[#FAF9F5] dark:bg-[#071324] hover:bg-[#F2F1EC] dark:hover:bg-white/5 text-[#0A2540] dark:text-white border-2 border-[#E5E5DE] dark:border-white/10 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer"
-                          >
-                            <span>Open in Cost Plan</span>
-                            <ChevronRight className="w-4 h-4" />
-                          </button>
-                        </div>
-
-                        <div className="space-y-4">
-                          {[
-                            { code: "CON-02.01", desc: "Grade 30 reinforced concrete raft", budget: "₦93.6M", committed: "₦94.0M", over: true },
-                            { code: "STL-02.03", desc: "High-yield deformed rebar Y16 & Y20", budget: "₦78.2M", committed: "₦72.0M", over: false },
-                            { code: "EAR-01.02", desc: "Bulk site excavation & cart-away", budget: "₦42.0M", committed: "₦38.5M", over: false },
-                          ].map((item) => (
-                            <div key={item.code} className="p-4 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-white/10 flex items-center justify-between gap-4">
-                              <div>
-                                <div className="flex items-center gap-2">
-                                  <span className="font-mono text-xs font-black text-[#0A2540] dark:text-white">{item.code}</span>
-                                  <span className={`text-[10px] font-black px-2 py-0.5 rounded-full ${item.over ? "bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-800" : "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800"}`}>
-                                    {item.over ? "VARIANCE FLAGGED" : "ON TRACK"}
-                                  </span>
-                                </div>
-                                <div className="text-sm font-bold text-slate-800 dark:text-slate-200 mt-1">{item.desc}</div>
-                              </div>
-                              <div className="text-right shrink-0">
-                                <div className="text-sm font-black font-mono text-[#0A2540] dark:text-white">{item.committed}</div>
-                                <div className="text-xs text-[#0A2540]/60 dark:text-slate-400 font-semibold">of {item.budget}</div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* 3-Way Match Quick Summary Card */}
-                      <div className="bg-white dark:bg-[#0D2137] border-2 border-[#E5E5DE] dark:border-white/10 rounded-2xl p-6 md:p-8 shadow-sm space-y-6">
-                        <div className="flex items-center justify-between pb-4 border-b-2 border-[#E5E5DE] dark:border-white/10">
-                          <div>
-                            <h3 className="text-lg font-black text-[#0A2540] dark:text-white flex items-center gap-2.5">
-                              <ShoppingCart className="w-5 h-5 text-[#0A2540] dark:text-amber-400" /> Three-Way Match Engine
-                            </h3>
-                            <p className="text-xs font-semibold text-[#0A2540]/60 dark:text-slate-400 mt-1">PO ⇄ GRN ⇄ Invoice automated payment verification</p>
-                          </div>
-                          <button
-                            onClick={() => handleNavSelect("Buy & Supply", "match")}
-                            className="px-4 py-2 bg-[#FAF9F5] dark:bg-[#071324] hover:bg-[#F2F1EC] dark:hover:bg-white/5 text-[#0A2540] dark:text-white border-2 border-[#E5E5DE] dark:border-white/10 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer"
-                          >
-                            <span>Open in Buy &amp; Supply</span>
-                            <ChevronRight className="w-4 h-4" />
-                          </button>
-                        </div>
-
-                        <div className="space-y-4">
-                          {[
-                            { id: "PO-2026-092", vendor: "Pulkit Steels Ltd", items: "30T Y16 Rebar", status: "DISCREPANCY LOCKED", locked: true },
-                            { id: "PO-2026-088", vendor: "Dangote Cement PLC", items: "600 Bags Grade 42.5R", status: "MATCH VERIFIED", locked: false },
-                            { id: "PO-2026-081", vendor: "Lafarge Readymix", items: "45m³ Grade 30 Concrete", status: "MATCH VERIFIED", locked: false },
-                          ].map((po) => (
-                            <div key={po.id} className="p-4 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-white/10 flex items-center justify-between gap-4">
-                              <div>
-                                <div className="flex items-center gap-2">
-                                  <span className="font-mono text-xs font-black text-[#0A2540] dark:text-white">{po.id}</span>
-                                  <span className="text-xs font-bold text-slate-600 dark:text-slate-400">· {po.vendor}</span>
-                                </div>
-                                <div className="text-sm font-bold text-slate-800 dark:text-slate-200 mt-1">{po.items}</div>
-                              </div>
-                              <div className="text-right shrink-0">
-                                <span className={`text-xs font-black px-2.5 py-1 rounded-full ${po.locked ? "bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-800" : "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800"}`}>
-                                  {po.status}
-                                </span>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </>
+                  {/* My Work Action Queue */}
+                  <MyWorkQueue onSelectNav={handleNavSelect} />
+                </div>
               )}
             </div>
           )}

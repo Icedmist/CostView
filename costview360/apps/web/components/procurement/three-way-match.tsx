@@ -76,110 +76,9 @@ interface SupplierEnquiry {
   status: "Open" | "Quotes Received" | "Converted to PO";
 }
 
-const SAMPLE_MATCHES: ThreeWayMatchRecord[] = [
-  {
-    id: "match-1",
-    poNumber: "PO-2026-088",
-    supplierName: "Dangote Cement Plc",
-    itemDescription: "Ordinary Portland Cement 42.5R (50kg bags)",
-    poQty: 600,
-    poRate: 9800,
-    poTotal: 5880000,
-    paymentTerms: "Pay After Delivery",
-    grnNumber: "GRN-0941",
-    grnQtyReceived: 600,
-    invoiceNumber: "INV-DANG-9920",
-    invoiceQtyBilled: 600,
-    invoiceRateBilled: 9800,
-    invoiceTotal: 5880000,
-    matchStatus: "Matched",
-    paymentLocked: false,
-    deliveryQualityScore: 5,
-  },
-  {
-    id: "match-2",
-    poNumber: "PO-2026-092",
-    supplierName: "Pulkit Steels & Alloys Ltd",
-    itemDescription: "16mm High Tensile TMT Rebar (Tons)",
-    poQty: 30,
-    poRate: 1450000,
-    poTotal: 43500000,
-    paymentTerms: "30% Advance",
-    grnNumber: "GRN-0955",
-    grnQtyReceived: 27, // 3 tons short!
-    invoiceNumber: "INV-PULK-4102",
-    invoiceQtyBilled: 30, // Billed full 30 tons
-    invoiceRateBilled: 1450000,
-    invoiceTotal: 43500000,
-    matchStatus: "Discrepancy",
-    discrepancyReason: "Short delivery: 27 Tons received vs 30 Tons invoiced (₦4,350,000 variance)",
-    paymentLocked: true,
-  },
-  {
-    id: "match-3",
-    poNumber: "PO-2026-095",
-    supplierName: "Lafarge ReadyMix Nigeria",
-    itemDescription: "Grade 30 ReadyMix Concrete (m³)",
-    poQty: 120,
-    poRate: 195000,
-    poTotal: 23400000,
-    paymentTerms: "Pay After Delivery",
-    grnNumber: "GRN-0960",
-    grnQtyReceived: 120,
-    invoiceNumber: "INV-LAF-8819",
-    invoiceQtyBilled: 120,
-    invoiceRateBilled: 195000,
-    invoiceTotal: 23400000,
-    matchStatus: "Paid",
-    paymentLocked: false,
-    paidAt: "2026-09-06 16:30",
-    paymentMethod: "Direct Bank Transfer (Zenith Bank)",
-    deliveryQualityScore: 4.8,
-  },
-];
-
-const INITIAL_REQUISITIONS: Requisition[] = [
-  {
-    id: "req-1",
-    reqNumber: "REQ-2026-041",
-    itemDescription: "Rapid hardening admixture drums (200L) for slab pour",
-    quantity: 6,
-    unit: "Drums",
-    estimatedCost: 1850000,
-    urgency: "High",
-    status: "Pending Approval",
-    requestedBy: "Engr. Tayo (Site Eng)",
-    date: "2026-09-07 08:30",
-  },
-  {
-    id: "req-2",
-    reqNumber: "REQ-2026-042",
-    itemDescription: "Safety helmets (EN397 certified) and reflective vests",
-    quantity: 50,
-    unit: "Sets",
-    estimatedCost: 750000,
-    urgency: "Normal",
-    status: "Approved",
-    requestedBy: "HSE Officer",
-    date: "2026-09-06 11:15",
-  },
-];
-
-const INITIAL_ENQUIRIES: SupplierEnquiry[] = [
-  {
-    id: "enq-1",
-    enquiryNumber: "RFQ-2026-018",
-    itemDescription: "20mm Crushed Granite Aggregate (Tons)",
-    quantity: 150,
-    unit: "Tons",
-    status: "Quotes Received",
-    suppliersQuoted: [
-      { name: "Julius Berger Quarry", quoteRate: 21500, leadDays: 2 },
-      { name: "Dangote Granites", quoteRate: 20200, leadDays: 3 },
-      { name: "Mid-West Aggregates Ltd", quoteRate: 19800, leadDays: 5 },
-    ],
-  },
-];
+const SAMPLE_MATCHES: ThreeWayMatchRecord[] = [];
+const INITIAL_REQUISITIONS: Requisition[] = [];
+const INITIAL_ENQUIRIES: SupplierEnquiry[] = [];
 
 export function ThreeWayMatchView({
   initialSubTab = "match",
@@ -502,7 +401,22 @@ export function ThreeWayMatchView({
           </div>
 
           <div className="divide-y-2 divide-navy-800/20">
-            {records.map((rec) => (
+            {records.length === 0 ? (
+              <div className="p-12 text-center text-[#0A2540]/60">
+                <div className="flex flex-col items-center justify-center max-w-sm mx-auto">
+                  <p className="font-bold text-sm text-[#0A2540]">No 3-way match records found</p>
+                  <p className="text-xs text-[#0A2540]/60 mt-1">Purchase orders, delivery receipts, and supplier invoices will appear here once entered.</p>
+                  <button
+                    type="button"
+                    onClick={() => setIsNewInvoiceOpen(true)}
+                    className="mt-4 px-4 py-2 bg-[#0A2540] hover:bg-[#003366] text-white rounded-xl text-xs font-black uppercase tracking-wider cursor-pointer"
+                  >
+                    + Log Supplier Invoice
+                  </button>
+                </div>
+              </div>
+            ) : (
+              records.map((rec) => (
               <div key={rec.id} className="p-4 hover:bg-white/40 transition-colors">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
                   <div className="flex-1">
@@ -616,7 +530,7 @@ export function ThreeWayMatchView({
                   </div>
                 </div>
               </div>
-            ))}
+            )))}
           </div>
         </div>
       )}

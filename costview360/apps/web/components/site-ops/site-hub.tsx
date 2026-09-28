@@ -1,0 +1,837 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { useApp } from "@/app/providers";
+import { formatCurrency } from "@/lib/utils";
+import { createClient } from "@/lib/supabase/client";
+import {
+  Send,
+  MessageSquare,
+  ThumbsUp,
+  Image as ImageIcon,
+  DollarSign,
+  AlertTriangle,
+  HardHat,
+  Users,
+  Sun,
+  CloudRain,
+  Tag,
+  Paperclip,
+  CheckCircle2,
+  Calendar,
+  Sparkles,
+  ChevronDown,
+  Trash2,
+} from "lucide-react";
+
+export interface TaggedUser {
+  id: string;
+  name: string;
+  role: string;
+}
+
+export interface PostComment {
+  id: string;
+  postId: string;
+  authorName: string;
+  authorRole: string;
+  content: string;
+  createdAt: string;
+}
+
+export interface SitePost {
+  id: string;
+  projectId: string;
+  authorName: string;
+  authorRole: string;
+  content: string;
+  postType: "progress" | "expense" | "log" | "issue";
+  amountSpent: number;
+  expenseCategory?: string;
+  taggedUsers: TaggedUser[];
+  mediaUrls: string[];
+  metadata: {
+    weather?: string;
+    headcount?: number;
+    delayHours?: number;
+  };
+  likesCount: number;
+  userLiked?: boolean;
+  comments: PostComment[];
+  createdAt: string;
+}
+
+const DEFAULT_PROJECT_MEMBERS: TaggedUser[] = [
+  { id: "u-pm", name: "Babatunde Alabi", role: "Project Manager" },
+  { id: "u-se", name: "Engr. Tayo Adeleke", role: "Site Engineer" },
+  { id: "u-qs", name: "Nkechi Okonkwo", role: "Quantity Surveyor" },
+  { id: "u-arch", name: "David Olanrewaju", role: "Architect" },
+  { id: "u-proc", name: "Zainab Bello", role: "Procurement Officer" },
+  { id: "u-acc", name: "Emeka Nwosu", role: "Accountant" },
+  { id: "u-store", name: "Haruna Garba", role: "Storekeeper" },
+];
+
+export function SiteHub() {
+  const { currentProject, currency, activeRole } = useApp();
+  const [posts, setPosts] = useState<SitePost[]>([]);
+  const [filterType, setFilterType] = useState<"all" | "progress" | "expense" | "issue">("all");
+  const [activeTab, setActiveTab] = useState<"feed" | "photos">("feed");
+
+  // Composer Form States
+  const [content, setContent] = useState("");
+  const [postType, setPostType] = useState<"progress" | "expense" | "log" | "issue">("progress");
+  const [amountSpent, setAmountSpent] = useState<number | "">("");
+  const [expenseCategory, setExpenseCategory] = useState("Materials");
+  const [weather, setWeather] = useState("Sunny");
+  const [headcount, setHeadcount] = useState<number>(45);
+  const [selectedTags, setSelectedTags] = useState<TaggedUser[]>([]);
+  const [showTagPicker, setShowTagPicker] = useState(false);
+  const [photoUrl, setPhotoUrl] = useState("");
+  const [showPhotoInput, setShowPhotoInput] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Active Comment Input States
+  const [activeCommentPostId, setActiveCommentPostId] = useState<string | null>(null);
+  const [commentText, setCommentText] = useState("");
+
+  // Fetch real posts from Supabase on mount
+  useEffect(() => {
+    let isMounted = true;
+    async function fetchPosts() {
+      try {
+        const supabase = createClient();
+        const { data: postsData, error } = await supabase
+          .from("site_posts")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (!error && postsData && postsData.length > 0) {
+          const mapped: SitePost[] = postsData.map((p: any) => ({
+            id: p.id,
+            projectId: p.project_id,
+            authorName: p.author_name || "Team Member",
+            authorRole: p.author_role || "Site Engineer",
+            content: p.content,
+            postType: p.post_type || "progress",
+            amountSpent: Number(p.amount_spent || 0),
+            expenseCategory: p.expense_category || undefined,
+            taggedUsers: Array.isArray(p.tagged_users) ? p.tagged_users : [],
+            mediaUrls: Array.isArray(p.media_urls) ? p.media_urls : [],
+            metadata: p.metadata || {},
+            likesCount: Number(p.likes_count || 0),
+            comments: [],
+            createdAt: p.created_at,
+          }));
+          if (isMounted) setPosts(mapped);
+        }
+      } catch (err) {
+        console.warn("Using local state for Site Hub", err);
+      }
+    }
+    fetchPosts();
+    return () => {
+      isMounted = false;
+    };
+  }, [currentProject.id]);
+
+  // Handle Post Creation
+  const handleCreatePost = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!content.trim()) return;
+
+    setIsSubmitting(true);
+    const newPostId = `post-${Date.now()}`;
+    const newMediaUrls = photoUrl.trim() ? [photoUrl.trim()] : [];
+
+    const newPost: SitePost = {
+      id: newPostId,
+      projectId: currentProject.id,
+      authorName: activeRole,
+      authorRole: activeRole,
+      content: content.trim(),
+      postType,
+      amountSpent: Number(amountSpent) || 0,
+      expenseCategory: postType === "expense" ? expenseCategory : undefined,
+      taggedUsers: selectedTags,
+      mediaUrls: newMediaUrls,
+      metadata: {
+        weather,
+        headcount: Number(headcount) || 0,
+      },
+      likesCount: 0,
+      userLiked: false,
+      comments: [],
+      createdAt: new Date().toISOString(),
+    };
+
+    setPosts((prev) => [newPost, ...prev]);
+
+    // Reset composer
+    setContent("");
+    setAmountSpent("");
+    setSelectedTags([]);
+    setPhotoUrl("");
+    setShowPhotoInput(false);
+    setShowTagPicker(false);
+    setIsSubmitting(false);
+
+    // Persist to Supabase
+    try {
+      const supabase = createClient();
+      await supabase.from("site_posts").insert({
+        project_id: currentProject.id,
+        author_id: "00000000-0000-0000-0000-000000000000",
+        author_name: activeRole,
+        author_role: activeRole,
+        content: newPost.content,
+        post_type: newPost.postType,
+        amount_spent: newPost.amountSpent,
+        expense_category: newPost.expenseCategory,
+        tagged_users: newPost.taggedUsers,
+        media_urls: newPost.mediaUrls,
+        metadata: newPost.metadata,
+        likes_count: 0,
+      });
+    } catch (err) {
+      console.warn("Offline site post insert saved to memory", err);
+    }
+  };
+
+  // Toggle Like / Acknowledge
+  const handleToggleLike = (postId: string) => {
+    setPosts((prev) =>
+      prev.map((p) => {
+        if (p.id === postId) {
+          const userLiked = !p.userLiked;
+          const likesCount = userLiked ? p.likesCount + 1 : Math.max(0, p.likesCount - 1);
+          return { ...p, userLiked, likesCount };
+        }
+        return p;
+      })
+    );
+  };
+
+  // Add Comment to Post
+  const handleAddComment = (postId: string) => {
+    if (!commentText.trim()) return;
+    const newComment: PostComment = {
+      id: `comm-${Date.now()}`,
+      postId,
+      authorName: activeRole,
+      authorRole: activeRole,
+      content: commentText.trim(),
+      createdAt: new Date().toISOString(),
+    };
+
+    setPosts((prev) =>
+      prev.map((p) => {
+        if (p.id === postId) {
+          return { ...p, comments: [...p.comments, newComment] };
+        }
+        return p;
+      })
+    );
+    setCommentText("");
+  };
+
+  // Toggle tag in composer
+  const handleToggleTag = (member: TaggedUser) => {
+    setSelectedTags((prev) => {
+      const exists = prev.some((t) => t.id === member.id);
+      if (exists) {
+        return prev.filter((t) => t.id !== member.id);
+      } else {
+        return [...prev, member];
+      }
+    });
+  };
+
+  // Filter posts
+  const filteredPosts = posts.filter((p) => {
+    if (filterType === "all") return true;
+    if (filterType === "progress") return p.postType === "progress" || p.postType === "log";
+    if (filterType === "expense") return p.postType === "expense";
+    if (filterType === "issue") return p.postType === "issue";
+    return true;
+  });
+
+  // Calculate total spent from posts
+  const totalSpentInHub = posts.reduce((sum, p) => sum + (p.amountSpent || 0), 0);
+  const allPhotos = posts.flatMap((p) => p.mediaUrls);
+
+  return (
+    <div className="space-y-6">
+      {/* Top Hub Bar: Clean, Minimalist Title */}
+      <div className="bg-white dark:bg-[#0A1931] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-2xl p-5 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="px-2.5 py-0.5 rounded-md text-xs font-black bg-[#FFD23F] text-[#0A1931]">
+              PROJECT HUB
+            </span>
+            <span className="text-xs font-bold text-[#0A2540]/60 dark:text-slate-400">
+              {currentProject.name}
+            </span>
+          </div>
+          <h1 className="text-2xl font-black text-[#0A2540] dark:text-white tracking-tight">
+            Site Progress &amp; Activity Hub
+          </h1>
+          <p className="text-xs text-[#0A2540]/70 dark:text-slate-300 mt-0.5">
+            Real-time field updates, daily logs, expenditure tracking, and team collaboration.
+          </p>
+        </div>
+
+        {/* Quick Hub Stats */}
+        <div className="flex items-center gap-4 text-xs font-black">
+          <div className="px-3.5 py-2 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F]">
+            <span className="text-[#0A2540]/60 dark:text-slate-400 block text-[10px] uppercase">Logged Spent</span>
+            <span className="font-mono text-emerald-600 dark:text-emerald-400 font-extrabold text-sm">
+              {formatCurrency(totalSpentInHub, currency)}
+            </span>
+          </div>
+          <div className="px-3.5 py-2 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F]">
+            <span className="text-[#0A2540]/60 dark:text-slate-400 block text-[10px] uppercase">Updates</span>
+            <span className="font-mono text-[#0A2540] dark:text-white font-extrabold text-sm">
+              {posts.length} Posts
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Grid: Composer & Feed */}
+      <div className="grid lg:grid-cols-3 gap-6">
+        {/* Left Column: Post Composer */}
+        <div className="lg:col-span-1 space-y-4">
+          <div className="bg-white dark:bg-[#0A1931] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-2xl p-5 shadow-xs space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E5E5DE] dark:border-[#1E3A5F]">
+              <span className="text-xs font-black uppercase tracking-wider text-[#0A2540] dark:text-white flex items-center gap-2">
+                <HardHat className="w-4 h-4 text-[#FFD23F]" />
+                Share Site Update
+              </span>
+              <span className="text-xs font-bold text-[#0A2540]/60 dark:text-slate-400 font-mono">
+                Posting as: <strong>{activeRole}</strong>
+              </span>
+            </div>
+
+            <form onSubmit={handleCreatePost} className="space-y-3.5">
+              {/* Post Type Selector */}
+              <div>
+                <label className="block text-xs font-black text-[#0A2540] dark:text-white uppercase tracking-wider mb-1.5">
+                  Update Type
+                </label>
+                <div className="grid grid-cols-2 gap-1.5">
+                  {[
+                    { id: "progress", label: "🏗️ Progress", desc: "Work completed" },
+                    { id: "expense", label: "💰 Spent Cost", desc: "Materials / Labour" },
+                    { id: "issue", label: "⚠️ Site Alert", desc: "Blocker / Safety" },
+                    { id: "log", label: "📋 Shift Log", desc: "Daily summary" },
+                  ].map((t) => (
+                    <button
+                      key={t.id}
+                      type="button"
+                      onClick={() => setPostType(t.id as any)}
+                      className={`p-2 rounded-xl text-xs font-black border text-left transition-all cursor-pointer ${
+                        postType === t.id
+                          ? "bg-[#0A2540] text-white border-[#0A2540] shadow-xs dark:bg-[#FFD23F] dark:text-[#0A1931] dark:border-[#FFD23F]"
+                          : "bg-[#FAF9F5] dark:bg-[#071324] text-[#0A2540] dark:text-white border-[#E5E5DE] dark:border-[#1E3A5F] hover:bg-slate-100"
+                      }`}
+                    >
+                      <div>{t.label}</div>
+                      <div className={`text-[10px] font-semibold mt-0.5 ${postType === t.id ? "opacity-80" : "text-[#0A2540]/60 dark:text-slate-400"}`}>
+                        {t.desc}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* If Expense: Show Amount and Category */}
+              {postType === "expense" && (
+                <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-800 space-y-2.5">
+                  <div className="text-xs font-black text-amber-900 dark:text-amber-300 flex items-center gap-1.5">
+                    <DollarSign className="w-3.5 h-3.5" /> What Was Spent
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-amber-900 dark:text-amber-300 mb-1">
+                      Amount Spent ({currency})
+                    </label>
+                    <input
+                      type="number"
+                      required
+                      placeholder="e.g. 450000"
+                      value={amountSpent}
+                      onChange={(e) => setAmountSpent(e.target.value === "" ? "" : Number(e.target.value))}
+                      className="w-full px-3 py-2 bg-white dark:bg-[#071324] border border-amber-300 dark:border-amber-700 rounded-lg text-sm font-mono font-black text-[#0A2540] dark:text-white focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-amber-900 dark:text-amber-300 mb-1">
+                      Expense Category
+                    </label>
+                    <select
+                      value={expenseCategory}
+                      onChange={(e) => setExpenseCategory(e.target.value)}
+                      className="w-full px-3 py-2 bg-white dark:bg-[#071324] border border-amber-300 dark:border-amber-700 rounded-lg text-xs font-black text-[#0A2540] dark:text-white focus:outline-none"
+                    >
+                      <option value="Materials">Materials &amp; Supplies</option>
+                      <option value="Labour">Direct Labour &amp; Daily Pay</option>
+                      <option value="Plant">Plant, Fuel &amp; Equipment</option>
+                      <option value="Petty Cash">Site Petty Cash / Sundries</option>
+                      <option value="Transport">Haulage &amp; Logistics</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+
+              {/* Textarea for Update Content */}
+              <div>
+                <label className="block text-xs font-black text-[#0A2540] dark:text-white uppercase tracking-wider mb-1">
+                  Update Description
+                </label>
+                <textarea
+                  rows={3}
+                  required
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  placeholder="What happened on site? Describe progress, log expenses, or alert team..."
+                  className="w-full p-3 bg-[#FAF9F5] dark:bg-[#071324] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-xl text-xs font-semibold text-[#0A2540] dark:text-white placeholder-[#0A2540]/40 focus:outline-none focus:border-[#0A2540] transition-all resize-none"
+                />
+              </div>
+
+              {/* Team Tagging (@mentions) */}
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-xs font-black uppercase tracking-wider text-[#0A2540] dark:text-white flex items-center gap-1.5">
+                    <Tag className="w-3.5 h-3.5 text-[#0A2540]/70 dark:text-slate-300" />
+                    Tag Teammates (@)
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setShowTagPicker(!showTagPicker)}
+                    className="text-[11px] font-bold text-amber-700 dark:text-amber-400 hover:underline cursor-pointer"
+                  >
+                    {showTagPicker ? "Hide List" : "+ Select Members"}
+                  </button>
+                </div>
+
+                {/* Tagged members preview chips */}
+                {selectedTags.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 mb-2">
+                    {selectedTags.map((t) => (
+                      <span
+                        key={t.id}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-100 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 rounded-lg text-xs font-black text-amber-950 dark:text-amber-200"
+                      >
+                        @{t.name}
+                        <button
+                          type="button"
+                          onClick={() => handleToggleTag(t)}
+                          className="hover:text-rose-600 ml-0.5"
+                        >
+                          ×
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                {/* Tag picker list */}
+                {showTagPicker && (
+                  <div className="p-2.5 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] space-y-1 max-h-36 overflow-y-auto">
+                    {DEFAULT_PROJECT_MEMBERS.map((m) => {
+                      const isTagged = selectedTags.some((t) => t.id === m.id);
+                      return (
+                        <button
+                          key={m.id}
+                          type="button"
+                          onClick={() => handleToggleTag(m)}
+                          className={`w-full px-2.5 py-1.5 rounded-lg text-left text-xs font-bold flex items-center justify-between transition-all ${
+                            isTagged
+                              ? "bg-[#0A2540] text-white"
+                              : "hover:bg-slate-200/70 text-[#0A2540] dark:text-slate-200"
+                          }`}
+                        >
+                          <span>{m.name}</span>
+                          <span className={`text-[10px] ${isTagged ? "text-white/80" : "text-[#0A2540]/60 dark:text-slate-400"}`}>
+                            {m.role}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Worksite & Photo Controls */}
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-[#0A2540]/70 dark:text-slate-400 mb-1">
+                    Weather
+                  </label>
+                  <select
+                    value={weather}
+                    onChange={(e) => setWeather(e.target.value)}
+                    className="w-full px-2.5 py-1.5 bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] rounded-lg text-xs font-bold text-[#0A2540] dark:text-white"
+                  >
+                    <option value="Sunny">☀️ Sunny</option>
+                    <option value="Rainy">🌧️ Rainy</option>
+                    <option value="Overcast">⛅ Overcast</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-[#0A2540]/70 dark:text-slate-400 mb-1">
+                    Crew Headcount
+                  </label>
+                  <input
+                    type="number"
+                    value={headcount}
+                    onChange={(e) => setHeadcount(Number(e.target.value))}
+                    className="w-full px-2.5 py-1.5 bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] rounded-lg text-xs font-mono font-bold text-[#0A2540] dark:text-white"
+                  />
+                </div>
+              </div>
+
+              {/* Photo Attachment URL */}
+              <div>
+                <button
+                  type="button"
+                  onClick={() => setShowPhotoInput(!showPhotoInput)}
+                  className="text-xs font-bold text-[#0A2540] dark:text-white flex items-center gap-1.5 hover:underline cursor-pointer"
+                >
+                  <ImageIcon className="w-3.5 h-3.5" />
+                  {showPhotoInput ? "Cancel Photo Attachment" : "+ Attach Photo / Proof URL"}
+                </button>
+                {showPhotoInput && (
+                  <input
+                    type="url"
+                    placeholder="https://.../site-photo.jpg"
+                    value={photoUrl}
+                    onChange={(e) => setPhotoUrl(e.target.value)}
+                    className="mt-2 w-full px-3 py-2 bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] rounded-lg text-xs font-mono text-[#0A2540] dark:text-white focus:outline-none"
+                  />
+                )}
+              </div>
+
+              {/* Submit Post Button */}
+              <button
+                type="submit"
+                disabled={isSubmitting || !content.trim()}
+                className="w-full h-11 bg-[#0A2540] hover:bg-[#003366] dark:bg-[#FFD23F] dark:hover:bg-[#FFD23F]/90 text-white dark:text-[#0A1931] rounded-xl text-xs font-black uppercase tracking-wider shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+              >
+                <Send className="w-4 h-4" />
+                <span>Post Update to Hub</span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        {/* Right 2 Columns: Feed & Media */}
+        <div className="lg:col-span-2 space-y-4">
+          {/* Feed Filter Bar */}
+          <div className="flex items-center justify-between gap-3 bg-white dark:bg-[#0A1931] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-2xl p-3 shadow-xs">
+            <div className="flex items-center gap-1.5 overflow-x-auto">
+              {[
+                { id: "all", label: `All Updates (${posts.length})` },
+                { id: "progress", label: "🏗️ Progress" },
+                { id: "expense", label: "💰 Expenses" },
+                { id: "issue", label: "⚠️ Alerts" },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setFilterType(tab.id as any)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer whitespace-nowrap ${
+                    filterType === tab.id
+                      ? "bg-[#0A2540] text-white shadow-xs dark:bg-[#FFD23F] dark:text-[#0A1931]"
+                      : "text-[#0A2540]/70 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#071324]"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-1 shrink-0">
+              <button
+                onClick={() => setActiveTab("feed")}
+                className={`px-3 py-1.5 rounded-lg text-xs font-black ${
+                  activeTab === "feed"
+                    ? "bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] text-[#0A2540] dark:text-white"
+                    : "text-[#0A2540]/60 dark:text-slate-400"
+                }`}
+              >
+                Feed
+              </button>
+              <button
+                onClick={() => setActiveTab("photos")}
+                className={`px-3 py-1.5 rounded-lg text-xs font-black ${
+                  activeTab === "photos"
+                    ? "bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] text-[#0A2540] dark:text-white"
+                    : "text-[#0A2540]/60 dark:text-slate-400"
+                }`}
+              >
+                Photos ({allPhotos.length})
+              </button>
+            </div>
+          </div>
+
+          {/* Photos Tab View */}
+          {activeTab === "photos" && (
+            <div className="bg-white dark:bg-[#0A1931] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-2xl p-6 shadow-xs">
+              {allPhotos.length === 0 ? (
+                <div className="py-12 text-center text-[#0A2540]/60 dark:text-slate-400">
+                  <ImageIcon className="w-8 h-8 mx-auto opacity-40 mb-2" />
+                  <p className="font-bold text-sm text-[#0A2540] dark:text-white">No site photos uploaded yet</p>
+                  <p className="text-xs mt-1">Attach photo URLs in your site updates to build the project gallery.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {allPhotos.map((url, idx) => (
+                    <div
+                      key={idx}
+                      className="aspect-square bg-slate-100 rounded-xl overflow-hidden border border-[#E5E5DE] relative group"
+                    >
+                      <img
+                        src={url}
+                        alt={`Site capture ${idx + 1}`}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                        onError={(e) => {
+                          (e.target as any).src = "https://images.unsplash.com/photo-1541888946425-d0fbb18615f3?w=500&auto=format&fit=crop";
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Social Feed Tab View */}
+          {activeTab === "feed" && (
+            <div className="space-y-4">
+              {filteredPosts.length === 0 ? (
+                <div className="bg-white dark:bg-[#0A1931] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-2xl p-12 text-center shadow-xs">
+                  <HardHat className="w-10 h-10 mx-auto text-[#0A2540]/30 dark:text-slate-500 mb-3" />
+                  <p className="font-black text-base text-[#0A2540] dark:text-white">No Site Updates In This Feed Yet</p>
+                  <p className="text-xs text-[#0A2540]/60 dark:text-slate-400 max-w-sm mx-auto mt-1">
+                    Be the first to share today&apos;s site progress, log an expense incurred on site, or tag colleagues for inspection.
+                  </p>
+                </div>
+              ) : (
+                filteredPosts.map((post) => (
+                  <div
+                    key={post.id}
+                    className="bg-white dark:bg-[#0A1931] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] rounded-2xl p-5 shadow-xs space-y-3.5 transition-all"
+                  >
+                    {/* Post Header: Author, Badge, Timestamp */}
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-[#0A2540] text-white flex items-center justify-center font-black text-xs shrink-0 border border-[#0A2540]">
+                          {post.authorName.substring(0, 2).toUpperCase()}
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-black text-[#0A2540] dark:text-white">
+                              {post.authorName}
+                            </span>
+                            <span className="px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] text-[#0A2540]/70 dark:text-slate-300">
+                              {post.authorRole}
+                            </span>
+                          </div>
+                          <div className="text-[11px] font-semibold text-[#0A2540]/50 dark:text-slate-400">
+                            {new Date(post.createdAt).toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Post Type Pill */}
+                      <div>
+                        {post.postType === "expense" ? (
+                          <span className="px-3 py-1 rounded-xl text-xs font-black bg-emerald-100 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 flex items-center gap-1">
+                            💰 Spent: {formatCurrency(post.amountSpent, currency)}
+                          </span>
+                        ) : post.postType === "issue" ? (
+                          <span className="px-3 py-1 rounded-xl text-xs font-black bg-rose-100 dark:bg-rose-950/60 text-rose-900 dark:text-rose-300 border border-rose-300 dark:border-rose-800 flex items-center gap-1">
+                            ⚠️ Site Alert
+                          </span>
+                        ) : (
+                          <span className="px-3 py-1 rounded-xl text-xs font-black bg-blue-100 dark:bg-blue-950/60 text-blue-900 dark:text-blue-300 border border-blue-300 dark:border-blue-800 flex items-center gap-1">
+                            🏗️ Progress Log
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Worksite quick telemetry */}
+                    {(post.metadata.weather || post.metadata.headcount) && (
+                      <div className="flex items-center gap-3 text-[11px] font-bold text-[#0A2540]/70 dark:text-slate-400">
+                        {post.metadata.weather && (
+                          <span className="flex items-center gap-1">
+                            ☀️ {post.metadata.weather}
+                          </span>
+                        )}
+                        {post.metadata.headcount && post.metadata.headcount > 0 && (
+                          <span className="flex items-center gap-1">
+                            👷 {post.metadata.headcount} Workers On Site
+                          </span>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Tagged colleagues highlight */}
+                    {post.taggedUsers && post.taggedUsers.length > 0 && (
+                      <div className="flex flex-wrap items-center gap-1.5 text-xs font-bold text-[#0A2540]/80 dark:text-slate-300">
+                        <span className="text-[11px] text-[#0A2540]/50 dark:text-slate-500">Mentioned:</span>
+                        {post.taggedUsers.map((tag) => (
+                          <span
+                            key={tag.id}
+                            className="px-2 py-0.5 rounded-md bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-[11px] font-black"
+                          >
+                            @{tag.name}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Main Post Content */}
+                    <div className="text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
+                      {post.content}
+                    </div>
+
+                    {/* Expense Callout Box if spent */}
+                    {post.postType === "expense" && post.amountSpent > 0 && (
+                      <div className="p-3.5 rounded-xl bg-[#FAF9F5] dark:bg-[#071324] border-2 border-[#E5E5DE] dark:border-[#1E3A5F] flex items-center justify-between">
+                        <div>
+                          <div className="text-[10px] font-black uppercase tracking-wider text-[#0A2540]/60 dark:text-slate-400">
+                            Disbursement / Cost Outflow
+                          </div>
+                          <div className="text-lg font-black font-mono text-[#0A2540] dark:text-white mt-0.5">
+                            {formatCurrency(post.amountSpent, currency)}
+                          </div>
+                        </div>
+                        {post.expenseCategory && (
+                          <span className="px-3 py-1 rounded-lg text-xs font-bold bg-white dark:bg-[#0A1931] border border-[#E5E5DE] dark:border-[#1E3A5F] text-[#0A2540] dark:text-white">
+                            Category: {post.expenseCategory}
+                          </span>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Photos in post */}
+                    {post.mediaUrls && post.mediaUrls.length > 0 && (
+                      <div className="grid grid-cols-2 gap-2 pt-1">
+                        {post.mediaUrls.map((url, i) => (
+                          <div
+                            key={i}
+                            className="aspect-video bg-slate-100 rounded-xl overflow-hidden border border-[#E5E5DE] relative"
+                          >
+                            <img
+                              src={url}
+                              alt="Site progress proof"
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                (e.target as any).src = "https://images.unsplash.com/photo-1541888946425-d0fbb18615f3?w=500&auto=format&fit=crop";
+                              }}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Social Interactions: Likes & Comments */}
+                    <div className="pt-2 border-t border-[#E5E5DE] dark:border-[#1E3A5F] flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <button
+                          type="button"
+                          onClick={() => handleToggleLike(post.id)}
+                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                            post.userLiked
+                              ? "bg-emerald-100 text-emerald-900 border border-emerald-300 dark:bg-emerald-950/60 dark:text-emerald-300"
+                              : "hover:bg-slate-100 dark:hover:bg-[#071324] text-[#0A2540]/70 dark:text-slate-300"
+                          }`}
+                        >
+                          <ThumbsUp className={`w-3.5 h-3.5 ${post.userLiked ? "fill-emerald-600" : ""}`} />
+                          <span>{post.likesCount > 0 ? post.likesCount : "Acknowledge"}</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setActiveCommentPostId(activeCommentPostId === post.id ? null : post.id)
+                          }
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black text-[#0A2540]/70 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#071324] transition-all cursor-pointer"
+                        >
+                          <MessageSquare className="w-3.5 h-3.5" />
+                          <span>
+                            {post.comments.length > 0 ? `${post.comments.length} Comments` : "Reply"}
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Expandable Comment Thread */}
+                    {activeCommentPostId === post.id && (
+                      <div className="pt-3 space-y-3 bg-[#FAF9F5] dark:bg-[#071324] p-3.5 rounded-xl border border-[#E5E5DE] dark:border-[#1E3A5F]">
+                        {/* Existing comments */}
+                        {post.comments.length > 0 && (
+                          <div className="space-y-2 mb-3">
+                            {post.comments.map((comm) => (
+                              <div
+                                key={comm.id}
+                                className="bg-white dark:bg-[#0A1931] p-2.5 rounded-lg border border-[#E5E5DE] dark:border-[#1E3A5F] text-xs space-y-1"
+                              >
+                                <div className="flex items-center justify-between">
+                                  <span className="font-black text-[#0A2540] dark:text-white">
+                                    {comm.authorName} ({comm.authorRole})
+                                  </span>
+                                  <span className="text-[10px] text-[#0A2540]/50 dark:text-slate-400">
+                                    {new Date(comm.createdAt).toLocaleTimeString([], {
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                    })}
+                                  </span>
+                                </div>
+                                <p className="text-slate-800 dark:text-slate-200">{comm.content}</p>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Add reply input */}
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="text"
+                            placeholder="Write a reply or sign-off comment..."
+                            value={commentText}
+                            onChange={(e) => setCommentText(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                e.preventDefault();
+                                handleAddComment(post.id);
+                              }
+                            }}
+                            className="flex-1 px-3 py-2 bg-white dark:bg-[#0A1931] border border-[#E5E5DE] dark:border-[#1E3A5F] rounded-lg text-xs font-semibold text-[#0A2540] dark:text-white focus:outline-none"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleAddComment(post.id)}
+                            className="px-3.5 py-2 bg-[#0A2540] hover:bg-[#003366] text-white rounded-lg text-xs font-black uppercase cursor-pointer"
+                          >
+                            Send
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -30,18 +30,11 @@ type AppDataContextType = {
 
 const AppDataContext = createContext<AppDataContextType | null>(null);
 
-const INITIAL_BOQ: BOQItem[] = [
-  { id: "boq-1", code: "SUB-01.01", description: "Excavation and earthwork disposal offsite", category: "Plant", unit: "m³", quantity: 1250, rate: 18500, budgetAmount: 23125000, committedAmount: 21500000, actualAmount: 19800000 },
-  { id: "boq-2", code: "CON-02.01", description: "Grade 30 reinforced concrete for foundation raft & plinth beams", category: "Material", unit: "m³", quantity: 480, rate: 195000, budgetAmount: 93600000, committedAmount: 94000000, actualAmount: 62000000 },
-  { id: "boq-3", code: "STL-02.03", description: "High-yield deformed reinforcement bars (12mm, 16mm, 20mm)", category: "Material", unit: "Tons", quantity: 65, rate: 1450000, budgetAmount: 94250000, committedAmount: 94250000, actualAmount: 85000000 },
-  { id: "boq-4", code: "BLK-03.01", description: "225mm vibrated hollow sandcrete blockwork in cement mortar (1:4)", category: "Material", unit: "m²", quantity: 3200, rate: 11200, budgetAmount: 35840000, committedAmount: 33000000, actualAmount: 24500000 },
-  { id: "boq-5", code: "LAB-01.02", description: "Structural steel fixing and formwork carpenters gang attendance", category: "Labour", unit: "Man-days", quantity: 600, rate: 12500, budgetAmount: 7500000, committedAmount: 7500000, actualAmount: 5100000 },
-  { id: "boq-6", code: "MEP-04.01", description: "First fix electrical conduit pipes & heavy-duty distribution boards", category: "Subcontractor", unit: "Item", quantity: 1, rate: 45000000, budgetAmount: 45000000, committedAmount: 42000000, actualAmount: 20000000 },
-];
+const INITIAL_BOQ: BOQItem[] = [];
 
 export function AppDataProvider({ children }: { children: React.ReactNode }) {
   const [boqItems, setBoqItems] = useState<BOQItem[]>(INITIAL_BOQ);
-  const [procurementCount, setProcurementCount] = useState(6);
+  const [procurementCount, setProcurementCount] = useState(0);
   const [stockRefreshKey, setStockRefreshKey] = useState(0);
   const [reportsRefreshKey, setReportsRefreshKey] = useState(0);
 
