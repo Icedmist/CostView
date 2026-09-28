@@ -24,14 +24,15 @@ export default function RegisterPage() {
     setLoading(true);
     setErrorMsg(null);
 
+    const cleanEmail = email.trim().toLowerCase();
     const { data, error } = await supabase.auth.signUp({
-      email,
+      email: cleanEmail,
       password,
       options: {
         data: {
-          full_name: fullName,
+          full_name: fullName.trim(),
           role: role,
-          company_name: companyName,
+          company_name: companyName.trim(),
         },
       },
     });
@@ -39,17 +40,25 @@ export default function RegisterPage() {
     if (error) {
       setErrorMsg(error.message);
       setLoading(false);
-    } else {
-      if (typeof window !== "undefined") {
-        sessionStorage.setItem("costview_tab_active", "1");
-        sessionStorage.setItem("costview_last_active", Date.now().toString());
-        localStorage.setItem("costview_last_active", Date.now().toString());
-        localStorage.setItem("costview_demo_role", role);
-        document.cookie = `costview_demo_role=${role}; path=/; max-age=604800; SameSite=Lax`;
-      }
-      router.push("/dashboard");
-      router.refresh();
+      return;
     }
+
+    if (!data?.session) {
+      await supabase.auth.signInWithPassword({
+        email: cleanEmail,
+        password,
+      });
+    }
+
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("costview_tab_active", "1");
+      sessionStorage.setItem("costview_last_active", Date.now().toString());
+      localStorage.setItem("costview_last_active", Date.now().toString());
+      localStorage.setItem("costview_demo_role", role);
+      document.cookie = `costview_demo_role=${role}; path=/; max-age=604800; SameSite=Lax`;
+    }
+    router.push("/dashboard");
+    router.refresh();
   };
 
   return (

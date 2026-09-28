@@ -78,9 +78,10 @@ export function AppDataProvider({ children, projectId }: { children: React.React
     setReportsRefreshKey((k) => k + 1);
     (async () => {
       try {
+        if (!projectId) return;
         const supabase = createClient();
         await supabase.from("boq_items").insert({
-          project_id: projectId || "22222222-2222-2222-2222-222222222222",
+          project_id: projectId,
           code: item.code,
           description: item.description,
           category: item.category,

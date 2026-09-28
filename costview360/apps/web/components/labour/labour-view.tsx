@@ -18,7 +18,7 @@ interface WorkerRecord {
 const INITIAL_WORKERS: WorkerRecord[] = [];
 
 export function LabourView() {
-  const { currency } = useApp();
+  const { currency, currentProject } = useApp();
   const [workers, setWorkers] = useState<WorkerRecord[]>(INITIAL_WORKERS);
   const [isAddWorkerOpen, setIsAddWorkerOpen] = useState(false);
 
@@ -93,11 +93,11 @@ export function LabourView() {
     setWorkers((prev) =>
       prev.map((w) => (w.id === id ? { ...w, daysPresent: w.daysPresent + 1 } : w))
     );
-    if (target) {
+    if (target && currentProject?.id) {
       try {
         const supabase = createClient();
         await supabase.from("daily_attendance").insert({
-          project_id: "22222222-2222-2222-2222-222222222222",
+          project_id: currentProject.id,
           worker_name: target.name,
           trade: target.trade,
           date: new Date().toISOString().split("T")[0],
