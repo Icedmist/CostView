@@ -30,15 +30,16 @@ import { SiteHub } from "@/components/site-ops/site-hub";
 import { useSessionExpiry } from "@/lib/auth/session";
 
 export default function DashboardPage() {
-  const { activeRole } = useApp();
+  const { activeRole, currentProject } = useApp();
   const { boqItems } = useAppData();
   const [activeSection, setActiveSection] = useState("Oversight");
   const [activeSubSection, setActiveSubSection] = useState("my-work");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
 
-  // Dynamic budget KPIs calculated from live project BOQ data
-  const approvedBudget = boqItems.reduce((acc, it) => acc + (it.budgetAmount || 0), 0);
+  // Dynamic budget KPIs calculated from live project BOQ data with fallback to project baseline budget
+  const boqApprovedTotal = boqItems.reduce((acc, it) => acc + (it.budgetAmount || 0), 0);
+  const approvedBudget = boqApprovedTotal > 0 ? boqApprovedTotal : (currentProject?.budgetTotal || 0);
   const committedCost = boqItems.reduce((acc, it) => acc + (it.committedAmount || 0), 0);
   const actualCost = boqItems.reduce((acc, it) => acc + (it.actualAmount || 0), 0);
 
