@@ -22,7 +22,11 @@ import {
   Sparkles,
   ChevronDown,
   Trash2,
+  UploadCloud,
+  X,
+  Loader2,
 } from "lucide-react";
+import { uploadToStorage } from "@/lib/storage/client";
 
 export interface TaggedUser {
   id: string;
@@ -79,7 +83,29 @@ export function SiteHub() {
   const [showTagPicker, setShowTagPicker] = useState(false);
   const [photoUrl, setPhotoUrl] = useState("");
   const [showPhotoInput, setShowPhotoInput] = useState(false);
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handlePhotoFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setIsUploadingPhoto(true);
+    setUploadError(null);
+    try {
+      const res = await uploadToStorage(file, "pictures");
+      if (res.error) {
+        setUploadError(res.error);
+      } else if (res.url) {
+        setPhotoUrl(res.url);
+      }
+    } catch (err: any) {
+      setUploadError(err?.message || "Failed to upload photo to storage.");
+    } finally {
+      setIsUploadingPhoto(false);
+      e.target.value = "";
+    }
+  };
 
   // Active Comment Input States
   const [activeCommentPostId, setActiveCommentPostId] = useState<string | null>(null);
@@ -473,16 +499,67 @@ export function SiteHub() {
               </div>
             )}
 
-            {/* Photo Attachment URL Input */}
+            {/* Photo Attachment URL Input & Storage Upload */}
             {showPhotoInput && (
-              <div>
-                <input
-                  type="url"
-                  placeholder="Paste site photo URL (e.g. https://.../capture.jpg)"
-                  value={photoUrl}
-                  onChange={(e) => setPhotoUrl(e.target.value)}
-                  className="w-full px-3 py-2 bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] rounded-lg text-xs font-mono text-[#0A2540] dark:text-white focus:outline-none"
-                />
+              <div className="p-3 bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] rounded-xl space-y-2">
+                <div className="flex items-center justify-between text-[11px] font-bold text-[#0A2540] dark:text-slate-200">
+                  <span className="flex items-center gap-1.5">
+                    <ImageIcon className="w-3.5 h-3.5 text-amber-500" /> Site Photo (Upload to Storage)
+                  </span>
+                  {photoUrl && (
+                    <button
+                      type="button"
+                      onClick={() => setPhotoUrl("")}
+                      className="text-rose-600 hover:underline flex items-center gap-0.5 text-[10px] cursor-pointer"
+                    >
+                      <X className="w-3 h-3" /> Remove photo
+                    </button>
+                  )}
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-center gap-2">
+                  <label className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-3 py-2 bg-[#0A2540] hover:bg-[#0A2540]/90 text-white dark:bg-amber-400 dark:text-[#0A1931] rounded-lg text-xs font-bold cursor-pointer transition-all shrink-0">
+                    {isUploadingPhoto ? (
+                      <>
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" /> Uploading...
+                      </>
+                    ) : (
+                      <>
+                        <UploadCloud className="w-3.5 h-3.5" /> Upload from Device / Camera
+                      </>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      disabled={isUploadingPhoto}
+                      onChange={handlePhotoFileUpload}
+                      className="hidden"
+                    />
+                  </label>
+
+                  <span className="text-[10px] text-slate-400 uppercase font-black shrink-0">or</span>
+
+                  <input
+                    type="url"
+                    placeholder="Paste image URL (https://...)"
+                    value={photoUrl}
+                    onChange={(e) => setPhotoUrl(e.target.value)}
+                    className="flex-1 w-full px-3 py-2 bg-white dark:bg-[#0D2137] border border-[#E5E5DE] dark:border-[#1E3A5F] rounded-lg text-xs font-mono text-[#0A2540] dark:text-white focus:outline-none"
+                  />
+                </div>
+
+                {uploadError && (
+                  <p className="text-[10px] font-bold text-rose-600 bg-rose-50 dark:bg-rose-950/40 p-2 rounded border border-rose-200">
+                    {uploadError}
+                  </p>
+                )}
+
+                {photoUrl && (
+                  <div className="relative inline-block mt-1 rounded-lg overflow-hidden border border-[#E5E5DE] dark:border-white/10">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={photoUrl} alt="Upload preview" className="h-24 w-auto object-cover rounded" />
+                  </div>
+                )}
               </div>
             )}
 
