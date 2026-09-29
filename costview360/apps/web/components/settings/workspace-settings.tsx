@@ -136,20 +136,27 @@ export function WorkspaceSettingsView() {
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (!selectedFile) return;
+    const selectedFiles = Array.from(e.target.files || []);
+    if (selectedFiles.length === 0) return;
 
     setUploading(true);
     setUploadError(null);
 
-    const { url, error } = await uploadToStorage(selectedFile, activeFolder);
-    if (error) {
-      setUploadError(error);
-    } else if (url) {
+    try {
+      const results = await Promise.all(
+        selectedFiles.map((file) => uploadToStorage(file, activeFolder))
+      );
+      const errors = results.filter((r) => r.error).map((r) => r.error);
+      if (errors.length > 0) {
+        setUploadError(`Failed to upload ${errors.length} item(s): ${errors[0]}`);
+      }
       await fetchFiles(activeFolder);
+    } catch (err: any) {
+      setUploadError(err?.message || "Failed to upload files.");
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
     }
-    setUploading(false);
-    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const handleDelete = async (filePath: string) => {
@@ -413,6 +420,7 @@ export function WorkspaceSettingsView() {
               type="file"
               ref={fileInputRef}
               onChange={handleFileUpload}
+              multiple
               className="hidden"
               accept={
                 activeFolder === "pictures"
@@ -430,9 +438,9 @@ export function WorkspaceSettingsView() {
                 Upload to <span className="font-mono text-emerald-700 dark:text-emerald-400">{activeFolder}/</span>
               </div>
               <p className="text-[10px] font-semibold text-[#0A2540]/60 dark:text-slate-400 mt-0.5">
-                {activeFolder === "pictures" && "PNG, JPG, WEBP, GIF up to 50MB"}
-                {activeFolder === "drawings" && "PDF, DWG, DXF architectural & structural drawings"}
-                {activeFolder === "documents" && "PDF, CSV, Excel, contracts & delivery notes"}
+                {activeFolder === "pictures" && "PNG, JPG, WEBP, GIF (select multiple files)"}
+                {activeFolder === "drawings" && "PDF, DWG, DXF CAD drawings (select multiple files)"}
+                {activeFolder === "documents" && "PDF, CSV, Excel, contracts (select multiple files)"}
               </p>
             </div>
             <button
@@ -441,7 +449,7 @@ export function WorkspaceSettingsView() {
               onClick={() => fileInputRef.current?.click()}
               className="h-8 px-4 bg-[#0A2540] hover:bg-[#003366] dark:bg-amber-400 dark:hover:bg-amber-300 text-white dark:text-[#0A2540] rounded-lg font-black text-[11px] uppercase tracking-wider transition-all cursor-pointer shadow-xs disabled:opacity-50"
             >
-              {uploading ? "Uploading..." : `Choose ${activeFolder.slice(0, -1)} file`}
+              {uploading ? "Uploading..." : `Choose ${activeFolder} (Multiple supported)`}
             </button>
           </div>
 

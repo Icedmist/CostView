@@ -81,26 +81,37 @@ export function SiteHub() {
   const [headcount, setHeadcount] = useState<number>(45);
   const [selectedTags, setSelectedTags] = useState<TaggedUser[]>([]);
   const [showTagPicker, setShowTagPicker] = useState(false);
-  const [photoUrl, setPhotoUrl] = useState("");
+  const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
   const [showPhotoInput, setShowPhotoInput] = useState(false);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handlePhotoFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const selectedFiles = Array.from(e.target.files || []);
+    if (selectedFiles.length === 0) return;
     setIsUploadingPhoto(true);
     setUploadError(null);
     try {
-      const res = await uploadToStorage(file, "pictures");
-      if (res.error) {
-        setUploadError(res.error);
-      } else if (res.url) {
-        setPhotoUrl(res.url);
+      const uploadPromises = selectedFiles.map((file) => uploadToStorage(file, "pictures"));
+      const results = await Promise.all(uploadPromises);
+      const newUrls: string[] = [];
+      let firstError: string | null = null;
+      for (const res of results) {
+        if (res.error) {
+          firstError = res.error;
+        } else if (res.url) {
+          newUrls.push(res.url);
+        }
+      }
+      if (newUrls.length > 0) {
+        setUploadedPhotos((prev) => [...prev, ...newUrls]);
+      }
+      if (firstError && newUrls.length === 0) {
+        setUploadError(firstError);
       }
     } catch (err: any) {
-      setUploadError(err?.message || "Failed to upload photo to storage.");
+      setUploadError(err?.message || "Failed to upload photos to storage.");
     } finally {
       setIsUploadingPhoto(false);
       e.target.value = "";
@@ -187,7 +198,7 @@ export function SiteHub() {
 
     setIsSubmitting(true);
     const newPostId = `post-${Date.now()}`;
-    const newMediaUrls = photoUrl.trim() ? [photoUrl.trim()] : [];
+    const newMediaUrls = [...uploadedPhotos];
 
     const newPost: SitePost = {
       id: newPostId,
@@ -216,7 +227,7 @@ export function SiteHub() {
     setContent("");
     setAmountSpent("");
     setSelectedTags([]);
-    setPhotoUrl("");
+    setUploadedPhotos([]);
     setShowPhotoInput(false);
     setShowTagPicker(false);
     setIsSubmitting(false);
@@ -499,53 +510,48 @@ export function SiteHub() {
               </div>
             )}
 
-            {/* Photo Attachment URL Input & Storage Upload */}
+            {/* Photo Attachment Storage Upload (Multi-Item, No Raw URLs) */}
             {showPhotoInput && (
-              <div className="p-3 bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] rounded-xl space-y-2">
+              <div className="p-3 bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] rounded-xl space-y-2.5">
                 <div className="flex items-center justify-between text-[11px] font-bold text-[#0A2540] dark:text-slate-200">
                   <span className="flex items-center gap-1.5">
-                    <ImageIcon className="w-3.5 h-3.5 text-amber-500" /> Site Photo (Upload to Storage)
+                    <ImageIcon className="w-3.5 h-3.5 text-amber-500" />
+                    <span>Attach Site Photos {uploadedPhotos.length > 0 ? `(${uploadedPhotos.length})` : ""}</span>
                   </span>
-                  {photoUrl && (
+                  {uploadedPhotos.length > 0 && (
                     <button
                       type="button"
-                      onClick={() => setPhotoUrl("")}
+                      onClick={() => setUploadedPhotos([])}
                       className="text-rose-600 hover:underline flex items-center gap-0.5 text-[10px] cursor-pointer"
                     >
-                      <X className="w-3 h-3" /> Remove photo
+                      <X className="w-3 h-3" /> Clear all
                     </button>
                   )}
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-center gap-2">
-                  <label className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-3 py-2 bg-[#0A2540] hover:bg-[#0A2540]/90 text-white dark:bg-amber-400 dark:text-[#0A1931] rounded-lg text-xs font-bold cursor-pointer transition-all shrink-0">
+                <div className="flex items-center gap-2">
+                  <label className="inline-flex items-center justify-center gap-2 px-3.5 py-2 bg-[#0A2540] hover:bg-[#0A2540]/90 text-white dark:bg-amber-400 dark:text-[#0A1931] rounded-lg text-xs font-bold cursor-pointer transition-all">
                     {isUploadingPhoto ? (
                       <>
                         <Loader2 className="w-3.5 h-3.5 animate-spin" /> Uploading...
                       </>
                     ) : (
                       <>
-                        <UploadCloud className="w-3.5 h-3.5" /> Upload from Device / Camera
+                        <UploadCloud className="w-3.5 h-3.5" /> Upload Photos from Device / Camera
                       </>
                     )}
                     <input
                       type="file"
+                      multiple
                       accept="image/*"
                       disabled={isUploadingPhoto}
                       onChange={handlePhotoFileUpload}
                       className="hidden"
                     />
                   </label>
-
-                  <span className="text-[10px] text-slate-400 uppercase font-black shrink-0">or</span>
-
-                  <input
-                    type="url"
-                    placeholder="Paste image URL (https://...)"
-                    value={photoUrl}
-                    onChange={(e) => setPhotoUrl(e.target.value)}
-                    className="flex-1 w-full px-3 py-2 bg-white dark:bg-[#0D2137] border border-[#E5E5DE] dark:border-[#1E3A5F] rounded-lg text-xs font-mono text-[#0A2540] dark:text-white focus:outline-none"
-                  />
+                  <span className="text-[11px] text-[#0A2540]/60 dark:text-slate-400">
+                    Supports selecting multiple images
+                  </span>
                 </div>
 
                 {uploadError && (
@@ -554,10 +560,30 @@ export function SiteHub() {
                   </p>
                 )}
 
-                {photoUrl && (
-                  <div className="relative inline-block mt-1 rounded-lg overflow-hidden border border-[#E5E5DE] dark:border-white/10">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={photoUrl} alt="Upload preview" className="h-24 w-auto object-cover rounded" />
+                {/* Uploaded Photos Grid Preview */}
+                {uploadedPhotos.length > 0 && (
+                  <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 pt-1">
+                    {uploadedPhotos.map((url, idx) => (
+                      <div
+                        key={idx}
+                        className="relative aspect-square rounded-lg overflow-hidden border-2 border-[#E5E5DE] dark:border-white/10 group bg-slate-100 dark:bg-slate-800"
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={url}
+                          alt={`Uploaded capture ${idx + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setUploadedPhotos((prev) => prev.filter((_, i) => i !== idx))}
+                          className="absolute top-1 right-1 w-5 h-5 bg-black/75 hover:bg-rose-600 text-white rounded-full flex items-center justify-center transition-colors cursor-pointer"
+                          title="Remove photo"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
@@ -571,13 +597,13 @@ export function SiteHub() {
                   type="button"
                   onClick={() => setShowPhotoInput(!showPhotoInput)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
-                    showPhotoInput || photoUrl
+                    showPhotoInput || uploadedPhotos.length > 0
                       ? "bg-amber-100 text-amber-900 border border-amber-300 dark:bg-amber-950/60 dark:text-amber-200"
                       : "bg-[#FAF9F5] dark:bg-[#071324] border border-[#E5E5DE] dark:border-[#1E3A5F] text-[#0A2540] dark:text-white hover:bg-slate-100"
                   }`}
                 >
                   <ImageIcon className="w-3.5 h-3.5" />
-                  <span>Photo</span>
+                  <span>Photos {uploadedPhotos.length > 0 ? `(${uploadedPhotos.length})` : ""}</span>
                 </button>
 
                 {/* Tag Teammates Toggle */}

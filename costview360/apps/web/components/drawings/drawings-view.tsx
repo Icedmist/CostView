@@ -15,6 +15,7 @@ import {
   UploadCloud,
   Loader2,
   ExternalLink,
+  X,
 } from "lucide-react";
 import { uploadToStorage } from "@/lib/storage/client";
 import type { DrawingDiscipline } from "@/lib/supabase/database.types";
@@ -92,8 +93,18 @@ export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) 
   const [formDiscipline, setFormDiscipline] = useState<DrawingDiscipline>("Architectural");
   const [formBoq, setFormBoq] = useState("");
   const [formFile, setFormFile] = useState("");
+  const [formFileName, setFormFileName] = useState("");
   const [isUploadingDrawing, setIsUploadingDrawing] = useState(false);
   const [drawingUploadNote, setDrawingUploadNote] = useState<string | null>(null);
+
+  const getCleanFileName = (ref: string) => {
+    if (!ref) return "—";
+    if (ref.startsWith("http")) {
+      const raw = ref.split("/").pop() || "drawing";
+      return decodeURIComponent(raw.replace(/^\d+_/, ""));
+    }
+    return ref;
+  };
 
   const handleDrawingFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -106,11 +117,11 @@ export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) 
         setDrawingUploadNote(`Upload failed: ${res.error}`);
       } else if (res.url) {
         setFormFile(res.url);
+        setFormFileName(file.name);
         if (!formTitle) {
           const cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
           setFormTitle(cleanName);
         }
-        setDrawingUploadNote(`Uploaded ${file.name} to storage bucket!`);
       }
     } catch (err: any) {
       setDrawingUploadNote(err?.message || "Failed to upload drawing to storage.");
@@ -250,6 +261,8 @@ export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) 
     setFormDiscipline(d.discipline);
     setFormBoq(d.linkedBoqCode);
     setFormFile("");
+    setFormFileName("");
+    setDrawingUploadNote(null);
     setIsUploadOpen(true);
   };
 
@@ -315,6 +328,8 @@ export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) 
     setFormNumber("");
     setFormBoq("");
     setFormFile("");
+    setFormFileName("");
+    setDrawingUploadNote(null);
     setIsUploadOpen(false);
     selectTab("current");
   };
@@ -531,17 +546,40 @@ export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) 
             </label>
             <div className="sm:col-span-2 space-y-1.5">
               <span className="text-xs font-black uppercase tracking-wider text-slate-500 block">
-                Drawing File Reference (Storage Bucket / PDF / CAD / Image)
+                Drawing Document (CAD / PDF / Image)
               </span>
-              <div className="flex flex-col sm:flex-row gap-2">
-                <label className="inline-flex items-center justify-center gap-2 px-4 py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-bold cursor-pointer transition-all shrink-0">
+              {formFile ? (
+                <div className="flex items-center justify-between p-3.5 rounded-xl bg-sky-50 border-2 border-sky-200">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <FileCheck2 className="w-4 h-4 text-sky-600 shrink-0" />
+                    <span className="text-xs font-bold text-sky-950 truncate">
+                      {formFileName || getCleanFileName(formFile)}
+                    </span>
+                    <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-sky-200 text-sky-900 shrink-0">
+                      Uploaded &amp; Attached
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFormFile("");
+                      setFormFileName("");
+                    }}
+                    className="p-1 text-slate-400 hover:text-rose-600 cursor-pointer"
+                    title="Remove attached file"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              ) : (
+                <label className="inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-bold cursor-pointer transition-all">
                   {isUploadingDrawing ? (
                     <>
-                      <Loader2 className="w-4 h-4 animate-spin" /> Uploading to Bucket...
+                      <Loader2 className="w-4 h-4 animate-spin" /> Uploading to Storage Bucket...
                     </>
                   ) : (
                     <>
-                      <UploadCloud className="w-4 h-4" /> Upload File (.pdf, .dwg, image)
+                      <UploadCloud className="w-4 h-4" /> Select Drawing File (.pdf, .dwg, .dxf, image)
                     </>
                   )}
                   <input
@@ -552,13 +590,7 @@ export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) 
                     className="hidden"
                   />
                 </label>
-                <input
-                  value={formFile}
-                  onChange={(e) => setFormFile(e.target.value)}
-                  placeholder="e.g. A-102_GA_v1.pdf or uploaded storage URL"
-                  className="flex-1 min-h-[48px] px-4 py-3 rounded-xl border-2 border-slate-200 text-xs sm:text-sm font-mono focus:border-sky-500 focus:outline-none"
-                />
-              </div>
+              )}
               {drawingUploadNote && (
                 <p className="text-[11px] font-bold text-sky-800 bg-sky-50 border border-sky-200 rounded-lg p-2">
                   {drawingUploadNote}
@@ -606,18 +638,18 @@ export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) 
                   </div>
                   <div className="text-base font-extrabold text-slate-900 mt-1.5">{d.title}</div>
                   <div className="text-xs text-slate-500 font-semibold mt-1">
-                    {d.fileRef.startsWith("http") ? (
+                    <span className="font-bold text-slate-700">{getCleanFileName(d.fileRef)}</span>
+                    {d.fileRef.startsWith("http") && (
                       <a
                         href={d.fileRef}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-sky-700 hover:text-sky-900 underline font-bold inline-flex items-center gap-1 mr-1"
+                        className="text-sky-700 hover:text-sky-900 underline font-bold inline-flex items-center gap-1 ml-1.5"
                       >
-                        View File ({d.fileRef.split("/").pop()}) <ExternalLink className="w-3 h-3" />
+                        Open Sheet <ExternalLink className="w-3 h-3" />
                       </a>
-                    ) : (
-                      <span>{d.fileRef} · </span>
                     )}
+                    <span className="mx-1.5">·</span>
                     Linked work item:{" "}
                     <span className="font-mono font-bold text-slate-700">
                       {d.linkedBoqCode || "—"}
@@ -674,7 +706,17 @@ export function DrawingsView({ initialSubTab, onTabChange }: DrawingsViewProps) 
                       {focusedDrawing.drawingNumber} · v{focusedDrawing.version}
                     </span>
                     <span className="text-slate-700 font-semibold"> — {focusedDrawing.title} </span>
-                    <span className="text-slate-500 font-semibold">({focusedDrawing.fileRef})</span>
+                    <span className="text-slate-500 font-semibold">({getCleanFileName(focusedDrawing.fileRef)})</span>
+                    {focusedDrawing.fileRef.startsWith("http") && (
+                      <a
+                        href={focusedDrawing.fileRef}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-sky-700 hover:text-sky-900 underline font-bold inline-flex items-center gap-0.5 ml-2"
+                      >
+                        Open Sheet <ExternalLink className="w-3 h-3" />
+                      </a>
+                    )}
                   </div>
                 ) : (
                   <div className="flex-1 px-4 py-3 rounded-xl bg-amber-50 border-2 border-amber-200 text-sm font-bold text-amber-900">
