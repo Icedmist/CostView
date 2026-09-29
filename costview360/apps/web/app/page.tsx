@@ -133,21 +133,21 @@ export default function LandingPage() {
 
                 {/* Card Content Body */}
                 <div className="p-4 sm:p-7 md:p-9 bg-white space-y-4 sm:space-y-6">
-                  <div className="grid grid-cols-3 gap-2 sm:gap-4">
-                    <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl p-3 sm:p-5 md:p-6 shadow-xs">
-                      <div className="text-[10px] sm:text-xs md:text-sm font-black text-[#0A2540]/60 uppercase tracking-wider truncate">Approved</div>
-                      <div className="text-base sm:text-2xl md:text-3xl font-black font-mono text-[#0A2540] mt-1 sm:mt-2">₦301.8M</div>
-                      <div className="h-2 sm:h-2.5 bg-[#0A2540] rounded-full mt-2 sm:mt-3" />
+                  <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                    <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-xl p-2.5 sm:p-3.5 md:p-4 shadow-2xs">
+                      <div className="text-[10px] sm:text-xs font-black text-[#0A2540]/60 uppercase tracking-wider truncate">Approved</div>
+                      <div className="text-sm sm:text-lg md:text-xl font-black font-mono text-[#0A2540] mt-0.5 sm:mt-1">₦301.8M</div>
+                      <div className="h-1.5 sm:h-2 bg-[#0A2540] rounded-full mt-1.5 sm:mt-2" />
                     </div>
-                    <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl p-3 sm:p-5 md:p-6 shadow-xs">
-                      <div className="text-[10px] sm:text-xs md:text-sm font-black text-[#0A2540]/60 uppercase tracking-wider truncate">Committed</div>
-                      <div className="text-base sm:text-2xl md:text-3xl font-black font-mono text-[#0A2540] mt-1 sm:mt-2">₦292.2M</div>
-                      <div className="h-2 sm:h-2.5 bg-[#004080] rounded-full mt-2 sm:mt-3" />
+                    <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-xl p-2.5 sm:p-3.5 md:p-4 shadow-2xs">
+                      <div className="text-[10px] sm:text-xs font-black text-[#0A2540]/60 uppercase tracking-wider truncate">Committed</div>
+                      <div className="text-sm sm:text-lg md:text-xl font-black font-mono text-[#0A2540] mt-0.5 sm:mt-1">₦292.2M</div>
+                      <div className="h-1.5 sm:h-2 bg-[#004080] rounded-full mt-1.5 sm:mt-2" />
                     </div>
-                    <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-2xl p-3 sm:p-5 md:p-6 shadow-xs">
-                      <div className="text-[10px] sm:text-xs md:text-sm font-black text-emerald-800 uppercase tracking-wider truncate">Actual</div>
-                      <div className="text-base sm:text-2xl md:text-3xl font-black font-mono text-emerald-800 mt-1 sm:mt-2">₦216.4M</div>
-                      <div className="h-2 sm:h-2.5 bg-emerald-600 rounded-full mt-2 sm:mt-3" />
+                    <div className="bg-[#FAF9F5] border-2 border-[#E5E5DE] rounded-xl p-2.5 sm:p-3.5 md:p-4 shadow-2xs">
+                      <div className="text-[10px] sm:text-xs font-black text-emerald-800 uppercase tracking-wider truncate">Actual</div>
+                      <div className="text-sm sm:text-lg md:text-xl font-black font-mono text-emerald-800 mt-0.5 sm:mt-1">₦216.4M</div>
+                      <div className="h-1.5 sm:h-2 bg-emerald-600 rounded-full mt-1.5 sm:mt-2" />
                     </div>
                   </div>
 
