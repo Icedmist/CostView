@@ -2,11 +2,14 @@
 
 import React, { Suspense } from "react";
 import Link from "next/link";
+import { useApp } from "@/app/providers";
 import { ClientPortalView } from "@/components/portal/client-portal-view";
 import { Logo } from "@/components/brand/logo";
-import { ShieldCheck, ArrowLeft, Globe, Phone, Mail } from "lucide-react";
+import { ShieldCheck, ArrowLeft, Globe } from "lucide-react";
 
 export default function StandalonePortalPage() {
+  const { currentProject } = useApp();
+
   return (
     <div className="min-h-screen bg-[#FAF9F5] text-slate-900 flex flex-col font-sans">
       {/* Top Client Brand Bar */}
@@ -49,7 +52,9 @@ export default function StandalonePortalPage() {
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
             <span>Authenticated Client Progress Portal · Powered by CostView</span>
           </div>
-          <div>Project ID: P-2026-VI01 · Certified Nigerian Construction Governance</div>
+          <div>
+            {currentProject?.name ? `${currentProject.name} (${currentProject.code || "PRJ"})` : "CostView Project"} · Certified Construction Governance
+          </div>
         </div>
       </footer>
     </div>

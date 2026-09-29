@@ -18,12 +18,13 @@ const ALL_VALID_ROLES: RoleName[] = [
   "Storekeeper",
 ];
 
-interface ProjectInfo {
+export interface ProjectInfo {
   id: string;
   name: string;
   code: string;
   location: string;
   budgetTotal: number;
+  clientPortalEnabled?: boolean;
 }
 
 interface AppContextType {
@@ -88,7 +89,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       try {
         const { data: members } = await supabase
           .from("project_members")
-          .select("project_id, role, projects(id, name, code, location, budget_total, currency)")
+          .select("project_id, role, projects(id, name, code, location, budget_total, currency, client_portal_enabled)")
           .eq("user_id", userId);
 
         if (members && members.length > 0) {
@@ -101,6 +102,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
               code: p.code || "PRJ-01",
               location: p.location || "Lagos, Nigeria",
               budgetTotal: Number(p.budget_total || 0),
+              clientPortalEnabled: Boolean(p.client_portal_enabled),
             }));
 
           if (projs.length > 0) {
@@ -113,7 +115,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         // Fallback: load workspace projects
         const { data: projs } = await supabase
           .from("projects")
-          .select("id, name, code, location, budget_total")
+          .select("id, name, code, location, budget_total, client_portal_enabled")
           .limit(5);
 
         if (projs && projs.length > 0) {
@@ -123,6 +125,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
             code: p.code || "PRJ-01",
             location: p.location || "Lagos, Nigeria",
             budgetTotal: Number(p.budget_total || 0),
+            clientPortalEnabled: Boolean(p.client_portal_enabled),
           }));
           setAvailableProjects(mapped);
           setCurrentProject(mapped[0]);

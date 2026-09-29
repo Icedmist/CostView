@@ -121,15 +121,17 @@ export function Header({
         </button>
 
         {/* Client Portal Link */}
-        <Link
-          href="/portal"
-          target="_blank"
-          title="Open Public Client & Investor Portal"
-          className="hidden sm:flex items-center gap-2 h-11 px-4 bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border-2 border-emerald-300 dark:border-emerald-700 text-emerald-900 dark:text-emerald-300 rounded-xl font-extrabold text-sm uppercase tracking-wider shadow-xs transition-all cursor-pointer"
-        >
-          <Globe className="w-4 h-4 text-emerald-700 dark:text-emerald-400" />
-          <span className="hidden xl:inline">Client Portal</span>
-        </Link>
+        {currentProject?.clientPortalEnabled && (
+          <Link
+            href="/portal"
+            target="_blank"
+            title="Open Public Client & Investor Portal"
+            className="hidden sm:flex items-center gap-2 h-11 px-4 bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border-2 border-emerald-300 dark:border-emerald-700 text-emerald-900 dark:text-emerald-300 rounded-xl font-extrabold text-sm uppercase tracking-wider shadow-xs transition-all cursor-pointer"
+          >
+            <Globe className="w-4 h-4 text-emerald-700 dark:text-emerald-400" />
+            <span className="hidden xl:inline">Client Portal</span>
+          </Link>
+        )}
 
         {/* Settings Gear Icon (Governance & Workspace Config) */}
         <button

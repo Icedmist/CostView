@@ -24,6 +24,7 @@ import {
   RefreshCw,
   AlertCircle,
   FolderOpen,
+  Globe,
 } from "lucide-react";
 import {
   uploadToStorage,
@@ -50,6 +51,9 @@ export function WorkspaceSettingsView() {
   const [projectBudget, setProjectBudget] = useState<string | number>(
     currentProject?.budgetTotal || 0
   );
+  const [clientPortalEnabled, setClientPortalEnabled] = useState(
+    Boolean(currentProject?.clientPortalEnabled)
+  );
 
   // Sync state if currentProject changes
   useEffect(() => {
@@ -58,6 +62,7 @@ export function WorkspaceSettingsView() {
       setProjectCode(currentProject.code || "");
       setProjectLocation(currentProject.location || "");
       setProjectBudget(currentProject.budgetTotal || 0);
+      setClientPortalEnabled(Boolean(currentProject.clientPortalEnabled));
     }
   }, [currentProject]);
 
@@ -109,6 +114,7 @@ export function WorkspaceSettingsView() {
             code: projectCode.trim().toUpperCase(),
             location: projectLocation.trim(),
             budget_total: budgetNum,
+            client_portal_enabled: clientPortalEnabled,
           })
           .eq("id", currentProject.id);
 
@@ -122,6 +128,7 @@ export function WorkspaceSettingsView() {
         code: projectCode.trim().toUpperCase(),
         location: projectLocation.trim(),
         budgetTotal: budgetNum,
+        clientPortalEnabled,
       };
 
       if (setCurrentProject) setCurrentProject(updated);
@@ -362,6 +369,28 @@ export function WorkspaceSettingsView() {
                   }`}
                 >
                   <span className="w-4 h-4 bg-white dark:bg-[#0A2540] rounded-full shadow-xs" />
+                </button>
+              </div>
+
+              {/* Client & Diaspora Investor Portal Access Toggle (Admin Control) */}
+              <div className="flex items-center justify-between p-2.5 bg-[#FAF9F5] dark:bg-[#071324] border-2 border-emerald-300/70 dark:border-emerald-700/60 rounded-xl">
+                <div>
+                  <div className="text-xs font-black text-[#0A2540] dark:text-white flex items-center gap-1.5">
+                    <Globe className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                    <span>Client &amp; Diaspora Investor Portal</span>
+                  </div>
+                  <div className="text-[10px] text-[#0A2540]/60 dark:text-slate-400 font-medium mt-0.5">
+                    Enable public read-only transparency portal (/portal) for clients and investors
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setClientPortalEnabled(!clientPortalEnabled)}
+                  className={`w-10 h-6 rounded-full border flex items-center px-0.5 transition-colors cursor-pointer shrink-0 ml-3 ${
+                    clientPortalEnabled ? "bg-emerald-600 justify-end" : "bg-slate-300 dark:bg-slate-700 justify-start"
+                  }`}
+                >
+                  <span className="w-4 h-4 bg-white rounded-full shadow-xs" />
                 </button>
               </div>
             </div>
