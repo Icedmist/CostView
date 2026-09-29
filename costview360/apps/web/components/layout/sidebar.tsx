@@ -351,6 +351,13 @@ export function Sidebar({
     }
   }, []);
 
+  const isSubVisible = (subId: string) => {
+    if (subId === "portal") {
+      return Boolean(currentProject?.clientPortalEnabled);
+    }
+    return true;
+  };
+
   const toggleFlow = (flowId: string) => {
     setExpandedFlows((prev) => ({
       ...prev,
@@ -497,7 +504,7 @@ export function Sidebar({
                 {isExpanded && isAllowed && (
                   <div className="px-2 pb-2.5 pt-1 space-y-1">
                     <div className="space-y-1">
-                      {flow.subSections.map((sub) => {
+                      {flow.subSections.filter((sub) => isSubVisible(sub.id)).map((sub) => {
                         const isSubActive =
                           isCurrent &&
                           (activeSubSection === sub.id ||
@@ -691,7 +698,7 @@ export function Sidebar({
                   {isExpanded && isAllowed && (
                     <div className="px-2 pb-2 space-y-1">
 
-                      {flow.subSections.map((sub) => {
+                      {flow.subSections.filter((sub) => isSubVisible(sub.id)).map((sub) => {
                         const isSubActive = isCurrent && activeSubSection === sub.id;
                         const SubIcon = sub.icon;
 

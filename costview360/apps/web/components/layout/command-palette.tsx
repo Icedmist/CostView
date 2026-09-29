@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { useApp } from "@/app/providers";
 import {
   Search,
   X,
@@ -377,24 +378,34 @@ interface CommandPaletteProps {
 }
 
 export function CommandPalette({ isOpen, onClose, onSelectNav }: CommandPaletteProps) {
+  const { currentProject } = useApp();
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Filter items
+  // Filter items based on project settings and query
+  const availableItems = React.useMemo(() => {
+    return COMMAND_ITEMS.filter((item) => {
+      if (item.id === "ov-portal" && !currentProject?.clientPortalEnabled) {
+        return false;
+      }
+      return true;
+    });
+  }, [currentProject?.clientPortalEnabled]);
+
   const filtered = React.useMemo(() => {
     if (!query.trim()) {
-      return COMMAND_ITEMS.slice(0, 10);
+      return availableItems.slice(0, 10);
     }
     const q = query.toLowerCase();
-    return COMMAND_ITEMS.filter(
+    return availableItems.filter(
       (item) =>
         item.title.toLowerCase().includes(q) ||
         item.description.toLowerCase().includes(q) ||
         item.flowLabel.toLowerCase().includes(q) ||
         item.category.toLowerCase().includes(q)
     );
-  }, [query]);
+  }, [query, availableItems]);
 
   // Focus input when opened
   useEffect(() => {
