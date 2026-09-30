@@ -66,7 +66,7 @@ export interface SitePost {
 }
 
 export function SiteHub() {
-  const { currentProject, currency, activeRole } = useApp();
+  const { currentProject, currency, activeRole, availableProjects } = useApp();
   const [projectMembers, setProjectMembers] = useState<TaggedUser[]>([]);
   const [posts, setPosts] = useState<SitePost[]>([]);
   const [filterType, setFilterType] = useState<"all" | "progress" | "expense" | "issue">("all");
@@ -122,16 +122,22 @@ export function SiteHub() {
   const [activeCommentPostId, setActiveCommentPostId] = useState<string | null>(null);
   const [commentText, setCommentText] = useState("");
 
-  // Fetch real posts from Supabase on mount
+  // Fetch real posts from Supabase on mount & when project changes
   useEffect(() => {
     let isMounted = true;
     async function fetchPosts() {
       try {
         const supabase = createClient();
-        const { data: postsData, error } = await supabase
+        let query = supabase
           .from("site_posts")
-          .select("*")
+          .select("*, site_post_comments(*)")
           .order("created_at", { ascending: false });
+
+        if (currentProject?.id) {
+          query = query.eq("project_id", currentProject.id);
+        }
+
+        const { data: postsData, error } = await query;
 
         if (!error && postsData && postsData.length > 0) {
           const mapped: SitePost[] = postsData.map((p: any) => ({
@@ -147,38 +153,51 @@ export function SiteHub() {
             mediaUrls: Array.isArray(p.media_urls) ? p.media_urls : [],
             metadata: p.metadata || {},
             likesCount: Number(p.likes_count || 0),
-            comments: [],
+            comments: Array.isArray(p.site_post_comments)
+              ? p.site_post_comments.map((c: any) => ({
+                  id: c.id,
+                  postId: c.post_id,
+                  authorName: c.author_name,
+                  authorRole: c.author_role,
+                  content: c.content,
+                  createdAt: c.created_at,
+                }))
+              : [],
             createdAt: p.created_at,
           }));
           if (isMounted) setPosts(mapped);
+        } else if (isMounted) {
+          setPosts([]);
         }
 
         // Fetch explicitly the team members assigned to this specific project
-        const { data: memberRows } = await supabase
-          .from("project_members")
-          .select("user_id, role")
-          .eq("project_id", currentProject.id);
+        if (currentProject?.id) {
+          const { data: memberRows } = await supabase
+            .from("project_members")
+            .select("user_id, role")
+            .eq("project_id", currentProject.id);
 
-        if (isMounted) {
-          if (memberRows && memberRows.length > 0) {
-            const userIds = memberRows.map((m: any) => m.user_id);
-            const { data: profilesData } = await supabase
-              .from("profiles")
-              .select("id, full_name, default_role")
-              .in("id", userIds);
+          if (isMounted) {
+            if (memberRows && memberRows.length > 0) {
+              const userIds = memberRows.map((m: any) => m.user_id);
+              const { data: profilesData } = await supabase
+                .from("profiles")
+                .select("id, full_name, default_role")
+                .in("id", userIds);
 
-            const profileMap = new Map((profilesData || []).map((p: any) => [p.id, p]));
-            const projectSpecificMembers = memberRows.map((m: any) => {
-              const prof = profileMap.get(m.user_id);
-              return {
-                id: m.user_id,
-                name: prof?.full_name || "Project Member",
-                role: m.role || prof?.default_role || "Staff",
-              };
-            });
-            setProjectMembers(projectSpecificMembers);
-          } else {
-            setProjectMembers([]);
+              const profileMap = new Map((profilesData || []).map((p: any) => [p.id, p]));
+              const projectSpecificMembers = memberRows.map((m: any) => {
+                const prof = profileMap.get(m.user_id);
+                return {
+                  id: m.user_id,
+                  name: prof?.full_name || "Project Member",
+                  role: m.role || prof?.default_role || "Staff",
+                };
+              });
+              setProjectMembers(projectSpecificMembers);
+            } else {
+              setProjectMembers([]);
+            }
           }
         }
       } catch (err) {
@@ -189,106 +208,186 @@ export function SiteHub() {
     return () => {
       isMounted = false;
     };
-  }, [currentProject.id]);
+  }, [currentProject?.id]);
 
   // Handle Post Creation
   const handleCreatePost = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!content.trim()) return;
 
-    setIsSubmitting(true);
-    const newPostId = `post-${Date.now()}`;
-    const newMediaUrls = [...uploadedPhotos];
+    let targetProjectId = currentProject?.id;
+    if (!targetProjectId) {
+      if (availableProjects && availableProjects.length > 0 && availableProjects[0].id) {
+        targetProjectId = availableProjects[0].id;
+      } else {
+        const supabase = createClient();
+        const { data: proj } = await supabase.from("projects").select("id").limit(1).maybeSingle();
+        if (proj?.id) {
+          targetProjectId = proj.id;
+        }
+      }
+    }
 
-    const newPost: SitePost = {
-      id: newPostId,
-      projectId: currentProject.id,
-      authorName: activeRole,
-      authorRole: activeRole,
+    if (!targetProjectId) {
+      alert("No active project found. Please select or create a project first.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    const postPayload = {
       content: content.trim(),
       postType,
       amountSpent: Number(amountSpent) || 0,
       expenseCategory: postType === "expense" ? expenseCategory : undefined,
       taggedUsers: selectedTags,
-      mediaUrls: newMediaUrls,
+      mediaUrls: [...uploadedPhotos],
       metadata: {
         weather,
         headcount: Number(headcount) || 0,
       },
-      likesCount: 0,
-      userLiked: false,
-      comments: [],
-      createdAt: new Date().toISOString(),
     };
 
-    setPosts((prev) => [newPost, ...prev]);
-
-    // Reset composer
+    // Reset composer form immediately
     setContent("");
     setAmountSpent("");
     setSelectedTags([]);
     setUploadedPhotos([]);
     setShowPhotoInput(false);
     setShowTagPicker(false);
-    setIsSubmitting(false);
 
-    // Persist to Supabase
     try {
       const supabase = createClient();
-      await supabase.from("site_posts").insert({
-        project_id: currentProject.id,
-        author_id: "00000000-0000-0000-0000-000000000000",
-        author_name: activeRole,
-        author_role: activeRole,
-        content: newPost.content,
-        post_type: newPost.postType,
-        amount_spent: newPost.amountSpent,
-        expense_category: newPost.expenseCategory,
-        tagged_users: newPost.taggedUsers,
-        media_urls: newPost.mediaUrls,
-        metadata: newPost.metadata,
-        likes_count: 0,
-      });
+      const { data: authData } = await supabase.auth.getUser();
+      const currentUser = authData?.user;
+
+      const authorName =
+        currentUser?.user_metadata?.full_name ||
+        currentUser?.email?.split("@")[0] ||
+        activeRole;
+
+      const { data: createdPost, error } = await supabase
+        .from("site_posts")
+        .insert({
+          project_id: targetProjectId,
+          author_id: currentUser?.id || null,
+          author_name: authorName,
+          author_role: activeRole,
+          content: postPayload.content,
+          post_type: postPayload.postType,
+          amount_spent: postPayload.amountSpent,
+          expense_category: postPayload.expenseCategory,
+          tagged_users: postPayload.taggedUsers,
+          media_urls: postPayload.mediaUrls,
+          metadata: postPayload.metadata,
+          likes_count: 0,
+        })
+        .select("*, site_post_comments(*)")
+        .single();
+
+      if (!error && createdPost) {
+        const newPost: SitePost = {
+          id: createdPost.id,
+          projectId: createdPost.project_id,
+          authorName: createdPost.author_name,
+          authorRole: createdPost.author_role,
+          content: createdPost.content,
+          postType: createdPost.post_type,
+          amountSpent: Number(createdPost.amount_spent || 0),
+          expenseCategory: createdPost.expense_category,
+          taggedUsers: Array.isArray(createdPost.tagged_users) ? createdPost.tagged_users : [],
+          mediaUrls: Array.isArray(createdPost.media_urls) ? createdPost.media_urls : [],
+          metadata: createdPost.metadata || {},
+          likesCount: 0,
+          userLiked: false,
+          comments: [],
+          createdAt: createdPost.created_at,
+        };
+        setPosts((prev) => [newPost, ...prev]);
+      } else {
+        console.error("Failed to insert site post:", error);
+      }
     } catch (err) {
-      console.warn("Offline site post insert saved to memory", err);
+      console.error("Error creating site post:", err);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   // Toggle Like / Acknowledge
-  const handleToggleLike = (postId: string) => {
+  const handleToggleLike = async (postId: string) => {
+    let targetLikes = 0;
     setPosts((prev) =>
       prev.map((p) => {
         if (p.id === postId) {
           const userLiked = !p.userLiked;
-          const likesCount = userLiked ? p.likesCount + 1 : Math.max(0, p.likesCount - 1);
-          return { ...p, userLiked, likesCount };
+          targetLikes = userLiked ? p.likesCount + 1 : Math.max(0, p.likesCount - 1);
+          return { ...p, userLiked, likesCount: targetLikes };
         }
         return p;
       })
     );
+
+    try {
+      const supabase = createClient();
+      await supabase
+        .from("site_posts")
+        .update({ likes_count: targetLikes })
+        .eq("id", postId);
+    } catch (err) {
+      console.warn("Could not persist like count", err);
+    }
   };
 
   // Add Comment to Post
-  const handleAddComment = (postId: string) => {
+  const handleAddComment = async (postId: string) => {
     if (!commentText.trim()) return;
-    const newComment: PostComment = {
-      id: `comm-${Date.now()}`,
-      postId,
-      authorName: activeRole,
-      authorRole: activeRole,
-      content: commentText.trim(),
-      createdAt: new Date().toISOString(),
-    };
-
-    setPosts((prev) =>
-      prev.map((p) => {
-        if (p.id === postId) {
-          return { ...p, comments: [...p.comments, newComment] };
-        }
-        return p;
-      })
-    );
+    const text = commentText.trim();
     setCommentText("");
+
+    try {
+      const supabase = createClient();
+      const { data: authData } = await supabase.auth.getUser();
+      const currentUser = authData?.user;
+      const authorName =
+        currentUser?.user_metadata?.full_name ||
+        currentUser?.email?.split("@")[0] ||
+        activeRole;
+
+      const { data: newComm, error } = await supabase
+        .from("site_post_comments")
+        .insert({
+          post_id: postId,
+          author_id: currentUser?.id || null,
+          author_name: authorName,
+          author_role: activeRole,
+          content: text,
+        })
+        .select()
+        .single();
+
+      if (!error && newComm) {
+        const commentItem: PostComment = {
+          id: newComm.id,
+          postId: newComm.post_id,
+          authorName: newComm.author_name,
+          authorRole: newComm.author_role,
+          content: newComm.content,
+          createdAt: newComm.created_at,
+        };
+        setPosts((prev) =>
+          prev.map((p) => {
+            if (p.id === postId) {
+              return { ...p, comments: [...p.comments, commentItem] };
+            }
+            return p;
+          })
+        );
+      } else {
+        console.error("Failed to add comment:", error);
+      }
+    } catch (err) {
+      console.error("Error creating comment:", err);
+    }
   };
 
   // Toggle tag in composer
