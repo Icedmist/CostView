@@ -48,6 +48,7 @@ import {
 } from "lucide-react";
 import { canAccess } from "@/lib/auth/permissions";
 import { OnboardingModal } from "@/components/onboarding/onboarding-modal";
+import { getNavUrl } from "@/lib/routes";
 
 export interface SubNavSection {
   id: string;
@@ -370,6 +371,8 @@ export function Sidebar({
       onSelectNav(flowId, subId);
     } else if (onSelectTab) {
       onSelectTab(flowId);
+    } else {
+      router.push(getNavUrl(flowId, subId));
     }
     if (onClose) onClose();
   };
